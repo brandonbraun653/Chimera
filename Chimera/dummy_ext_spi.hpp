@@ -20,7 +20,6 @@ public:
 		int speed = boost::get<int>(options.find("speed")->second);
 		double opt1 = boost::get<double>(options.find("opt1")->second);
 
-		std::cout << "I got channel " << (int)channel << " with speed " << speed << " and option " << opt1 << std::endl;
 		return 1;
 	}
 

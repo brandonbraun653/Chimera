@@ -23,8 +23,6 @@ namespace Chimera
 		{
 			//static_assert(is_callable_with<decltype(channel), decltype(options)>(&LOKI_SPI_INHERITED::init), "oops");
 
-			std::cout << typeid(channel).name() << std::endl;
-
 			return CHIMERA_SPI_INHERITED::init(channel, options);
 		}
 
