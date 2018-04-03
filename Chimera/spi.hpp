@@ -2,14 +2,11 @@
 #ifndef CHIMERA_SPI_HPP
 #define CHIMERA_SPI_HPP
 
-#include <map>
-#include <string>
-#include <type_traits>
-#include <typeinfo>
+#include <Chimera/preprocessor.hpp>
+#include <Chimera/types.hpp>
+#include <Chimera/chimera_config.hpp>
 
-#include "loki_config.hpp"
-#include "types.hpp"
-#include "assertion.hpp"
+#include <stdarg.h>
 
 namespace Chimera
 {
@@ -18,14 +15,22 @@ namespace Chimera
 	class SPI : public CHIMERA_SPI_INHERITED
 	{
 	public:
-		template<typename... T>
-		int init(uint8_t channel, const OptionalInputs<T...>& options)
+		int init(uint8_t channel, const ParamVec* additionalParams)
 		{
-			//static_assert(is_callable_with<decltype(channel), decltype(options)>(&LOKI_SPI_INHERITED::init), "oops");
-
-			return CHIMERA_SPI_INHERITED::init(channel, options);
+			// Nevermind...make a single struct with common features and leave details
+			// up to the actual embedded system
+			return CHIMERA_SPI_INHERITED::init(channel, additionalParams);
 		}
 
+		// How do I want to pass in core things like speed, msb, etc?
+
+		// All the write functionalities
+
+		// All the read functionalities
+
+		// Read write functionalities
+
+		// Mode functionalities: Blocking, Interrupt, DMA
 
 		SPI() = default;
 		~SPI() = default;
