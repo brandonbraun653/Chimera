@@ -2,7 +2,7 @@
 #ifndef CHIMERA_CONFIG_HPP
 #define CHIMERA_CONFIG_HPP
 
-#include <stdint.h>
+/* All code for peripheral drivers go here */
 #include "dummy_ext_spi.hpp"
 
 

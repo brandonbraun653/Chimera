@@ -2,45 +2,59 @@
 #ifndef CHIMERA_TYPES_HPP
 #define CHIMERA_TYPES_HPP
 
-#include <boost/container/vector.hpp>
+#include <stdint.h>
+
+#include <Chimera\preprocessor.hpp>
+
 
 namespace Chimera
 {
-	namespace Types
+	
+	namespace SPI
 	{
 
-		enum DataType 
+		enum Status
 		{
-			TYPE_INT,
-			TYPE_CHAR,
-			TYPE_FLOAT,
-			TYPE_DOUBLE,
-			TYPE_UINT8,
-			TYPE_UINT16,
-			TYPE_UINT32,
-			TYPE_UINT64,
-			TOTAL_TYPES_SUPPORTED
+			INVALID_HARDWARE_PARAM = -1,
+			FAILED_INITIALIZATION = -2,
+
+			SPI_OK = 0,
+			SPI_BUSY
 		};
 
-		typedef struct Param
+		enum BitOrder
 		{
-			DataType type;
-			union
-			{
-				int int_value;
-				char char_value;
-				float float_value;
-				double double_value;
-				uint8_t uint8_value;
-				uint16_t uint16_value;
-				uint32_t uint32_value;
-				uint64_t uint64_value;
-			};
+			MSB_FIRST,	/* Most significant bit sent first */
+			LSB_FIRST	/* Least significant bit sent first */
 		};
 
-		/* Used for passing multiple unknown parameters into functions*/
-		using ParamVec = boost::container::vector<Param>;
+		enum Mode
+		{
+			MODE0,
+			MODE1,
+			MODE2,
+			MODE3,
+			MODE4
+		};
+
+		struct Setup
+		{
+			uint32_t clockFrequency;
+			BitOrder bitOrder;
+			Mode mode;
+		};
 	}
+
+	namespace I2C
+	{
+
+	}
+
+	namespace Serial
+	{
+
+	}
+
 }
 
 

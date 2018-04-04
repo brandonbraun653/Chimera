@@ -2,24 +2,18 @@
 #ifndef CHIMERA_SPI_HPP
 #define CHIMERA_SPI_HPP
 
-#include <Chimera/preprocessor.hpp>
-#include <Chimera/types.hpp>
-#include <Chimera/chimera_config.hpp>
-
-#include <stdarg.h>
+#include <Chimera/chimera.hpp>
 
 namespace Chimera
 {
-	using namespace Chimera::Types;
+	using namespace Chimera::SPI;
 
-	class SPI : public CHIMERA_SPI_INHERITED
+	class SPIClass : public CHIMERA_SPI_INHERITED
 	{
 	public:
-		int init(uint8_t channel, const ParamVec* additionalParams)
+		Status init(uint8_t channel, const Setup& setupStruct)
 		{
-			// Nevermind...make a single struct with common features and leave details
-			// up to the actual embedded system
-			return CHIMERA_SPI_INHERITED::init(channel, additionalParams);
+			return spi->init(channel, setupStruct);
 		}
 
 		// How do I want to pass in core things like speed, msb, etc?
@@ -32,12 +26,17 @@ namespace Chimera
 
 		// Mode functionalities: Blocking, Interrupt, DMA
 
-		SPI() = default;
-		~SPI() = default;
+		SPIClass()
+		{
+			spi = Chimera::make_shared<CHIMERA_SPI_INHERITED>();
+		};
+
+		~SPIClass() = default;
 
 	private:
-
+		Chimera::shared_ptr<CHIMERA_SPI_INHERITED> spi;
 	};
+	
 }
 
 

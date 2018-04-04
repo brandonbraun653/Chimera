@@ -4,23 +4,19 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <map>
-#include <string>
-#include <iostream>
 
-#include <boost/variant.hpp>
+#include <Chimera\chimera.hpp>
+
+using namespace Chimera::SPI;
 
 class DummySPI
 {
 public:
 
-	int init(uint8_t channel, const std::map<std::string, boost::variant<int, double>>& options)
+	Status init(uint8_t channel, const Setup& setupStruct)
 	{
-		//Assume all the keys are there
-		int speed = boost::get<int>(options.find("speed")->second);
-		double opt1 = boost::get<double>(options.find("opt1")->second);
 
-		return 1;
+		return Status::SPI_OK;
 	}
 
 
