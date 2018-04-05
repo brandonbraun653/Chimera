@@ -30,11 +30,18 @@ namespace Chimera
 
 		enum Mode
 		{
-			MODE0,
+			MODE0,	
 			MODE1,
 			MODE2,
 			MODE3,
 			MODE4
+		};
+		
+		enum TXRXMode
+		{
+			BLOCKING,
+			INTERRUPT,
+			DMA
 		};
 
 		struct Setup

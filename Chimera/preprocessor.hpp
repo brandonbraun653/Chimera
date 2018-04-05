@@ -1,12 +1,6 @@
-/* Global Definitions */
-#define EIGEN_INITIALIZE_MATRICES_BY_ZERO
+#pragma once
+#ifndef CHIMERA_PREPROCESSOR_HPP
+#define CHIMERA_PREPROCESSOR_HPP
 
 
-/* These definitions do things */
-#ifdef DEBUG
-
-#else
-
-#define EIGEN_NO_DEBUG
-
-#endif
+#endif 

@@ -3,40 +3,42 @@
 #define CHIMERA_SPI_HPP
 
 #include <Chimera/chimera.hpp>
+#include <Chimera/config.hpp>
+
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 namespace Chimera
 {
 	using namespace Chimera::SPI;
 
-	class SPIClass : public CHIMERA_SPI_INHERITED
+	class SPIClass : public CH_INHRT_SPI
 	{
 	public:
-		Status init(uint8_t channel, const Setup& setupStruct)
+		Status init(const Setup& setupStruct)
 		{
-			return spi->init(channel, setupStruct);
+			return spi->init(usr_channel, setupStruct);
 		}
+		
+		Status write(uint8_t* in, size_t length);
+		Status write(uint8_t* in, uint8_t* out, size_t length);
 
-		// How do I want to pass in core things like speed, msb, etc?
+		Status setTxMode(TXRXMode mode);
+		Status setRxMode(TXRXMode mode);
 
-		// All the write functionalities
-
-		// All the read functionalities
-
-		// Read write functionalities
-
-		// Mode functionalities: Blocking, Interrupt, DMA
-
-		SPIClass()
+		SPIClass(const int& channel)
 		{
-			spi = Chimera::make_shared<CHIMERA_SPI_INHERITED>();
+			usr_channel = channel;
+			spi = boost::make_shared<CH_INHRT_SPI>(channel);
 		};
 
 		~SPIClass() = default;
 
 	private:
-		Chimera::shared_ptr<CHIMERA_SPI_INHERITED> spi;
+		int usr_channel;
+		boost::shared_ptr<CH_INHRT_SPI> spi;
 	};
-	
+	//typedef Chimera::shared_ptr<SPIClass> SPIClass_sPtr;
 }
 
 

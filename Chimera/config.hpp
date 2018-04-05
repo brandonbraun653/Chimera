@@ -3,10 +3,10 @@
 #define CHIMERA_CONFIG_HPP
 
 /* All code for peripheral drivers go here */
-#include "dummy_ext_spi.hpp"
+#include <Thor\include\spi.h>
 
 
-#define CHIMERA_SPI_INHERITED DummySPI
+#define CH_INHRT_SPI Thor::Peripheral::SPI::SPIClass
 #define CHIMERA_I2C_INHERITED null
 #define CHIMERA_UART_INHERITED null
 
