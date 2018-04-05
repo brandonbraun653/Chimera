@@ -2,13 +2,14 @@
 #ifndef CHIMERA_CONFIG_HPP
 #define CHIMERA_CONFIG_HPP
 
-/* All code for peripheral drivers go here */
+/* All includes for peripheral drivers go here */
+#include <Thor\include\thor.h>
 #include <Thor\include\spi.h>
+#include <Thor\include\gpio.h>
 
-
-#define CH_INHRT_SPI Thor::Peripheral::SPI::SPIClass
-#define CHIMERA_I2C_INHERITED null
-#define CHIMERA_UART_INHERITED null
+/* Defines the classes for Chimera to inherit from */
+#define CHIMERA_INHERITED_GPIO Thor::Peripheral::GPIO::GPIOClass
+#define CHIMERA_INHERITED_SPI Thor::Peripheral::SPI::SPIClass
 
 
 #endif 

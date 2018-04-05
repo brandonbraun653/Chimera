@@ -4,7 +4,10 @@
 
 #include <atomic>
 #include <utility>
-/* Common functions available to all */
+
+#ifdef CHIMERA_FREERTOS
+#include <Chimera/threading.hpp>
+#endif 
 
 namespace Chimera
 {
@@ -74,6 +77,7 @@ namespace Chimera
 		return shared_ptr<T>(new T{ std::forward<U>(u)... });
 	}
 }
+
 
 
 #endif

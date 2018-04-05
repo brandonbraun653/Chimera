@@ -2,46 +2,47 @@
 #ifndef CHIMERA_SPI_HPP
 #define CHIMERA_SPI_HPP
 
-#include <Chimera/chimera.hpp>
-#include <Chimera/config.hpp>
-
+/* Boost Includes */
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 
+/* Chimera Includes */
+#include <Chimera/chimera.hpp>
+#include <Chimera/config.hpp>
+
 namespace Chimera
 {
-	using namespace Chimera::SPI;
-
-	class SPIClass : public CH_INHRT_SPI
+	namespace SPI
 	{
-	public:
-		Status init(const Setup& setupStruct)
+		class SPIClass : public CHIMERA_INHERITED_SPI
 		{
-			return spi->init(usr_channel, setupStruct);
-		}
-		
-		Status write(uint8_t* in, size_t length);
-		Status write(uint8_t* in, uint8_t* out, size_t length);
+		public:
+			Status init(const Setup& setupStruct)
+			{
+				return spi->init(usr_channel, setupStruct);
+			}
 
-		Status setTxMode(TXRXMode mode);
-		Status setRxMode(TXRXMode mode);
+			Status write(uint8_t* in, size_t length);
+			Status write(uint8_t* in, uint8_t* out, size_t length);
 
-		SPIClass(const int& channel)
-		{
-			usr_channel = channel;
-			spi = boost::make_shared<CH_INHRT_SPI>(channel);
+			Status setTxMode(TXRXMode mode);
+			Status setRxMode(TXRXMode mode);
+
+			SPIClass(const int& channel)
+			{
+				usr_channel = channel;
+				spi = boost::make_shared<CHIMERA_INHERITED_SPI>(channel);
+			}
+			;
+
+			~SPIClass() = default;
+
+		private:
+			int usr_channel;
+			boost::shared_ptr<CHIMERA_INHERITED_SPI> spi;
 		};
-
-		~SPIClass() = default;
-
-	private:
-		int usr_channel;
-		boost::shared_ptr<CH_INHRT_SPI> spi;
-	};
-	//typedef Chimera::shared_ptr<SPIClass> SPIClass_sPtr;
+		typedef boost::shared_ptr<SPIClass> SPIClass_sPtr;
+	}
 }
-
-
-
 
 #endif 
