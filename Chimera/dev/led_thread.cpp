@@ -17,6 +17,13 @@ void ledThread(void* argument)
 	using namespace Chimera::GPIO;
 	
 	GPIOClass_sPtr blue_led = boost::make_shared<GPIOClass>();
+
+	//blue_led->init(32);
+	
+	//volatile auto result = blue_led->check_init();
+	
+	//blue_led->
+	
 	
 	/* Inform the init task that everything has been set up */
 	xTaskSendMessage(INIT_THREAD, 1u);

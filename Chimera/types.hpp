@@ -9,7 +9,36 @@
 
 namespace Chimera
 {
-	
+	namespace GPIO
+	{
+		enum Status
+		{
+			GPIO_OK,
+			GPIO_ERROR_INVALID_PIN,
+			GPIO_ERROR_INVALID_FUNCTION
+		};
+
+		enum Mode
+		{
+			INPUT,
+			OUTPUT,
+			HIZ
+		};
+		
+		enum State
+		{
+			HIGH,
+			HI,
+			ON,
+			TRUE,
+			LOW,
+			LO,
+			OFF,
+			FALSE
+		};
+
+	}
+
 	namespace SPI
 	{
 
