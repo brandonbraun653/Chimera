@@ -17,7 +17,13 @@ namespace Chimera
 				return pdPASS;
 			}
 			else
+			{
+				#if CHIMERA_RTOS_FREEZE_ON_FAIL
+				for (;;) {}
+				#endif 
 				return pdFAIL;
+			}
+				
 		}
 		
 		/* DANGEROUS: Completely destroys all references to the thread at 'idx' regardless of 
@@ -40,8 +46,7 @@ namespace Chimera
 			}
 			else
 			{
-				/* You gave an invalid handle index */
-				#if CHIMERA_RTOS_FREEZE_ON_FAIL
+				#if CHIMERA_RTOS_FREEZE_ON_FAIL 
 				for(;;) {}
 				#endif 
 				
@@ -54,7 +59,14 @@ namespace Chimera
 			if ((idx < MAX_THREADS) && TaskHandle[idx])
 				return xTaskNotify(TaskHandle[idx], msg, eSetValueWithOverwrite);
 			else
+			{
+				#if CHIMERA_RTOS_FREEZE_ON_FAIL 
+				for (;;) {}
+				#endif 
+
 				return pdFAIL;
+			}
+				
 		}
 
 		BaseType_t xTaskSendMessageFromISR(const uint32_t idx, uint32_t msg)
@@ -62,7 +74,13 @@ namespace Chimera
 			if ((idx < MAX_THREADS) && TaskHandle[idx])
 				return xTaskNotifyFromISR(TaskHandle[idx], msg, eSetValueWithOverwrite, NULL);
 			else
+			{
+				#if CHIMERA_RTOS_FREEZE_ON_FAIL 
+				for (;;) {}
+				#endif 
+
 				return pdFAIL;
+			}
 		}
 	}
 }

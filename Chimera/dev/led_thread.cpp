@@ -16,15 +16,11 @@ void ledThread(void* argument)
 	using namespace Chimera::Threading;
 	using namespace Chimera::GPIO;
 	
-	GPIOClass_sPtr blue_led = boost::make_shared<GPIOClass>();
+	GPIOClass blue_led(PORTB, 7);
+	
+	blue_led.mode(OUTPUT);
+	blue_led.write(HIGH);
 
-	//blue_led->init(32);
-	
-	//volatile auto result = blue_led->check_init();
-	
-	//blue_led->
-	
-	
 	/* Inform the init task that everything has been set up */
 	xTaskSendMessage(INIT_THREAD, 1u);
 	vTaskSuspend(NULL);
@@ -33,8 +29,7 @@ void ledThread(void* argument)
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
-		//Infinitely loop here
-		
-		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(1000));
+		blue_led.toggle();
+		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(500));
 	}
 }

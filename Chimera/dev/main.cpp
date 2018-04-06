@@ -9,14 +9,23 @@
 #include "led_thread.hpp"
 #include "spi_thread.hpp"
 
+#include <Thor/include/gpio.h>
+
 #define LED_THREAD_IDX 1
 #define SPI_THREAD_IDX 2
+
+/*
+Blue Led: PB7
+Red Led: PB14
+Green Led: PB0
+*/
 
 void init(void* argument);
 
 int main(void)
 {
 	using namespace Chimera::Threading;
+	using namespace Thor::Peripheral::GPIO;
 	
 	HAL_Init();
 	ThorInit();
@@ -26,21 +35,11 @@ int main(void)
 	InitializeSamplingProfiler();
 	InitializeInstrumentingProfiler();
 	#endif
-	// 	Chimera::SPI::SPIClass test_spi(2);
-	// 	Chimera::SPI::Setup setup;
-	// 	test_spi.init(setup);
+
 	
 	TaskHandle_t initHandle;
 	xTaskCreate(init, "init", 500, NULL, 1, &initHandle);
-	
-	if (xRegisterTaskHandle(INIT_THREAD, initHandle) != pdPASS)
-	{
-		for (;;)
-		{
-			//You failed init.
-		}
-	}
-	
+	xRegisterTaskHandle(INIT_THREAD, initHandle);
 	vTaskStartScheduler();
 	
 	/* Should never reach here as scheduler should be running */
@@ -62,13 +61,8 @@ void init(void* argument)
 	while (!ulTaskNotifyTake(pdTRUE, 0))
 		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(10));
 	
-	if (xRegisterTaskHandle(LED_THREAD_IDX, threadHandle) != pdPASS)
-	{
-		for (;;)
-		{
-			//You failed init.
-		}
-	}
+	xRegisterTaskHandle(LED_THREAD_IDX, threadHandle);
+
 	
 	vTaskResume(TaskHandle[LED_THREAD_IDX]);
 	xRemoveTaskHandle(INIT_THREAD);

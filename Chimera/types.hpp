@@ -11,32 +11,49 @@ namespace Chimera
 {
 	namespace GPIO
 	{
-		enum Status
+		enum Status : uint8_t
 		{
 			GPIO_OK,
+			GPIO_ERROR_UNINITIALIZED,
 			GPIO_ERROR_INVALID_PIN,
-			GPIO_ERROR_INVALID_FUNCTION
+			GPIO_ERROR_INVALID_FUNCTION,
+			GPIO_ERROR_INVALID_PORT
 		};
 
-		enum Mode
+		enum Mode : uint8_t
 		{
 			INPUT,
 			OUTPUT,
 			HIZ
 		};
 		
-		enum State
+		enum State : bool 
 		{
-			HIGH,
-			HI,
-			ON,
-			TRUE,
-			LOW,
-			LO,
-			OFF,
-			FALSE
+			HIGH = true,
+			HI = true,
+			ON = true,
+			TRUE = true,
+			LOW = false,
+			LO = false,
+			OFF = false,
+			FALSE = false
 		};
-
+		
+		enum Port : uint8_t
+		{
+			PORTA,
+			PORTB,
+			PORTC,
+			PORTD,
+			PORTE,
+			PORTF,
+			PORTG,
+			PORTH,
+			PORTI,
+			PORTJ,
+			PORTK,
+			PORTL
+		};
 	}
 
 	namespace SPI
