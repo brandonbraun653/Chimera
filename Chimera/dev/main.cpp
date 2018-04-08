@@ -8,11 +8,13 @@
 
 #include "led_thread.hpp"
 #include "spi_thread.hpp"
+#include "serial_thread.hpp"
 
 #include <Thor/include/gpio.h>
 
 #define LED_THREAD_IDX 1
 #define SPI_THREAD_IDX 2
+#define SER_THREAD_IDX 3
 
 /*
 Blue Led: PB7
@@ -57,13 +59,22 @@ void init(void* argument)
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	TaskHandle_t threadHandle;
 	
+	/* Create the LED Thread  */
 	error = xTaskCreate(ledThread, "ledThread", 350, NULL, 2, &threadHandle);
 	while (!ulTaskNotifyTake(pdTRUE, 0))
 		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(10));
 	
 	xRegisterTaskHandle(LED_THREAD_IDX, threadHandle);
 
+	/* Create the Serial Thread */
+	error = xTaskCreate(serialThread, "serialThread", 1000, NULL, 2, &threadHandle);
+	while (!ulTaskNotifyTake(pdTRUE, 0))
+		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(10));
+
+	xRegisterTaskHandle(SER_THREAD_IDX, threadHandle);
+
 	
 	vTaskResume(TaskHandle[LED_THREAD_IDX]);
+	vTaskResume(TaskHandle[SER_THREAD_IDX]);
 	xRemoveTaskHandle(INIT_THREAD);
 }
