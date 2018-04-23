@@ -25,19 +25,23 @@ void serialThread(void* argument)
 	uart->begin(115200);
 	uart->setBlockMode(UARTPeriph::TX);
 
-	std::string test1 = "Hey mate.\n";
-	std::string test2 = "Testing testing!\n";
-	std::string test3 = "I love watermelon.\n";
+	const char* test1 = "Hey mate.\n";
+	const char* test2 = "Testing testing!\n";
+	const char* test3 = "I love watermelon.\n";
 
 	/* Inform the init task that everything has been set up */
 	xTaskSendMessage(INIT_THREAD, 1u);
 	vTaskSuspend(NULL);
 	taskYIELD();
 
+
+	uart->setDMAMode(UARTPeriph::TX);
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
-		//uart->write(test1);
+		uart->write(test1);
+		uart->write(test2);
+		uart->write(test3);
 
 		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(500));
 	}
