@@ -12,22 +12,24 @@
 #include <Chimera/gpio.hpp>
 #include <Chimera/threading.hpp>
 
-
+#include <Thor/include/definitions.h>
 #include <Thor/include/uart.h>
+
+using namespace Thor::Definitions::Serial;
 
 void serialThread(void* argument)
 {
 	using namespace Chimera::Threading;
 	using namespace Thor::Peripheral::UART;
 
-	UARTClass_sPtr uart = uart4;
+	UARTClass_sPtr uart = UARTClass::create(4);
 
-	uart->begin(115200);
+	uart->begin(SERIAL_BAUD_115200);
 	uart->setBlockMode(UARTPeriph::TX);
 
-	const char* test1 = "Hey mate.\n";
-	const char* test2 = "Testing testing!\n";
-	const char* test3 = "I love watermelon.\n";
+	const char* test1 = "Hey mate.\r\n";
+	const char* test2 = "Testing testing!\r\n";
+	const char* test3 = "I love watermelon.\r\n";
 
 	/* Inform the init task that everything has been set up */
 	xTaskSendMessage(INIT_THREAD, 1u);
