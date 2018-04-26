@@ -1,3 +1,4 @@
+/** @file utilities.hpp */
 #pragma once
 #ifndef CHIMERA_UTILITIES_HPP
 #define CHIMERA_UTILITIES_HPP
@@ -11,10 +12,48 @@
 #include <iterator>
 #include <boost/range/iterator_range.hpp>
 
-
 #ifdef CHIMERA_FREERTOS
 #include <Chimera/threading.hpp>
 #endif 
+
+/** @ingroup Global_Macros
+ *	@{
+ **/
+
+/** A 'factory-like' macro that generates a compile time check for the existence of a specific 
+ *	function signature within a given class. Code is not generated in flash and there is no overhead.
+ *	Mostly this function is used in the various Chimera core perihperal module namespaces like GPIO, 
+ *	UART, SPI, etc. to give the developer an error. If desired, a runtime check could be used simply
+ *	by calling "InvocationName::value".
+ *
+ *	@param[in]	InvocationName	A unique name for the macro
+ *	@param[in]	ClassToCheck	Name of the class to be checked
+ *	@param[in]	FuncName		Name of the function to be checked 
+ *	@param[in]	FuncReturn		The return type of the function to be checked
+ *	@param[in]	FuncArgs...		A comma separated list of argument types for the function to be checked 
+ **/
+#define CLASS_METHOD_CHECKER(InvocationName, ClassToCheck, FuncName, FuncReturn, FuncArgs...)				\
+	class InvocationName																					\
+	{																										\
+		typedef char Yes;																					\
+		typedef long No;																					\
+		template <typename T, T> struct TypeCheck;															\
+																											\
+		template <typename T> struct fsig																	\
+		{																									\
+			typedef FuncReturn(T::*fptr)(FuncArgs);														\
+		};																									\
+																											\
+		template <typename T> static Yes has_func(TypeCheck< typename fsig<T>::fptr, &T::FuncName >*);	\
+		template <typename T> static No  has_func(...);														\
+																											\
+	public:																									\
+		static bool const value = (sizeof(has_func<ClassToCheck>(0)) == sizeof(Yes));						\
+	};																										\
+	static_assert(InvocationName::value, "Proper signature for function \"" #FuncName "\" in class \"" #ClassToCheck "\" could not be found.");
+	
+/** @} */
+
 
 namespace Chimera
 {

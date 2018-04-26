@@ -25,7 +25,7 @@ void serialThread(void* argument)
 	UARTClass_sPtr uart = UARTClass::create(4);
 
 	uart->begin(SERIAL_BAUD_115200);
-	uart->setBlockMode(UARTPeriph::TX);
+	uart->setBlockMode(SubPeripheral::TX);
 
 	const char* test1 = "Hey mate.\r\n";
 	const char* test2 = "Testing testing!\r\n";
@@ -37,7 +37,7 @@ void serialThread(void* argument)
 	taskYIELD();
 
 
-	uart->setDMAMode(UARTPeriph::TX);
+	uart->setDMAMode(SubPeripheral::TX);
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
