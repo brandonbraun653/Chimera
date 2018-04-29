@@ -18,6 +18,8 @@ namespace Chimera
 		{
 		public:
 			//Don't do the printf type stuff here...only low level interface
+			
+			//Um...how to choose between UART and USART?...
 		private:
 			
 		};
