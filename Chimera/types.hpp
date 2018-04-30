@@ -6,9 +6,10 @@
 
 #include <Chimera\preprocessor.hpp>
 
-
+/** @namespace Chimera */
 namespace Chimera
 {
+	/** @namespace Chimera::GPIO */
 	namespace GPIO
 	{
 		enum Status : uint8_t
@@ -56,6 +57,7 @@ namespace Chimera
 		};
 	}
 
+	/** @namespace Chimera::SPI */
 	namespace SPI
 	{
 
@@ -98,13 +100,66 @@ namespace Chimera
 		};
 	}
 
+	/** @namespace Chimera::I2C */
 	namespace I2C
 	{
 
 	}
 
+	/** @namespace Chimera::Serial */
 	namespace Serial
 	{
+		enum Status : uint8_t
+		{
+			SERIAL_OK,
+			SERIAL_ERROR,
+			SERIAL_LOCKED,
+			SERIAL_NOT_INITIALIZED,
+			SERIAL_TX_IN_PROGRESS,
+			SERIAL_RX_IN_PROGRESS,
+			SERIAL_NOT_READY,
+			SERIAL_PACKET_TOO_LARGE_FOR_BUFFER,
+			SERIAL_UNKNOWN_ERROR
+		};
+
+		/** Supported communication baudrates */
+		enum BaudRate : uint32_t
+		{
+			SERIAL_BAUD_110 = 100u,
+			SERIAL_BAUD_150 = 150u,
+			SERIAL_BAUD_300 = 300u,
+			SERIAL_BAUD_1200 = 1200u,
+			SERIAL_BAUD_2400 = 2400u,
+			SERIAL_BAUD_4800 = 4800u,
+			SERIAL_BAUD_9600 = 9600u,
+			SERIAL_BAUD_19200 = 19200u,
+			SERIAL_BAUD_38400 = 38400u,
+			SERIAL_BAUD_57600 = 57600u,
+			SERIAL_BAUD_115200 = 115200u,
+			SERIAL_BAUD_230400 = 230400u,
+			SERIAL_BAUD_460800 = 460800u,
+			SERIAL_BAUD_921600 = 921600u
+		};
+
+		/** Common peripheral transmit and receive communication modes */
+		enum Modes : uint8_t
+		{
+			TX_MODE_NONE,
+			TX_MODE_BLOCKING,
+			TX_MODE_INTERRUPT,
+			TX_MODE_DMA,
+			RX_MODE_NONE,
+			RX_MODE_BLOCKING,
+			RX_MODE_INTERRUPT,
+			RX_MODE_DMA
+		};
+
+		/** Explicitly defines a peripheral type for different member functions of SerialClass */
+		enum SubPeripheral : bool
+		{
+			RX = false,
+			TX = true
+		};
 
 	}
 

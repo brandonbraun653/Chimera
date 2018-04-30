@@ -9,8 +9,9 @@
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
-#include <Chimera/gpio.hpp>
 #include <Chimera/threading.hpp>
+#include <Chimera/gpio.hpp>
+#include <Chimera/serial.hpp>
 
 #include <Thor/include/definitions.h>
 #include <Thor/include/uart.h>

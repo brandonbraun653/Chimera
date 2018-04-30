@@ -41,10 +41,10 @@
 																											\
 		template <typename T> struct fsig																	\
 		{																									\
-			typedef FuncReturn(T::*fptr)(FuncArgs);														\
+			typedef FuncReturn(T::*fptr)(FuncArgs);															\
 		};																									\
 																											\
-		template <typename T> static Yes has_func(TypeCheck< typename fsig<T>::fptr, &T::FuncName >*);	\
+		template <typename T> static Yes has_func(TypeCheck< typename fsig<T>::fptr, &T::FuncName >*);		\
 		template <typename T> static No  has_func(...);														\
 																											\
 	public:																									\

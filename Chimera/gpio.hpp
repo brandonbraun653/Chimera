@@ -43,7 +43,9 @@ namespace Chimera
 		typedef boost::shared_ptr<GPIOClass> GPIOClass_sPtr;
 		
 		CLASS_METHOD_CHECKER(has_init, CHIMERA_INHERITED_GPIO, init, Chimera::GPIO::Status, Chimera::GPIO::Port, uint8_t);
+
 		CLASS_METHOD_CHECKER(has_mode, CHIMERA_INHERITED_GPIO, mode, Chimera::GPIO::Status, Chimera::GPIO::Mode, bool);
+		
 		CLASS_METHOD_CHECKER(has_write, CHIMERA_INHERITED_GPIO, write, Chimera::GPIO::Status, Chimera::GPIO::State);	
 	}
 }
