@@ -1,0 +1,69 @@
+\hypertarget{group___global___macros}{}\section{Global\+\_\+\+Macros}
+\label{group___global___macros}\index{Global\+\_\+\+Macros@{Global\+\_\+\+Macros}}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___global___macros_ga117fd210209a1987ea0f808d74d930f7}{C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER}}(Invocation\+Name,  Class\+To\+Check,  Func\+Name,  Func\+Return,  Func\+Args...)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A collection of global macros callable from any file that includes \mbox{\hyperlink{chimera_8hpp}{chimera.\+hpp}} 
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group___global___macros_ga117fd210209a1987ea0f808d74d930f7}\label{group___global___macros_ga117fd210209a1987ea0f808d74d930f7}} 
+\index{Global\+\_\+\+Macros@{Global\+\_\+\+Macros}!C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER@{C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER}}
+\index{C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER@{C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER}!Global\+\_\+\+Macros@{Global\+\_\+\+Macros}}
+\subsubsection{\texorpdfstring{C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER}{CLASS\_METHOD\_CHECKER}}
+{\footnotesize\ttfamily \#define C\+L\+A\+S\+S\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+C\+H\+E\+C\+K\+ER(\begin{DoxyParamCaption}\item[{}]{Invocation\+Name,  }\item[{}]{Class\+To\+Check,  }\item[{}]{Func\+Name,  }\item[{}]{Func\+Return,  }\item[{}]{Func\+Args... }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keyword}{class }InvocationName                                                                                    \(\backslash\)
+    \{                                                                                                       
+      \(\backslash\)
+        typedef \textcolor{keywordtype}{char} Yes;                                                                                   
+      \(\backslash\)
+        typedef \textcolor{keywordtype}{long} No;                                                                                    
+      \(\backslash\)
+        template <typename T, T> \textcolor{keyword}{struct }TypeCheck;                                                          
+      \(\backslash\)
+                                                                                                            
+      \(\backslash\)
+        template <typename T> \textcolor{keyword}{struct }fsig                                                                   
+      \(\backslash\)
+        \{                                                                                                   
+      \(\backslash\)
+            typedef FuncReturn(T::*fptr)(FuncArgs);                                                     \(\backslash\)
+        \};                                                                                                  
+      \(\backslash\)
+                                                                                                            
+      \(\backslash\)
+        template <typename T> \textcolor{keyword}{static} Yes has\_func(TypeCheck< \textcolor{keyword}{typename} fsig<T>::fptr, &T::FuncName >*);  \(\backslash\)
+        template <typename T> \textcolor{keyword}{static} No  has\_func(...);                                                     
+      \(\backslash\)
+                                                                                                            
+      \(\backslash\)
+    public:                                                                                                 
+      \(\backslash\)
+        static \textcolor{keywordtype}{bool} \textcolor{keyword}{const} value = (\textcolor{keyword}{sizeof}(has\_func<ClassToCheck>(0)) == \textcolor{keyword}{sizeof}(Yes));                       
+      \(\backslash\)
+    \};                                                                                                      
+      \(\backslash\)
+    static\_assert(InvocationName::value, \textcolor{stringliteral}{"Proper signature for function \(\backslash\)""} #FuncName \textcolor{stringliteral}{"\(\backslash\)" in class \(\backslash\)""} #
+      ClassToCheck \textcolor{stringliteral}{"\(\backslash\)" could not be found."});
+\end{DoxyCode}
+A \textquotesingle{}factory-\/like\textquotesingle{} macro that generates a compile time check for the existence of a specific function signature within a given class. Code is not generated in flash and there is no overhead. Mostly this function is used in the various \mbox{\hyperlink{namespace_chimera}{Chimera}} core perihperal module namespaces like \mbox{\hyperlink{namespace_g_p_i_o}{G\+P\+IO}}, U\+A\+RT, S\+PI, etc. to give the developer an error. If desired, a runtime check could be used simply by calling \char`\"{}\+Invocation\+Name\+::value\char`\"{}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em Invocation\+Name} & A unique name for the macro \\
+\hline
+\mbox{\tt in}  & {\em Class\+To\+Check} & Name of the class to be checked \\
+\hline
+\mbox{\tt in}  & {\em Func\+Name} & Name of the function to be checked \\
+\hline
+\mbox{\tt in}  & {\em Func\+Return} & The return type of the function to be checked \\
+\hline
+\mbox{\tt in}  & {\em Func\+Args...} & A comma separated list of argument types for the function to be checked \\
+\hline
+\end{DoxyParams}

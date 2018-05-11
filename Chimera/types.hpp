@@ -109,7 +109,7 @@ namespace Chimera
 	/** @namespace Chimera::Serial */
 	namespace Serial
 	{
-		enum Status : uint8_t
+		enum class Status : uint8_t
 		{
 			SERIAL_OK,
 			SERIAL_ERROR,
@@ -119,11 +119,12 @@ namespace Chimera
 			SERIAL_RX_IN_PROGRESS,
 			SERIAL_NOT_READY,
 			SERIAL_PACKET_TOO_LARGE_FOR_BUFFER,
+			SERIAL_TIMEOUT,
 			SERIAL_UNKNOWN_ERROR
 		};
 
 		/** Supported communication baudrates */
-		enum BaudRate : uint32_t
+		enum class BaudRate : uint32_t
 		{
 			SERIAL_BAUD_110 = 100u,
 			SERIAL_BAUD_150 = 150u,
@@ -142,20 +143,16 @@ namespace Chimera
 		};
 
 		/** Common peripheral transmit and receive communication modes */
-		enum Modes : uint8_t
+		enum class Modes : uint8_t
 		{
-			TX_MODE_NONE,
-			TX_MODE_BLOCKING,
-			TX_MODE_INTERRUPT,
-			TX_MODE_DMA,
-			RX_MODE_NONE,
-			RX_MODE_BLOCKING,
-			RX_MODE_INTERRUPT,
-			RX_MODE_DMA
+			MODE_UNDEFINED,
+			BLOCKING,
+			INTERRUPT,
+			DMA
 		};
 
 		/** Explicitly defines a peripheral type for different member functions of SerialClass */
-		enum SubPeripheral : bool
+		enum class SubPeripheral : bool
 		{
 			RX = false,
 			TX = true
