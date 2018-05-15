@@ -13,6 +13,7 @@
 #include <Chimera/gpio.hpp>
 #include <Chimera/serial.hpp>
 
+/* Thor Includes */
 #include <Thor/include/definitions.h>
 #include <Thor/include/uart.h>
 
@@ -26,7 +27,7 @@ void serialThread(void* argument)
 	UARTClass_sPtr uart = UARTClass::create(4);
 
 	uart->begin(SERIAL_BAUD_115200);
-	uart->setBlockMode(SubPeripheral::TX);
+	uart->setMode(TX, BLOCKING);
 
 	const char* test1 = "Hey mate.\r\n";
 	const char* test2 = "Testing testing!\r\n";
@@ -38,7 +39,7 @@ void serialThread(void* argument)
 	taskYIELD();
 
 
-	uart->setDMAMode(SubPeripheral::TX);
+	uart->setMode(TX, BLOCKING);
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
