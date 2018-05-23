@@ -14,11 +14,11 @@ namespace Chimera
 {
 	namespace Serial
 	{
+		
 		class SerialClass : public CHIMERA_INHERITED_SERIAL
 		{
 		public:
-
-			Status being(Chimera::Serial::BaudRate baud = Chimera::Serial::BaudRate::SERIAL_BAUD_115200, Modes tx_mode = Chimera::Serial::Modes::BLOCKING, Modes rx_mode = Chimera::Serial::Modes::BLOCKING)
+			Status being(BaudRate baud = BaudRate::SERIAL_BAUD_115200, Modes tx_mode = Modes::BLOCKING, Modes rx_mode = Modes::BLOCKING)
 			{
 				return CHIMERA_INHERITED_SERIAL::cbegin(baud, tx_mode, rx_mode);
 			}
