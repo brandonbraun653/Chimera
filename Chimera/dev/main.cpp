@@ -10,7 +10,7 @@
 #include "spi_thread.hpp"
 #include "serial_thread.hpp"
 
-#include <Thor/include/gpio.h>
+#include <Thor/include/gpio.hpp>
 
 #define LED_THREAD_IDX 1
 #define SPI_THREAD_IDX 2

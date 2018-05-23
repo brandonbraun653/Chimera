@@ -3,10 +3,10 @@
 #define CHIMERA_CONFIG_HPP
 
 /* All includes for peripheral drivers go here */
-#include <Thor\include\thor.h>
-#include <Thor\include\spi.h>
-#include <Thor\include\gpio.h>
-#include <Thor\include\serial.h>
+#include <Thor\include\thor.hpp>
+#include <Thor\include\spi.hpp>
+#include <Thor\include\gpio.hpp>
+#include <Thor\include\serial.hpp>
 
 /* Defines the classes for Chimera to inherit from */
 #define CHIMERA_INHERITED_GPIO		Thor::Peripheral::GPIO::GPIOClass

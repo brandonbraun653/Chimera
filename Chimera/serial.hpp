@@ -18,7 +18,7 @@ namespace Chimera
 		{
 		public:
 
-			Status being(BaudRate baud = SERIAL_BAUD_115200, Modes tx_mode = TX_MODE_BLOCKING, Modes rx_mode = RX_MODE_BLOCKING)
+			Status being(Chimera::Serial::BaudRate baud = Chimera::Serial::BaudRate::SERIAL_BAUD_115200, Modes tx_mode = Chimera::Serial::Modes::BLOCKING, Modes rx_mode = Chimera::Serial::Modes::BLOCKING)
 			{
 				return CHIMERA_INHERITED_SERIAL::cbegin(baud, tx_mode, rx_mode);
 			}
@@ -90,7 +90,7 @@ namespace Chimera
 
 		CLASS_METHOD_CHECKER(has_creadPacket, CHIMERA_INHERITED_SERIAL, creadPacket, Status, uint8_t*, size_t);
 
-		CLASS_METHOD_CHECKER(has_availPkts, CHIMERA_INHERITED_SERIAL, availablePackets, int, void);
+		CLASS_METHOD_CHECKER(has_availPkts, CHIMERA_INHERITED_SERIAL, availablePackets, uint32_t, void);
 
 		CLASS_METHOD_CHECKER(has_end, CHIMERA_INHERITED_SERIAL, end, void, void);
 	}
