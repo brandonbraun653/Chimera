@@ -10,17 +10,13 @@
 #include "spi_thread.hpp"
 #include "serial_thread.hpp"
 
-#include <Thor/include/gpio.hpp>
+//#include <Thor/include/gpio.hpp>
 
 #define LED_THREAD_IDX 1
 #define SPI_THREAD_IDX 2
 #define SER_THREAD_IDX 3
 
-/*
-Blue Led: PB7
-Red Led: PB14
-Green Led: PB0
-*/
+
 
 void init(void* argument);
 

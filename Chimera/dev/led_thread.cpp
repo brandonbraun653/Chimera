@@ -8,18 +8,23 @@
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
-#include <Chimera/gpio.hpp>
+//#include <Chimera/gpio.hpp>
 #include <Chimera/threading.hpp>
+
+#include <Thor/include/definitions.hpp>
+#include <Thor/include/gpio.hpp>
+#include <Thor/include/nucleo.hpp>
 
 void ledThread(void* argument)
 {
 	using namespace Chimera::Threading;
-	using namespace Chimera::GPIO;
+	using namespace Thor::Peripheral::GPIO;
+	using namespace Thor::Definitions::GPIO;
 	
-	GPIOClass blue_led(PORTB, 7);
+	GPIOClass green_led(Thor::Nucleo::GREEN_LED_PORT, Thor::Nucleo::GREEN_LED_PIN);
 	
-	blue_led.mode(OUTPUT);
-	blue_led.write(HIGH);
+	green_led.mode(OUTPUT_PP);
+	green_led.write(HIGH);
 
 	/* Inform the init task that everything has been set up */
 	xTaskSendMessage(INIT_THREAD, 1u);
@@ -29,7 +34,7 @@ void ledThread(void* argument)
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
-		blue_led.toggle();
+		green_led.toggle();
 		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(500));
 	}
 }

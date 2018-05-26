@@ -41,7 +41,7 @@ void serialThread(void* argument)
 	taskYIELD();
 
 
-	uart->setMode(TX, BLOCKING);
+	uart->setMode(TX, DMA);
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
