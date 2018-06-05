@@ -18,7 +18,7 @@ namespace Chimera
 		class SerialClass : public CHIMERA_INHERITED_SERIAL
 		{
 		public:
-			Status being(BaudRate baud = BaudRate::SERIAL_BAUD_115200, Modes tx_mode = Modes::BLOCKING, Modes rx_mode = Modes::BLOCKING)
+			Status begin(BaudRate baud = BaudRate::SERIAL_BAUD_115200, Modes tx_mode = Modes::BLOCKING, Modes rx_mode = Modes::BLOCKING)
 			{
 				return CHIMERA_INHERITED_SERIAL::cbegin(baud, tx_mode, rx_mode);
 			}
@@ -73,7 +73,6 @@ namespace Chimera
 		private:
 			int serial_channel = 0;
 		};
-
 		typedef boost::shared_ptr<SerialClass> Serial_sPtr;
 
 		CLASS_METHOD_CHECKER(has_cbegin, CHIMERA_INHERITED_SERIAL, cbegin, Status, BaudRate, Modes, Modes);
