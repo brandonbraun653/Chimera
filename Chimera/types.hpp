@@ -9,6 +9,8 @@
 /** @namespace Chimera */
 namespace Chimera
 {
+
+
 	/** @namespace Chimera::GPIO */
 	namespace GPIO
 	{
@@ -60,44 +62,82 @@ namespace Chimera
 	/** @namespace Chimera::SPI */
 	namespace SPI
 	{
-
 		enum Status
 		{
 			INVALID_HARDWARE_PARAM = -1,
 			FAILED_INITIALIZATION = -2,
 
 			SPI_OK = 0,
-			SPI_BUSY
-		};
-
-		enum BitOrder
-		{
-			MSB_FIRST,	/* Most significant bit sent first */
-			LSB_FIRST	/* Least significant bit sent first */
+			SPI_BUSY,
+			SPI_LOCKED,
+			SPI_NOT_INITIALIZED,
+			SPI_ERROR,
+			SPI_NOT_READY,
+			SPI_TX_IN_PROGRESS,
+			SPI_RX_IN_PROGRESS,
+			SPI_PACKET_TOO_LARGE_FOR_BUFFER,
+			SPI_TIMEOUT,
+			SPI_UNKNOWN_STATUS_CODE
 		};
 
 		enum Mode
 		{
-			MODE0,	
-			MODE1,
-			MODE2,
-			MODE3,
-			MODE4
+			MASTER,
+			SLAVE
 		};
 		
-		enum TXRXMode
+		enum BitOrder
 		{
+			MSB_FIRST,	
+			LSB_FIRST	
+		};
+
+		enum ClockMode
+		{	
+			MODE1,	/**< CPOL=0, CPHA=0 */
+			MODE2,	/**< CPOL=0, CPHA=1 */
+			MODE3,	/**< CPOL=1, CPHA=0 */
+			MODE4	/**< CPOL=1, CPHA=1 */
+		};
+
+		enum DataSize
+		{
+			DATASIZE_8BIT,
+			DATASIZE_9BIT,
+			DATASIZE_10BIT,
+			DATASIZE_11BIT,
+			DATASIZE_12BIT,
+			DATASIZE_13BIT,
+			DATASIZE_14BIT,
+			DATASIZE_15BIT,
+			DATASIZE_16BIT,
+		};
+
+		struct Setup
+		{
+			uint32_t clockFrequency = 1000000;
+			Mode mode				= MASTER;
+			BitOrder bitOrder		= MSB_FIRST;
+			ClockMode clockMode		= MODE1;
+			DataSize dataSize		= DATASIZE_8BIT;
+		};
+		
+		enum SubPeripheral
+		{
+			TX,
+			RX,
+			TXRX
+		};
+
+		enum SubPeripheralMode
+		{
+			UNKOWN_MODE,
 			BLOCKING,
 			INTERRUPT,
 			DMA
 		};
 
-		struct Setup
-		{
-			uint32_t clockFrequency;
-			BitOrder bitOrder;
-			Mode mode;
-		};
+		
 	}
 
 	/** @namespace Chimera::I2C */
