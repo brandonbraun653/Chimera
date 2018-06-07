@@ -18,6 +18,7 @@ TaskHandle_t ledTask;
 TaskHandle_t spiTask;
 TaskHandle_t flashTask;
 
+//pc8
 
 int main(void)
 {
@@ -34,7 +35,7 @@ int main(void)
 	#endif
 
 	
-	//addThread(ledThread, "led", 350, NULL, 2, &ledTask);
+	addThread(ledThread, "led", 350, NULL, 2, &ledTask);
 	//addThread(serialThread, "serial", 1000, NULL, 2, &serialTask);
 	//addThread(spiThread, "spi", 500, NULL, 2, &spiTask);
 	addThread(flashThread, "flash", 500, NULL, 2, &flashTask);
