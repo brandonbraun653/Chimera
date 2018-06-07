@@ -94,10 +94,10 @@ namespace Chimera
 
 		enum ClockMode
 		{	
-			MODE1,	/**< CPOL=0, CPHA=0 */
-			MODE2,	/**< CPOL=0, CPHA=1 */
-			MODE3,	/**< CPOL=1, CPHA=0 */
-			MODE4	/**< CPOL=1, CPHA=1 */
+			MODE0,	/**< CPOL=0, CPHA=0 */
+			MODE1,	/**< CPOL=0, CPHA=1 */
+			MODE2,	/**< CPOL=1, CPHA=0 */
+			MODE3	/**< CPOL=1, CPHA=1 */
 		};
 
 		enum DataSize
@@ -118,7 +118,7 @@ namespace Chimera
 			uint32_t clockFrequency = 1000000;
 			Mode mode				= MASTER;
 			BitOrder bitOrder		= MSB_FIRST;
-			ClockMode clockMode		= MODE1;
+			ClockMode clockMode		= MODE0;
 			DataSize dataSize		= DATASIZE_8BIT;
 		};
 		

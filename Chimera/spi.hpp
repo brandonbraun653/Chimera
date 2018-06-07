@@ -36,7 +36,12 @@ namespace Chimera
 			{
 				return spi->csetMode(periph, mode);
 			}
-
+			
+			SPI::Status updateClockFrequency(uint32_t freq)
+			{
+				//TODO: Should only work after the spi has been initialized
+			}
+			
 			SPIClass(const int& channel)
 			{
 				spi = CHIMERA_INHERITED_SPI::create(channel);
