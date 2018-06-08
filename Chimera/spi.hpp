@@ -39,7 +39,7 @@ namespace Chimera
 			
 			SPI::Status updateClockFrequency(uint32_t freq)
 			{
-				//TODO: Should only work after the spi has been initialized
+				return spi->cupdateClockFrequency(freq);
 			}
 			
 			SPIClass(const int& channel)
@@ -58,6 +58,7 @@ namespace Chimera
 		CLASS_METHOD_CHECKER(has_cwrite1, CHIMERA_INHERITED_SPI, cwrite, Status, uint8_t*, size_t, const bool&);
 		CLASS_METHOD_CHECKER(has_cwrite2, CHIMERA_INHERITED_SPI, cwrite, Status, uint8_t*, uint8_t*, size_t, const bool&);
 		CLASS_METHOD_CHECKER(has_csetMode, CHIMERA_INHERITED_SPI, csetMode, Status, SubPeripheral, SubPeripheralMode);
+		CLASS_METHOD_CHECKER(has_cupdateClockFrequency, CHIMERA_INHERITED_SPI, cupdateClockFrequency, Status, uint32_t);
 	}
 }
 

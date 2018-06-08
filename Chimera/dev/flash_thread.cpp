@@ -12,6 +12,8 @@ void flashThread(void* arguments)
 	Adesto::NORFlash::AT45 flash(1);
 
 	flash.initialize(40000000);
+
+	volatile uint16_t statusReg = flash.readStatusRegister();
 	
 	signalThreadSetupComplete();
 	TickType_t lastTimeWoken = xTaskGetTickCount();
