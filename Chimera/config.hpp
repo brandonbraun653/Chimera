@@ -8,6 +8,9 @@
 #include <Thor\include\gpio.hpp>
 #include <Thor\include\serial.hpp>
 
+/* */
+#define CHIMERA_INHERITED_GLOBAL_NAMESPACE Thor
+
 /* Defines the classes for Chimera to inherit from */
 #define CHIMERA_INHERITED_GPIO		Thor::Peripheral::GPIO::GPIOClass
 #define CHIMERA_INHERITED_SPI		Thor::Peripheral::SPI::SPIClass

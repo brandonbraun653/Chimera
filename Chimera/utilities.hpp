@@ -170,8 +170,7 @@ namespace Chimera
 		};
 	template<class enum_type> constexpr boost::iterator_range<enum_iterator<enum_type>> get_range() noexcept(true) 
 	{return boost::make_iterator_range(enum_iterator<enum_type>(enum_type::First), enum_iterator<enum_type>(enum_type::Last));}
-	
-	
+
 }
 
 

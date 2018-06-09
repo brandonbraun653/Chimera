@@ -9,8 +9,11 @@
 
 extern void ChimeraInit();
 
-#endif
 
-/** @defgroup Global_Macros 
- *	A collection of global macros callable from any file that includes chimera.hpp 
- **/
+namespace Chimera
+{
+	void delayMilliseconds(uint32_t ms);
+	void delayMicroseconds(uint32_t us);
+}
+
+#endif

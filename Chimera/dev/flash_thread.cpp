@@ -9,12 +9,16 @@ using namespace Thor::Threading;
 
 void flashThread(void* arguments)
 {
-	Adesto::NORFlash::AT45 flash(1);
+	Adesto::NORFlash::AT45 flash(Adesto::AT45DB081E, 1);
 
 	flash.initialize(40000000);
 
+	flash.test();
+
 	volatile uint16_t statusReg = flash.readStatusRegister();
 	
+	
+
 	signalThreadSetupComplete();
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
