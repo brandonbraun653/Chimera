@@ -17,13 +17,13 @@ void flashThread(void* arguments)
 
 	//volatile uint16_t statusReg = flash.readStatusRegister();
 	
-	//uint8_t data[256];		
-	//memset(data, 0xFF, 256);
-	//uint8_t output[256];	
-	//memset(output, 0x00, 256);
+	uint8_t data[256];		
+	memset(data, 0xFF, 256);
+	uint8_t output[256];	
+	memset(output, 0x00, 256);
 
-	uint8_t data[512];
-	memset(data, 0x00, 512);
+	//uint8_t data[512];
+	//memset(data, 0x00, 512);
 
 	
 
@@ -34,13 +34,15 @@ void flashThread(void* arguments)
 
 	//flash.directPageRead(0, 0, output, 256);
 
-	flash.continuousRead(0, 0, data, 512);
-
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
+		flash.bufferLoad(Adesto::BUFFER1, 15, data, 15);
 
+		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(500));
 
-		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(1000));
+		flash.bufferRead(Adesto::BUFFER1, 15, output, 15);
+
+		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(500));
 	}
 }
