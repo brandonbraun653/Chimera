@@ -3,4 +3,13 @@
 
 void flashThread(void* arguments);
 
+
+//struct RandomSettingsUnPacked
+//{
+//	float kd;
+//	float ki;
+//	float kd;
+//	char tag[16];
+//};
+
 #endif /* !FLASH_THREAD_HPP */
