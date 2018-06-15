@@ -14,6 +14,8 @@ namespace Chimera
 {
 	namespace SPI
 	{
+		
+
 		class SPIClass : public CHIMERA_INHERITED_SPI
 		{
 		public:

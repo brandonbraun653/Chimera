@@ -12,8 +12,8 @@
 #define CHIMERA_INHERITED_GLOBAL_NAMESPACE Thor
 
 /* Defines the classes for Chimera to inherit from */
-#define CHIMERA_INHERITED_GPIO		Thor::Peripheral::GPIO::GPIOClass
-#define CHIMERA_INHERITED_SPI		Thor::Peripheral::SPI::SPIClass
-#define CHIMERA_INHERITED_SERIAL	Thor::Peripheral::Serial::SerialClass
+typedef Thor::Peripheral::GPIO::GPIOClass		CHIMERA_INHERITED_GPIO;
+typedef Thor::Peripheral::SPI::SPIClass			CHIMERA_INHERITED_SPI;
+typedef	Thor::Peripheral::Serial::SerialClass	CHIMERA_INHERITED_SERIAL;
 
 #endif 

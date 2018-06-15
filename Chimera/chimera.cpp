@@ -6,16 +6,9 @@
 #endif
 
 void ChimeraInit()
-{
-	#ifdef CHIMERA_FREERTOS
-	/* Initialize the TaskHandle storage */
-	for (int task = 0; task < Chimera::Threading::MAX_THREADS; task++)
-	{
-		Chimera::Threading::TaskHandle[task] = (TaskHandle_t)0;
-	}
-	#endif 
-	
-	//Eventually do other things 
+{	
+	//Call the inherited system setup functions 
+	cSystemInit();
 }
 
 

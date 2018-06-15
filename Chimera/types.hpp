@@ -9,8 +9,6 @@
 /** @namespace Chimera */
 namespace Chimera
 {
-
-
 	/** @namespace Chimera::GPIO */
 	namespace GPIO
 	{
@@ -26,7 +24,11 @@ namespace Chimera
 		enum Mode : uint8_t
 		{
 			INPUT,
-			OUTPUT,
+			OUTPUT_PUSH_PULL,
+			OUTPUT_OPEN_DRAIN,
+			ALTERNATE_PUSH_PULL,
+			ALTERNATE_OPEN_DRAIN,
+			ANALOG,
 			HIZ
 		};
 		

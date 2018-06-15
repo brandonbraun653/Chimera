@@ -23,7 +23,7 @@ using namespace Thor::Definitions::Serial;
 
 void serialThread(void* argument)
 {
-	using namespace Chimera::Threading;
+	//using namespace Chimera::Threading;
 	using namespace Thor::Peripheral::UART;
 
 	UARTClass_sPtr uart = UARTClass::create(4);
@@ -36,10 +36,7 @@ void serialThread(void* argument)
 	const char* test3 = "I love watermelon.\r\n";
 
 	/* Inform the init task that everything has been set up */
-	xTaskSendMessage(INIT_THREAD, 1u);
-	vTaskSuspend(NULL);
-	taskYIELD();
-
+	Chimera::Threading::signalThreadSetupComplete();
 
 	uart->setMode(SubPeripheral::TX, Modes::DMA);
 	TickType_t lastTimeWoken = xTaskGetTickCount();

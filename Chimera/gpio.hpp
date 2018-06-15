@@ -4,7 +4,6 @@
 
 /* C/C++ Includes */
 #include <stdint.h>
-#include <type_traits>
 
 /* Boost Includes */
 #include <boost/shared_ptr.hpp>
@@ -23,30 +22,43 @@ namespace Chimera
 		class GPIOClass : public CHIMERA_INHERITED_GPIO
 		{
 		public:
-			Status mode(Mode mode, bool pullup = false) { return CHIMERA_INHERITED_GPIO::mode(mode, pullup); }
-			Status write(State state) { return CHIMERA_INHERITED_GPIO::write(state); }
+			Status mode(Chimera::GPIO::Mode mode, bool pullup = false) 
+			{ 
+				return gpioPin.cmode(mode, pullup); 
+			}
 
-			GPIOClass(const Port& port, const uint8_t& pin)
+			Status write(Chimera::GPIO::State state) 
+			{ 
+				return gpioPin.cwrite(state); 
+			}
+
+			bool read()
 			{
-				_port = port;
-				_pin = pin;
+				return gpioPin.cread();
+			}
 
-				CHIMERA_INHERITED_GPIO::init(port, pin);
+			void toggle()
+			{
+				gpioPin.ctoggle();
+			}
+
+			GPIOClass(const Port port, const uint8_t pin)
+			{
+				gpioPin.cinit(port, pin);
 			}
 
 			~GPIOClass() = default;
 
 		private:
-			Port _port;
-			uint8_t _pin;
+			CHIMERA_INHERITED_GPIO gpioPin;
 		};
-		typedef boost::shared_ptr<GPIOClass> GPIOClass_sPtr;
+		typedef boost::shared_ptr<Chimera::GPIO::GPIOClass> GPIOClass_sPtr;
 		
-		CLASS_METHOD_CHECKER(has_init, CHIMERA_INHERITED_GPIO, init, Chimera::GPIO::Status, Chimera::GPIO::Port, uint8_t);
-
-		CLASS_METHOD_CHECKER(has_mode, CHIMERA_INHERITED_GPIO, mode, Chimera::GPIO::Status, Chimera::GPIO::Mode, bool);
-		
-		CLASS_METHOD_CHECKER(has_write, CHIMERA_INHERITED_GPIO, write, Chimera::GPIO::Status, Chimera::GPIO::State);	
+		CLASS_METHOD_CHECKER(has_init, CHIMERA_INHERITED_GPIO, cinit, Chimera::GPIO::Status, Chimera::GPIO::Port, uint8_t);
+		CLASS_METHOD_CHECKER(has_mode, CHIMERA_INHERITED_GPIO, cmode, Chimera::GPIO::Status, Chimera::GPIO::Mode, bool);
+		CLASS_METHOD_CHECKER(has_write, CHIMERA_INHERITED_GPIO, cwrite, Chimera::GPIO::Status, Chimera::GPIO::State);
+		CLASS_METHOD_CHECKER(has_toggle, CHIMERA_INHERITED_GPIO, ctoggle, void, void);
+		CLASS_METHOD_CHECKER(has_read, CHIMERA_INHERITED_GPIO, cread, bool, void);
 	}
 }
 
