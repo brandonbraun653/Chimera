@@ -122,6 +122,19 @@ namespace Chimera
 		BaseType_t sendMessageAndWait(TaskHandle_t task, const uint32_t msg)
 		{
 			if (task)
+			{
+				xTaskNotify(task, msg, eSetValueWithOverwrite);
+				vTaskSuspend(task);
+				taskYIELD();
+				return pdPASS;
+			}
+			else
+				return pdFAIL;
+		}
+
+		BaseType_t sendMessage(TaskHandle_t task, const uint32_t msg)
+		{
+			if (task)
 				return xTaskNotify(task, msg, eSetValueWithOverwrite);
 			else
 				return pdFAIL;

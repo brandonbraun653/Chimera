@@ -84,6 +84,8 @@ namespace Chimera
 		*	@return pdPASS if successful, pdFAIL if not
 		**/
 		extern BaseType_t sendMessageAndWait(TaskHandle_t task, const uint32_t msg);
+
+		extern BaseType_t sendMessage(TaskHandle_t task, const uint32_t msg);
 	}
 }
 #endif /* !CHIMERA_FREERTOS */
