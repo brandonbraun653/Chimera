@@ -28,7 +28,7 @@ namespace Chimera
 			uint16_t stackDepth;	/**< Size of the thread stack, in multiples of **WORDS** (x4 bytes), ie stack of 150 == 600 bytes */
 			void* funcParams;		/**< Thread parameters to be passed in upon creation */
 			UBaseType_t priority;	/**< FreeRTOS priority number, ranging from 0 to (configMAX_PRIORITIES - 1) lowest to highest */
-			TaskHandle_t* handle;	/**< FreeRTOS generated handle for reference elsewhere */
+			TaskHandle_t handle;	/**< FreeRTOS generated handle for reference elsewhere */
 		};
 
 		/** Starts the FreeRTOS scheduler and initializes execution of all registered threads. This implementation extends the basic
@@ -53,7 +53,7 @@ namespace Chimera
 		*	@return pdPASS if successful, pdFAIL if not
 		**/
 		extern BaseType_t addThread(TaskFunction_t func, const char* name, const uint16_t stackDepth, void* const funcParams,
-			UBaseType_t priority, TaskHandle_t* const handle);
+			UBaseType_t priority, TaskHandle_t handle);
 
 		/** Performs the same operation as the more verbose version, but uses the more compact Thread_t struct to pass in parameters
 		*	@param[in]	thread	Thread parameters from the Thread_t struct
