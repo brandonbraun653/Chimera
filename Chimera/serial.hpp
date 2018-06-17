@@ -67,7 +67,7 @@ namespace Chimera
 			 * the Chimera version. In this way the class is instantiated correctly. The inherited 
 			 * constructor handles object creation and referencing locally. The user only needs to 
 			 * reference the chimera pointer. Clever I guess? */
-			SerialClass(const int& channel) : CHIMERA_INHERITED_SERIAL(channel)
+			SerialClass(const int& channel, const void* params = nullptr) : CHIMERA_INHERITED_SERIAL(channel, params)
 			{
 				this->serial_channel = channel;
 			}
