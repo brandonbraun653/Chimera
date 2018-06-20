@@ -2,10 +2,6 @@
 #ifndef CHIMERA_SERIAL_HPP
 #define CHIMERA_SERIAL_HPP
 
-/* Boost Includes */
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
-
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 #include <Chimera/config.hpp>
@@ -67,17 +63,16 @@ namespace Chimera
 			 * the Chimera version. In this way the class is instantiated correctly. The inherited 
 			 * constructor handles object creation and referencing locally. The user only needs to 
 			 * reference the chimera pointer. Clever I guess? */
-			SerialClass(const int& channel, const void* params = nullptr) : CHIMERA_INHERITED_SERIAL(channel, params)
+			SerialClass(const int& channel, const void* params = nullptr) : CHIMERA_INHERITED_SERIAL(channel)
 			{
-				this->serial_channel = channel;
+				this->serialChannel = channel;
 			}
 
 			~SerialClass() = default;
 			
 		private:
-			int serial_channel = 0;
+			int serialChannel = 0;
 		};
-		typedef boost::shared_ptr<SerialClass> Serial_sPtr;
 
 		CLASS_METHOD_CHECKER(has_cbegin, CHIMERA_INHERITED_SERIAL, cbegin, Status, BaudRate, Modes, Modes);
 
