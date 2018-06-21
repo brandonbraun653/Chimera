@@ -1,0 +1,3 @@
+[submodule "Chimera/lib/spdlog"]
+	path = Chimera/lib/spdlog
+	url = https://github.com/gabime/spdlog.git
