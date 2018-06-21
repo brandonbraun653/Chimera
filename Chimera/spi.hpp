@@ -2,9 +2,8 @@
 #ifndef CHIMERA_SPI_HPP
 #define CHIMERA_SPI_HPP
 
-/* Boost Includes */
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+/* C/C++ Includes */
+#include <memory>
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
@@ -14,8 +13,6 @@ namespace Chimera
 {
 	namespace SPI
 	{
-		
-
 		class SPIClass : public CHIMERA_INHERITED_SPI
 		{
 		public:
@@ -51,15 +48,25 @@ namespace Chimera
 			
 			SPIClass(const int& channel)
 			{
-				spi = CHIMERA_INHERITED_SPI::create(channel);
+				#if defined(USING_BOOST)
+				if (CHIMERA_INHERITED_SPI::usesBoost)
+				{
+					auto boost_spi = CHIMERA_INHERITED_SPI::create(channel);
+					this->spi = Chimera::convert_shared_ptr(boost_spi);
+				}
+				#else
+				this->spi = CHIMERA_INHERITED_SPI::create(channel);
+				#endif
+				
 			};
 
 			~SPIClass() = default;
 
 		private:
-			boost::shared_ptr<CHIMERA_INHERITED_SPI> spi;
+			std::shared_ptr<CHIMERA_INHERITED_SPI> spi;
 		};
-		typedef boost::shared_ptr<SPIClass> SPIClass_sPtr;
+		typedef std::shared_ptr<SPIClass> SPIClass_sPtr;
+		typedef std::unique_ptr<SPIClass> SPIClass_uPtr;
 		
 		CLASS_METHOD_CHECKER(has_cbegin, CHIMERA_INHERITED_SPI, cbegin, Status, const Setup&);
 		CLASS_METHOD_CHECKER(has_cwrite1, CHIMERA_INHERITED_SPI, cwrite, Status, uint8_t*, size_t, const bool&);

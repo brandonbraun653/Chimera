@@ -5,7 +5,7 @@
 
 namespace Chimera
 {
-	namespace Log
+	namespace Logging
 	{
 		SimpleLogger Console;
 

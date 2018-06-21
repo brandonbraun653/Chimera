@@ -4,10 +4,7 @@
 
 /* C/C++ Includes */
 #include <stdint.h>
-
-/* Boost Includes */
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+#include <memory>
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
@@ -52,7 +49,8 @@ namespace Chimera
 		private:
 			CHIMERA_INHERITED_GPIO gpioPin;
 		};
-		typedef boost::shared_ptr<Chimera::GPIO::GPIOClass> GPIOClass_sPtr;
+		typedef std::shared_ptr<Chimera::GPIO::GPIOClass> GPIOClass_sPtr;
+		typedef std::unique_ptr<Chimera::GPIO::GPIOClass> GPIOClass_uPtr;
 		
 		CLASS_METHOD_CHECKER(has_init, CHIMERA_INHERITED_GPIO, cinit, Chimera::GPIO::Status, Chimera::GPIO::Port, uint8_t);
 		CLASS_METHOD_CHECKER(has_mode, CHIMERA_INHERITED_GPIO, cmode, Chimera::GPIO::Status, Chimera::GPIO::Mode, bool);

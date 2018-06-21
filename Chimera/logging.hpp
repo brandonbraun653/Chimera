@@ -13,7 +13,7 @@
 
 namespace Chimera
 {
-	namespace Log
+	namespace Logging
 	{
 		struct Colors
 		{

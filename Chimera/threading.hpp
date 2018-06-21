@@ -16,9 +16,9 @@ namespace Chimera
 {
 	namespace Threading
 	{
-		const uint8_t maxThreads = 15;					/**< Maximum number of threads */
-		const uint32_t threadInitCheckDelay_ms = 10;	/**< How long to wait during thread initialization before polling to check init complete */
-		const uint32_t maxThreadInitTimeout_ms = 1000;  /**< Max time to wait for thread init sequence to complete */
+		const uint8_t maxThreads = 15;						/**< Maximum number of threads */
+		const uint32_t threadInitCheckDelay_ms = 10;		/**< How long to wait during thread initialization before polling to check init complete */
+		const uint32_t maxThreadInitTimeout_ms = 10000;		/**< Max time to wait for thread init sequence to complete */
 
 		/** Fully describes thread creation parameters as used in overloaded addThread */
 		struct Thread_t

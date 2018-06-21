@@ -17,6 +17,10 @@
 	#endif
 #endif
 
+/* Boost Files */
+#if __has_include("boost/shared_ptr.hpp")
+#define USING_BOOST
+#endif
 
 /*-------------------------------------------
  * Chimera Runtime Behavior 
