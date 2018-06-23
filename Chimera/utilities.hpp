@@ -80,7 +80,15 @@ namespace Chimera
 	{
 		return std::shared_ptr<T>(ptr.get(), [ptr](T*) mutable {ptr.reset(); });
 	}
-	#endif
+	#endif	/* !USING_BOOST */
+
+
+	/** C++11 doesn't provide a make_unique implementation, so we will! */
+	template<typename T, typename ...Args>
+	std::unique_ptr<T> make_unique(Args&& ...args)
+	{
+		return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+	}
 
 }
 
