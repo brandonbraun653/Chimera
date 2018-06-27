@@ -41,6 +41,11 @@ namespace Chimera
 				return spi->cupdateClockFrequency(freq);
 			}
 
+			uint32_t getClockFrequency()
+			{
+				return spi->cgetClockFrequency();
+			}
+
 			void writeSS(Chimera::GPIO::State value)
 			{
 				spi->cwriteSS(value);
@@ -74,6 +79,7 @@ namespace Chimera
 		CLASS_METHOD_CHECKER(has_csetMode, CHIMERA_INHERITED_SPI, csetMode, Status, SubPeripheral, SubPeripheralMode);
 		CLASS_METHOD_CHECKER(has_cupdateClockFrequency, CHIMERA_INHERITED_SPI, cupdateClockFrequency, Status, uint32_t);
 		CLASS_METHOD_CHECKER(has_cwritess, CHIMERA_INHERITED_SPI, cwriteSS, void, Chimera::GPIO::State);
+		CLASS_METHOD_CHECKER(has_cgetClockFrequency, CHIMERA_INHERITED_SPI, cgetClockFrequency, uint32_t, void);
 	}
 }
 
