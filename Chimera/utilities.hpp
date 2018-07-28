@@ -59,6 +59,13 @@
 	};																										\
 	static_assert(InvocationName::value, "Proper signature for function \"" #FuncName "\" in class \"" #ClassToCheck "\" could not be found.");
 	
+
+/** Returns the number of bytes in an array
+ *	@param[in] x an array (not pointer)
+ **/
+#define cnt_of_array(x) (sizeof(x) / sizeof(*x))
+
+
 /** @} */
 
 

@@ -24,6 +24,11 @@ namespace Chimera
 				return CHIMERA_INHERITED_SERIAL::csetMode(sp, mode);
 			}
 
+			Status setBaud(BaudRate baud)
+			{
+				return CHIMERA_INHERITED_SERIAL::csetBaud(baud);
+			}
+
 			Status write(uint8_t* data, size_t length)
 			{
 				return CHIMERA_INHERITED_SERIAL::cwrite(data, length);
@@ -85,6 +90,8 @@ namespace Chimera
 		CLASS_METHOD_CHECKER(has_cwrite3, CHIMERA_INHERITED_SERIAL, cwrite, Status, const char*);
 
 		CLASS_METHOD_CHECKER(has_cwrite4, CHIMERA_INHERITED_SERIAL, cwrite, Status, const char*, size_t);
+
+		CLASS_METHOD_CHECKER(has_csetBaud, CHIMERA_INHERITED_SERIAL, csetBaud, Status, BaudRate);
 
 		CLASS_METHOD_CHECKER(has_creadPacket, CHIMERA_INHERITED_SERIAL, creadPacket, Status, uint8_t*, size_t);
 
