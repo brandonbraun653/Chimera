@@ -166,7 +166,7 @@ namespace Chimera
 		};
 
 		/** Supported communication baudrates */
-		enum class BaudRate : uint32_t
+		enum BaudRate : uint32_t
 		{
 			SERIAL_BAUD_110 = 100u,
 			SERIAL_BAUD_150 = 150u,

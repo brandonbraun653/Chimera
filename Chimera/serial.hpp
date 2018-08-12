@@ -14,7 +14,9 @@ namespace Chimera
 		class SerialClass : public CHIMERA_INHERITED_SERIAL
 		{
 		public:
-			Status begin(BaudRate baud = BaudRate::SERIAL_BAUD_115200, Modes tx_mode = Modes::BLOCKING, Modes rx_mode = Modes::BLOCKING)
+			Status begin(uint32_t baud = static_cast<uint32_t>(BaudRate::SERIAL_BAUD_115200), 
+				Modes tx_mode = Modes::BLOCKING, 
+				Modes rx_mode = Modes::BLOCKING)
 			{
 				return CHIMERA_INHERITED_SERIAL::cbegin(baud, tx_mode, rx_mode);
 			}
@@ -24,7 +26,7 @@ namespace Chimera
 				return CHIMERA_INHERITED_SERIAL::csetMode(sp, mode);
 			}
 
-			Status setBaud(BaudRate baud)
+			Status setBaud(uint32_t baud)
 			{
 				return CHIMERA_INHERITED_SERIAL::csetBaud(baud);
 			}
@@ -79,7 +81,7 @@ namespace Chimera
 			int serialChannel = 0;
 		};
 
-		CLASS_METHOD_CHECKER(has_cbegin, CHIMERA_INHERITED_SERIAL, cbegin, Status, BaudRate, Modes, Modes);
+		CLASS_METHOD_CHECKER(has_cbegin, CHIMERA_INHERITED_SERIAL, cbegin, Status, uint32_t, Modes, Modes);
 
 		CLASS_METHOD_CHECKER(has_csetMode, CHIMERA_INHERITED_SERIAL, csetMode, Status, SubPeripheral, Modes);
 
@@ -91,7 +93,7 @@ namespace Chimera
 
 		CLASS_METHOD_CHECKER(has_cwrite4, CHIMERA_INHERITED_SERIAL, cwrite, Status, const char*, size_t);
 
-		CLASS_METHOD_CHECKER(has_csetBaud, CHIMERA_INHERITED_SERIAL, csetBaud, Status, BaudRate);
+		CLASS_METHOD_CHECKER(has_csetBaud, CHIMERA_INHERITED_SERIAL, csetBaud, Status, uint32_t);
 
 		CLASS_METHOD_CHECKER(has_creadPacket, CHIMERA_INHERITED_SERIAL, creadPacket, Status, uint8_t*, size_t);
 
