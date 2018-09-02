@@ -136,7 +136,21 @@ namespace Chimera
 			else
 				return pdFAIL;
 		}
-	}
+
+        extern BaseType_t xSemaphoreTakeMultiple(SemaphoreHandle_t xSemaphore, TickType_t xTicksToWait, size_t numTake)
+        {
+            BaseType_t returnCode = pdPASS;
+
+            for (size_t x = 0; x < numTake; x++)
+            {
+                if (xSemaphoreTake(xSemaphore, xTicksToWait) != pdPASS)
+                {
+                    returnCode = pdFAIL;
+                }
+            }
+        }
+
+    }
 }
 
 #endif 

@@ -86,6 +86,16 @@ namespace Chimera
 		extern BaseType_t sendMessageAndWait(TaskHandle_t task, const uint32_t msg);
 
 		extern BaseType_t sendMessage(TaskHandle_t task, const uint32_t msg);
+
+
+        /** Allows for a fixed number of semaphores to be taken with timeout. DO NOT USE in ISR.
+         *  Note this can cause a worst case blocking time (in ticks) of xTicksToWait * numTake
+         *  @param[in]  xSemaphore      The semaphore to be taken from
+         *  @param[in]  xTicksToWait    How many ticks to wait for each take
+         *  @param[in]  numTake         Number of semaphores expected to take before returning
+         *  @return                     pdPASS if all taken successfully, pdFAIL if any timeout
+         */
+        extern BaseType_t xSemaphoreTakeMultiple(SemaphoreHandle_t xSemaphore, TickType_t xTicksToWait, size_t numTake);
 	}
 }
 #endif /* !CHIMERA_FREERTOS */
