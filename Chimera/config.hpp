@@ -3,10 +3,10 @@
 #define CHIMERA_CONFIG_HPP
 
 /* All includes for peripheral drivers go here */
-#include <Thor\include\thor.hpp>
-#include <Thor\include\spi.hpp>
-#include <Thor\include\gpio.hpp>
-#include <Thor\include\serial.hpp>
+#include <Thor/include/thor.hpp>
+#include <Thor/include/spi.hpp>
+#include <Thor/include/gpio.hpp>
+#include <Thor/include/serial.hpp>
 
 /* */
 #define CHIMERA_INHERITED_GLOBAL_NAMESPACE Thor

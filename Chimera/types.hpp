@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-#include <Chimera\preprocessor.hpp>
+#include <Chimera/preprocessor.hpp>
 
 /** @namespace Chimera */
 namespace Chimera
