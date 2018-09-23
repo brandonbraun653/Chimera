@@ -42,7 +42,7 @@ namespace Chimera
 			Thread_t thread;
 
 			/* Create all the threads */
-			for (int i = 0; i < registeredThreads.size(); i++)
+			for (size_t i = 0; i < registeredThreads.size(); i++)
 			{
 				thread = registeredThreads[i];
 				error = xTaskCreate(thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, &thread.handle);
@@ -50,7 +50,7 @@ namespace Chimera
 				if (error == errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY)
 				{
 					/* If you hit this point, one of the above tasks tried to allocate more heap space than was available. */
-					volatile size_t bytesRemaining = xPortGetFreeHeapSize();
+					volatile size_t bytesRemaining __attribute((unused)) = xPortGetFreeHeapSize();
 					for (;;);
 				}
 
@@ -72,7 +72,7 @@ namespace Chimera
 			/* Resume threads in the order which they were registered */
 			if (setupCallbacksEnabled)
 			{
-				for (int i = 0; i < registeredThreads.size(); i++)
+				for (size_t i = 0; i < registeredThreads.size(); i++)
 				{
 					xTaskNotify(registeredThreads[i].handle, 1u, eSetValueWithOverwrite);
 				}
