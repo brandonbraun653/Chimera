@@ -13,7 +13,7 @@
 
 /* Defines the classes for Chimera to inherit from */
 typedef Thor::Peripheral::GPIO::GPIOClass		CHIMERA_INHERITED_GPIO;
-typedef Thor::Peripheral::SPI::SPIClass			CHIMERA_INHERITED_SPI;
+typedef Thor::Peripheral::SPI::ChimeraSPI			CHIMERA_INHERITED_SPI;
 typedef	Thor::Peripheral::Serial::SerialClass	CHIMERA_INHERITED_SERIAL;
 
 #endif 
