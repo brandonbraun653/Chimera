@@ -28,7 +28,7 @@ void serialThread(void* argument)
 
 	UARTClass_sPtr uart = UARTClass::create(4);
 
-	uart->begin(SERIAL_BAUD_115200);
+    uart->begin(BaudRate::SERIAL_BAUD_115200);
 	uart->setMode(SubPeripheral::TX, Modes::BLOCKING);
 
 	const char* test1 = "Hey mate.\r\n";
