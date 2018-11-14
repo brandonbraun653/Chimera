@@ -15,7 +15,6 @@ namespace Chimera
 	{
 		class SPIClass : public CHIMERA_INHERITED_SPI
 		{
-
 		public:
 			SPI::Status begin(const Setup& setupStruct)
 			{
@@ -64,14 +63,6 @@ namespace Chimera
 		};
 		typedef std::shared_ptr<SPIClass> SPIClass_sPtr;
 		typedef std::unique_ptr<SPIClass> SPIClass_uPtr;
-		
-		//CLASS_METHOD_CHECKER(has_cbegin, CHIMERA_INHERITED_SPI, cbegin, Status, const Setup&);
-		//CLASS_METHOD_CHECKER(has_cwrite1, CHIMERA_INHERITED_SPI, cwrite, Status, uint8_t*, size_t, const bool&);
-		//CLASS_METHOD_CHECKER(has_cwrite2, CHIMERA_INHERITED_SPI, cwrite, Status, uint8_t*, uint8_t*, size_t, const bool&);
-		//CLASS_METHOD_CHECKER(has_csetMode, CHIMERA_INHERITED_SPI, csetMode, Status, SubPeripheral, SubPeripheralMode);
-		//CLASS_METHOD_CHECKER(has_cupdateClockFrequency, CHIMERA_INHERITED_SPI, cupdateClockFrequency, Status, uint32_t);
-		//CLASS_METHOD_CHECKER(has_cwritess, CHIMERA_INHERITED_SPI, cwriteSS, void, Chimera::GPIO::State);
-		//CLASS_METHOD_CHECKER(has_cgetClockFrequency, CHIMERA_INHERITED_SPI, cgetClockFrequency, uint32_t, void);
 	}
 }
 
