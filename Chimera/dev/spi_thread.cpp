@@ -26,9 +26,9 @@ void spiThread(void* argument)
 	spiSetup.clockMode = MODE1;
 	spiSetup.mode = MASTER;
 
-	spi->begin(spiSetup);
+	spi->init(spiSetup);
 	
-	spi->setMode(SubPeripheral::TXRX, SubPeripheralMode::DMA);
+	spi->setPeripheralMode(SubPeripheral::TXRX, SubPeripheralMode::DMA);
 	
 	uint8_t data_in[5] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDD };
 	uint8_t data_out[5];
@@ -41,7 +41,7 @@ void spiThread(void* argument)
 	for (;;)
 	{
 		//spi->write(data_in, 5, false);
-		spi->write(data_in, data_out, 5);
+		spi->readWriteBytes(data_in, data_out, 5);
 		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(1000));
 	}
 }

@@ -9,7 +9,11 @@
 /** @namespace Chimera */
 namespace Chimera
 {
-	/** @namespace Chimera::GPIO */
+    typedef void (*void_func_void)(void);
+    typedef void (*void_func_void_ptr)(void *);
+    typedef void (*void_func_uint32_t)(uint32_t);
+
+    /** @namespace Chimera::GPIO */
 	namespace GPIO
 	{
 		enum Status : uint8_t
@@ -75,6 +79,7 @@ namespace Chimera
 			SPI_NOT_INITIALIZED,
 			SPI_ERROR,
 			SPI_NOT_READY,
+            SPI_NOT_SUPPORTED,
 			SPI_TX_IN_PROGRESS,
 			SPI_RX_IN_PROGRESS,
 			SPI_PACKET_TOO_LARGE_FOR_BUFFER,
@@ -115,15 +120,6 @@ namespace Chimera
 			DATASIZE_16BIT,
 		};
 
-		struct Setup
-		{
-			uint32_t clockFrequency = 1000000;
-			Mode mode				= MASTER;
-			BitOrder bitOrder		= MSB_FIRST;
-			ClockMode clockMode		= MODE0;
-			DataSize dataSize		= DATASIZE_8BIT;
-		};
-		
 		enum SubPeripheral
 		{
 			TX,
@@ -139,7 +135,14 @@ namespace Chimera
 			DMA
 		};
 
-		
+		struct Setup
+		{
+			uint32_t clockFrequency = 1000000;
+			Mode mode				= MASTER;
+			BitOrder bitOrder		= MSB_FIRST;
+			ClockMode clockMode		= MODE0;
+			DataSize dataSize		= DATASIZE_8BIT;
+		};
 	}
 
 	/** @namespace Chimera::I2C */
@@ -165,7 +168,6 @@ namespace Chimera
 			SERIAL_UNKNOWN_ERROR
 		};
 
-		/** Supported communication baudrates */
 		enum BaudRate : uint32_t
 		{
 			SERIAL_BAUD_110 = 100u,
@@ -184,7 +186,6 @@ namespace Chimera
 			SERIAL_BAUD_921600 = 921600u
 		};
 
-		/** Common peripheral transmit and receive communication modes */
 		enum class Modes : uint8_t
 		{
 			MODE_UNDEFINED,
@@ -193,7 +194,6 @@ namespace Chimera
 			DMA
 		};
 
-		/** Explicitly defines a peripheral type for different member functions of SerialClass */
 		enum class SubPeripheral : bool
 		{
 			RX = false,
@@ -202,6 +202,17 @@ namespace Chimera
 
 	}
 
+    /** @namespace Chimera::FreeRTOS */
+    namespace FreeRTOS
+    {
+        enum Event : uint8_t
+        {
+            EVENT_RX_COMPLETE,
+            EVENT_TX_COMPLETE,
+            EVENT_TXRX_COMPLETE,
+            EVENT_ERROR
+        };
+    }
 }
 
 
