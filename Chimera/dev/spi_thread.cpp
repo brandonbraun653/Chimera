@@ -22,9 +22,9 @@ void spiThread(void* argument)
 	Setup spiSetup;
 
 	spiSetup.clockFrequency = 12000000;
-	spiSetup.bitOrder = MSB_FIRST;
-	spiSetup.clockMode = MODE1;
-	spiSetup.mode = MASTER;
+    spiSetup.bitOrder = BitOrder::MSB_FIRST;
+    spiSetup.clockMode = ClockMode::MODE1;
+    spiSetup.mode = Mode::MASTER;
 
 	spi->init(spiSetup);
 	

@@ -16,16 +16,16 @@ namespace Chimera
     /** @namespace Chimera::GPIO */
 	namespace GPIO
 	{
-		enum Status : uint8_t
+		enum class Status : uint8_t
 		{
-			GPIO_OK,
-			GPIO_ERROR_UNINITIALIZED,
-			GPIO_ERROR_INVALID_PIN,
-			GPIO_ERROR_INVALID_FUNCTION,
-			GPIO_ERROR_INVALID_PORT
+			OK,
+			ERROR_UNINITIALIZED,
+			ERROR_INVALID_PIN,
+			ERROR_INVALID_FUNCTION,
+			ERROR_INVALID_PORT
 		};
 
-		enum Mode : uint8_t
+		enum class Mode : uint8_t
 		{
 			INPUT,
 			OUTPUT_PUSH_PULL,
@@ -36,7 +36,7 @@ namespace Chimera
 			HIZ
 		};
 		
-		enum State : bool 
+		enum class State : bool 
 		{
 			HIGH = true,
 			HI = true,
@@ -48,7 +48,7 @@ namespace Chimera
 			FALSE = false
 		};
 		
-		enum Port : uint8_t
+		enum class Port : uint8_t
 		{
 			PORTA,
 			PORTB,
@@ -68,38 +68,38 @@ namespace Chimera
 	/** @namespace Chimera::SPI */
 	namespace SPI
 	{
-		enum Status
+        enum class Status : int
 		{
 			INVALID_HARDWARE_PARAM = -1,
 			FAILED_INITIALIZATION = -2,
 
-			SPI_OK = 0,
-			SPI_BUSY,
-			SPI_LOCKED,
-			SPI_NOT_INITIALIZED,
-			SPI_ERROR,
-			SPI_NOT_READY,
-            SPI_NOT_SUPPORTED,
-			SPI_TX_IN_PROGRESS,
-			SPI_RX_IN_PROGRESS,
-			SPI_PACKET_TOO_LARGE_FOR_BUFFER,
-			SPI_TIMEOUT,
-			SPI_UNKNOWN_STATUS_CODE
+			OK = 0,
+			BUSY,
+			LOCKED,
+			NOT_INITIALIZED,
+			ERROR,
+			NOT_READY,
+            NOT_SUPPORTED,
+			TX_IN_PROGRESS,
+			RX_IN_PROGRESS,
+			PACKET_TOO_LARGE_FOR_BUFFER,
+			TIMEOUT,
+			UNKNOWN_STATUS_CODE
 		};
 
-		enum Mode
+		enum class Mode : uint8_t
 		{
 			MASTER,
 			SLAVE
 		};
 		
-		enum BitOrder
+		enum class BitOrder : uint8_t
 		{
 			MSB_FIRST,	
 			LSB_FIRST	
 		};
 
-		enum ClockMode
+		enum class ClockMode : uint8_t
 		{	
 			MODE0,	/**< CPOL=0, CPHA=0 */
 			MODE1,	/**< CPOL=0, CPHA=1 */
@@ -107,27 +107,27 @@ namespace Chimera
 			MODE3	/**< CPOL=1, CPHA=1 */
 		};
 
-		enum DataSize
+		enum class DataSize : uint8_t
 		{
-			DATASIZE_8BIT,
-			DATASIZE_9BIT,
-			DATASIZE_10BIT,
-			DATASIZE_11BIT,
-			DATASIZE_12BIT,
-			DATASIZE_13BIT,
-			DATASIZE_14BIT,
-			DATASIZE_15BIT,
-			DATASIZE_16BIT,
+			SZ_8BIT,
+			SZ_9BIT,
+			SZ_10BIT,
+			SZ_11BIT,
+			SZ_12BIT,
+			SZ_13BIT,
+			SZ_14BIT,
+			SZ_15BIT,
+			SZ_16BIT,
 		};
 
-		enum SubPeripheral
+		enum class SubPeripheral : uint8_t
 		{
 			TX,
 			RX,
 			TXRX
 		};
 
-		enum SubPeripheralMode
+		enum class SubPeripheralMode : uint8_t
 		{
 			UNKOWN_MODE,
 			BLOCKING,
@@ -137,11 +137,11 @@ namespace Chimera
 
 		struct Setup
 		{
-			uint32_t clockFrequency = 1000000;
-			Mode mode				= MASTER;
-			BitOrder bitOrder		= MSB_FIRST;
-			ClockMode clockMode		= MODE0;
-			DataSize dataSize		= DATASIZE_8BIT;
+            Mode mode				= Mode::MASTER;
+            DataSize dataSize		= DataSize::SZ_8BIT;
+            BitOrder bitOrder		= BitOrder::MSB_FIRST;
+            ClockMode clockMode		= ClockMode::MODE0;
+            uint32_t clockFrequency = 1000000;
 		};
 	}
 
@@ -156,19 +156,19 @@ namespace Chimera
 	{
 		enum class Status : uint8_t
 		{
-			SERIAL_OK,
-			SERIAL_ERROR,
-			SERIAL_LOCKED,
-			SERIAL_NOT_INITIALIZED,
-			SERIAL_TX_IN_PROGRESS,
-			SERIAL_RX_IN_PROGRESS,
-			SERIAL_NOT_READY,
-			SERIAL_PACKET_TOO_LARGE_FOR_BUFFER,
-			SERIAL_TIMEOUT,
-			SERIAL_UNKNOWN_ERROR
+			OK,
+			ERROR,
+			LOCKED,
+			NOT_INITIALIZED,
+			TX_IN_PROGRESS,
+			RX_IN_PROGRESS,
+			NOT_READY,
+			PACKET_TOO_LARGE_FOR_BUFFER,
+			TIMEOUT,
+			UNKNOWN_ERROR
 		};
 
-		enum BaudRate : uint32_t
+		enum class BaudRate : uint32_t
 		{
 			SERIAL_BAUD_110 = 100u,
 			SERIAL_BAUD_150 = 150u,
@@ -205,12 +205,18 @@ namespace Chimera
     /** @namespace Chimera::FreeRTOS */
     namespace FreeRTOS
     {
-        enum Event : uint8_t
+        enum class SPIEvent : uint8_t
         {
-            EVENT_RX_COMPLETE,
-            EVENT_TX_COMPLETE,
-            EVENT_TXRX_COMPLETE,
-            EVENT_ERROR
+            RX_COMPLETE,            /**< Receive complete */
+            QUEUED_RX_COMPLETE,     /**< Queued receive completed */
+            TX_COMPLETE,            /**< Transmit complete */
+            QUEUED_TX_COMPLETE,     /**< Queued transmit completed */
+            TXRX_COMPLETE,          /**< Transmit receive operation complete */
+            QUEUED_TX_RX_COMPLETE,  /**< Queued transfer completed */
+            SLAVE_RX_BYTE,          /**< Slave receive buffer got a byte */
+            SLAVE_RX_HALF,          /**< Slave receive buffer half full */
+            SLAVE_RX_FULL,          /**< Slave receive buffer full */
+            ERROR
         };
     }
 }
