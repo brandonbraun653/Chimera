@@ -11,8 +11,8 @@
 /* Project Includes */
 #include "spi_thread.hpp"
 
-//using namespace Thor::Definitions;
 using namespace Chimera::SPI;
+using namespace Chimera;
 using namespace Thor::Threading;
 
 void spiThread(void* argument)
@@ -25,6 +25,12 @@ void spiThread(void* argument)
     spiSetup.bitOrder = BitOrder::MSB_FIRST;
     spiSetup.clockMode = ClockMode::MODE1;
     spiSetup.mode = Mode::MASTER;
+
+    spiSetup.CS.port = GPIO::Port::PORTC;
+    spiSetup.CS.alternate = Thor::Peripheral::GPIO::NOALTERNATE;
+    spiSetup.CS.number = 1;
+    spiSetup.CS.mode = GPIO::Drive::OUTPUT_PUSH_PULL;
+    spiSetup.CS.state = GPIO::State::HIGH;
 
 	spi->init(spiSetup);
 
@@ -40,8 +46,12 @@ void spiThread(void* argument)
 	TickType_t lastTimeWoken = xTaskGetTickCount();
 	for (;;)
 	{
-		spi->writeBytes(tx, 5, false);
-		//spi->readWriteBytes(tx, rx, 5);
+    	if(spi->reserve(100) == SPI::Status::OK)
+    	{
+            spi->writeBytes(tx, 5, true);
+        	spi->release();
+    	}
+		
 		vTaskDelayUntil(&lastTimeWoken, pdMS_TO_TICKS(1000));
 	}
 }

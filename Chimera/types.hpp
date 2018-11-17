@@ -88,7 +88,8 @@ namespace Chimera
             Port port = Port::UNKNOWN_PORT;     /**< Pin IO port */
             Drive mode = Drive::INPUT;          /**< Pin IO drive type */
             State state = State::LOW;           /**< Default logical pin state on init */
-            uint16_t number = 0;                /**< Pin number on the given port */
+            uint16_t number = 0u;               /**< Pin number on the given port */
+            uint32_t alternate = 0u;            /**< Project specific indicator of pin AF config*/
         };
 
     }
@@ -98,9 +99,12 @@ namespace Chimera
 	{
         enum class Status : int
 		{
-			INVALID_HARDWARE_PARAM = -1,
+    		FAILED_RELEASE = -5,
+            FAILED_LOCK = -4,
+    		FAILED_CONVERSION = -3,
 			FAILED_INITIALIZATION = -2,
-            FAILED_CONVERSION = -3,
+			INVALID_HARDWARE_PARAM = -1,
+            
 
 			OK = 0,
 			BUSY,
