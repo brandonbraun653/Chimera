@@ -19,7 +19,7 @@ namespace Chimera
 		class GPIOClass : public CHIMERA_INHERITED_GPIO
 		{
 		public:
-			Status mode(Chimera::GPIO::Mode mode, bool pullup = false) 
+			Status mode(Chimera::GPIO::Drive mode, bool pullup = false) 
 			{ 
 				return gpioPin.cmode(mode, pullup); 
 			}
@@ -53,7 +53,7 @@ namespace Chimera
 		typedef std::unique_ptr<Chimera::GPIO::GPIOClass> GPIOClass_uPtr;
 		
 		CLASS_METHOD_CHECKER(has_init, CHIMERA_INHERITED_GPIO, cinit, Chimera::GPIO::Status, Chimera::GPIO::Port, uint8_t);
-		CLASS_METHOD_CHECKER(has_mode, CHIMERA_INHERITED_GPIO, cmode, Chimera::GPIO::Status, Chimera::GPIO::Mode, bool);
+		CLASS_METHOD_CHECKER(has_mode, CHIMERA_INHERITED_GPIO, cmode, Chimera::GPIO::Status, Chimera::GPIO::Drive, bool);
 		CLASS_METHOD_CHECKER(has_write, CHIMERA_INHERITED_GPIO, cwrite, Chimera::GPIO::Status, Chimera::GPIO::State);
 		CLASS_METHOD_CHECKER(has_toggle, CHIMERA_INHERITED_GPIO, ctoggle, void, void);
 		CLASS_METHOD_CHECKER(has_read, CHIMERA_INHERITED_GPIO, cread, bool, void);

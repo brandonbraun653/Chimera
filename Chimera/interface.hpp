@@ -17,26 +17,34 @@ namespace Chimera
 
             /**
              *  @brief Initializes the SPI hardware according to the setup struct
-             *  
+             *
              *  @param[in]   setupStruct     Contains information on how to initialize SPI
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status init(const Chimera::SPI::Setup& setupStruct) = 0;
 
             /**
              *  @brief Sets the chip select GPIO to a logical state
-             *  
+             *
              *  @param[in]   value   The state to set the chip select to
              */
             virtual Chimera::SPI::Status setChipSelect(const Chimera::GPIO::State &value) = 0;
 
             /**
+             *  @brief Instruct the chip select to behave in a specific manner
+             *
+             *  @param[in]  mode    The desired mode for the chip select to operate in
+             *  @return Chimera::SPI::Status
+             */
+            virtual Chimera::SPI::Status setChipSelectControlMode(const Chimera::SPI::ChipSelectMode &mode) = 0;
+
+            /**
              *  @brief Writes data onto the SPI bus
-             *  
+             *
              *  @param[in]   txBuffer    Data buffer to be sent
              *  @param[in]   length      Number of bytes to be sent
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status writeBytes(const uint8_t *const txBuffer, size_t length, const bool &disableCS = true) = 0;
 
@@ -45,9 +53,9 @@ namespace Chimera
              *
              *  This is useful when you want to queue up multiple transmissions but the calling program
              *  needs to go off and do something else instead of managing the transfers.
-             *  
-             *  
-             *  @return Chimera::SPI::Status 
+             *
+             *
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status queueTransfers(const std::vector<uint8_t *const> &txBuffers)
             {
@@ -56,6 +64,15 @@ namespace Chimera
                 return Chimera::SPI::Status::NOT_SUPPORTED;
             }
 
+            /**
+             *  @brief Write multiple buffers of data onto the bus
+             *
+             *  This is useful when you want to queue up multiple transmissions but the calling program
+             *  needs to go off and do something else instead of managing the transfers.
+             *
+             *
+             *  @return Chimera::SPI::Status
+             */
             virtual Chimera::SPI::Status queueTransfers(const uint8_t **const txBuffers)
             {
                 //TODO: Same as other, but with an array of the struct type (more memory efficient)
@@ -63,6 +80,11 @@ namespace Chimera
                 return Chimera::SPI::Status::NOT_SUPPORTED;
             }
 
+            /**
+             *  @brief Write data to the slave queue that will be clocked out on the next transfer
+             *
+             *  @return Chimera::SPI::Status
+             */
             virtual Chimera::SPI::Status writeSlaveQueue(const uint8_t *const txBuffer, size_t length)
             {
                 return Chimera::SPI::Status::NOT_SUPPORTED;
@@ -70,58 +92,58 @@ namespace Chimera
 
             /**
              *  @brief Reads data from the SPI bus
-             *  
-             *  @param[in]   rxBuffer    Data buffer to read into 
-             *  @param[in]   length      Number of bytes to read 
+             *
+             *  @param[in]   rxBuffer    Data buffer to read into
+             *  @param[in]   length      Number of bytes to read
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status readBytes(uint8_t * const rxBuffer, size_t length, const bool & disableCS = true) = 0;
 
             /**
              *  @brief Reads a number of bytes out from the internal slave receive buffer
-             *  
-             *  @param[in]   rxBuffer    Data buffer to read into 
+             *
+             *  @param[in]   rxBuffer    Data buffer to read into
              *  @param[in]   length      Number of bytes to read
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
-            virtual Chimera::SPI::Status readSlaveQueue(const uint8_t *const rxBuffer, size_t length)
+            virtual Chimera::SPI::Status readSlaveQueue(uint8_t *const rxBuffer, size_t length)
             {
                 return Chimera::SPI::Status::NOT_SUPPORTED;
             }
 
             /**
              *  @brief Transmits and receives data on the SPI bus
-             *  
+             *
              *  @param[in]   txBuffer    Data buffer to write from
              *  @param[out]  rxBuffer    Data buffer to read into
              *  @param[in]   length      Number of bytes to transfer
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status readWriteBytes(const uint8_t * const txBuffer, uint8_t * const rxBuffer, size_t length, const bool& disableCS = true) = 0;
 
             /**
-             *  @brief Set the hardware peripheral operational mode. 
+             *  @brief Set the hardware peripheral operational mode.
              *  This should allow the user to choose if the hardware operates in blocking, interrupt, or DMA mode
-             *  
+             *
              *  @param[in]   periph      The peripheral to set the behavior on
              *  @param[in]   mode        Desired operational mode of the peripheral
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status setPeripheralMode(const Chimera::SPI::SubPeripheral &periph, const Chimera::SPI::SubPeripheralMode &mode) = 0;
 
             /**
              *  @brief Change the frequency of the SPI output clock during runtime
-             *  
+             *
              *  @param[in]   freq    Desired SPI clock frequency in Hz
-             *  @return Chimera::SPI::Status 
+             *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status setClockFrequency(const uint32_t &freq) = 0;
 
             /**
              *  @brief Get the current SPI clock frequency
-             *  
+             *
              *  @param[out]  freq    Reported SPI clock
              *  @return Chimera::SPI::Status
              */
@@ -129,7 +151,7 @@ namespace Chimera
 
             /**
              *  @brief Reserves the SPI hardware to allow unobstructed use
-             *  
+             *
              *  @param[in]  timeout_ms  How many milliseconds to wait for the hardware to become available
              *  @return Chimera::SPI::Status
              */
@@ -137,7 +159,7 @@ namespace Chimera
 
             /**
              *  @brief Releases a previous reservation
-             *  
+             *
              *  @param[in]  timeout_ms  How many milliseconds to wait for the hardware to release
              *  @return Chimera::SPI::Status
              */
@@ -145,8 +167,8 @@ namespace Chimera
 
             /**
              *  @brief Allows the user to assign a callback function to the write complete event
-             *  
-             *  @param[in]  func  Callback function 
+             *
+             *  @param[in]  func  Callback function
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status onWriteCompleteCallback(const Chimera::void_func_void func)
@@ -156,8 +178,8 @@ namespace Chimera
 
             /**
              *  @brief Allows the user to assign a callback function to the read complete event
-             *  
-             *  @param[in]  func  Callback function 
+             *
+             *  @param[in]  func  Callback function
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status onReadCompleteCallback(const Chimera::void_func_void func)
@@ -167,8 +189,8 @@ namespace Chimera
 
             /**
              *  @brief Allows the user to assign a callback function to the read-write complete event
-             *  
-             *  @param[in]  func  Callback function 
+             *
+             *  @param[in]  func  Callback function
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status onReadWriteCompleteCallback(const Chimera::void_func_void func)
@@ -178,10 +200,10 @@ namespace Chimera
 
             /**
              *  @brief Allows the user to assign a callback function on an error event
-             *  
+             *
              *  The function will be passed an error code indicating what happened
              *
-             *  @param[in]  func  Callback function 
+             *  @param[in]  func  Callback function
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status onErrorCallback(const Chimera::void_func_uint32_t func)
@@ -191,8 +213,8 @@ namespace Chimera
 
             /**
              *  @brief Allows the user to assign a callback function to execute when in slave mode and
-             *         data arrives on the bus that needs to be handled. 
-             *  
+             *         data arrives on the bus that needs to be handled.
+             *
              *  @param[in]  func            Callback function
              *  @param[in]  byteThreshold   Set which byte the callback is executed on
              *  @return Chimera::SPI::Status
@@ -204,7 +226,7 @@ namespace Chimera
 
             /**
              *  @brief Initializes the transmit FIFO queue
-             *  
+             *
              *  This feature is used when buffering data in Slave mode is desireable. On
              *  some systems this may not be possible due to lack of memory management
              *  or physical flash size.
@@ -218,7 +240,7 @@ namespace Chimera
 
             /**
              *  @brief Initializes the receive FIFO queue
-             *  
+             *
              *  This feature is used when buffering data in Slave mode is desireable. On
              *  some systems this may not be possible due to lack of memory management
              *  or physical flash size.
@@ -234,7 +256,7 @@ namespace Chimera
 
             /**
              *  @brief Allows the user to have a semaphore given to when an event occurs
-             *  
+             *
              *  @param[in]  event   The event to be waiting on
              *  @param[in]  semphr  The semaphore to be given to upon event occurance
              *  @return Chimera::SPI::Status

@@ -22,10 +22,12 @@ namespace Chimera
 			ERROR_UNINITIALIZED,
 			ERROR_INVALID_PIN,
 			ERROR_INVALID_FUNCTION,
-			ERROR_INVALID_PORT
+			ERROR_INVALID_PORT,
+
+            NUM_STATUS_OPTIONS
 		};
 
-		enum class Mode : uint8_t
+		enum class Drive : uint8_t
 		{
 			INPUT,
 			OUTPUT_PUSH_PULL,
@@ -33,10 +35,13 @@ namespace Chimera
 			ALTERNATE_PUSH_PULL,
 			ALTERNATE_OPEN_DRAIN,
 			ANALOG,
-			HIZ
+			HIZ,
+
+            NUM_DRIVES,
+            UNKNOWN_DRIVE
 		};
-		
-		enum class State : bool 
+
+		enum class State : bool
 		{
 			HIGH = true,
 			HI = true,
@@ -47,31 +52,55 @@ namespace Chimera
 			OFF = false,
 			FALSE = false
 		};
-		
-		enum class Port : uint8_t
-		{
-			PORTA,
-			PORTB,
-			PORTC,
-			PORTD,
-			PORTE,
-			PORTF,
-			PORTG,
-			PORTH,
-			PORTI,
-			PORTJ,
-			PORTK,
-			PORTL
-		};
-	}
 
-	/** @namespace Chimera::SPI */
+        enum class Pull : uint8_t
+        {
+            NO_PULL,
+            PULL_UP,
+            PULL_DN,
+
+            NUM_PULL_OPTIONS,
+            UNKNOWN_PULL
+        };
+
+        enum class Port : uint8_t
+        {
+            PORTA,
+            PORTB,
+            PORTC,
+            PORTD,
+            PORTE,
+            PORTF,
+            PORTG,
+            PORTH,
+            PORTI,
+            PORTJ,
+            PORTK,
+            PORTL,
+
+            NUM_PORTS,
+            UNKNOWN_PORT
+        };
+
+        struct PinInit
+        {
+            Pull pull = Pull::UNKNOWN_PULL;     /**< Pull-up/down configuration */
+            Port port = Port::UNKNOWN_PORT;     /**< Pin IO port */
+            Drive mode = Drive::INPUT;          /**< Pin IO drive type */
+            State state = State::LOW;           /**< Default logical pin state on init */
+            uint16_t number = 0;                /**< Pin number on the given port */
+        };
+
+    }
+
+    /** @namespace Chimera::SPI */
 	namespace SPI
 	{
         enum class Status : int
 		{
 			INVALID_HARDWARE_PARAM = -1,
 			FAILED_INITIALIZATION = -2,
+            FAILED_CONVERSION = -3,
 
 			OK = 0,
 			BUSY,
@@ -92,15 +121,15 @@ namespace Chimera
 			MASTER,
 			SLAVE
 		};
-		
+
 		enum class BitOrder : uint8_t
 		{
-			MSB_FIRST,	
-			LSB_FIRST	
+			MSB_FIRST,
+			LSB_FIRST
 		};
 
 		enum class ClockMode : uint8_t
-		{	
+		{
 			MODE0,	/**< CPOL=0, CPHA=0 */
 			MODE1,	/**< CPOL=0, CPHA=1 */
 			MODE2,	/**< CPOL=1, CPHA=0 */
@@ -135,8 +164,20 @@ namespace Chimera
 			DMA
 		};
 
-		struct Setup
-		{
+        enum class ChipSelectMode : uint8_t
+        {
+            MANUAL,
+            AUTO_BETWEEN_TRANSFER,
+            AUTO_AFTER_TRANSFER
+        };
+
+        struct Setup
+        {
+            GPIO::PinInit SCK;
+            GPIO::PinInit MOSI;
+            GPIO::PinInit MISO;
+            GPIO::PinInit CS;
+
             Mode mode				= Mode::MASTER;
             DataSize dataSize		= DataSize::SZ_8BIT;
             BitOrder bitOrder		= BitOrder::MSB_FIRST;
@@ -223,4 +264,4 @@ namespace Chimera
 
 
 
-#endif 
+#endif

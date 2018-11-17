@@ -24,10 +24,10 @@ void ledThread(void* argument)
 	using namespace Thor::Definitions::GPIO;
 	
 	//GPIOClass green_led(Thor::Nucleo::GREEN_LED_PORT, Thor::Nucleo::GREEN_LED_PIN);
-	GPIOClass blue_led(GPIOC, PIN_8);
+    GPIOClass blue_led(GPIOC, PinNum::PIN_8);
 	
 	//green_led.mode(OUTPUT_PP);
-	blue_led.mode(OUTPUT_PP);
+    blue_led.mode(PinMode::OUTPUT_PP);
 
 	//green_led.write(HIGH);
 
