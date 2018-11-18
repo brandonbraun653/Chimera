@@ -88,7 +88,7 @@ namespace Chimera
             Port port = Port::UNKNOWN_PORT;     /**< Pin IO port */
             Drive mode = Drive::INPUT;          /**< Pin IO drive type */
             State state = State::LOW;           /**< Default logical pin state on init */
-            uint16_t number = 0u;               /**< Pin number on the given port */
+            uint16_t pin = 0u;               /**< Pin number on the given port */
             uint32_t alternate = 0u;            /**< Project specific indicator of pin AF config*/
         };
 
@@ -104,7 +104,7 @@ namespace Chimera
     		FAILED_CONVERSION = -3,
 			FAILED_INITIALIZATION = -2,
 			INVALID_HARDWARE_PARAM = -1,
-            
+
 
 			OK = 0,
 			BUSY,
@@ -170,9 +170,9 @@ namespace Chimera
 
         enum class ChipSelectMode : uint8_t
         {
-            MANUAL,
-            AUTO_BETWEEN_TRANSFER,
-            AUTO_AFTER_TRANSFER
+            MANUAL,                         /**< Manually control the state of the chip select line */
+            AUTO_BETWEEN_TRANSFER,          /**< Automatically twiddle the chip select between transfers */
+            AUTO_AFTER_TRANSFER             /**< Automatically disable the chip select after all transfers complete */
         };
 
         struct Setup

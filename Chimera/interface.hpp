@@ -46,7 +46,8 @@ namespace Chimera
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
              *  @return Chimera::SPI::Status
              */
-            virtual Chimera::SPI::Status writeBytes(const uint8_t *const txBuffer, size_t length, const bool &disableCS = true) = 0;
+            virtual Chimera::SPI::Status writeBytes(const uint8_t *const txBuffer, size_t length,
+                const bool &disableCS = true, const bool &autoRelease = false) = 0;
 
             /**
              *  @brief Write multiple buffers of data onto the bus
@@ -98,7 +99,8 @@ namespace Chimera
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
              *  @return Chimera::SPI::Status
              */
-            virtual Chimera::SPI::Status readBytes(uint8_t * const rxBuffer, size_t length, const bool & disableCS = true) = 0;
+            virtual Chimera::SPI::Status readBytes(uint8_t * const rxBuffer, size_t length,
+                const bool & disableCS = true, const bool &autoRelease = false) = 0;
 
             /**
              *  @brief Reads a number of bytes out from the internal slave receive buffer
@@ -121,7 +123,8 @@ namespace Chimera
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
              *  @return Chimera::SPI::Status
              */
-            virtual Chimera::SPI::Status readWriteBytes(const uint8_t * const txBuffer, uint8_t * const rxBuffer, size_t length, const bool& disableCS = true) = 0;
+            virtual Chimera::SPI::Status readWriteBytes(const uint8_t * const txBuffer, uint8_t * const rxBuffer, size_t length,
+                const bool& disableCS = true, const bool &autoRelease = false) = 0;
 
             /**
              *  @brief Set the hardware peripheral operational mode.
