@@ -47,7 +47,7 @@ namespace Chimera
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status writeBytes(const uint8_t *const txBuffer, size_t length,
-                const bool &disableCS = true, const bool &autoRelease = false) = 0;
+                const bool &disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10) = 0;
 
             /**
              *  @brief Write multiple buffers of data onto the bus
@@ -94,13 +94,59 @@ namespace Chimera
             /**
              *  @brief Reads data from the SPI bus
              *
-             *  @param[in]   rxBuffer    Data buffer to read into
+             *  Internally,the function will call readWriteBytes() and use the rxBuffer as the source of
+             *  bytes to transmit on the MOSI line.
+             *
+             *  Master
+             *  ==================
+             *  This section describes the behavior of readBytes() when SPI is configured as a master.
+             *
+             *      Blocking Mode
+             *      ------------------
+             *      When called in blocking mode, the SPI hardware will attempt to read a number of bytes from the bus
+             *      with an enforced timeout. Should the requested number of bytes not arrive before the timeout expires,
+             *      an error code is returned indicating the timeout.
+             *
+             *      Interrupt Mode
+             *      ------------------
+             *      When using interrupt mode, an ISR handles the transfer. If supported by the underlying driver, the
+             *      user can attach callbacks to be notified when the transfer is complete [onReadCompleteCallback()] or
+             *      when an error occurs [onErrorCallback()].
+             *
+             *      DMA Mode
+             *      ------------------
+             *      The DMA hardware will handle the transfer. If supported by the underlying driver, the
+             *      user can attach callbacks to be notified when the transfer is complete [onReadCompleteCallback()] or
+             *      when an error occurs [onErrorCallback()].
+             *
+             *
+             *  Slave
+             *  ==================
+             *  This section describes the behavior of readBytes() when SPI is configured as a slave.
+             *
+             *      Blocking Mode
+             *      ------------------
+             *      When called in blocking mode, the SPI hardware will attempt to read a number of bytes from MOSI
+             *      with an enforced timeout. The corresponding bytes clocked out on MISO will be any data contained
+             *      in the receive buffer before the transfer starts. Should the requested number of bytes not arrive
+             *      before the timeout expires or the slave select line is not asserted, an error code is returned
+             *      indicating the timeout.
+             *
+             *      Interrupt Mode
+             *      ------------------
+             *
+             *
+             *      DMA Mode
+             *      ------------------
+             *
+             *
+             *  @param[out]  rxBuffer    Data buffer to read into
              *  @param[in]   length      Number of bytes to read
              *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status readBytes(uint8_t * const rxBuffer, size_t length,
-                const bool & disableCS = true, const bool &autoRelease = false) = 0;
+                const bool & disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10) = 0;
 
             /**
              *  @brief Reads a number of bytes out from the internal slave receive buffer
@@ -124,7 +170,7 @@ namespace Chimera
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status readWriteBytes(const uint8_t * const txBuffer, uint8_t * const rxBuffer, size_t length,
-                const bool& disableCS = true, const bool &autoRelease = false) = 0;
+                const bool& disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10) = 0;
 
             /**
              *  @brief Set the hardware peripheral operational mode.
@@ -210,47 +256,6 @@ namespace Chimera
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status onErrorCallback(const Chimera::void_func_uint32_t func)
-            {
-                return Chimera::SPI::Status::NOT_SUPPORTED;
-            }
-
-            /**
-             *  @brief Allows the user to assign a callback function to execute when in slave mode and
-             *         data arrives on the bus that needs to be handled.
-             *
-             *  @param[in]  func            Callback function
-             *  @param[in]  byteThreshold   Set which byte the callback is executed on
-             *  @return Chimera::SPI::Status
-             */
-            virtual Chimera::SPI::Status onSlaveReceiveCallback(const Chimera::void_func_void func, const size_t &byteThreshold = 1)
-            {
-                return Chimera::SPI::Status::NOT_SUPPORTED;
-            }
-
-            /**
-             *  @brief Initializes the transmit FIFO queue
-             *
-             *  This feature is used when buffering data in Slave mode is desireable. On
-             *  some systems this may not be possible due to lack of memory management
-             *  or physical flash size.
-             *
-             *  @param[in]  size    The number of bytes to initialize the queue to
-             */
-            virtual Chimera::SPI::Status setSlaveTransmitQueueSize(const size_t &size)
-            {
-                return Chimera::SPI::Status::NOT_SUPPORTED;
-            }
-
-            /**
-             *  @brief Initializes the receive FIFO queue
-             *
-             *  This feature is used when buffering data in Slave mode is desireable. On
-             *  some systems this may not be possible due to lack of memory management
-             *  or physical flash size.
-             *
-             *  @param[in]  size    The number of bytes to initialize the queue to
-             */
-            virtual Chimera::SPI::Status setSlaveReceiveQueueSize(const size_t &size)
             {
                 return Chimera::SPI::Status::NOT_SUPPORTED;
             }
