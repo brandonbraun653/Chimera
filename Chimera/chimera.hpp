@@ -1,5 +1,3 @@
-/** @file chimera.hpp */
-#pragma once 
 #ifndef CHIMERA_HPP
 #define CHIMERA_HPP
 
