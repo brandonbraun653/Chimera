@@ -1,9 +1,12 @@
 #ifndef CHIMERA_INTERFACE_HPP
 #define CHIMERA_INTERFACE_HPP
 
-#include <stdlib.h>
+/* C++ Includes */
+#include <cstdlib>
 #include <cstdint>
+#include <array>
 
+/* Chimera Includes */
 #include <Chimera/types.hpp>
 #include <Chimera/preprocessor.hpp>
 
@@ -41,13 +44,33 @@ namespace Chimera
             /**
              *  @brief Writes data onto the SPI bus
              *
-             *  @param[in]   txBuffer    Data buffer to be sent
-             *  @param[in]   length      Number of bytes to be sent
-             *  @param[in]   disableCS   Optionally disable the chip select line after transmission complete
+             *  @param[in]  txBuffer    Data buffer to be sent
+             *  @param[in]  length      Number of bytes to be sent
+             *  @param[in]  disableCS   Optionally disable the chip select line after transmission complete
+             *  @param[in]  autoRelease Optionally release the SPI HW lock should the caller hold ownership
+             *  @param[in]  timeoutMS   If the hardware is not free, wait this amount of time before exiting
              *  @return Chimera::SPI::Status
              */
             virtual Chimera::SPI::Status writeBytes(const uint8_t *const txBuffer, size_t length,
                 const bool &disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10) = 0;
+
+            /**
+             *  @brief Writes data on to the SPI bus
+             *  Acts as a conventient mapping tool to allow the use of std::array to write data
+             *  
+             *  @param[in]  txBuffer    Data buffer to be sent
+             *  @param[in]  disableCS   Optionally disable the chip select line after transmission complete
+             *  @param[in]  autoRelease Optionally release the SPI HW lock should the caller hold ownership
+             *  @param[in]  timeoutMS   If the hardware is not free, wait this amount of time before exiting
+             *  @return Chimera::SPI::Status
+             */
+            template< typename T, std::size_t S >
+				Chimera::SPI::Status writeBytes(const std::array<T, S>& txBuffer,
+					const bool &disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10)
+				{
+					auto constexpr arr = static_cast<uint8_t*>(txBuffer.data());
+					return writeBytes(arr, txBuffer.size(), disableCS, autoRelease, timeoutMS);   
+				}
 
             /**
              *  @brief Write multiple buffers of data onto the bus
@@ -147,6 +170,18 @@ namespace Chimera
              */
             virtual Chimera::SPI::Status readBytes(uint8_t * const rxBuffer, size_t length,
                 const bool & disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10) = 0;
+			
+			/**
+			 *	@brief A templated version of readBytes() for more modern C++ compatibility
+		     *	@see readBytes()
+			 */
+			template< typename T, std::size_t S>
+				Chimera::SPI::Status readBytes(std::array<T, S> rxBuffer,
+					const bool & disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10)
+				{
+    				auto constexpr array = static_cast<uint8_t*>(rxBuffer.data());
+    				return readBytes(array, rxBuffer.size(), disableCS, autoRelease, timeoutMS);
+				}
 
             /**
              *  @brief Reads a number of bytes out from the internal slave receive buffer
