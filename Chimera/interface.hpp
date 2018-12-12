@@ -12,6 +12,30 @@
 
 namespace Chimera
 {
+    namespace GPIO
+    {
+        class Interface
+        {
+        public:
+            virtual Chimera::GPIO::Status setMode() = 0;
+
+            virtual Chimera::GPIO::Status setState(const Chimera::GPIO::State state) = 0;
+
+            virtual Chimera::GPIO::Status getState() = 0;
+
+            virtual Chimera::GPIO::Status toggle() = 0;
+
+            virtual Chimera::GPIO::Status reconfigure() = 0;
+
+        protected:
+
+
+        private:
+        
+
+        };
+    }
+
     namespace SPI
     {
         class Interface
@@ -295,7 +319,7 @@ namespace Chimera
                 return Chimera::SPI::Status::NOT_SUPPORTED;
             }
 
-#if defined(USING_FREERTOS)
+            #if defined(USING_FREERTOS)
 
             /**
              *  @brief Allows the user to have a semaphore given to when an event occurs

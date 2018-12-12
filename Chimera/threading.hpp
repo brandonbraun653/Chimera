@@ -5,6 +5,25 @@
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 
+namespace Chimera
+{
+    namespace Threading
+    {
+        class ManagedResource
+        {
+        public:
+            Chimera::Threading::Status lock(const uint32_t timeout_mS);
+            Chimera::Threading::Status unlock(const uint32_t timeout_mS);
+
+
+
+        private:
+            bool locked = false;
+        };
+    }
+}
+
+
 #ifdef CHIMERA_FREERTOS
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"
@@ -99,4 +118,6 @@ namespace Chimera
 	}
 }
 #endif /* !CHIMERA_FREERTOS */
+
+
 #endif 

@@ -247,6 +247,14 @@ namespace Chimera
 
 	}
 
+    namespace Threading
+    {
+        enum class Status : uint8_t
+        {
+            
+        };
+    }
+
     /** @namespace Chimera::FreeRTOS */
     namespace FreeRTOS
     {
