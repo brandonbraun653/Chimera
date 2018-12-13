@@ -17,21 +17,16 @@ namespace Chimera
         class Interface
         {
         public:
-            virtual Chimera::GPIO::Status setMode() = 0;
+
+            virtual Chimera::GPIO::Status init(const Chimera::GPIO::Port port, const uint8_t pin) = 0;
+
+            virtual Chimera::GPIO::Status setMode(const Chimera::GPIO::Drive drive, const bool pullup) = 0;
 
             virtual Chimera::GPIO::Status setState(const Chimera::GPIO::State state) = 0;
 
-            virtual Chimera::GPIO::Status getState() = 0;
+            virtual Chimera::GPIO::Status getState(Chimera::GPIO::State &state) = 0;
 
             virtual Chimera::GPIO::Status toggle() = 0;
-
-            virtual Chimera::GPIO::Status reconfigure() = 0;
-
-        protected:
-
-
-        private:
-        
 
         };
     }
@@ -81,7 +76,7 @@ namespace Chimera
             /**
              *  @brief Writes data on to the SPI bus
              *  Acts as a conventient mapping tool to allow the use of std::array to write data
-             *  
+             *
              *  @param[in]  txBuffer    Data buffer to be sent
              *  @param[in]  disableCS   Optionally disable the chip select line after transmission complete
              *  @param[in]  autoRelease Optionally release the SPI HW lock should the caller hold ownership
@@ -93,7 +88,7 @@ namespace Chimera
 					const bool &disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10)
 				{
 					auto constexpr arr = static_cast<uint8_t*>(txBuffer.data());
-					return writeBytes(arr, txBuffer.size(), disableCS, autoRelease, timeoutMS);   
+					return writeBytes(arr, txBuffer.size(), disableCS, autoRelease, timeoutMS);
 				}
 
             /**
@@ -194,7 +189,7 @@ namespace Chimera
              */
             virtual Chimera::SPI::Status readBytes(uint8_t * const rxBuffer, size_t length,
                 const bool & disableCS = true, const bool &autoRelease = false, uint32_t timeoutMS = 10) = 0;
-			
+
 			/**
 			 *	@brief A templated version of readBytes() for more modern C++ compatibility
 		     *	@see readBytes()

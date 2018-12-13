@@ -2,6 +2,9 @@
 #ifndef CHIMERA_THREADING_HPP
 #define CHIMERA_THREADING_HPP
 
+/* C++ Includes */
+#include <atomic>
+
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 
@@ -120,4 +123,4 @@ namespace Chimera
 #endif /* !CHIMERA_FREERTOS */
 
 
-#endif 
+#endif
