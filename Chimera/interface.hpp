@@ -28,6 +28,7 @@ namespace Chimera
 
             virtual Chimera::GPIO::Status toggle() = 0;
 
+            virtual ~Interface() = default;
         };
     }
 
@@ -334,6 +335,16 @@ namespace Chimera
             virtual Chimera::SPI::Status removeEventWakeup(const SemaphoreHandle_t *const semphr) = 0;
 
             #endif /* !USING_FREERTOS */
+
+            virtual ~Interface() = default;
+        };
+    }
+
+    namespace Serial
+    {
+        class Interface
+        {
+
         };
     }
 }
