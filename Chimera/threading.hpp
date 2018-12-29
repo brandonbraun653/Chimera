@@ -12,16 +12,25 @@ namespace Chimera
 {
     namespace Threading
     {
-        class ManagedResource
+        class Lockable
         {
         public:
-            Chimera::Threading::Status lock(const uint32_t timeout_mS);
-            Chimera::Threading::Status unlock(const uint32_t timeout_mS);
+            virtual bool reserve(const uint32_t timeout_mS);
 
+            virtual bool release(const uint32_t timeout_mS);
 
+            bool isLocked();
+
+            Lockable() = default;
+            ~Lockable() = default;
+
+        protected:
+            void lock();
+
+            void unlock();
 
         private:
-            bool locked = false;
+            std::atomic<bool> mutex;
         };
     }
 }

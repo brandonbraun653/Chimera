@@ -190,27 +190,22 @@ namespace Chimera
 		};
 	}
 
-	/** @namespace Chimera::I2C */
-	namespace I2C
-	{
-
-	}
-
 	/** @namespace Chimera::Serial */
 	namespace Serial
 	{
 		enum class Status : uint8_t
 		{
-			OK,
-			ERROR,
-			LOCKED,
-			NOT_INITIALIZED,
-			TX_IN_PROGRESS,
-			RX_IN_PROGRESS,
-			NOT_READY,
-			PACKET_TOO_LARGE_FOR_BUFFER,
-			TIMEOUT,
-			UNKNOWN_ERROR
+    		OK,
+    		ERROR,
+    		LOCKED,
+    		NOT_INITIALIZED,
+    		TX_IN_PROGRESS,
+    		RX_IN_PROGRESS,
+    		NOT_READY,
+    		PACKET_TOO_LARGE_FOR_BUFFER,
+    		TIMEOUT,
+    		UNKNOWN_ERROR,
+            FEATURE_NOT_ENABLED
 		};
 
 		enum class BaudRate : uint32_t
@@ -239,20 +234,30 @@ namespace Chimera
 			DMA
 		};
 
-		enum class SubPeripheral : bool
+		enum class SubPeripheral : uint8_t
 		{
-			RX = false,
-			TX = true
+			RX,
+			TX
 		};
 
-	}
+    	enum class Event : uint8_t
+    	{
+        	ASYNC_READ_COMPLETE = 0,
+            WRITE_COMPLETE
+    	};
+
+        typedef struct
+    	{
+        	bool overrun;
+        	bool error;
+        	bool asyncReady;
+    	} HardwareStatus;
+
+    }
 
     namespace Threading
     {
-        enum class Status : uint8_t
-        {
-            
-        };
+
     }
 
     /** @namespace Chimera::FreeRTOS */

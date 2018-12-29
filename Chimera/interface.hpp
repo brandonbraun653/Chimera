@@ -9,12 +9,13 @@
 /* Chimera Includes */
 #include <Chimera/types.hpp>
 #include <Chimera/preprocessor.hpp>
+#include <Chimera/threading.hpp>
 
 namespace Chimera
 {
     namespace GPIO
     {
-        class Interface
+        class Interface : Threading::Lockable
         {
         public:
 
@@ -34,7 +35,7 @@ namespace Chimera
 
     namespace SPI
     {
-        class Interface
+        class Interface : public Threading::Lockable
         {
         public:
 
@@ -342,9 +343,195 @@ namespace Chimera
 
     namespace Serial
     {
-        class Interface
+        class Interface : public Threading::Lockable
         {
+            /**
+            *   Starts up the Serial interface with a baud rate and transfer mode
+            *
+            *   @param[in]  baud    Desired baud rate to be used
+            *   @param[in]  txMode  What mode to run the TX hardware in
+            *   @param[in]  rxMode  What mode to run the RX hardware in
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status begin(const uint32_t baud, const Modes txMode, const Modes rxMode) = 0;
 
+            /**
+            *   Change the baud rate of the peripheral at run time
+            *   
+            *   @param[in]  baud    Desired baud rate to be used
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status setBaud(const uint32_t buad) = 0;
+
+            /**
+            *   Change the hardware transfer mode (Blocking, Interrupt, DMA)
+            *
+            *   @note When using Interrupt or DMA mode, double buffering must be enabled first
+            *   @see enableDoubleBuffering
+            *
+            *   @param[in]  periph  The peripheral to switch modes with
+            *   
+            */
+            virtual Status setMode(const SubPeripheral periph, const Modes mode) = 0;
+
+            /**
+            *   Writes data onto the wire
+            *
+            *   @note Depending on the mode, this function will behave a bit differently.
+            *   
+            *   Blocking Mode:
+            *       The function won't return until the data has been transmitted.
+            *
+            *   Interrupt & DMA:
+            *       The function immediately returns after queuing up the transfer. Double
+            *       buffering must be enabled in order for these modes to work correctly. Up
+            *       to two transfers can be queued at once, the length being limited to the 
+            *       size passed into enableDoubleBuffering().
+            *
+            *   @param[in]  buffer  The data to be written on the wire
+            *   @param[in]  length  How many bytes to write
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status write(const uint8_t *const buffer, const size_t length) = 0;
+
+            /**
+            *   Read an exact number of bytes from the wire
+            *
+            *   @note Depending on the mode, this function will behave a bit differently.
+            *   
+            *   Blocking Mode:
+            *       The function won't return until the number of bytes specified has been received.
+            *
+            *   Interrupt & DMA:
+            *       The function immediately returns after queuing up the reception. Double
+            *       buffering must be enabled in order for these modes to work correctly. Up
+            *       to two receptions can be queued at once, the length being limited to the 
+            *       size passed into enableDoubleBuffering(). 
+            *
+            *   @param[in]  buffer  The data to be received from the wire
+            *   @param[in]  length  How many bytes to read
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status read(uint8_t *const buffer, const size_t length) = 0;
+
+            /**
+            *   Read bytes from the wire, but the length to read is unknown.
+            *
+            *   @param[in]  buffer  Array to store the data into
+            *   @param[in]  maxLen  Max number of bytes that can be read into the array
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status readAsync(uint8_t *const buffer, const size_t maxLen)
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+
+            /**
+            *   Get the state of common hardware registers and status fields
+            *   
+            *   @param[in]  status  Structure to fill with status information
+            *   @return void
+            */
+            virtual void status(HardwareStatus &status)
+            {
+
+            }
+
+            /**
+            *   Turns on double buffering for asynchronous modes (Interrupt, DMA)
+            *
+            *   Allows the Serial channel to read/write data on one buffer while the user can read/write 
+            *   on the other. This should help prevent missing data when the RX length is unknown or when 
+            *   there is lots of traffic.
+            *
+            *   @note Either buffer could be modified inside an ISR, hence the necessity for volatile storage class.
+            *
+            *   @param[in]  periph      The peripheral (TX or RX) to use double buffering with
+            *   @param[in]  bufferOne   First buffer used
+            *   @param[in]  bufferTwo   Second buffer used
+            *   @param[in]  length      The minimum size of both buffers
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status enableDoubleBuffering(const SubPeripheral periph, 
+                volatile uint8_t *const bufferOne,
+                volatile uint8_t *const bufferTwo,
+                const size_t length)
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+
+            /**
+            *   Turns off the double buffering feature
+            *
+            *   @note This will automatically transition both TX & RX subperipherals back to blocking mode
+            *   
+            *   @return Chimera::Serial::Status
+            */
+            virtual Status disableDoubleBuffering()
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+
+            /**
+            *   Check if data is available to be read. Only works when double buffering is enabled.
+            *   
+            *   @param[in]  bytes   Optionally report back how many bytes are ready
+            *   @return True if any data is ready, false if not
+            */
+            virtual bool available(size_t *const bytes = nullptr)
+            {
+                return false;
+            }
+
+            /**
+            *   Attach a signal to get notified when an event occurs
+            *   
+            *   @param[in]  event       The event to be notified on
+            *   @param[in]  notifier    The notification variable
+            *   @return void
+            */
+            virtual Status attachEventNotifier(const Event event, volatile bool *const notifier)
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+
+            /**
+            *   Remove an event notification signal
+            *   
+            *   @param[in]  event       The event to remove the notifier 
+            *   @param[in]  notifier    The notification variable
+            *   @return void
+            */
+            virtual Status removeEventNotifier(const Event event, volatile bool *const notifier)
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+
+            #if defined(USING_FREERTOS)
+            /**
+            *   Attach a signal to get notified when an event occurs
+            *   
+            *   @param[in]  event   The event to be notified on
+            *   @param[in]  semphr  The notification variable
+            *   @return void
+            */
+            virtual Status attachEventNotifier(const Event event, SemaphoreHandle_t *const semphr)
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+
+            /**
+            *   Remove an event notification signal
+            *   
+            *   @param[in]  event   The event to remove the notifier 
+            *   @param[in]  semphr  The notification variable
+            *   @return void
+            */
+            virtual Status removeEventNotifier(const Event event, SemaphoreHandle_t *const semphr)
+            {
+                return Status::FEATURE_NOT_ENABLED;
+            }
+            #endif 
         };
     }
 }

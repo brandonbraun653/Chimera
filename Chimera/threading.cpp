@@ -1,12 +1,38 @@
 #include <Chimera/threading.hpp>
-#include <boost/container/static_vector.hpp>
 
-#ifdef CHIMERA_FREERTOS
 
 namespace Chimera
 {
 	namespace Threading
 	{
+        
+    	bool Lockable::reserve(const uint32_t timeout_mS)
+    	{
+        	return false;
+    	}
+
+    	bool Lockable::release(const uint32_t timeout_mS)
+    	{
+        	return false;
+    	}
+
+    	bool Lockable::isLocked()
+    	{
+        	return mutex;
+    	}
+
+    	void Lockable::lock()
+    	{
+        	mutex = true;
+    	}
+
+    	void Lockable::unlock()
+    	{
+        	mutex = false;
+    	}
+
+        #ifdef CHIMERA_FREERTOS
+
 		TaskHandle_t INIT_THREAD;
 		bool setupCallbacksEnabled = true;
 		static boost::container::static_vector<Thread_t, maxThreads> registeredThreads;
@@ -150,7 +176,8 @@ namespace Chimera
             }
         }
 
+        #endif 
+
     }
 }
 
-#endif 
