@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CHIMERA_HPP
 #define CHIMERA_HPP
 
@@ -10,7 +11,8 @@ extern void ChimeraInit();
 
 namespace Chimera
 {
-	void delayMilliseconds(uint32_t ms);
+    uint32_t millis();
+    void delayMilliseconds(uint32_t ms);
 	void delayMicroseconds(uint32_t us);
 }
 

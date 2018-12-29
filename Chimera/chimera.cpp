@@ -6,15 +6,20 @@
 #endif
 
 void ChimeraInit()
-{	
-	//Call the inherited system setup functions 
+{
+	//Call the inherited system setup functions
 	cSystemInit();
 }
 
 
 namespace Chimera
 {
-	void delayMilliseconds(uint32_t ms)
+    uint32_t millis()
+    {
+        return CHIMERA_INHERITED_GLOBAL_NAMESPACE::millis();
+    }
+
+    void delayMilliseconds(uint32_t ms)
 	{
 		CHIMERA_INHERITED_GLOBAL_NAMESPACE::delayMilliseconds(ms);
 	}
