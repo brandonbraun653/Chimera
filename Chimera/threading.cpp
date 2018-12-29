@@ -1,11 +1,11 @@
 #include <Chimera/threading.hpp>
-
+#include <boost/container/static_vector.hpp>
 
 namespace Chimera
 {
 	namespace Threading
 	{
-        
+
     	bool Lockable::reserve(const uint32_t timeout_mS)
     	{
         	return false;
@@ -35,7 +35,7 @@ namespace Chimera
 
 		TaskHandle_t INIT_THREAD;
 		bool setupCallbacksEnabled = true;
-		static boost::container::static_vector<Thread_t, maxThreads> registeredThreads;
+        static boost::container::static_vector<Thread_t, maxThreads> registeredThreads;
 
 		/* Private Function:
 		*	Implements a simple timeout while waiting for a newly created thread to complete
@@ -151,7 +151,7 @@ namespace Chimera
 				//Block this task until the init thread resumes it
 				xTaskNotifyWait(0u, 0u, &tmp, portMAX_DELAY);
 			}
-			
+
 			return pdPASS;
 		}
 
@@ -176,7 +176,7 @@ namespace Chimera
             }
         }
 
-        #endif 
+        #endif
 
     }
 }
