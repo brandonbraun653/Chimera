@@ -1,3 +1,20 @@
+/********************************************************************************
+*   File Name:
+*       interface.hpp
+*       
+*   Description:
+*       Defines the hardware interface for the Chimera HAL. All libraries that 
+*       depend upon Chimera are guaranteed to, at a bare minimum, have the
+*       behavior described here. IF that behavior is not implemented, that is the
+*       fault of the underlying hardware drivers.
+*
+*   Note:
+*       This file is kept separate from the actual HAL include file for each HW
+*       driver to prevent possible recursive includes.
+*   
+*   2019 | Brandon Braun | brandonbraun653@gmail.com
+********************************************************************************/
+
 #ifndef CHIMERA_INTERFACE_HPP
 #define CHIMERA_INTERFACE_HPP
 
@@ -10,6 +27,7 @@
 #include <Chimera/types.hpp>
 #include <Chimera/preprocessor.hpp>
 #include <Chimera/threading.hpp>
+#include <Chimera/config.hpp>
 
 namespace Chimera
 {
@@ -533,6 +551,78 @@ namespace Chimera
             }
             #endif 
         };
+
+        #if (CHIMERA_MOD_SERIAL == 0)
+        typedef Interface CHIMERA_INHERITED_SERIAL;
+        #endif 
+    }
+
+    namespace System
+    {
+        class Interface
+        {
+        public:
+
+        private:
+
+        };
+
+        #if(CHIMERA_HWM_SYSCTL == 0)
+        typedef Interface CHIMERA_INHERITED_SYSCTL;
+        #endif
+    }
+
+    namespace Watchdog
+    {
+        class Interface
+        {
+        public:
+            /**
+            *   Initializes the low level hardware needed to configure the watchdog peripheral. 
+            *   This does not start the timer.
+            *
+            *   @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
+            *
+            *   @param[in]  timeout_mS      How many milliseconds can elapse before watchdog expires   
+            *   @return True if the initialization was a success, false if not
+            */
+            virtual bool initialize(const uint32_t timeout_mS) = 0;
+
+            /**
+            *   Starts the watchdog timer. If successful, Interface::kick() must
+            *   be called at regular intervals to prevent the watchdog from firing.
+            *
+            *   @return True if the watchdog was started, false if not
+            */
+            virtual bool start() = 0;
+
+            /**
+            *   Stops the watchdog timer.
+            *
+            *   @return True if the watchdog was stopped, false if not
+            */
+            virtual bool stop() = 0; 
+
+            /**
+            *   Kicks the watchdog timer, starting a new countdown cycle.
+            *
+            *   @return void
+            */
+            virtual void kick() = 0;
+
+            /**
+            *   Gets the actual timeout value achieved by the hardware
+            *   
+            *   @return Timeout value in milliseconds
+            */
+            virtual uint32_t getTimeout() = 0;
+
+            virtual ~Interface() = default;
+        };
+
+        #if(CHIMERA_HWM_WATCHDOG == 0)
+        typedef Interface CHIMERA_INHERITED_WATCHDOG;
+        #endif
     }
 }
 

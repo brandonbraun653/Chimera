@@ -17,42 +17,32 @@
 #include <memory>
 #include <type_traits>
 
+/* Chimera Includes */
+#include <Chimera/config.hpp>
+#include "chimeraPort.hpp"
+
 /** @namespace Chimera */
 namespace Chimera
 {
     /* @namespace Watchdog */
     namespace Watchdog
     {
-        class Interface
+        class WatchdogClass: public CHIMERA_INHERITED_WATCHDOG
         {
         public:
-            
-            virtual void initialize() = 0;
+            WatchdogClass() = default;
+            ~WatchdogClass() = default;
+        
+        private:
 
-            virtual void start() = 0;
-
-            virtual void stop() = 0; 
-
-            virtual void kick() = 0;
-
-            virtual ~Interface() = default;
-        }
-
-        class WatchdogHW : public CHIMERA_INHERITED_WATCHDOG
-        {
-        public:
-            WatchdogHW() = default;
-            ~WatchdogHW() = default;
         };
 
-        static_assert(std::is_base_of<Interface, WatchdogHW>::value, 
-            "CHIMERA: Watchdog base class does not implement the correct interface");
-
-        typedef std::shared_ptr<Chimera::Watchdog::WatchdogHW> WatchdogHW_sPtr;
-        typedef std::unique_ptr<Chimera::Watchdog::WatchdogHW> WatchdogHW_uPtr;
-
-    } // Watchdog
-} // Chimera
+        typedef std::shared_ptr<Chimera::Watchdog::WatchdogClass> WatchdogClass_sPtr;
+        typedef std::unique_ptr<Chimera::Watchdog::WatchdogClass> WatchdogClass_uPtr;
+     
+        static_assert(std::is_base_of<Interface, WatchdogClass>::value, "CHIMERA: Base class does not implement the correct interface");
+    }
+}
 
 
 #endif /* !CHIMERA_WATCHDOG_HPP */

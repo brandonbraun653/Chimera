@@ -9,6 +9,8 @@
 #include <Chimera/chimera.hpp>
 #include <Chimera/config.hpp>
 
+#include "chimeraPort.hpp"
+
 namespace Chimera
 {
 	namespace SPI
@@ -23,6 +25,9 @@ namespace Chimera
 
 		typedef std::shared_ptr<SPIClass> SPIClass_sPtr;
 		typedef std::unique_ptr<SPIClass> SPIClass_uPtr;
+
+    	static_assert(std::is_base_of<Interface, SPIClass>::value, "CHIMERA: Base class does not implement the correct interface");
+
 	}
 }
 

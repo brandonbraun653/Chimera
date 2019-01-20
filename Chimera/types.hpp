@@ -97,15 +97,8 @@ namespace Chimera
     /** @namespace Chimera::SPI */
 	namespace SPI
 	{
-        enum class Status : int
+        enum class Status : uint8_t
 		{
-    		FAILED_RELEASE = -5,
-            FAILED_LOCK = -4,
-    		FAILED_CONVERSION = -3,
-			FAILED_INITIALIZATION = -2,
-			INVALID_HARDWARE_PARAM = -1,
-
-
 			OK = 0,
 			BUSY,
 			LOCKED,
@@ -117,6 +110,11 @@ namespace Chimera
 			RX_IN_PROGRESS,
 			PACKET_TOO_LARGE_FOR_BUFFER,
 			TIMEOUT,
+            FAILED_RELEASE,
+            FAILED_LOCK,
+    		FAILED_CONVERSION,
+			FAILED_INITIALIZATION,
+			INVALID_HARDWARE_PARAM,
 			UNKNOWN_STATUS_CODE
 		};
 
@@ -253,6 +251,18 @@ namespace Chimera
         	bool asyncReady;
     	} HardwareStatus;
 
+    }
+
+    namespace System
+    {
+        enum class Status : uint8_t
+        {
+            OK = 0,
+            NOT_SUPPORTED,
+
+            UNKNOWN_STATUS,
+            MAX_STATUS
+        };
     }
 
     namespace Threading

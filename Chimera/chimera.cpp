@@ -3,6 +3,7 @@
 
 #ifdef CHIMERA_FREERTOS
 #include <Chimera/threading.hpp>
+#include "chimeraPort.hpp"
 #endif
 
 void ChimeraInit()
