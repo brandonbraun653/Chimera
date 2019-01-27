@@ -562,6 +562,12 @@ namespace Chimera
         class Interface
         {
         public:
+            
+            virtual Status reasonForReset(ResetType &reason)
+            {
+                reason = ResetType::UNKNOWN_RESET;
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
 
         private:
 
@@ -584,38 +590,66 @@ namespace Chimera
             *   @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
             *
             *   @param[in]  timeout_mS      How many milliseconds can elapse before watchdog expires   
-            *   @return True if the initialization was a success, false if not
+            *   @return Status::OK if the initialization was a success, Status::FAIL if not
             */
-            virtual bool initialize(const uint32_t timeout_mS) = 0;
+            virtual Status initialize(const uint32_t timeout_mS)
+            {
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
 
             /**
             *   Starts the watchdog timer. If successful, Interface::kick() must
             *   be called at regular intervals to prevent the watchdog from firing.
             *
-            *   @return True if the watchdog was started, false if not
+            *   @return Peripheral status
             */
-            virtual bool start() = 0;
+            virtual Status start()
+            {
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
 
             /**
             *   Stops the watchdog timer.
             *
-            *   @return True if the watchdog was stopped, false if not
+            *   @return Peripheral status
             */
-            virtual bool stop() = 0; 
+            virtual Status stop()
+            {
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
 
             /**
             *   Kicks the watchdog timer, starting a new countdown cycle.
             *
-            *   @return void
+            *   @return Peripheral status
             */
-            virtual void kick() = 0;
+            virtual Status kick()
+            {
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
 
             /**
             *   Gets the actual timeout value achieved by the hardware
             *   
-            *   @return Timeout value in milliseconds
+            *   @param[out] timeout     Timeout value in milliseconds
+            *   @return Peripheral status
             */
-            virtual uint32_t getTimeout() = 0;
+            virtual Status getTimeout(uint32_t &timeout)
+            {
+                timeout = 0u;
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
+
+            /**
+            *   Configures the watchdog to stop on connection to a debugger
+            *
+            *   @param[in]  enable      If true, allows the watchdog to stop. Otherwise, it continues running
+            *   @return Peripheral status
+            */
+            virtual Status pauseOnDebugHalt(const bool enable)
+            {
+                return Status::FEATURE_NOT_SUPPORTED;
+            }
 
             virtual ~Interface() = default;
         };

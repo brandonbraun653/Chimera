@@ -258,16 +258,38 @@ namespace Chimera
         enum class Status : uint8_t
         {
             OK = 0,
-            NOT_SUPPORTED,
+            FEATURE_NOT_SUPPORTED,
 
             UNKNOWN_STATUS,
             MAX_STATUS
+        };
+
+        enum class ResetType : uint8_t
+        {
+            BROWN_OUT,
+            SOFTWARE,
+            HW_WATCHDOG_TIMEOUT,
+            UNKNOWN_RESET,
+            MAX_RESET_TYPE
         };
     }
 
     namespace Threading
     {
 
+    }
+
+    namespace Watchdog
+    {
+        enum class Status : uint8_t 
+        {
+            OK,
+            FAIL,
+
+            FEATURE_NOT_SUPPORTED,
+            UNKOWN_STATUS,
+            MAX_STATUS
+        };
     }
 
     /** @namespace Chimera::FreeRTOS */
