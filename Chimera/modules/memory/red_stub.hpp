@@ -20,7 +20,6 @@ extern "C" {
 #include <stdlib.h>
 #include <stdint.h>
 
-
 /* Driver Includes */
 #include "rederrno.h"
 #include "redosserv.h"
