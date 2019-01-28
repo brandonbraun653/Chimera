@@ -12,9 +12,34 @@
 #ifndef CHIMERA_RED_DRIVER_HPP
 #define CHIMERA_RED_DRIVER_HPP
 
-// Need to look at the full posix api thing and see what functions need to be wrapped.
-//
-// Also, what's my game plan for keeping track of which device I am on? Somehow each call
-// into the stubs should identify the device, but I don't know how...yet.
+/* Reliance Edge FS Includes */
+#ifdef __cplusplus
+extern "C" {
+#include "redfs.h"
+}
+#endif
+
+/* C++ Includes */
+#include <cstdint>
+#include <memory>
+#include <type_traits>
+
+/* Chimera Includes */
+#include <Chimera/modules/memory/blockDevice.hpp>
+
+namespace Red
+{
+    static constexpr uint8_t MAX_MEMORY_DEVICES = 5;
+
+    class RedFS
+    {
+    public:
+
+        REDSTATUS init(Chimera::Modules::Memory::BlockDevice_sPtr &device);
+
+    private:
+
+    };
+}
 
 #endif /* !CHIMERA_RED_DRIVER_HPP */

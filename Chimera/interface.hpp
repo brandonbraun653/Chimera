@@ -1,9 +1,9 @@
 /********************************************************************************
 *   File Name:
 *       interface.hpp
-*       
+*
 *   Description:
-*       Defines the hardware interface for the Chimera HAL. All libraries that 
+*       Defines the hardware interface for the Chimera HAL. All libraries that
 *       depend upon Chimera are guaranteed to, at a bare minimum, have the
 *       behavior described here. IF that behavior is not implemented, that is the
 *       fault of the underlying hardware drivers.
@@ -11,7 +11,7 @@
 *   Note:
 *       This file is kept separate from the actual HAL include file for each HW
 *       driver to prevent possible recursive includes.
-*   
+*
 *   2019 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <array>
+#include <type_traits>
 
 /* Chimera Includes */
 #include <Chimera/types.hpp>
@@ -375,7 +376,7 @@ namespace Chimera
 
             /**
             *   Change the baud rate of the peripheral at run time
-            *   
+            *
             *   @param[in]  baud    Desired baud rate to be used
             *   @return Chimera::Serial::Status
             */
@@ -388,7 +389,7 @@ namespace Chimera
             *   @see enableDoubleBuffering
             *
             *   @param[in]  periph  The peripheral to switch modes with
-            *   
+            *
             */
             virtual Status setMode(const SubPeripheral periph, const Modes mode) = 0;
 
@@ -396,14 +397,14 @@ namespace Chimera
             *   Writes data onto the wire
             *
             *   @note Depending on the mode, this function will behave a bit differently.
-            *   
+            *
             *   Blocking Mode:
             *       The function won't return until the data has been transmitted.
             *
             *   Interrupt & DMA:
             *       The function immediately returns after queuing up the transfer. Double
             *       buffering must be enabled in order for these modes to work correctly. Up
-            *       to two transfers can be queued at once, the length being limited to the 
+            *       to two transfers can be queued at once, the length being limited to the
             *       size passed into enableDoubleBuffering().
             *
             *   @param[in]  buffer  The data to be written on the wire
@@ -416,15 +417,15 @@ namespace Chimera
             *   Read an exact number of bytes from the wire
             *
             *   @note Depending on the mode, this function will behave a bit differently.
-            *   
+            *
             *   Blocking Mode:
             *       The function won't return until the number of bytes specified has been received.
             *
             *   Interrupt & DMA:
             *       The function immediately returns after queuing up the reception. Double
             *       buffering must be enabled in order for these modes to work correctly. Up
-            *       to two receptions can be queued at once, the length being limited to the 
-            *       size passed into enableDoubleBuffering(). 
+            *       to two receptions can be queued at once, the length being limited to the
+            *       size passed into enableDoubleBuffering().
             *
             *   @param[in]  buffer  The data to be received from the wire
             *   @param[in]  length  How many bytes to read
@@ -446,7 +447,7 @@ namespace Chimera
 
             /**
             *   Get the state of common hardware registers and status fields
-            *   
+            *
             *   @param[in]  status  Structure to fill with status information
             *   @return void
             */
@@ -458,8 +459,8 @@ namespace Chimera
             /**
             *   Turns on double buffering for asynchronous modes (Interrupt, DMA)
             *
-            *   Allows the Serial channel to read/write data on one buffer while the user can read/write 
-            *   on the other. This should help prevent missing data when the RX length is unknown or when 
+            *   Allows the Serial channel to read/write data on one buffer while the user can read/write
+            *   on the other. This should help prevent missing data when the RX length is unknown or when
             *   there is lots of traffic.
             *
             *   @note Either buffer could be modified inside an ISR, hence the necessity for volatile storage class.
@@ -470,7 +471,7 @@ namespace Chimera
             *   @param[in]  length      The minimum size of both buffers
             *   @return Chimera::Serial::Status
             */
-            virtual Status enableDoubleBuffering(const SubPeripheral periph, 
+            virtual Status enableDoubleBuffering(const SubPeripheral periph,
                 volatile uint8_t *const bufferOne,
                 volatile uint8_t *const bufferTwo,
                 const size_t length)
@@ -482,7 +483,7 @@ namespace Chimera
             *   Turns off the double buffering feature
             *
             *   @note This will automatically transition both TX & RX subperipherals back to blocking mode
-            *   
+            *
             *   @return Chimera::Serial::Status
             */
             virtual Status disableDoubleBuffering()
@@ -492,7 +493,7 @@ namespace Chimera
 
             /**
             *   Check if data is available to be read. Only works when double buffering is enabled.
-            *   
+            *
             *   @param[in]  bytes   Optionally report back how many bytes are ready
             *   @return True if any data is ready, false if not
             */
@@ -503,7 +504,7 @@ namespace Chimera
 
             /**
             *   Attach a signal to get notified when an event occurs
-            *   
+            *
             *   @param[in]  event       The event to be notified on
             *   @param[in]  notifier    The notification variable
             *   @return void
@@ -515,8 +516,8 @@ namespace Chimera
 
             /**
             *   Remove an event notification signal
-            *   
-            *   @param[in]  event       The event to remove the notifier 
+            *
+            *   @param[in]  event       The event to remove the notifier
             *   @param[in]  notifier    The notification variable
             *   @return void
             */
@@ -528,7 +529,7 @@ namespace Chimera
             #if defined(USING_FREERTOS)
             /**
             *   Attach a signal to get notified when an event occurs
-            *   
+            *
             *   @param[in]  event   The event to be notified on
             *   @param[in]  semphr  The notification variable
             *   @return void
@@ -540,8 +541,8 @@ namespace Chimera
 
             /**
             *   Remove an event notification signal
-            *   
-            *   @param[in]  event   The event to remove the notifier 
+            *
+            *   @param[in]  event   The event to remove the notifier
             *   @param[in]  semphr  The notification variable
             *   @return void
             */
@@ -549,12 +550,12 @@ namespace Chimera
             {
                 return Status::FEATURE_NOT_ENABLED;
             }
-            #endif 
+            #endif
         };
 
         #if (CHIMERA_MOD_SERIAL == 0)
         typedef Interface CHIMERA_INHERITED_SERIAL;
-        #endif 
+        #endif
     }
 
     namespace System
@@ -562,7 +563,7 @@ namespace Chimera
         class Interface
         {
         public:
-            
+
             virtual Status reasonForReset(ResetType &reason)
             {
                 reason = ResetType::UNKNOWN_RESET;
@@ -584,12 +585,12 @@ namespace Chimera
         {
         public:
             /**
-            *   Initializes the low level hardware needed to configure the watchdog peripheral. 
+            *   Initializes the low level hardware needed to configure the watchdog peripheral.
             *   This does not start the timer.
             *
             *   @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
             *
-            *   @param[in]  timeout_mS      How many milliseconds can elapse before watchdog expires   
+            *   @param[in]  timeout_mS      How many milliseconds can elapse before watchdog expires
             *   @return Status::OK if the initialization was a success, Status::FAIL if not
             */
             virtual Status initialize(const uint32_t timeout_mS)
@@ -630,7 +631,7 @@ namespace Chimera
 
             /**
             *   Gets the actual timeout value achieved by the hardware
-            *   
+            *
             *   @param[out] timeout     Timeout value in milliseconds
             *   @return Peripheral status
             */
@@ -649,6 +650,11 @@ namespace Chimera
             virtual Status pauseOnDebugHalt(const bool enable)
             {
                 return Status::FEATURE_NOT_SUPPORTED;
+            }
+
+            virtual bool isSupported()
+            {
+                return false;
             }
 
             virtual ~Interface() = default;

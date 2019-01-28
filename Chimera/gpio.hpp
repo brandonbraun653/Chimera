@@ -10,6 +10,8 @@
 #include <Chimera/chimera.hpp>
 #include <Chimera/config.hpp>
 
+#include "chimeraPort.hpp"
+
 /** @namespace Chimera */
 namespace Chimera
 {
@@ -25,6 +27,8 @@ namespace Chimera
 
 		typedef std::shared_ptr<Chimera::GPIO::GPIOClass> GPIOClass_sPtr;
 		typedef std::unique_ptr<Chimera::GPIO::GPIOClass> GPIOClass_uPtr;
+
+        static_assert(std::is_base_of<Interface, GPIOClass>::value, "CHIMERA: Base class does not implement the correct interface");
 	}
 }
 
