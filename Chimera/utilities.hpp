@@ -3,6 +3,7 @@
 #define CHIMERA_UTILITIES_HPP
 
 /* C++ Includes */
+#include <array>
 #include <atomic>
 #include <utility>
 #include <vector>

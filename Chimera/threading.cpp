@@ -174,6 +174,8 @@ namespace Chimera
                     returnCode = pdFAIL;
                 }
             }
+
+			return returnCode;
         }
 
         #endif
