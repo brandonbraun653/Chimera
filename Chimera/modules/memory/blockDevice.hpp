@@ -9,6 +9,11 @@
 *   2019 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
+#pragma once
+#ifndef CHIMERA_MOD_MEMORY_BLOCK_DEVICE_HPP
+#define CHIMERA_MOD_MEMORY_BLOCK_DEVICE_HPP
+
+
 /* C++ Includes */
 #include <cstdint>
 #include <memory>
@@ -52,6 +57,11 @@ namespace Chimera
                 BLOCK_DEV_ENOTEMPTY     = 39,   /**< Directory not empty. */
                 BLOCK_DEV_ENODATA       = 61,   /**< No data available. */
                 BLOCK_DEV_EUSERS        = 87,   /**< Too many users. */
+
+                /* Custom Error Codes */
+                BLOCK_DEV_ENOINIT       = 200,  /**< Failed initialization */
+                BLOCK_DEV_ENODEINIT     = 201,  /**< Failed deinitialization */
+                BLOCK_DEV_LOCKED        = 202,  /**< Device is locked from accessing resources */
             };
 
             /**
@@ -127,3 +137,5 @@ namespace Chimera
         }
     }
 }
+
+#endif /* !CHIMERA_MOD_MEMORY_BLOCK_DEVICE_HPP */
