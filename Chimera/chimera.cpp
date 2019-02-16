@@ -1,32 +1,34 @@
+#include "chimeraPort.hpp"
 #include <Chimera/chimera.hpp>
 #include <Chimera/config.hpp>
 
 #ifdef CHIMERA_FREERTOS
 #include <Chimera/threading.hpp>
-#include "chimeraPort.hpp"
 #endif
 
 void ChimeraInit()
 {
-	//Call the inherited system setup functions
-	cSystemInit();
-}
+#ifdef MOD_TEST
 
+#else
+  cSystemInit();
+#endif
+}
 
 namespace Chimera
 {
-    uint32_t millis()
-    {
-        return CHIMERA_INHERITED_GLOBAL_NAMESPACE::millis();
-    }
+  uint32_t millis()
+  {
+    return BACKEND_NAMESPACE::millis();
+  }
 
-    void delayMilliseconds(uint32_t ms)
-	{
-		CHIMERA_INHERITED_GLOBAL_NAMESPACE::delayMilliseconds(ms);
-	}
+  void delayMilliseconds( uint32_t ms )
+  {
+    BACKEND_NAMESPACE::delayMilliseconds( ms );
+  }
 
-	void delayMicroseconds(uint32_t us)
-	{
-		CHIMERA_INHERITED_GLOBAL_NAMESPACE::delayMicroseconds(us);
-	}
-}
+  void delayMicroseconds( uint32_t us )
+  {
+    BACKEND_NAMESPACE::delayMicroseconds( us );
+  }
+}  // namespace Chimera

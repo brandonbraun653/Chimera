@@ -13,22 +13,22 @@
 
 namespace Chimera
 {
-	namespace SPI
-	{
-		class SPIClass : public CHIMERA_INHERITED_SPI
-		{
-		public:
+  namespace SPI
+  {
+    class SPIClass : public CHIMERA_INHERITED_SPI
+    {
+    public:
+      SPIClass( const int &channel ) : CHIMERA_INHERITED_SPI( channel ){};
+      ~SPIClass() = default;
+    };
 
-			SPIClass(const int& channel) : CHIMERA_INHERITED_SPI( channel ) {};
-			~SPIClass() = default;
-        };
+    typedef std::shared_ptr<SPIClass> SPIClass_sPtr;
+    typedef std::unique_ptr<SPIClass> SPIClass_uPtr;
 
-		typedef std::shared_ptr<SPIClass> SPIClass_sPtr;
-		typedef std::unique_ptr<SPIClass> SPIClass_uPtr;
+    static_assert( std::is_base_of<Interface, SPIClass>::value,
+                   "CHIMERA: Base class does not implement the correct interface" );
 
-    	static_assert(std::is_base_of<Interface, SPIClass>::value, "CHIMERA: Base class does not implement the correct interface");
-
-	}
-}
+  }  // namespace SPI
+}  // namespace Chimera
 
 #endif

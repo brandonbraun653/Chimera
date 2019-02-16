@@ -8,12 +8,11 @@
 
 extern void ChimeraInit();
 
-
 namespace Chimera
 {
-    uint32_t millis();
-    void delayMilliseconds(uint32_t ms);
-	void delayMicroseconds(uint32_t us);
-}
+  uint32_t millis();
+  void delayMilliseconds( uint32_t ms );
+  void delayMicroseconds( uint32_t us );
+}  // namespace Chimera
 
 #endif

@@ -1,0 +1,13 @@
+{
+  "inplace": true,
+  "style": "file",
+  "files":[
+  ],
+  "directories":[
+    {
+      "path": "../Chimera",
+      "recursive": true,
+      "extensions": ["*.hpp", "*.cpp"]
+    }
+  ]
+}

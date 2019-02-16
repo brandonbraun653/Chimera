@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\support\freertos\croutine.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\event_groups.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\list.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\queue.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\stream_buffer.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\tasks.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\timers.c">
+      <Filter>freertos</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\support\freertos\include\croutine.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\deprecated_definitions.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\event_groups.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\FreeRTOS.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\list.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\message_buffer.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\mpu_prototypes.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\mpu_wrappers.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\portable.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\projdefs.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\queue.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\semphr.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\StackMacros.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\stack_macros.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\stream_buffer.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\task.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\support\freertos\include\timers.h">
+      <Filter>freertos\include</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\support\freertos\portable\MemMang\heap_4.c">
+      <Filter>freertos\portable\MemMang</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\support\freertos\portable\MSVC-MingW\port.c">
+      <Filter>freertos\portable\MSVC-MingW</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\support\freertos\portable\MSVC-MingW\portmacro.h">
+      <Filter>freertos\portable\MSVC-MingW</Filter>
+    </ClInclude>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
+    <ClCompile Include="..\..\..\..\..\Chimera\modules\freertos\freertos_hooks_prj.cpp">
+      <Filter>Chimera\modules\freertos</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\..\..\tests\gtest_init.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Chimera\mock\chimera_mock_delay.cpp">
+      <Filter>Chimera\mock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Chimera\mock\chimera_mock_watchdog.cpp">
+      <Filter>Chimera\mock</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Chimera\modules\freertos\freertos_hooks_prj.hpp">
+      <Filter>Chimera\modules\freertos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\gtest_init.hpp">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\mock\chimeraPort.hpp">
+      <Filter>Chimera\mock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\mock\delay.hpp">
+      <Filter>Chimera\mock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\mock\watchdog.hpp">
+      <Filter>Chimera\mock</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Chimera">
+      <UniqueIdentifier>{0cb765d5-cf76-401a-9fbd-fb927de3ff52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\modules">
+      <UniqueIdentifier>{e5fb9cfe-f99b-46d4-bd60-148079898884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\modules\memory">
+      <UniqueIdentifier>{9307f19e-6ea4-4574-807c-0478c0e59a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests">
+      <UniqueIdentifier>{ff4a2713-db5c-4664-9b4b-7a026f57946f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\gpio">
+      <UniqueIdentifier>{cfb881fc-51ed-42e3-a66d-1ebe249d6bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\watchdog">
+      <UniqueIdentifier>{abdbad87-a079-4d02-8acc-84759ee77bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="freertos">
+      <UniqueIdentifier>{d1959711-790d-4fe7-9071-74d5ca9a9cee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="freertos\include">
+      <UniqueIdentifier>{478af061-dc57-412f-af69-b8a4392700b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="freertos\portable">
+      <UniqueIdentifier>{375ee100-fcd5-4fe2-8723-4120b515ca11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="freertos\portable\MemMang">
+      <UniqueIdentifier>{8a899093-ad9e-41ca-b9c2-42e3ac105fac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="freertos\portable\MSVC-MingW">
+      <UniqueIdentifier>{2f67d554-f779-4e16-8627-c374f6b073dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\modules\freertos">
+      <UniqueIdentifier>{4796267a-1933-41ef-bcdd-aab7adedfc44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\mock">
+      <UniqueIdentifier>{0e057b7a-0e8f-409e-95c1-67d38614306c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Chimera\chimera.cpp">
+      <Filter>Chimera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Chimera\logging.cpp">
+      <Filter>Chimera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Chimera\threading.cpp">
+      <Filter>Chimera</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\..\..\Chimera\assertion.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\chimera.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\clock.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\config.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\gpio.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\interface.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\logging.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\preprocessor.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\serial.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\spi.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\system.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\threading.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\types.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\utilities.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\watchdog.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Chimera\modules\memory\flash.hpp">
+      <Filter>Chimera\modules\memory</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\tests\gpio\test_gpio.cpp">
+      <Filter>tests\gpio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\watchdog\test_watchdog.cpp">
+      <Filter>tests\watchdog</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
