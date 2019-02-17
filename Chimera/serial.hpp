@@ -17,8 +17,8 @@ namespace Chimera
 {
   namespace Serial
   {
-#ifndef MOD_TEST
-    class SerialClass : public CHIMERA_INHERITED_SERIAL
+#if 0
+  class SerialClass : public CHIMERA_INHERITED_SERIAL
     {
     public:
       SerialClass( const uint8_t channel ) : CHIMERA_INHERITED_SERIAL( channel )
