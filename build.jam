@@ -33,73 +33,26 @@ explicit_alias RTOS : : :
         <use>/PRJ//FreeRTOS_CFG
     ;
 
-
-
-
-lib _BACKEND : UnknownChimeraBackend.c : <ChimeraBackend>none : <link>static ;
-
-
-# ------------------------------------------
-# Thor backend with FreeRTOS enabled 
-# ------------------------------------------
-lib _BACKEND 
-    :   $(chimera_src)
-        /THOR//CORE
-        /FREERTOS//CORE
-
-    :   <Chimera>enabled
-        <FreeRTOS>enabled
-        <ChimeraBackend>Thor
-
-        #<use>/THOR//_CORE_PUB
-        <use>/FREERTOS//PUB
-        <use>/PRJ//CHIMERA_PORT 
-
-    :   <link>static
-
-    :   <use>/THOR//CORE
-        <use>/FREERTOS//CORE
-    ;
-
-explicit _BACKEND ;
-explicit_alias BACKEND : _BACKEND : : <ChimeraBackend>none ;
-
-
-lib _CORE : UnconfiguredChimera.c : <Chimera>disabled : <link>static ;
-
 # ------------------------------------------
 # Chimera library that automatically links to the correct back end drivers
 # ------------------------------------------
-lib _CORE
+lib CORE : UnconfiguredChimera.c : <Chimera>disabled ;
+
+lib CORE
     :   $(chimera_src)
+        /THOR//CORE
 
     :   <Chimera>enabled
+        <ChimeraBackend>Thor
+        <link>static
         <include>$(chimera_inc_dir)
 
-        <use>BACKEND
+        <use>/THOR//PUB
+        <use>/THOR//CORE_PUB
         <use>/PRJ//CHIMERA_PORT         # chimeraPort.hpp
-    :   <link>static
-    :   <include>$(chimera_inc_dir)
+    :   
+    :   
     ;
-explicit _CORE ;
+explicit CORE ;
 
-explicit_alias CORE : _CORE : : <link>static <Chimera>disabled ;
-
-
-
-#My problem somehow lies with the fact that chimera features are being 
-#imposed upon Thor targets as needing to be defined.....I can't have that.
-#So should I use the Thor libraries as a <use> thing instead of as a source?
-#Maybe placing the Thor lib target as a source automatically propagates the 
-#features down, when really what I want is only to USE/link against a built
-#static library....the whole reason I've been avoiding that though is that
-#it seems to negate the effect of the -a flag. Maybe I should do some testing
-#tomorrow....or today since you (future Brandon) are reading this now.
-#
-#Maybe this makes sense from an architectural decision....but then how will
-#Thor know to enable compiler flags to enable Chimera binding?????? Maybe just
-#try TESTING to see if it can still pick up the flags without having things 
-#propagated to it. See line 127 of Thor bjam.
-#
-#I feel like I'm forcing the wrong tool here. I need something closer to
-#a global variable that any target can consume and decide what to do with.
+explicit_alias CHIMERA_CORE : CORE : : <Chimera>disabled ;
