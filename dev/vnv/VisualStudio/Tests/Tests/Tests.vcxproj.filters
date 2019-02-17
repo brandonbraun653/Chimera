@@ -76,14 +76,9 @@
     <ClCompile Include="..\..\..\support\freertos\portable\MemMang\heap_4.c">
       <Filter>freertos\portable\MemMang</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\support\freertos\portable\MSVC-MingW\port.c">
-      <Filter>freertos\portable\MSVC-MingW</Filter>
-    </ClCompile>
     <ClInclude Include="..\..\..\support\freertos\portable\MSVC-MingW\portmacro.h">
       <Filter>freertos\portable\MSVC-MingW</Filter>
     </ClInclude>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="..\..\..\..\..\Chimera\modules\freertos\freertos_hooks_prj.cpp">
       <Filter>Chimera\modules\freertos</Filter>
     </ClCompile>
@@ -96,6 +91,11 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Chimera\mock\chimera_mock_watchdog.cpp">
       <Filter>Chimera\mock</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
+    <ClCompile Include="..\..\..\support\freertos\portable\MSVC-MingW\port.c">
+      <Filter>freertos\portable\MSVC-MingW</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

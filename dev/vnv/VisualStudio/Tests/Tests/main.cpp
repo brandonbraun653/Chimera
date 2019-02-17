@@ -15,9 +15,5 @@ using namespace ::testing;
 int main(int argc, char **argv)
 {
   InitGoogleTest(&argc, argv);
-
-  /* Start up the FreeRTOS back end */
-  AddGlobalTestEnvironment(&FreeRTOSEnv);
-
   return RUN_ALL_TESTS();
 }

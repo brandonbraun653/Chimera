@@ -57,9 +57,8 @@ namespace Chimera
 {
   namespace Threading
   {
-    const uint8_t maxThreads = 15; /**< Maximum number of threads */
-    const uint32_t threadInitCheckDelay_ms =
-      10; /**< How long to wait during thread initialization before polling to check init complete */
+    const uint8_t maxThreads = 15;                  /**< Maximum number of threads */
+    const uint32_t threadInitCheckDelay_ms = 10;    /**< Delay before checking if thread initialization is complete */
     const uint32_t maxThreadInitTimeout_ms = 10000; /**< Max time to wait for thread init sequence to complete */
 
     /** Fully describes thread creation parameters as used in overloaded addThread */
@@ -73,14 +72,15 @@ namespace Chimera
       TaskHandle_t handle;  /**< FreeRTOS generated handle for reference elsewhere */
     };
 
-    /** Starts the FreeRTOS scheduler and initializes execution of all registered threads. This implementation extends the basic
+    /**
+     *  Starts the FreeRTOS scheduler and initializes execution of all registered threads. This implementation extends the basic
      *  FreeRTOS vTaskStartScheduler() function by automatically supporting user setup code in each thread.
      *
-     *	@param[in] useSetupCallbacks	Enables or disables the use of setup callbacks for proper thread initialization. Defaults
-     *to true.
+     *	@param[in] useSetupCallbacks	Enables or disables the use of setup callbacks for proper thread initialization.
+     *	                              Defaults to true.
      *	@return void
-     **/
-    extern void startScheduler( bool useSetupCallbacks = true );
+     */
+    void startScheduler( bool useSetupCallbacks = true );
 
 #ifdef SIM
     /**
@@ -104,7 +104,7 @@ namespace Chimera
      *
      *	@return pdPASS if successful, pdFAIL if not
      **/
-    auto addThread( TaskFunction_t func, const char *name, const uint16_t stackDepth, void *const funcParams,
+    BaseType_t addThread( TaskFunction_t func, const char *name, const uint16_t stackDepth, void *const funcParams,
                     UBaseType_t priority, TaskHandle_t handle );
 
     /** Performs the same operation as the more verbose version, but uses the more compact Thread_t struct to pass in parameters
@@ -112,7 +112,7 @@ namespace Chimera
      *
      *	@return pdPASS if successful, pdFAIL if not
      **/
-    auto addThread( Thread_t &thread );
+    BaseType_t addThread( Thread_t &thread );
 
     /** Safely removes a thread from existence
      *	@param[in]	task	The handle of the thread to be deleted

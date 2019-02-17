@@ -133,12 +133,12 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\include\;%(AdditionalIncludeDirectories);$(BOOST_ROOT)/boost_1_68_0;D:\git\GitHub\Chimera;D:\git\GitHub\Chimera\Chimera\mock;D:\git\GitHub\Chimera\dev\vnv\tests;D:\git\GitHub\Chimera\dev\vnv\support\freertos_config;D:\git\GitHub\Chimera\dev\vnv\support\freertos\include;D:\git\GitHub\Chimera\dev\vnv\support\freertos\portable\MSVC-MingW</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\include\;%(AdditionalIncludeDirectories);$(BOOST_ROOT)/boost_1_68_0;$(ProjectDir)\..\..\..\..\..\..\Chimera;$(ProjectDir)\..\..\..\..\..\..\Chimera\Chimera\mock;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\tests;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\support\freertos_config;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\support\freertos\include;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\support\freertos\portable\MSVC-MingW</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\ProgramFiles\boost\boost_1_68_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)\boost_1_68_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -169,14 +169,14 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\include\;%(AdditionalIncludeDirectories);$(BOOST_ROOT)/boost_1_68_0;D:\git\GitHub\Chimera;D:\git\GitHub\Chimera\Chimera\mock;D:\git\GitHub\Chimera\dev\vnv\tests;D:\git\GitHub\Chimera\dev\vnv\support\freertos_config;D:\git\GitHub\Chimera\dev\vnv\support\freertos\include;D:\git\GitHub\Chimera\dev\vnv\support\freertos\portable\MSVC-MingW</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\include\;%(AdditionalIncludeDirectories);$(BOOST_ROOT)/boost_1_68_0;$(ProjectDir)\..\..\..\..\..\..\Chimera;$(ProjectDir)\..\..\..\..\..\..\Chimera\Chimera\mock;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\tests;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\support\freertos_config;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\support\freertos\include;$(ProjectDir)\..\..\..\..\..\..\Chimera\dev\vnv\support\freertos\portable\MSVC-MingW</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalLibraryDirectories>D:\ProgramFiles\boost\boost_1_68_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)\boost_1_68_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

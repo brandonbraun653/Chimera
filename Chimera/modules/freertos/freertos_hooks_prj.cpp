@@ -8,7 +8,13 @@
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#include <Chimera/chimera.hpp>
+#include <Chimera/mock/delay.hpp>
 #include <Chimera/modules/freertos/freertos_hooks_prj.hpp>
+
+#ifdef SIM
+#include <boost/thread.hpp>
+#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -25,13 +31,35 @@ extern "C"
 
   void vApplicationTickHook()
   {
-    // TODO: Add the callback redirection
+    Chimera::Mock::SystemTickCallback();
+
+    #ifdef SIM
+    /*------------------------------------------------
+    Allow our simulation environment to interrupt the primary
+    FreeRTOS thread. This will throw a boost::thread_interrupted
+    exception.
+    ------------------------------------------------*/
+    boost::this_thread::interruption_point();
+    #endif
   }
 
   void vApplicationMallocFailedHook()
   {
     // TODO: Add the callback redirection
   }
+
+  void vApplicationIdleHook()
+  {
+    #ifdef SIM
+    /*------------------------------------------------
+    Allow our simulation environment to interrupt the primary
+    FreeRTOS thread. This will throw a boost::thread_interrupted
+    exception.
+    ------------------------------------------------*/
+    boost::this_thread::interruption_point();
+    #endif
+  }
+
 
 #ifdef __cplusplus
 }

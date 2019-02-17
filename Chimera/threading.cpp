@@ -131,7 +131,7 @@ namespace Chimera
     }
 #endif
 
-    auto addThread( TaskFunction_t threadFunc, const char *threadName, const uint16_t stackDepth, void *const threadFuncParams,
+    BaseType_t addThread( TaskFunction_t threadFunc, const char *threadName, const uint16_t stackDepth, void *const threadFuncParams,
                     UBaseType_t threadPriority, TaskHandle_t threadHandle )
     {
       volatile BaseType_t error = pdPASS;
@@ -144,7 +144,7 @@ namespace Chimera
       return error;
     }
 
-    auto addThread( Thread_t &thread )
+    BaseType_t addThread( Thread_t &thread )
     {
       return addThread( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, thread.handle );
     }

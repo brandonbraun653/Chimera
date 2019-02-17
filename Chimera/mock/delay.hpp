@@ -16,6 +16,10 @@ namespace Chimera
 {
   namespace Mock
   {
+    void SystemTickCallback();
+
+
+
     uint32_t millis();
 
     void delayMilliseconds( uint32_t ms );
