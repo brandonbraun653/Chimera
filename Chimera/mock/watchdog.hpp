@@ -14,6 +14,10 @@
 
 #include <Chimera/interface.hpp>
 
+/* C++ Includes */
+#include <atomic>
+
+/* Test Framework Includes */
 #include <gmock/gmock.h>
 
 namespace Chimera
@@ -54,13 +58,22 @@ namespace Chimera
 
         bool isSupported() override;
 
+        bool TEST_isTriggered();
+
+        void TEST_reset();
 
         uint32_t tick;
 
+        /* I don't like making this public, but seeing as I'm the only owner of this code,
+        it works for the moment. I know not to override this. */
+        std::atomic<bool> stickyTrigger;
+
       private:
         uint32_t setTimeout;
+        TaskHandle_t task; 
 
       };
+
 
 
     }  // namespace Watchdog

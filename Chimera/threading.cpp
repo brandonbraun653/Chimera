@@ -131,8 +131,8 @@ namespace Chimera
     }
 #endif
 
-    BaseType_t addThread( TaskFunction_t threadFunc, const char *threadName, const uint16_t stackDepth, void *const threadFuncParams,
-                    UBaseType_t threadPriority, TaskHandle_t threadHandle )
+    BaseType_t addThread( TaskFunction_t threadFunc, const char *threadName, const uint16_t stackDepth,
+                          void *const threadFuncParams, UBaseType_t threadPriority, TaskHandle_t threadHandle )
     {
       volatile BaseType_t error = pdPASS;
 
@@ -156,6 +156,10 @@ namespace Chimera
 
     BaseType_t signalThreadSetupComplete()
     {
+
+      // BUG: Completely freezes the system if this function is called 
+      //      after the scheduler has finished the INIT_THREAD and can
+      //      no longer re-enable the calling thread.
       if ( setupCallbacksEnabled )
       {
         uint32_t tmp;

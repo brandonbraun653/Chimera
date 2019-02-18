@@ -39,8 +39,6 @@ protected:
     rtos.join();
 
     vTaskEndScheduler();
-    std::cout << "RTOS Ended" << std::endl;
-
   }
 
 private:

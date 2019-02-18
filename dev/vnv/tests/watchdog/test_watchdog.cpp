@@ -26,20 +26,20 @@
 #include "gmock/gmock.h"
 #include "gtest_init.hpp"
 
-
 using namespace Chimera::Watchdog;
 
 class WatchdogTest : public FreeRTOSTest
 {
-public:
 };
 
-/*------------------------------------------------
-Verify the interface defaults to the correct error code if
-a derived class has not overridden its behavior.
-------------------------------------------------*/
-TEST_F( FreeRTOSTest, NoBackend )
+
+TEST_F( WatchdogTest, DISABLED_NoBackend )
 {
+  /*------------------------------------------------
+  Verify the interface defaults to the correct error code if
+  a derived class has not overridden its behavior.
+  ------------------------------------------------*/
+
   /*------------------------------------------------
   Raw interface
   ------------------------------------------------*/
@@ -81,10 +81,7 @@ TEST_F( FreeRTOSTest, NoBackend )
   ASSERT_EQ( testTimeout, 0u );
 }
 
-/*------------------------------------------------
-Simulator watchdog initialization
-------------------------------------------------*/
-TEST_F( FreeRTOSTest, initialization )
+TEST_F( WatchdogTest, DISABLED_sim_initialization )
 {
   WatchdogClass wd;
   const uint32_t wdTimeout_mS = 1000;
@@ -95,7 +92,7 @@ TEST_F( FreeRTOSTest, initialization )
   ------------------------------------------------*/
   try
   {
-    wd.initialize(wdTimeout_mS);
+    wd.initialize( wdTimeout_mS );
     Chimera::delayMilliseconds( wdTimeout_mS * 2 );
   }
   catch ( const std::exception &e )
@@ -108,7 +105,68 @@ TEST_F( FreeRTOSTest, initialization )
   Make sure the initialization value is reported correctly
   ------------------------------------------------*/
   uint32_t actTimeout = 0;
-  wd.getTimeout(actTimeout);
-  EXPECT_EQ(wdTimeout_mS, actTimeout);
+  wd.getTimeout( actTimeout );
+  EXPECT_EQ( wdTimeout_mS, actTimeout );
 }
 
+TEST_F( WatchdogTest, DISABLED_sim_start )
+{
+  /*------------------------------------------------
+  Verify that the watchdog timer starts properly and eventually
+  triggers itself given an ample overflow time.
+  ------------------------------------------------*/
+  WatchdogClass wd;
+  const uint32_t wdTimeout_mS = 1000;
+
+  wd.initialize( wdTimeout_mS );
+  wd.start();
+  Chimera::delayMilliseconds( wdTimeout_mS * 3 );
+
+  EXPECT_EQ(true, wd.TEST_isTriggered());
+}
+
+TEST_F( WatchdogTest, sim_timeout_boundary)
+{
+  /*------------------------------------------------
+  Verify that the simulator watchdog can hit a reasonable 
+  level of accuracy for triggering a reset flag.
+  ------------------------------------------------*/
+  WatchdogClass wd;
+  const uint32_t wdTimeout_mS = 1000;
+  const uint32_t underflowUpperLimit_mS = 900;
+  const uint32_t overflowLowerLimit_mS = 1500;
+  const uint32_t numAttemps = 10;
+
+  wd.initialize( wdTimeout_mS );
+
+  /*------------------------------------------------
+  Watchdog should never fire
+  ------------------------------------------------*/
+  wd.start();
+  for (uint8_t x = 0; x < numAttemps; x++)
+  {
+    wd.kick();
+    boost::chrono::milliseconds time( underflowUpperLimit_mS );
+    boost::this_thread::sleep_for( time );
+    EXPECT_EQ( false, wd.TEST_isTriggered() ); 
+  }
+  wd.stop();
+
+  /*------------------------------------------------
+  Watchdog should fire every time
+  ------------------------------------------------*/
+  wd.start();
+  for ( uint8_t x = 0; x < numAttemps; x++ )
+  {
+    wd.kick();
+    boost::chrono::milliseconds time( overflowLowerLimit_mS );
+    boost::this_thread::sleep_for( time );
+    EXPECT_EQ( true, wd.TEST_isTriggered() );
+
+    wd.TEST_reset();
+    EXPECT_EQ( false, wd.TEST_isTriggered() );
+  }
+  wd.stop();
+
+
+}

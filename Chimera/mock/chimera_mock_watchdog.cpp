@@ -26,19 +26,21 @@ namespace Chimera
 
         if ( !wd )
         {
-          throw std::invalid_argument("Expected a SimWatchdog instance but got nullptr instead");
+          throw std::invalid_argument( "Expected a SimWatchdog instance but got nullptr instead" );
         }
 
         uint32_t timeout;
         wd->getTimeout( timeout );
 
-        Chimera::Threading::signalThreadSetupComplete();
+        // Chimera::Threading::signalThreadSetupComplete();
 
         for ( ;; )
         {
-          if ((millis() - wd->tick) > timeout)
+          auto current_tick = millis();
+          auto time_elapsed = current_tick - wd->tick;
+          if ( time_elapsed > timeout )
           {
-            throw std::runtime_error("Watchdog timeout occurred!");
+            wd->stickyTrigger = true;
           }
 
           vTaskDelay( pdMS_TO_TICKS( 5 ) );
@@ -49,7 +51,10 @@ namespace Chimera
 
       SimWatchdog::SimWatchdog()
       {
-        setTimeout = 0u;
+        tick          = 0u;
+        task          = NULL;
+        setTimeout    = 0u;
+        stickyTrigger = false;
       }
 
       Chimera::Watchdog::Status SimWatchdog::initialize( const uint32_t timeout_mS )
@@ -60,17 +65,27 @@ namespace Chimera
 
       Chimera::Watchdog::Status SimWatchdog::start()
       {
-        Chimera::Threading::addThread(simWatchdogThread, "wd", 500, this, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY, NULL);
+        if ( task )
+        {
+          vTaskResume( task );
+        }
+        else
+        {
+          xTaskCreate( simWatchdogThread, "wd", 500, this, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY, &task );
+        }
 
         return Chimera::Watchdog::Status::OK;
       }
 
       Chimera::Watchdog::Status SimWatchdog::stop()
       {
-        /*------------------------------------------------
-        Once the watchdog starts, it cannot be stopped.
-        ------------------------------------------------*/
-        return Chimera::Watchdog::Status::FEATURE_NOT_SUPPORTED;
+        if ( task )
+        {
+          vTaskSuspend( task );
+          kick();
+        }
+
+        return Chimera::Watchdog::Status::OK;
       }
 
       Chimera::Watchdog::Status SimWatchdog::kick()
@@ -99,6 +114,18 @@ namespace Chimera
       {
         return true;
       }
+
+      bool SimWatchdog::TEST_isTriggered()
+      {
+        return stickyTrigger;
+      }
+
+      void SimWatchdog::TEST_reset()
+      {
+        stickyTrigger = false;
+        kick();
+      }
+
     }  // namespace Watchdog
   }    // namespace Mock
 }  // namespace Chimera

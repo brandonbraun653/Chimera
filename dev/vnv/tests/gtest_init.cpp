@@ -23,7 +23,6 @@
 /* Boost Includes */
 #include <boost/chrono.hpp>
 
-
 /**
  *  Starts FreeRTOS.
  *
@@ -44,6 +43,4 @@ void FreeRTOSTest::startTaskScheduler()
     boost::chrono::milliseconds time( 100 );
     boost::this_thread::sleep_for( time );
   }
-
-  std::cout << "RTOS Started" << std::endl;
 }

@@ -22,10 +22,8 @@
 #include <Chimera/config.hpp>
 #include <Chimera/interface.hpp>
 
-/** @namespace Chimera */
 namespace Chimera
 {
-  /* @namespace Watchdog */
   namespace Watchdog
   {
 #ifndef CHIMERA_INHERITED_WATCHDOG
