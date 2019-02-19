@@ -46,11 +46,9 @@ namespace Chimera
       HIGH  = true,
       HI    = true,
       ON    = true,
-      TRUE  = true,
       LOW   = false,
       LO    = false,
-      OFF   = false,
-      FALSE = false
+      OFF   = false
     };
 
     enum class Pull : uint8_t

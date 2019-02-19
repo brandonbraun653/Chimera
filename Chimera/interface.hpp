@@ -400,7 +400,7 @@ namespace Chimera
        *   @param[in]  rxMode  What mode to run the RX hardware in
        *   @return Chimera::Serial::Status
        */
-      virtual Status begin( const uint32_t baud, const Modes txMode, const Modes rxMode ) = 0;
+      virtual Chimera::Serial::Status begin( const uint32_t baud, const Modes txMode, const Modes rxMode ) = 0;
 
       /**
        *   Change the baud rate of the peripheral at run time
@@ -408,7 +408,7 @@ namespace Chimera
        *   @param[in]  baud    Desired baud rate to be used
        *   @return Chimera::Serial::Status
        */
-      virtual Status setBaud( const uint32_t buad ) = 0;
+      virtual Chimera::Serial::Status setBaud( const uint32_t buad ) = 0;
 
       /**
        *   Change the hardware transfer mode (Blocking, Interrupt, DMA)
@@ -420,7 +420,7 @@ namespace Chimera
        *   @param[in]  periph  The peripheral to switch modes with
        *
        */
-      virtual Status setMode( const SubPeripheral periph, const Modes mode ) = 0;
+      virtual Chimera::Serial::Status setMode( const SubPeripheral periph, const Modes mode ) = 0;
 
       /**
        *   Writes data onto the wire
@@ -436,11 +436,13 @@ namespace Chimera
        * correctly. Up to two transfers can be queued at once, the length being
        * limited to the size passed into enableDoubleBuffering().
        *
-       *   @param[in]  buffer  The data to be written on the wire
-       *   @param[in]  length  How many bytes to write
-       *   @return Chimera::Serial::Status
+       *  @param[in]  buffer        The data to be written on the wire
+       *  @param[in]  length        How many bytes to write
+       *  @param[in]  timeout_mS    How long to wait on hardware before aborting
+       *  @return Chimera::Serial::Status
        */
-      virtual Status write( const uint8_t *const buffer, const size_t length ) = 0;
+      virtual Chimera::Serial::Status write( const uint8_t *const buffer, const size_t length,
+                                             const uint32_t timeout_mS = 500 ) = 0;
 
       /**
        *   Read an exact number of bytes from the wire
@@ -457,11 +459,12 @@ namespace Chimera
        * correctly. Up to two receptions can be queued at once, the length being
        * limited to the size passed into enableDoubleBuffering().
        *
-       *   @param[in]  buffer  The data to be received from the wire
-       *   @param[in]  length  How many bytes to read
-       *   @return Chimera::Serial::Status
+       *  @param[in]  buffer        The data to be received from the wire
+       *  @param[in]  length        How many bytes to read
+       *  @param[in]  timeout_mS    How long to wait on hardware before aborting
+       *  @return Chimera::Serial::Status
        */
-      virtual Status read( uint8_t *const buffer, const size_t length ) = 0;
+      virtual Chimera::Serial::Status read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
 
       /**
        *   Read bytes from the wire, but the length to read is unknown.
@@ -470,7 +473,7 @@ namespace Chimera
        *   @param[in]  maxLen  Max number of bytes that can be read into the array
        *   @return Chimera::Serial::Status
        */
-      virtual Status readAsync( uint8_t *const buffer, const size_t maxLen )
+      virtual Chimera::Serial::Status readAsync( uint8_t *const buffer, const size_t maxLen )
       {
         return Status::FEATURE_NOT_ENABLED;
       }
@@ -502,8 +505,8 @@ namespace Chimera
        *   @param[in]  length      The minimum size of both buffers
        *   @return Chimera::Serial::Status
        */
-      virtual Status enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
-                                            volatile uint8_t *const bufferTwo, const size_t length )
+      virtual Chimera::Serial::Status enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
+                                                             volatile uint8_t *const bufferTwo, const size_t length )
       {
         return Status::FEATURE_NOT_ENABLED;
       }
@@ -516,7 +519,7 @@ namespace Chimera
        *
        *   @return Chimera::Serial::Status
        */
-      virtual Status disableDoubleBuffering()
+      virtual Chimera::Serial::Status disableDoubleBuffering()
       {
         return Status::FEATURE_NOT_ENABLED;
       }
@@ -540,7 +543,7 @@ namespace Chimera
        *   @param[in]  notifier    The notification variable
        *   @return void
        */
-      virtual Status attachEventNotifier( const Event event, volatile bool *const notifier )
+      virtual Chimera::Serial::Status attachEventNotifier( const Event event, volatile bool *const notifier )
       {
         return Status::FEATURE_NOT_ENABLED;
       }
@@ -552,7 +555,7 @@ namespace Chimera
        *   @param[in]  notifier    The notification variable
        *   @return void
        */
-      virtual Status removeEventNotifier( const Event event, volatile bool *const notifier )
+      virtual Chimera::Serial::Status removeEventNotifier( const Event event, volatile bool *const notifier )
       {
         return Status::FEATURE_NOT_ENABLED;
       }
@@ -565,7 +568,7 @@ namespace Chimera
        *   @param[in]  semphr  The notification variable
        *   @return void
        */
-      virtual Status attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
+      virtual Chimera::Serial::Status attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
       {
         return Status::FEATURE_NOT_ENABLED;
       }
@@ -577,7 +580,7 @@ namespace Chimera
        *   @param[in]  semphr  The notification variable
        *   @return void
        */
-      virtual Status removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
+      virtual Chimera::Serial::Status removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
       {
         return Status::FEATURE_NOT_ENABLED;
       }
