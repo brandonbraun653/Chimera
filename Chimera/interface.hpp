@@ -14,7 +14,7 @@
  *
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
-
+#pragma once
 #ifndef CHIMERA_INTERFACE_HPP
 #define CHIMERA_INTERFACE_HPP
 
@@ -132,7 +132,7 @@ namespace Chimera
         // TODO: This likely will need to turn into a struct with transfer specific
         // information
 
-        return Chimera::SPI::Status::NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -322,7 +322,7 @@ namespace Chimera
        */
       virtual Chimera::SPI::Status onWriteCompleteCallback( const Chimera::void_func_void func )
       {
-        return Chimera::SPI::Status::NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -392,6 +392,7 @@ namespace Chimera
   {
     class Interface : public Threading::Lockable
     {
+    public:
       /**
        *   Starts up the Serial interface with a baud rate and transfer mode
        *
@@ -585,6 +586,16 @@ namespace Chimera
         return Status::FEATURE_NOT_ENABLED;
       }
 #endif
+
+      virtual bool reserve( const uint32_t timeout_mS ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual bool release( const uint32_t timeout_mS ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
     };
 
 #ifndef CHIMERA_INHERITED_SERIAL

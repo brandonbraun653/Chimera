@@ -101,7 +101,7 @@ namespace Chimera
       BUSY,
       LOCKED,
       NOT_INITIALIZED,
-      ERROR,
+      GENERIC_ERROR,
       NOT_READY,
       NOT_SUPPORTED,
       TX_IN_PROGRESS,
@@ -194,7 +194,7 @@ namespace Chimera
     enum class Status : uint8_t
     {
       OK,
-      ERROR,
+      GENERIC_ERROR,
       LOCKED,
       NOT_INITIALIZED,
       TX_IN_PROGRESS,
@@ -305,7 +305,6 @@ namespace Chimera
       SLAVE_RX_BYTE,         /**< Slave receive buffer got a byte */
       SLAVE_RX_HALF,         /**< Slave receive buffer half full */
       SLAVE_RX_FULL,         /**< Slave receive buffer full */
-      ERROR
     };
   }
 }  // namespace Chimera
