@@ -396,12 +396,23 @@ namespace Chimera
       /**
        *   Starts up the Serial interface with a baud rate and transfer mode
        *
-       *   @param[in]  baud    Desired baud rate to be used
        *   @param[in]  txMode  What mode to run the TX hardware in
        *   @param[in]  rxMode  What mode to run the RX hardware in
        *   @return Chimera::Serial::Status
        */
-      virtual Chimera::Serial::Status begin( const uint32_t baud, const Modes txMode, const Modes rxMode ) = 0;
+      virtual Chimera::Serial::Status begin( const Modes txMode, const Modes rxMode ) = 0;
+
+      /**
+       *   De-initializes the serial port
+       */
+      virtual Chimera::Serial::Status end() = 0;
+
+	    /**
+       *   Configures the serial port with the desired properties
+       *
+       */
+      virtual Chimera::Serial::Status configure( const uint32_t baud, const CharWid width, const Parity parity,
+                                                 const StopBits stop, const FlowControl flow ) = 0;
 
       /**
        *   Change the baud rate of the peripheral at run time

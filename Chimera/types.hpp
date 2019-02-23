@@ -43,12 +43,12 @@ namespace Chimera
 
     enum class State : bool
     {
-      HIGH  = true,
-      HI    = true,
-      ON    = true,
-      LOW   = false,
-      LO    = false,
-      OFF   = false
+      HIGH = true,
+      HI   = true,
+      ON   = true,
+      LOW  = false,
+      LO   = false,
+      OFF  = false
     };
 
     enum class Pull : uint8_t
@@ -199,11 +199,18 @@ namespace Chimera
       NOT_INITIALIZED,
       TX_IN_PROGRESS,
       RX_IN_PROGRESS,
+      RX_COMPLETE,
       NOT_READY,
       PACKET_TOO_LARGE_FOR_BUFFER,
       TIMEOUT,
       UNKNOWN_ERROR,
-      FEATURE_NOT_ENABLED
+      FEATURE_NOT_ENABLED,
+      FAILED_WRITE,
+      FAILED_READ,
+      FAILED_OPEN,
+      FAILED_CONFIGURE,
+
+      NUM_STATUS_OPTIONS
     };
 
     enum class BaudRate : uint32_t
@@ -222,6 +229,32 @@ namespace Chimera
       SERIAL_BAUD_230400 = 230400u,
       SERIAL_BAUD_460800 = 460800u,
       SERIAL_BAUD_921600 = 921600u
+    };
+
+    enum class CharWid : uint8_t
+    {
+      CW_8BIT = 8
+    };
+
+    enum class Parity : uint8_t
+    {
+      PAR_NONE = 0,
+      PAR_ODD,
+      PAR_EVEN
+    };
+
+    enum class StopBits : uint8_t
+    {
+      SBITS_ONE = 0,
+      SBITS_ONE_POINT_FIVE,
+      SBITS_TWO
+    };
+
+    enum class FlowControl : uint8_t
+    {
+      FCTRL_NONE,
+      FCTRL_SW,
+      FCTRL_HW
     };
 
     enum class Modes : uint8_t
