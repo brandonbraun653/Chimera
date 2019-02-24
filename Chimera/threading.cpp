@@ -5,12 +5,12 @@ namespace Chimera
 {
   namespace Threading
   {
-    bool Lockable::reserve( const uint32_t timeout_mS )
+    bool Lockable::reserve( const uint32_t timeout_mS ) noexcept
     {
       return false;
     }
 
-    bool Lockable::release( const uint32_t timeout_mS )
+    bool Lockable::release( const uint32_t timeout_mS ) noexcept
     {
       return false;
     }
@@ -157,7 +157,7 @@ namespace Chimera
     BaseType_t signalThreadSetupComplete()
     {
 
-      // BUG: Completely freezes the system if this function is called 
+      // BUG: Completely freezes the system if this function is called
       //      after the scheduler has finished the INIT_THREAD and can
       //      no longer re-enable the calling thread.
       if ( setupCallbacksEnabled )

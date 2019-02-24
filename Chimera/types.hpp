@@ -13,6 +13,21 @@ namespace Chimera
   typedef void ( *void_func_void_ptr )( void * );
   typedef void ( *void_func_uint32_t )( uint32_t );
 
+  using Status_t = uint16_t;
+
+  class CommonStatusCodes
+  {
+  public:
+    static constexpr Status_t UNKNOWN_ERROR   = 0; /**< Don't know what went wrong, but need to report an error */
+    static constexpr Status_t OK              = 1; /**< Everything is just fine. No errors. */
+    static constexpr Status_t NOT_INITIALIZED = 2; /**< The system has not been initialized yet. */
+    static constexpr Status_t LOCKED          = 3; /**< The system has been locked */
+    static constexpr Status_t EXCEPTION       = 4; /**< An exception was thrown */
+    static constexpr Status_t TIMEOUT         = 5; /**< The system timed-out on an operation */
+    static constexpr Status_t NOT_SUPPORTED   = 10; /**< Some system functionality is not enabled/supported */
+  };
+
+
   /** @namespace Chimera::GPIO */
   namespace GPIO
   {
@@ -191,26 +206,20 @@ namespace Chimera
   /** @namespace Chimera::Serial */
   namespace Serial
   {
-    enum class Status : uint8_t
+    class Status : public CommonStatusCodes
     {
-      OK,
-      GENERIC_ERROR,
-      LOCKED,
-      NOT_INITIALIZED,
-      TX_IN_PROGRESS,
-      RX_IN_PROGRESS,
-      RX_COMPLETE,
-      NOT_READY,
-      PACKET_TOO_LARGE_FOR_BUFFER,
-      TIMEOUT,
-      UNKNOWN_ERROR,
-      FEATURE_NOT_ENABLED,
-      FAILED_WRITE,
-      FAILED_READ,
-      FAILED_OPEN,
-      FAILED_CONFIGURE,
+    public:
+      static constexpr Status_t codeOffset = 300;
 
-      NUM_STATUS_OPTIONS
+      static constexpr Status_t TX_IN_PROGRESS              = codeOffset + 3;
+      static constexpr Status_t RX_IN_PROGRESS              = codeOffset + 4;
+      static constexpr Status_t RX_COMPLETE                 = codeOffset + 5;
+      static constexpr Status_t NOT_READY                   = codeOffset + 6;
+      static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 7;
+      static constexpr Status_t FAILED_WRITE                = codeOffset + 11;
+      static constexpr Status_t FAILED_READ                 = codeOffset + 12;
+      static constexpr Status_t FAILED_OPEN                 = codeOffset + 13;
+      static constexpr Status_t FAILED_CONFIGURE            = codeOffset + 14;
     };
 
     enum class BaudRate : uint32_t
@@ -291,7 +300,7 @@ namespace Chimera
     enum class Status : uint8_t
     {
       OK = 0,
-      FEATURE_NOT_SUPPORTED,
+      NOT_SUPPORTED,
 
       UNKNOWN_STATUS,
       MAX_STATUS
@@ -318,7 +327,7 @@ namespace Chimera
       OK,
       FAIL,
 
-      FEATURE_NOT_SUPPORTED,
+      NOT_SUPPORTED,
       UNKOWN_STATUS,
       MAX_STATUS
     };

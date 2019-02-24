@@ -398,29 +398,29 @@ namespace Chimera
        *
        *   @param[in]  txMode  What mode to run the TX hardware in
        *   @param[in]  rxMode  What mode to run the RX hardware in
-       *   @return Chimera::Serial::Status
+       *   @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status begin( const Modes txMode, const Modes rxMode ) = 0;
+      virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) noexcept = 0;
 
       /**
        *   De-initializes the serial port
        */
-      virtual Chimera::Serial::Status end() = 0;
+      virtual Chimera::Status_t end() noexcept = 0;
 
 	    /**
        *   Configures the serial port with the desired properties
        *
        */
-      virtual Chimera::Serial::Status configure( const uint32_t baud, const CharWid width, const Parity parity,
-                                                 const StopBits stop, const FlowControl flow ) = 0;
+      virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity,
+                                                 const StopBits stop, const FlowControl flow ) noexcept = 0;
 
       /**
        *   Change the baud rate of the peripheral at run time
        *
        *   @param[in]  baud    Desired baud rate to be used
-       *   @return Chimera::Serial::Status
+       *   @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status setBaud( const uint32_t buad ) = 0;
+      virtual Chimera::Status_t setBaud( const uint32_t buad ) noexcept = 0;
 
       /**
        *   Change the hardware transfer mode (Blocking, Interrupt, DMA)
@@ -432,7 +432,7 @@ namespace Chimera
        *   @param[in]  periph  The peripheral to switch modes with
        *
        */
-      virtual Chimera::Serial::Status setMode( const SubPeripheral periph, const Modes mode ) = 0;
+      virtual Chimera::Status_t setMode( const SubPeripheral periph, const Modes mode ) noexcept = 0;
 
       /**
        *   Writes data onto the wire
@@ -451,10 +451,10 @@ namespace Chimera
        *  @param[in]  buffer        The data to be written on the wire
        *  @param[in]  length        How many bytes to write
        *  @param[in]  timeout_mS    How long to wait on hardware before aborting
-       *  @return Chimera::Serial::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status write( const uint8_t *const buffer, const size_t length,
-                                             const uint32_t timeout_mS = 500 ) = 0;
+      virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
+                                             const uint32_t timeout_mS = 500 ) noexcept = 0;
 
       /**
        *   Read an exact number of bytes from the wire
@@ -474,20 +474,21 @@ namespace Chimera
        *  @param[in]  buffer        The data to be received from the wire
        *  @param[in]  length        How many bytes to read
        *  @param[in]  timeout_mS    How long to wait on hardware before aborting
-       *  @return Chimera::Serial::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
+      virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length,
+                                            const uint32_t timeout_mS = 500 ) noexcept = 0;
 
       /**
        *   Read bytes from the wire, but the length to read is unknown.
        *
        *   @param[in]  buffer  Array to store the data into
        *   @param[in]  maxLen  Max number of bytes that can be read into the array
-       *   @return Chimera::Serial::Status
+       *   @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status readAsync( uint8_t *const buffer, const size_t maxLen )
+      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t maxLen ) noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -496,7 +497,7 @@ namespace Chimera
        *   @param[in]  status  Structure to fill with status information
        *   @return void
        */
-      virtual void status( HardwareStatus &status )
+      virtual void status( HardwareStatus &status ) noexcept
       {
       }
 
@@ -515,25 +516,25 @@ namespace Chimera
        *   @param[in]  bufferOne   First buffer used
        *   @param[in]  bufferTwo   Second buffer used
        *   @param[in]  length      The minimum size of both buffers
-       *   @return Chimera::Serial::Status
+       *   @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
-                                                             volatile uint8_t *const bufferTwo, const size_t length )
+      virtual Chimera::Status_t enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
+                                                             volatile uint8_t *const bufferTwo, const size_t length ) noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
        *   Turns off the double buffering feature
        *
-       *   @note This will automatically transition both TX & RX subperipherals back
-       * to blocking mode
+       *   @note This will automatically transition both TX & RX sub-peripherals back
+       *    to blocking mode
        *
-       *   @return Chimera::Serial::Status
+       *   @return Chimera::Status_t
        */
-      virtual Chimera::Serial::Status disableDoubleBuffering()
+      virtual Chimera::Status_t disableDoubleBuffering() noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -543,7 +544,7 @@ namespace Chimera
        *   @param[in]  bytes   Optionally report back how many bytes are ready
        *   @return True if any data is ready, false if not
        */
-      virtual bool available( size_t *const bytes = nullptr )
+      virtual bool available( size_t *const bytes = nullptr ) noexcept
       {
         return false;
       }
@@ -555,9 +556,9 @@ namespace Chimera
        *   @param[in]  notifier    The notification variable
        *   @return void
        */
-      virtual Chimera::Serial::Status attachEventNotifier( const Event event, volatile bool *const notifier )
+      virtual Chimera::Status_t attachEventNotifier( const Event event, volatile bool *const notifier ) noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -567,9 +568,9 @@ namespace Chimera
        *   @param[in]  notifier    The notification variable
        *   @return void
        */
-      virtual Chimera::Serial::Status removeEventNotifier( const Event event, volatile bool *const notifier )
+      virtual Chimera::Status_t removeEventNotifier( const Event event, volatile bool *const notifier ) noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 
 #if defined( USING_FREERTOS )
@@ -580,9 +581,9 @@ namespace Chimera
        *   @param[in]  semphr  The notification variable
        *   @return void
        */
-      virtual Chimera::Serial::Status attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
+      virtual Chimera::Status_t attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr ) noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -592,20 +593,20 @@ namespace Chimera
        *   @param[in]  semphr  The notification variable
        *   @return void
        */
-      virtual Chimera::Serial::Status removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
+      virtual Chimera::Status_t removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr ) noexcept
       {
-        return Status::FEATURE_NOT_ENABLED;
+        return Status::NOT_SUPPORTED;
       }
 #endif
 
-      virtual bool reserve( const uint32_t timeout_mS ) override
+      virtual bool reserve( const uint32_t timeout_mS ) noexcept override
       {
-        throw std::logic_error( "The method or operation is not implemented." );
+        return false;
       }
 
-      virtual bool release( const uint32_t timeout_mS ) override
+      virtual bool release( const uint32_t timeout_mS ) noexcept override
       {
-        throw std::logic_error( "The method or operation is not implemented." );
+        return false;
       }
     };
 
@@ -622,7 +623,7 @@ namespace Chimera
       virtual Status reasonForReset( ResetType &reason )
       {
         reason = ResetType::UNKNOWN_RESET;
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
     private:
@@ -652,7 +653,7 @@ namespace Chimera
        */
       virtual Status initialize( const uint32_t timeout_mS )
       {
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -663,7 +664,7 @@ namespace Chimera
        */
       virtual Status start()
       {
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -673,7 +674,7 @@ namespace Chimera
        */
       virtual Status stop()
       {
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -683,7 +684,7 @@ namespace Chimera
        */
       virtual Status kick()
       {
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -695,7 +696,7 @@ namespace Chimera
       virtual Status getTimeout( uint32_t &timeout )
       {
         timeout = 0u;
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       /**
@@ -707,7 +708,7 @@ namespace Chimera
        */
       virtual Status pauseOnDebugHalt( const bool enable )
       {
-        return Status::FEATURE_NOT_SUPPORTED;
+        return Status::NOT_SUPPORTED;
       }
 
       virtual bool isSupported()
