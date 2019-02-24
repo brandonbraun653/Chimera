@@ -6,7 +6,8 @@ AlignConsecutiveDeclarations: 'false'
 AlignEscapedNewlines: Left
 AlignOperands: 'true'
 AlignTrailingComments: 'true'
-AllowShortBlocksOnASingleLine: 'true'
+AllowAllParametersOfDeclarationOnNextLine: 'false'
+AllowShortBlocksOnASingleLine: 'false'
 AllowShortCaseLabelsOnASingleLine: 'false'
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: 'false'
@@ -32,13 +33,14 @@ BraceWrapping:
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
 BreakBeforeInheritanceComma: 'false'
+BreakBeforeBinaryOperators: 'NonAssignment'
 BreakConstructorInitializers: AfterColon
 BreakStringLiterals: 'true'
 ColumnLimit: '128'
 CompactNamespaces: 'true'
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'false'
-ConstructorInitializerIndentWidth: '2'
-ContinuationIndentWidth: '2'
+ConstructorInitializerIndentWidth: '4'
+ContinuationIndentWidth: '4'
 Cpp11BracedListStyle: 'false'
 DerivePointerAlignment: 'false'
 DisableFormat: 'false'
@@ -52,6 +54,8 @@ KeepEmptyLinesAtTheStartOfBlocks: 'false'
 Language: Cpp
 MaxEmptyLinesToKeep: '2'
 NamespaceIndentation: All
+PenaltyBreakAssignment: '50'
+PenaltyReturnTypeOnItsOwnLine: '500'
 PointerAlignment: Right
 ReflowComments: 'true'
 SortIncludes: 'false'
@@ -68,7 +72,7 @@ SpacesInContainerLiterals: 'true'
 SpacesInParentheses: 'true'
 SpacesInSquareBrackets: 'true'
 Standard: Cpp11
-TabWidth: '2'
+TabWidth: '4'
 UseTab: Never
 
 ...

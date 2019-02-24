@@ -18,13 +18,21 @@ namespace Chimera
   class CommonStatusCodes
   {
   public:
-    static constexpr Status_t UNKNOWN_ERROR   = 0; /**< Don't know what went wrong, but need to report an error */
-    static constexpr Status_t OK              = 1; /**< Everything is just fine. No errors. */
-    static constexpr Status_t NOT_INITIALIZED = 2; /**< The system has not been initialized yet. */
-    static constexpr Status_t LOCKED          = 3; /**< The system has been locked */
-    static constexpr Status_t EXCEPTION       = 4; /**< An exception was thrown */
-    static constexpr Status_t TIMEOUT         = 5; /**< The system timed-out on an operation */
+    static constexpr Status_t UNKNOWN_ERROR   = 0;  /**< Don't know what went wrong, but need to report an error */
+    static constexpr Status_t OK              = 1;  /**< Everything is just fine. No errors. */
+    static constexpr Status_t NOT_INITIALIZED = 2;  /**< The system has not been initialized yet. */
+    static constexpr Status_t LOCKED          = 3;  /**< The system has been locked */
+    static constexpr Status_t EXCEPTION       = 4;  /**< An exception was thrown */
+    static constexpr Status_t TIMEOUT         = 5;  /**< The system timed-out on an operation */
     static constexpr Status_t NOT_SUPPORTED   = 10; /**< Some system functionality is not enabled/supported */
+    static constexpr Status_t NOT_READY       = 11; /**< The system is not ready to go yet */
+    static constexpr Status_t TX_IN_PROGRESS  = 12; /**< A transmission is in progress */
+    static constexpr Status_t RX_IN_PROGRESS  = 13; /**< A reception is in progress */
+    static constexpr Status_t BUSY            = 14; /**< The system can't be bothered to respond right now. It's busy. */
+
+    static constexpr Status_t FAILED_INIT    = 30; /**< Somehow failed an initialization sequence */
+    static constexpr Status_t FAILED_LOCK    = 31; /**< Could not lock a resource */
+    static constexpr Status_t FAILED_RELEASE = 32; /**< Could not release a locked resource */
   };
 
 
@@ -110,25 +118,15 @@ namespace Chimera
   /** @namespace Chimera::SPI */
   namespace SPI
   {
-    enum class Status : uint8_t
+    
+    class Status : public CommonStatusCodes
     {
-      OK = 0,
-      BUSY,
-      LOCKED,
-      NOT_INITIALIZED,
-      GENERIC_ERROR,
-      NOT_READY,
-      NOT_SUPPORTED,
-      TX_IN_PROGRESS,
-      RX_IN_PROGRESS,
-      PACKET_TOO_LARGE_FOR_BUFFER,
-      TIMEOUT,
-      FAILED_RELEASE,
-      FAILED_LOCK,
-      FAILED_CONVERSION,
-      FAILED_INITIALIZATION,
-      INVALID_HARDWARE_PARAM,
-      UNKNOWN_STATUS_CODE
+    public:
+      static constexpr Status_t codeOffset = 200;
+
+      static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 1;
+      static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;
+      static constexpr Status_t INVALID_HARDWARE_PARAM      = codeOffset + 3;
     };
 
     enum class Mode : uint8_t
@@ -182,24 +180,22 @@ namespace Chimera
     enum class ChipSelectMode : uint8_t
     {
       MANUAL,                /**< Manually control the state of the chip select line */
-      AUTO_BETWEEN_TRANSFER, /**< Automatically twiddle the chip select between
-                                transfers */
-      AUTO_AFTER_TRANSFER    /**< Automatically disable the chip select after all
-                                transfers complete */
+      AUTO_BETWEEN_TRANSFER, /**< Automatically twiddle the chip select between transfers */
+      AUTO_AFTER_TRANSFER    /**< Automatically disable the chip select after all transfers complete */
     };
 
     struct Setup
     {
-      GPIO::PinInit SCK;
-      GPIO::PinInit MOSI;
-      GPIO::PinInit MISO;
-      GPIO::PinInit CS;
+      GPIO::PinInit SCK;  /**< The GPIO pin settings used for SCK */
+      GPIO::PinInit MOSI; /**< The GPIO pin settings used for MOSI */
+      GPIO::PinInit MISO; /**< The GPIO pin settings used for MISO */
+      GPIO::PinInit CS;   /**< The GPIO pin settings used for CS */
 
-      Mode mode               = Mode::MASTER;
-      DataSize dataSize       = DataSize::SZ_8BIT;
-      BitOrder bitOrder       = BitOrder::MSB_FIRST;
-      ClockMode clockMode     = ClockMode::MODE0;
-      uint32_t clockFrequency = 1000000;
+      Mode mode               = Mode::MASTER;        /**< The primary control method for the peripheral */
+      DataSize dataSize       = DataSize::SZ_8BIT;   /**< How wide each transfer should minimally be */
+      BitOrder bitOrder       = BitOrder::MSB_FIRST; /**< Sets LSB or MSB ordering */
+      ClockMode clockMode     = ClockMode::MODE0;    /**< Sets the clock phase and polarity options */
+      uint32_t clockFrequency = 1000000;             /**< The desired approximate clock frequency */
     };
   }  // namespace SPI
 

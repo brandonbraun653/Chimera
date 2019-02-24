@@ -60,24 +60,24 @@ namespace Chimera
        *  @brief Initializes the SPI hardware according to the setup struct
        *
        *  @param[in]   setupStruct     Contains information on how to initialize SPI
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status init( const Chimera::SPI::Setup &setupStruct ) = 0;
+      virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
 
       /**
        *  @brief Sets the chip select GPIO to a logical state
        *
        *  @param[in]   value   The state to set the chip select to
        */
-      virtual Chimera::SPI::Status setChipSelect( const Chimera::GPIO::State &value ) = 0;
+      virtual Chimera::Status_t setChipSelect( const Chimera::GPIO::State &value ) = 0;
 
       /**
        *  @brief Instruct the chip select to behave in a specific manner
        *
        *  @param[in]  mode    The desired mode for the chip select to operate in
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status setChipSelectControlMode( const Chimera::SPI::ChipSelectMode &mode ) = 0;
+      virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode &mode ) = 0;
 
       /**
        *  @brief Writes data onto the SPI bus
@@ -90,9 +90,9 @@ namespace Chimera
        * caller hold ownership
        *  @param[in]  timeoutMS   If the hardware is not free, wait this amount of
        * time before exiting
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status writeBytes( const uint8_t *const txBuffer, size_t length, const bool &disableCS = true,
+      virtual Chimera::Status_t writeBytes( const uint8_t *const txBuffer, size_t length, const bool &disableCS = true,
                                                const bool &autoRelease = false, uint32_t timeoutMS = 10 ) = 0;
 
       /**
@@ -107,10 +107,10 @@ namespace Chimera
        * caller hold ownership
        *  @param[in]  timeoutMS   If the hardware is not free, wait this amount of
        * time before exiting
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
       template<typename T, std::size_t S>
-      Chimera::SPI::Status writeBytes( const std::array<T, S> &txBuffer, const bool &disableCS = true,
+      Chimera::Status_t writeBytes( const std::array<T, S> &txBuffer, const bool &disableCS = true,
                                        const bool &autoRelease = false, uint32_t timeoutMS = 10 )
       {
         auto constexpr arr = static_cast<uint8_t *>( txBuffer.data() );
@@ -125,14 +125,14 @@ namespace Chimera
        * the transfers.
        *
        *
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status queueTransfers( const std::vector<uint8_t *const> &txBuffers )
+      virtual Chimera::Status_t queueTransfers( const std::vector<uint8_t *const> &txBuffers )
       {
         // TODO: This likely will need to turn into a struct with transfer specific
         // information
 
-        return Status::NOT_SUPPORTED;
+        return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
       /**
@@ -143,9 +143,9 @@ namespace Chimera
        * the transfers.
        *
        *
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status queueTransfers( const uint8_t **const txBuffers )
+      virtual Chimera::Status_t queueTransfers( const uint8_t **const txBuffers )
       {
         // TODO: Same as other, but with an array of the struct type (more memory
         // efficient)
@@ -157,9 +157,9 @@ namespace Chimera
        *  @brief Write data to the slave queue that will be clocked out on the next
        * transfer
        *
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status writeSlaveQueue( const uint8_t *const txBuffer, size_t length )
+      virtual Chimera::Status_t writeSlaveQueue( const uint8_t *const txBuffer, size_t length )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -223,9 +223,9 @@ namespace Chimera
        *  @param[in]   length      Number of bytes to read
        *  @param[in]   disableCS   Optionally disable the chip select line after
        * transmission complete
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status readBytes( uint8_t *const rxBuffer, size_t length, const bool &disableCS = true,
+      virtual Chimera::Status_t readBytes( uint8_t *const rxBuffer, size_t length, const bool &disableCS = true,
                                               const bool &autoRelease = false, uint32_t timeoutMS = 10 ) = 0;
 
       /**
@@ -234,7 +234,7 @@ namespace Chimera
        *	@see readBytes()
        */
       template<typename T, std::size_t S>
-      Chimera::SPI::Status readBytes( std::array<T, S> rxBuffer, const bool &disableCS = true, const bool &autoRelease = false,
+      Chimera::Status_t readBytes( std::array<T, S> rxBuffer, const bool &disableCS = true, const bool &autoRelease = false,
                                       uint32_t timeoutMS = 10 )
       {
         auto constexpr array = static_cast<uint8_t *>( rxBuffer.data() );
@@ -246,9 +246,9 @@ namespace Chimera
        *
        *  @param[in]   rxBuffer    Data buffer to read into
        *  @param[in]   length      Number of bytes to read
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status readSlaveQueue( uint8_t *const rxBuffer, size_t length )
+      virtual Chimera::Status_t readSlaveQueue( uint8_t *const rxBuffer, size_t length )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -261,9 +261,9 @@ namespace Chimera
        *  @param[in]   length      Number of bytes to transfer
        *  @param[in]   disableCS   Optionally disable the chip select line after
        * transmission complete
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
+      virtual Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
                                                    const bool &disableCS = true, const bool &autoRelease = false,
                                                    uint32_t timeoutMS = 10 ) = 0;
 
@@ -274,55 +274,55 @@ namespace Chimera
        *
        *  @param[in]   periph      The peripheral to set the behavior on
        *  @param[in]   mode        Desired operational mode of the peripheral
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status setPeripheralMode( const Chimera::SPI::SubPeripheral &periph,
+      virtual Chimera::Status_t setPeripheralMode( const Chimera::SPI::SubPeripheral &periph,
                                                       const Chimera::SPI::SubPeripheralMode &mode ) = 0;
 
       /**
        *  @brief Change the frequency of the SPI output clock during runtime
        *
        *  @param[in]   freq    Desired SPI clock frequency in Hz
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status setClockFrequency( const uint32_t &freq ) = 0;
+      virtual Chimera::Status_t setClockFrequency( const uint32_t &freq ) = 0;
 
       /**
        *  @brief Get the current SPI clock frequency
        *
        *  @param[out]  freq    Reported SPI clock
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status getClockFrequency( uint32_t *const freq ) = 0;
+      virtual Chimera::Status_t getClockFrequency( uint32_t *const freq ) = 0;
 
       /**
        *  @brief Reserves the SPI hardware to allow unobstructed use
        *
        *  @param[in]  timeout_ms  How many milliseconds to wait for the hardware to
        * become available
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status reserve( const uint32_t &timeout_ms = 0u ) = 0;
+      virtual Chimera::Status_t reserve( const uint32_t &timeout_ms = 0u ) = 0;
 
       /**
        *  @brief Releases a previous reservation
        *
        *  @param[in]  timeout_ms  How many milliseconds to wait for the hardware to
        * release
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status release( const uint32_t &timeout_ms = 0u ) = 0;
+      virtual Chimera::Status_t release( const uint32_t &timeout_ms = 0u ) = 0;
 
       /**
        *  @brief Allows the user to assign a callback function to the write complete
        * event
        *
        *  @param[in]  func  Callback function
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status onWriteCompleteCallback( const Chimera::void_func_void func )
+      virtual Chimera::Status_t onWriteCompleteCallback( const Chimera::void_func_void func )
       {
-        return Status::NOT_SUPPORTED;
+        return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
       /**
@@ -330,9 +330,9 @@ namespace Chimera
        * event
        *
        *  @param[in]  func  Callback function
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status onReadCompleteCallback( const Chimera::void_func_void func )
+      virtual Chimera::Status_t onReadCompleteCallback( const Chimera::void_func_void func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -342,9 +342,9 @@ namespace Chimera
        * complete event
        *
        *  @param[in]  func  Callback function
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status onReadWriteCompleteCallback( const Chimera::void_func_void func )
+      virtual Chimera::Status_t onReadWriteCompleteCallback( const Chimera::void_func_void func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -355,9 +355,9 @@ namespace Chimera
        *  The function will be passed an error code indicating what happened
        *
        *  @param[in]  func  Callback function
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status onErrorCallback( const Chimera::void_func_uint32_t func )
+      virtual Chimera::Status_t onErrorCallback( const Chimera::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -368,19 +368,19 @@ namespace Chimera
        *  @brief Allows the user to have a semaphore given to when an event occurs
        *
        *  @param[in]  event   The event to be waiting on
-       *  @param[in]  semphr  The semaphore to be given to upon event occurance
-       *  @return Chimera::SPI::Status
+       *  @param[in]  semphr  The semaphore to be given to upon event occurrence
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status attachEventWakeup( const Chimera::FreeRTOS::SPIEvent &event,
+      virtual Chimera::Status_t attachEventWakeup( const Chimera::FreeRTOS::SPIEvent &event,
                                                       const SemaphoreHandle_t *const semphr ) = 0;
 
       /**
        *  @brief Removes a semaphore from the event wakeup list
        *
        *  @param[in]  semphr  The semaphore to be removed
-       *  @return Chimera::SPI::Status
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::SPI::Status removeEventWakeup( const SemaphoreHandle_t *const semphr ) = 0;
+      virtual Chimera::Status_t removeEventWakeup( const SemaphoreHandle_t *const semphr ) = 0;
 
 #endif /* !USING_FREERTOS */
 
