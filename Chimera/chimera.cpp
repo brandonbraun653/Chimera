@@ -6,6 +6,12 @@
 #include <Chimera/threading.hpp>
 #endif
 
+#ifdef SIM
+/* Boost Includes */
+#include <boost/thread.hpp>
+#include <boost/chrono.hpp>
+#endif
+
 void ChimeraInit()
 {
 #ifdef MOD_TEST
@@ -30,6 +36,8 @@ namespace Chimera
   {
     #ifdef BACKEND_NAMESPACE
     BACKEND_NAMESPACE::delayMilliseconds( ms );
+    #else
+    boost::this_thread::sleep_for( boost::chrono::milliseconds( ms ) );
     #endif
   }
 
@@ -37,6 +45,8 @@ namespace Chimera
   {
     #ifdef BACKEND_NAMESPACE
     BACKEND_NAMESPACE::delayMicroseconds( us );
+    #else
+    boost::this_thread::sleep_for( boost::chrono::microseconds( us ) );
     #endif
   }
 }  // namespace Chimera
