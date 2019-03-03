@@ -30,9 +30,10 @@ namespace Chimera
     static constexpr Status_t RX_IN_PROGRESS  = 13; /**< A reception is in progress */
     static constexpr Status_t BUSY            = 14; /**< The system can't be bothered to respond right now. It's busy. */
 
-    static constexpr Status_t FAILED_INIT    = 30; /**< Somehow failed an initialization sequence */
-    static constexpr Status_t FAILED_LOCK    = 31; /**< Could not lock a resource */
-    static constexpr Status_t FAILED_RELEASE = 32; /**< Could not release a locked resource */
+    static constexpr Status_t FAIL            = 30; /**< Generic error to signify a non-explicit failure type */
+    static constexpr Status_t FAILED_INIT     = 31; /**< Somehow failed an initialization sequence */
+    static constexpr Status_t FAILED_LOCK     = 32; /**< Could not lock a resource */
+    static constexpr Status_t FAILED_RELEASE  = 33; /**< Could not release a locked resource */
   };
 
 
@@ -128,6 +129,8 @@ namespace Chimera
       static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;
       static constexpr Status_t INVALID_HARDWARE_PARAM      = codeOffset + 3;
       static constexpr Status_t FAILED_CHIP_SELECT_WRITE    = codeOffset + 4;
+      static constexpr Status_t CLOCK_SET_LT                = codeOffset + 5;
+      static constexpr Status_t CLOCK_SET_EQ                = OK;
     };
 
     enum class Mode : uint8_t

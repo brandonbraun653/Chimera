@@ -62,7 +62,15 @@ namespace Chimera
        *  @param[in]   setupStruct     Contains information on how to initialize SPI
        *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
+      virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) noexcept = 0;
+
+      /**
+       *	@brief Destroys all previous hardware setup (virtually or physically)
+       *	Usage of the object after this call requires re-initialization.
+       *
+       *	@return Chimera::Status_t
+       */
+       virtual Chimera::Status_t deInit() noexcept = 0;
 
       /**
        *  @brief Sets the chip select GPIO to a logical state
@@ -280,7 +288,15 @@ namespace Chimera
                                                       const Chimera::SPI::SubPeripheralMode &mode ) = 0;
 
       /**
-       *  @brief Change the frequency of the SPI output clock during runtime
+       *  @brief Change the frequency of the SPI output clock
+       *
+       *  Should work at runtime after the SPI hardware has been configured. If the
+       *  exact clock frequency cannot be met, the next lowest value will be selected
+       *  up to the hardware limits. 
+       *
+       *  For example, if a particular device supports 1MHz, 2MHz, 4MHz and 8MHz clock rates
+       *  and the user requests a clock of 7.5MHz, the hardware will be initialized to 4MHz and
+       *  return a status of Chimera::SPI::Status::CLOCK_SET_LT
        *
        *  @param[in]   freq    Desired SPI clock frequency in Hz
        *  @return Chimera::Status_t
