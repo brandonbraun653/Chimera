@@ -127,6 +127,7 @@ namespace Chimera
       static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 1;
       static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;
       static constexpr Status_t INVALID_HARDWARE_PARAM      = codeOffset + 3;
+      static constexpr Status_t FAILED_CHIP_SELECT_WRITE    = codeOffset + 4;
     };
 
     enum class Mode : uint8_t
