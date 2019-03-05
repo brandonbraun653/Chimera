@@ -18,22 +18,23 @@ namespace Chimera
   class CommonStatusCodes
   {
   public:
-    static constexpr Status_t UNKNOWN_ERROR   = 0;  /**< Don't know what went wrong, but need to report an error */
-    static constexpr Status_t OK              = 1;  /**< Everything is just fine. No errors. */
-    static constexpr Status_t NOT_INITIALIZED = 2;  /**< The system has not been initialized yet. */
-    static constexpr Status_t LOCKED          = 3;  /**< The system has been locked */
-    static constexpr Status_t EXCEPTION       = 4;  /**< An exception was thrown */
-    static constexpr Status_t TIMEOUT         = 5;  /**< The system timed-out on an operation */
-    static constexpr Status_t NOT_SUPPORTED   = 10; /**< Some system functionality is not enabled/supported */
-    static constexpr Status_t NOT_READY       = 11; /**< The system is not ready to go yet */
-    static constexpr Status_t TX_IN_PROGRESS  = 12; /**< A transmission is in progress */
-    static constexpr Status_t RX_IN_PROGRESS  = 13; /**< A reception is in progress */
-    static constexpr Status_t BUSY            = 14; /**< The system can't be bothered to respond right now. It's busy. */
+    static constexpr Status_t UNKNOWN_ERROR      = 0;  /**< Don't know what went wrong, but need to report an error */
+    static constexpr Status_t OK                 = 1;  /**< Everything is just fine. No errors. */
+    static constexpr Status_t NOT_INITIALIZED    = 2;  /**< The system has not been initialized yet. */
+    static constexpr Status_t LOCKED             = 3;  /**< The system has been locked */
+    static constexpr Status_t EXCEPTION          = 4;  /**< An exception was thrown */
+    static constexpr Status_t TIMEOUT            = 5;  /**< The system timed-out on an operation */
+    static constexpr Status_t NOT_SUPPORTED      = 10; /**< Some system functionality is not enabled/supported */
+    static constexpr Status_t NOT_READY          = 11; /**< The system is not ready to go yet */
+    static constexpr Status_t TX_IN_PROGRESS     = 12; /**< A transmission is in progress */
+    static constexpr Status_t RX_IN_PROGRESS     = 13; /**< A reception is in progress */
+    static constexpr Status_t BUSY               = 14; /**< The system can't be bothered to respond right now. It's busy. */
+    static constexpr Status_t INVALID_FUNC_PARAM = 15; /**< A parameter passed into a function was invalid */
 
-    static constexpr Status_t FAIL            = 30; /**< Generic error to signify a non-explicit failure type */
-    static constexpr Status_t FAILED_INIT     = 31; /**< Somehow failed an initialization sequence */
-    static constexpr Status_t FAILED_LOCK     = 32; /**< Could not lock a resource */
-    static constexpr Status_t FAILED_RELEASE  = 33; /**< Could not release a locked resource */
+    static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
+    static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
+    static constexpr Status_t FAILED_LOCK    = 32; /**< Could not lock a resource */
+    static constexpr Status_t FAILED_RELEASE = 33; /**< Could not release a locked resource */
   };
 
 
@@ -119,7 +120,7 @@ namespace Chimera
   /** @namespace Chimera::SPI */
   namespace SPI
   {
-    
+
     class Status : public CommonStatusCodes
     {
     public:
@@ -184,8 +185,8 @@ namespace Chimera
     enum class ChipSelectMode : uint8_t
     {
       MANUAL,                /**< Manually control the state of the chip select line */
-      AUTO_BETWEEN_TRANSFER, /**< Automatically twiddle the chip select between transfers */
-      AUTO_AFTER_TRANSFER    /**< Automatically disable the chip select after all transfers complete */
+      AUTO_BETWEEN_TRANSFER, /**< Twiddle the chip select between transfers, disabling on completion */
+      AUTO_AFTER_TRANSFER    /**< Disable the chip select only after all transfers complete */
     };
 
     struct Setup
