@@ -38,6 +38,7 @@ namespace Chimera
         MOCK_METHOD0( isSupported, bool() );
       };
 
+#if defined( USING_FREERTOS ) 
       class SimWatchdog : public Chimera::Watchdog::Interface
       {
       public:
@@ -70,11 +71,9 @@ namespace Chimera
 
       private:
         uint32_t setTimeout;
-        TaskHandle_t task; 
-
+        TaskHandle_t task;
       };
-
-
+#endif /* !USING_FREERTOS */
 
     }  // namespace Watchdog
   }    // namespace Mock

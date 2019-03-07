@@ -20,6 +20,8 @@ namespace Chimera
   {
     namespace Watchdog
     {
+
+      #if defined( USING_FREERTOS )
       static void simWatchdogThread( void *arguments )
       {
         SimWatchdog *wd = reinterpret_cast<SimWatchdog *>( arguments );
@@ -125,6 +127,7 @@ namespace Chimera
         stickyTrigger = false;
         kick();
       }
+#endif /* !USING_FREERTOS */
 
     }  // namespace Watchdog
   }    // namespace Mock
