@@ -62,7 +62,7 @@ namespace Chimera
        *  @param[in]   setupStruct     Contains information on how to initialize SPI
        *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) noexcept = 0;
+      virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
 
       /**
        *	@brief Destroys all previous hardware setup (virtually or physically)
@@ -70,7 +70,7 @@ namespace Chimera
        *
        *	@return Chimera::Status_t
        */
-       virtual Chimera::Status_t deInit() noexcept = 0;
+       virtual Chimera::Status_t deInit() = 0;
 
       /**
        *  @brief Sets the chip select GPIO to a logical state
