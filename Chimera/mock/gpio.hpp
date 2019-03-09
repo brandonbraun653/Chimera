@@ -30,7 +30,14 @@ namespace Chimera
       MOCK_METHOD1(setState, Chimera::Status_t(const Chimera::GPIO::State));
       MOCK_METHOD1(getState, Chimera::Status_t(const Chimera::GPIO::State &));
       MOCK_METHOD0(toggle, Chimera::Status_t());
+
+      void dummyFunc()
+      {
+      }
     };
+
+    using GPIOMock_sPtr = std::shared_ptr<Chimera::Mock::GPIOMock>;
+    using GPIOMock_uPtr = std::unique_ptr<Chimera::Mock::GPIOMock>;
   }
 }
 

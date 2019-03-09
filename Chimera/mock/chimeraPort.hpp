@@ -11,10 +11,8 @@
 #ifndef CHIMERA_PORT_MOCK_HPP
 #define CHIMERA_PORT_MOCK_HPP
 
-#include <Chimera/mock/delay.hpp>
 #include <Chimera/mock/gpio.hpp>
 #include <Chimera/mock/spi.hpp>
-#include <Chimera/mock/watchdog.hpp>
 
 namespace BACKEND_NAMESPACE = Chimera::Mock;
 

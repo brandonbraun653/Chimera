@@ -12,6 +12,9 @@
 #ifndef CHIMERA_SPI_MOCK_HPP
 #define CHIMERA_SPI_MOCK_HPP
 
+/* C++ Includes */
+#include <memory>
+
 /* Chimera Includes */
 #include <Chimera/interface.hpp>
 
@@ -42,6 +45,9 @@ namespace Chimera
       MOCK_METHOD1( onReadWriteCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t ) );
       MOCK_METHOD1( onErrorCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t ) );
     };
+
+    using SPIMock_sPtr = std::shared_ptr<SPIMock>;
+    using SPIMock_uPtr = std::unique_ptr<SPIMock>;
   }
 }
 
