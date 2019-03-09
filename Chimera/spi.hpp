@@ -15,18 +15,25 @@ namespace Chimera
 {
   namespace SPI
   {
+    /**
+     *  A simple wrapper to provide a common SPI class type for programs built
+     *  with Chimera. The runtime behavior of this class is defined by the user
+     *  provided class type CHIMERA_INHERITED_SPI in chimeraPort.hpp.
+     *
+     *  If no user class is provided, a default disabled behavior version will be
+     *  substituted in its place.
+     */
     class SPIClass : public CHIMERA_INHERITED_SPI
     {
     public:
-      SPIClass( const int &channel ) : CHIMERA_INHERITED_SPI( channel ){};
+      SPIClass() : CHIMERA_INHERITED_SPI(){};
       ~SPIClass() = default;
     };
 
-    typedef std::shared_ptr<SPIClass> SPIClass_sPtr;
-    typedef std::unique_ptr<SPIClass> SPIClass_uPtr;
+    using SPIClass_sPtr = std::shared_ptr<SPIClass>;
+    using SPIClass_uPtr = std::unique_ptr<SPIClass>;
 
-    static_assert( std::is_base_of<Interface, SPIClass>::value,
-                   "CHIMERA: Base class does not implement the correct interface" );
+    static_assert( std::is_base_of<Interface, SPIClass>::value, "Base class implements the wrong interface" );
 
   }  // namespace SPI
 }  // namespace Chimera

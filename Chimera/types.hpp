@@ -29,7 +29,7 @@ namespace Chimera
     static constexpr Status_t TX_IN_PROGRESS     = 12; /**< A transmission is in progress */
     static constexpr Status_t RX_IN_PROGRESS     = 13; /**< A reception is in progress */
     static constexpr Status_t BUSY               = 14; /**< The system can't be bothered to respond right now. It's busy. */
-    static constexpr Status_t INVALID_FUNC_PARAM = 15; /**< A parameter passed into a function was invalid */
+    static constexpr Status_t INVAL_FUNC_PARAM = 15; /**< A parameter passed into a function was invalid */
 
     static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
@@ -41,15 +41,12 @@ namespace Chimera
   /** @namespace Chimera::GPIO */
   namespace GPIO
   {
-    enum class Status : uint8_t
+    class Status : public CommonStatusCodes
     {
-      OK,
-      ERROR_UNINITIALIZED,
-      ERROR_INVALID_PIN,
-      ERROR_INVALID_FUNC,
-      ERROR_INVALID_PORT,
+    public:
+      static constexpr Status_t codeOffset = 100;
 
-      NUM_STATUS_OPTIONS
+      // Add status codes as needed. Currently all CommonStatusCodes suffice.
     };
 
     enum class Drive : uint8_t

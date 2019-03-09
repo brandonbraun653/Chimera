@@ -18,18 +18,25 @@ namespace Chimera
   /** @namespace GPIO */
   namespace GPIO
   {
+    /**
+     *  A simple wrapper to provide a common GPIO class type for programs built
+     *  with Chimera. The runtime behavior of this class is defined by the user
+     *  provided class type CHIMERA_INHERITED_GPIO in chimeraPort.hpp.
+     *
+     *  If no user class is provided, a default disabled behavior version will be
+     *  substituted in its place.
+     */
     class GPIOClass : public CHIMERA_INHERITED_GPIO
     {
     public:
-      GPIOClass()  = default;
+      GPIOClass() : CHIMERA_INHERITED_GPIO(){};
       ~GPIOClass() = default;
     };
 
-    typedef std::shared_ptr<Chimera::GPIO::GPIOClass> GPIOClass_sPtr;
-    typedef std::unique_ptr<Chimera::GPIO::GPIOClass> GPIOClass_uPtr;
+    using GPIOClass_sPtr = std::shared_ptr<Chimera::GPIO::GPIOClass>;
+    using GPIOClass_uPtr = std::unique_ptr<Chimera::GPIO::GPIOClass>;
 
-    static_assert( std::is_base_of<Interface, GPIOClass>::value,
-                   "CHIMERA: Base class does not implement the correct interface" );
+    static_assert( std::is_base_of<Interface, GPIOClass>::value, "Base class implements the wrong interface" );
   }  // namespace GPIO
 }  // namespace Chimera
 

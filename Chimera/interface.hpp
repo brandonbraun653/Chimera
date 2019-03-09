@@ -34,21 +34,133 @@ namespace Chimera
 {
   namespace GPIO
   {
+    /**
+     * Defines expected behavior for all embedded systems that allow the user to control
+     * GPIO pins. This is a pure virtual/abstract class.
+     */
     class Interface : Threading::Lockable
     {
     public:
-      virtual Chimera::GPIO::Status init( const Chimera::GPIO::Port port, const uint8_t pin ) = 0;
-
-      virtual Chimera::GPIO::Status setMode( const Chimera::GPIO::Drive drive, const bool pullup ) = 0;
-
-      virtual Chimera::GPIO::Status setState( const Chimera::GPIO::State state ) = 0;
-
-      virtual Chimera::GPIO::Status getState( Chimera::GPIO::State &state ) = 0;
-
-      virtual Chimera::GPIO::Status toggle() = 0;
-
+      /**
+       *	Virtual destructor necessary for GMock as well as inheritors
+       */
       virtual ~Interface() = default;
+
+      /**
+       *  Initialize the GPIO object to use a specific port and pin assignment.
+       *
+       *	@param[in]	port        The port to be used
+       *	@param[in]	pin         The pin to be used
+       *	@return Chimera::Status_t
+       *
+       *
+       *  |   Return Value   |             Explanation            |
+       *  |:----------------:|:----------------------------------:|
+       *  |               OK | The GPIO was initialized correctly |
+       *  |             FAIL | The GPIO failed initialization     |
+       *  | INVAL_FUNC_PARAM | User passed in an invalid value    |
+       */
+      virtual Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) = 0;
+
+      /**
+       *  Change the GPIO pin electrical input/output behavior mode
+       *
+       *	@param[in]	drive       The new drive mode to be set
+       *	@param[in]	pullup      Enable or disable pullups
+       *	@return Chimera::Status_t
+       *
+       *	|   Return Value   |                 Explanation                 |
+       *  |:----------------:|:-------------------------------------------:|
+       *  |               OK | The pin set the mode and pull-ups correctly |
+       *  |             FAIL | The pin failed applying the settings        |
+       *  | INVAL_FUNC_PARAM | User passed in an invalid value             |
+       *  |  NOT_INITIALIZED | The GPIO object has not been initialized    |
+       */
+      virtual Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const bool pullup ) = 0;
+
+      /**
+       *  Change the logical state of the pin
+       *
+       *	@param[in]	state       The new state to transition into
+       *	@return Chimera::Status_t
+       *
+       *	|   Return Value   |                 Explanation                 |
+       *  |:----------------:|:-------------------------------------------:|
+       *  |               OK | The pin set the new state correctly         |
+       *  |             FAIL | The pin failed applying the settings        |
+       *  |  NOT_INITIALIZED | The GPIO object has not been initialized    |
+       */
+      virtual Chimera::Status_t setState( const Chimera::GPIO::State state ) = 0;
+
+      /**
+       *  Read the current logical state of the pin
+       *
+       *	@param[out]	state       Variable to record the state info into
+       *	@return Chimera::Status_t
+       *
+       *	|   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The pin read the state correctly             |
+       *  |            FAIL | The pin failed reading the state             |
+       *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
+       *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
+       */
+      virtual Chimera::Status_t getState( Chimera::GPIO::State &state ) = 0;
+
+      /**
+       *  Toggle the state of the pin
+       *
+       *	@return Chimera::Status_t
+       *
+       *	|   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The pin toggled correctly                    |
+       *  |            FAIL | The pin failed toggling                      |
+       *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
+       *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
+       */
+      virtual Chimera::Status_t toggle() = 0;
     };
+
+#ifndef CHIMERA_INHERITED_GPIO
+
+    /**
+     * Defines a real GPIO object that has completely disabled functionality. Used to allow code
+     * to compile, but still fail at runtime in a clean manner.
+     */
+    class GPIOUnsupported : public Interface
+    {
+    public:
+      Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) final override
+      {
+        return Chimera::GPIO::Status::FAIL;
+      }
+
+      Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const bool pullup ) final override
+      {
+        return Chimera::GPIO::Status::NOT_INITIALIZED;
+      }
+
+      Chimera::Status_t setState( const Chimera::GPIO::State state ) final override
+      {
+        return Chimera::GPIO::Status::NOT_INITIALIZED;
+      }
+
+      Chimera::Status_t getState( Chimera::GPIO::State &state ) final override
+      {
+        return Chimera::GPIO::Status::NOT_INITIALIZED;
+      }
+
+      Chimera::Status_t toggle() final override
+      {
+        return Chimera::GPIO::Status::NOT_INITIALIZED;
+      }
+    };
+
+    typedef GPIOUnsupported CHIMERA_INHERITED_GPIO;
+
+#endif /* !CHIMERA_INHERITED_GPIO */
+
   }  // namespace GPIO
 
   namespace SPI
@@ -56,213 +168,185 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
- 
       virtual ~Interface() = default;
 
-      virtual void testfunc() {};
-
       /**
-       *  @brief Initializes the SPI hardware according to the setup struct
+       *  Initializes the SPI hardware according to the setup struct
        *
-       *  @param[in]   setupStruct     Contains information on how to initialize SPI
+       *  @param[in]  setupStruct     Contains information on how to initialize SPI
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value   |                        Explanation                        |
+       *  |:----------------:|:---------------------------------------------------------:|
+       *  |               OK | The operation completed successfully                      |
+       *  |             FAIL | The operation failed                                      |
+       *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
        */
       virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
 
       /**
-       *	@brief Destroys all previous hardware setup (virtually or physically)
-       *	Usage of the object after this call requires re-initialization.
+       *	Destroys all previous hardware setup (virtually or physically), which requires
+       *	re-initialization of the object in order to be used again.
        *
        *	@return Chimera::Status_t
+       *
+       *	| Return Value |              Explanation             |
+       *  |:------------:|:------------------------------------:|
+       *  |           OK | The operation completed successfully |
+       *  |         FAIL | The operation failed                 |
        */
-       virtual Chimera::Status_t deInit() = 0;
+      virtual Chimera::Status_t deInit() = 0;
 
       /**
-       *  @brief Sets the chip select GPIO to a logical state
+       *  Sets the chip select GPIO to a logical state
        *
-       *  @param[in]   value   The state to set the chip select to
+       *  @param[in]  value           The state to set the chip select to
+       *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The operation completed successfully         |
+       *  |            FAIL | The operation failed                         |
+       *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
+       *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
       virtual Chimera::Status_t setChipSelect( const Chimera::GPIO::State &value ) = 0;
 
       /**
-       *  @brief Instruct the chip select to behave in a specific manner
+       *  Instruct the chip select to behave in a specific manner
        *
-       *  @param[in]  mode    The desired mode for the chip select to operate in
+       *  @param[in]  mode            The desired mode for the chip select to operate in
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The operation completed successfully         |
+       *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
       virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode &mode ) = 0;
 
       /**
-       *  @brief Writes data onto the SPI bus
+       *  Writes data onto the SPI bus. The number of bytes actually written will be returned
+       *  via onWriteCompleteCallback().
        *
-       *  @param[in]  txBuffer    Data buffer to be sent
-       *  @param[in]  length      Number of bytes to be sent
-       *  @param[in]  disableCS   Optionally disable the chip select line after
-       * transmission complete
-       *  @param[in]  autoRelease Optionally release the SPI HW lock should the
-       * caller hold ownership
-       *  @param[in]  timeoutMS   If the hardware is not free, wait this amount of
-       * time before exiting
+       *  @param[in]  txBuffer        Data buffer to be sent
+       *  @param[in]  length          Number of bytes to be sent (should not be larger than txBuffer)
+       *  @param[in]  timeoutMS       How long to wait for SPI hardware to become available
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The operation completed successfully         |
+       *  |            FAIL | The operation failed                         |
+       *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t writeBytes( const uint8_t *const txBuffer, size_t length, const bool &disableCS = true,
-                                               const bool &autoRelease = false, uint32_t timeoutMS = 10 ) = 0;
+      virtual Chimera::Status_t writeBytes( const uint8_t *const txBuffer, const size_t length, const uint32_t timeoutMS ) = 0;
 
       /**
-       *  @brief Writes data on to the SPI bus
-       *  Acts as a conventient mapping tool to allow the use of std::array to write
-       * data
+       *  Reads data from the SPI bus. The number of bytes actually read will be returned
+       *  via onReadCompleteCallback().
        *
-       *  @param[in]  txBuffer    Data buffer to be sent
-       *  @param[in]  disableCS   Optionally disable the chip select line after
-       * transmission complete
-       *  @param[in]  autoRelease Optionally release the SPI HW lock should the
-       * caller hold ownership
-       *  @param[in]  timeoutMS   If the hardware is not free, wait this amount of
-       * time before exiting
+       *  @param[out] rxBuffer        Data buffer to read into
+       *  @param[in]  length          Number of bytes to read (must not be larger than rxBuffer size)
+       *  @param[in]  timeoutMS       How long to wait for SPI hardware to become available
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The operation completed successfully         |
+       *  |            FAIL | The operation failed                         |
+       *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      template<typename T, std::size_t S>
-      Chimera::Status_t writeBytes( const std::array<T, S> &txBuffer, const bool &disableCS = true,
-                                       const bool &autoRelease = false, uint32_t timeoutMS = 10 )
-      {
-        auto constexpr arr = static_cast<uint8_t *>( txBuffer.data() );
-        return writeBytes( arr, txBuffer.size(), disableCS, autoRelease, timeoutMS );
-      }
+      virtual Chimera::Status_t readBytes( uint8_t *const rxBuffer, const size_t length, const uint32_t timeoutMS ) = 0;
 
       /**
-       *  @brief Reads data from the SPI bus
+       *  Transmits and receives data on the SPI bus in a single operation. Returns the actual
+       *  number of bytes transmitted/received via onReadWriteCompleteCallback().
        *
-       *  Internally,the function will call readWriteBytes() and use the rxBuffer as
-       * the source of bytes to transmit on the MOSI line.
-       *
-       *  Master
-       *  ==================
-       *  This section describes the behavior of readBytes() when SPI is configured
-       * as a master.
-       *
-       *      Blocking Mode
-       *      ------------------
-       *      When called in blocking mode, the SPI hardware will attempt to read a
-       * number of bytes from the bus with an enforced timeout. Should the requested
-       * number of bytes not arrive before the timeout expires, an error code is
-       * returned indicating the timeout.
-       *
-       *      Interrupt Mode
-       *      ------------------
-       *      When using interrupt mode, an ISR handles the transfer. If supported
-       * by the underlying driver, the user can attach callbacks to be notified when
-       * the transfer is complete [onReadCompleteCallback()] or when an error occurs
-       * [onErrorCallback()].
-       *
-       *      DMA Mode
-       *      ------------------
-       *      The DMA hardware will handle the transfer. If supported by the
-       * underlying driver, the user can attach callbacks to be notified when the
-       * transfer is complete [onReadCompleteCallback()] or when an error occurs
-       * [onErrorCallback()].
-       *
-       *
-       *  Slave
-       *  ==================
-       *  This section describes the behavior of readBytes() when SPI is configured
-       * as a slave.
-       *
-       *      Blocking Mode
-       *      ------------------
-       *      When called in blocking mode, the SPI hardware will attempt to read a
-       * number of bytes from MOSI with an enforced timeout. The corresponding bytes
-       * clocked out on MISO will be any data contained in the receive buffer before
-       * the transfer starts. Should the requested number of bytes not arrive before
-       * the timeout expires or the slave select line is not asserted, an error code
-       * is returned indicating the timeout.
-       *
-       *      Interrupt Mode
-       *      ------------------
-       *
-       *
-       *      DMA Mode
-       *      ------------------
-       *
-       *
-       *  @param[out]  rxBuffer    Data buffer to read into
-       *  @param[in]   length      Number of bytes to read
-       *  @param[in]   disableCS   Optionally disable the chip select line after
-       * transmission complete
+       *  @param[in]  txBuffer        Data buffer to write from
+       *  @param[out] rxBuffer        Data buffer to read into
+       *  @param[in]  length          Number of bytes to transfer (must not be larger than rxBuffer size)
+       *  @param[in]  timeoutMS       How long to wait for SPI hardware to become available
        *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t readBytes( uint8_t *const rxBuffer, size_t length, const bool &disableCS = true,
-                                              const bool &autoRelease = false, uint32_t timeoutMS = 10 ) = 0;
-
-      /**
-       *	@brief A templated version of readBytes() for more modern C++
-       *compatibility
-       *	@see readBytes()
-       */
-      template<typename T, std::size_t S>
-      Chimera::Status_t readBytes( std::array<T, S> rxBuffer, const bool &disableCS = true, const bool &autoRelease = false,
-                                      uint32_t timeoutMS = 10 )
-      {
-        auto constexpr array = static_cast<uint8_t *>( rxBuffer.data() );
-        return readBytes( array, rxBuffer.size(), disableCS, autoRelease, timeoutMS );
-      }
-
-      /**
-       *  @brief Transmits and receives data on the SPI bus
        *
-       *  @param[in]   txBuffer    Data buffer to write from
-       *  @param[out]  rxBuffer    Data buffer to read into
-       *  @param[in]   length      Number of bytes to transfer
-       *  @param[in]   disableCS   Optionally disable the chip select line after
-       * transmission complete
-       *  @return Chimera::Status_t
+       *  |   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The operation completed successfully         |
+       *  |            FAIL | The operation failed                         |
+       *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
-                                                   const bool &disableCS = true, const bool &autoRelease = false,
-                                                   uint32_t timeoutMS = 10 ) = 0;
+      virtual Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, const size_t length,
+                                                const uint32_t timeoutMS ) = 0;
 
       /**
-       *  @brief Set the hardware peripheral operational mode.
-       *  This should allow the user to choose if the hardware operates in blocking,
-       * interrupt, or DMA mode
+       *  Set the hardware operational mode in either Blocking, Interrupt, or DMA.
        *
-       *  @param[in]   periph      The peripheral to set the behavior on
-       *  @param[in]   mode        Desired operational mode of the peripheral
+       *  @param[in]  periph          The peripheral to set the behavior on
+       *  @param[in]  mode            Desired operational mode of the peripheral
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                  Explanation                 |
+       *  |:---------------:|:--------------------------------------------:|
+       *  |              OK | The operation completed successfully         |
+       *  |            FAIL | The operation failed                         |
+       *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t setPeripheralMode( const Chimera::SPI::SubPeripheral &periph,
-                                                      const Chimera::SPI::SubPeripheralMode &mode ) = 0;
+      virtual Chimera::Status_t setPeripheralMode( const Chimera::SPI::SubPeripheral periph,
+                                                   const Chimera::SPI::SubPeripheralMode mode ) = 0;
 
       /**
-       *  @brief Change the frequency of the SPI output clock
+       *  Change the frequency of the SPI output clock
        *
        *  Should work at runtime after the SPI hardware has been configured. If the
        *  exact clock frequency cannot be met, the next lowest value will be selected
-       *  up to the hardware limits. 
+       *  up to the hardware limits.
        *
        *  For example, if a particular device supports 1MHz, 2MHz, 4MHz and 8MHz clock rates
-       *  and the user requests a clock of 7.5MHz, the hardware will be initialized to 4MHz and
-       *  return a status of Chimera::SPI::Status::CLOCK_SET_LT
+       *  and the user requests a clock of 7.5MHz with 0% tolerance, the hardware will be
+       *  initialized to 4MHz and return a status of Chimera::SPI::Status::CLOCK_SET_LT.
        *
-       *  @param[in]   freq    Desired SPI clock frequency in Hz
+       *  @param[in]  freq            Desired SPI clock frequency in Hz
+       *  @param[in]  tolerance       Percent tolerance allowed: 0 for exact, 100 for no care
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                              Explanation                             |
+       *  |:---------------:|:--------------------------------------------------------------------:|
+       *  |              OK | The operation completed successfully (CLOCK_SET_EQ)                  |
+       *  |            FAIL | The operation failed                                                 |
+       *  |   NOT_SUPPORTED | This behavior is not supported on the driver                         |
+       *  | NOT_INITIALIZED | The class object has not been initialized                            |
+       *  |    CLOCK_SET_EQ | The desired clock value was achieved exactly or within tolerance     |
+       *  |    CLOCK_SET_LT | The actual clock value achieved was less than the user desired value |
        */
-      virtual Chimera::Status_t setClockFrequency( const uint32_t &freq ) = 0;
+      virtual Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) = 0;
 
       /**
-       *  @brief Get the current SPI clock frequency
+       *  Get the current SPI clock frequency.
        *
-       *  @param[out]  freq    Reported SPI clock
+       *  If the class has not been initialized, the output variable should not be modified.
+       *
+       *  @param[out] freq            Reported SPI clock
        *  @return Chimera::Status_t
+       *
+       *  |   Return Value  |                Explanation                |
+       *  |:---------------:|:-----------------------------------------:|
+       *  |              OK | The operation completed successfully      |
+       *  |            FAIL | The operation failed                      |
+       *  | NOT_INITIALIZED | The class object has not been initialized |
        */
-      virtual Chimera::Status_t getClockFrequency( uint32_t *const freq ) = 0;
+      virtual Chimera::Status_t getClockFrequency( uint32_t &freq ) = 0;
 
       /**
-       *  @brief Reserves the SPI hardware to allow unobstructed use
+       *  Reserves the SPI hardware to allow unobstructed use
        *
-       *  @param[in]  timeout_ms  How many milliseconds to wait for the hardware to
-       * become available
+       *  @param[in]  timeout_ms      How many milliseconds to wait for the hardware to become available
        *  @return Chimera::Status_t
+       *
+       *  |  Return Value |                  Explanation                 |
+       *  |:-------------:|:--------------------------------------------:|
+       *  |            OK | The operation completed successfully         |
+       *  |          FAIL | The operation failed                         |
+       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
       virtual Chimera::Status_t reserve( const uint32_t timeout_mS ) override
       {
@@ -270,11 +354,16 @@ namespace Chimera
       }
 
       /**
-       *  @brief Releases a previous reservation
+       *  Releases a previous reservation
        *
-       *  @param[in]  timeout_ms  How many milliseconds to wait for the hardware to
-       * release
+       *  @param[in]  timeout_ms      How many milliseconds to wait for the hardware to release
        *  @return Chimera::Status_t
+       *
+       *  |  Return Value |                  Explanation                 |
+       *  |:-------------:|:--------------------------------------------:|
+       *  |            OK | The operation completed successfully         |
+       *  |          FAIL | The operation failed                         |
+       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
       virtual Chimera::Status_t release( const uint32_t timeout_mS ) override
       {
@@ -282,78 +371,142 @@ namespace Chimera
       }
 
       /**
-       *  @brief Allows the user to assign a callback function to the write complete
-       * event
+       *  Allows the user to assign a callback function to the write complete event.
+       *  The callback function will be passed a parameter indicating how many bytes were written.
        *
-       *  @param[in]  func  Callback function
+       *  @param[in]  func            User callback function
        *  @return Chimera::Status_t
+       *
+       *  |  Return Value |                  Explanation                 |
+       *  |:-------------:|:--------------------------------------------:|
+       *  |            OK | The operation completed successfully         |
+       *  |          FAIL | The operation failed                         |
+       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onWriteCompleteCallback( const Chimera::void_func_void func )
+      virtual Chimera::Status_t onWriteCompleteCallback( const Chimera::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
       /**
-       *  @brief Allows the user to assign a callback function to the read complete
-       * event
+       *  Allows the user to assign a callback function to the read complete event.
+       *  The callback function will be passed a parameter indicating how many bytes were read.
        *
-       *  @param[in]  func  Callback function
+       *  @param[in]  func            User callback function
        *  @return Chimera::Status_t
+       *
+       *  |  Return Value |                  Explanation                 |
+       *  |:-------------:|:--------------------------------------------:|
+       *  |            OK | The operation completed successfully         |
+       *  |          FAIL | The operation failed                         |
+       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onReadCompleteCallback( const Chimera::void_func_void func )
+      virtual Chimera::Status_t onReadCompleteCallback( const Chimera::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
       /**
-       *  @brief Allows the user to assign a callback function to the read-write
-       * complete event
+       *  Allows the user to assign a callback function to the read-write complete event.
+       *  The callback function will be passed a parameter indicating how many bytes were read/written.
        *
-       *  @param[in]  func  Callback function
+       *  @param[in]  func            User callback function
        *  @return Chimera::Status_t
+       *
+       *  |  Return Value |                  Explanation                 |
+       *  |:-------------:|:--------------------------------------------:|
+       *  |            OK | The operation completed successfully         |
+       *  |          FAIL | The operation failed                         |
+       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onReadWriteCompleteCallback( const Chimera::void_func_void func )
+      virtual Chimera::Status_t onReadWriteCompleteCallback( const Chimera::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
       /**
-       *  @brief Allows the user to assign a callback function on an error event
+       *  Allows the user to assign a callback function on an error event
        *
        *  The function will be passed an error code indicating what happened
        *
-       *  @param[in]  func  Callback function
+       *  @param[in]  func            User callback function
        *  @return Chimera::Status_t
+       *
+       *  |  Return Value |                  Explanation                 |
+       *  |:-------------:|:--------------------------------------------:|
+       *  |            OK | The operation completed successfully         |
+       *  |          FAIL | The operation failed                         |
+       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
       virtual Chimera::Status_t onErrorCallback( const Chimera::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
-
-#if defined( USING_FREERTOS )
-
-      /**
-       *  @brief Allows the user to have a semaphore given to when an event occurs
-       *
-       *  @param[in]  event   The event to be waiting on
-       *  @param[in]  semphr  The semaphore to be given to upon event occurrence
-       *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t attachEventWakeup( const Chimera::FreeRTOS::SPIEvent &event,
-                                                      const SemaphoreHandle_t *const semphr ) = 0;
-
-      /**
-       *  @brief Removes a semaphore from the event wakeup list
-       *
-       *  @param[in]  semphr  The semaphore to be removed
-       *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t removeEventWakeup( const SemaphoreHandle_t *const semphr ) = 0;
-
-#endif /* !USING_FREERTOS */
-
     };
-  }  // namespace SPI
+
+#ifndef CHIMERA_INHERITED_SPI
+    /**
+     * Defines a real SPI object that has completely disabled functionality. Used to allow code
+     * to compile, but still fail at runtime in a clean manner.
+     */
+    class SPIUnsupported : public Interface
+    {
+    public:
+      Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t deInit() final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t setChipSelect( const Chimera::GPIO::State &value ) final override
+      {
+        return Chimera::SPI::Status::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode &mode ) final override
+      {
+        return Chimera::SPI::Status::NOT_INITIALIZED;
+      }
+
+      Chimera::Status_t writeBytes( const uint8_t *const txBuffer, size_t length, uint32_t timeoutMS ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t readBytes( uint8_t *const rxBuffer, size_t length, uint32_t timeoutMS ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
+                                        uint32_t timeoutMS ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t setPeripheralMode( const Chimera::SPI::SubPeripheral periph,
+                                           const Chimera::SPI::SubPeripheralMode mode ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+
+      Chimera::Status_t getClockFrequency( uint32_t &freq ) final override
+      {
+        return Chimera::SPI::Status::FAIL;
+      }
+    };
+
+#endif /* !CHIMERA_INHERITED_SPI */
+  }    // namespace SPI
 
   namespace Serial
   {
@@ -374,12 +527,12 @@ namespace Chimera
        */
       virtual Chimera::Status_t end() noexcept = 0;
 
-	    /**
+      /**
        *   Configures the serial port with the desired properties
        *
        */
-      virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity,
-                                                 const StopBits stop, const FlowControl flow ) noexcept = 0;
+      virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
+                                           const FlowControl flow ) noexcept = 0;
 
       /**
        *   Change the baud rate of the peripheral at run time
@@ -421,7 +574,7 @@ namespace Chimera
        *  @return Chimera::Status_t
        */
       virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
-                                             const uint32_t timeout_mS = 500 ) noexcept = 0;
+                                       const uint32_t timeout_mS = 500 ) noexcept = 0;
 
       /**
        *   Read an exact number of bytes from the wire
@@ -444,7 +597,7 @@ namespace Chimera
        *  @return Chimera::Status_t
        */
       virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length,
-                                            const uint32_t timeout_mS = 500 ) noexcept = 0;
+                                      const uint32_t timeout_mS = 500 ) noexcept = 0;
 
       /**
        *   Read bytes from the wire, but the length to read is unknown.
@@ -486,7 +639,7 @@ namespace Chimera
        *   @return Chimera::Status_t
        */
       virtual Chimera::Status_t enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
-                                                             volatile uint8_t *const bufferTwo, const size_t length ) noexcept
+                                                       volatile uint8_t *const bufferTwo, const size_t length ) noexcept
       {
         return Status::NOT_SUPPORTED;
       }

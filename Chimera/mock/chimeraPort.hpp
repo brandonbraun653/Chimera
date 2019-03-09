@@ -1,9 +1,9 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
+ *    chimeraPort.hpp
  *
- *
- *   Description:
- *
+ *  Description:
+ *    Implements the Chimera back end driver redirects into the mocking framework
  *
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -12,10 +12,13 @@
 #define CHIMERA_PORT_MOCK_HPP
 
 #include <Chimera/mock/delay.hpp>
+#include <Chimera/mock/gpio.hpp>
+#include <Chimera/mock/spi.hpp>
 #include <Chimera/mock/watchdog.hpp>
 
 namespace BACKEND_NAMESPACE = Chimera::Mock;
 
-#define CHIMERA_INHERITED_WATCHDOG Chimera::Mock::Watchdog::SimWatchdog
+#define CHIMERA_INHERITED_GPIO Chimera::Mock::GPIOMock
+#define CHIMERA_INHERITED_SPI Chimera::Mock::SPIMock
 
 #endif /* !CHIMERA_PORT_MOCK_HPP */

@@ -12,6 +12,10 @@ namespace Chimera
 {
   namespace Threading
   {
+    /**
+     *  Implements lock functionality that can simply be inherited into other classes.
+     *  Only guaranteed to be thread safe if using FreeRTOS.
+     */
     class Lockable
     {
     public:
@@ -31,6 +35,22 @@ namespace Chimera
 
     private:
       std::atomic<bool> mutex;
+    };
+
+    /**
+     *  Implements wakeup functionality that can simply be inherited into other classes.
+     *  Only guaranteed to be thread safe if using FreeRTOS.
+     */
+    class Wakeable
+    {
+    public:
+
+      Wakeable() = default;
+      ~Wakeable() = default;
+
+    protected:
+
+    private:
     };
   }  // namespace Threading
 }  // namespace Chimera
