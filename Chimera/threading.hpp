@@ -15,9 +15,9 @@ namespace Chimera
     class Lockable
     {
     public:
-      virtual bool reserve( const uint32_t timeout_mS ) noexcept;
+      virtual Chimera::Status_t reserve( const uint32_t timeout_mS );
 
-      virtual bool release( const uint32_t timeout_mS ) noexcept;
+      virtual Chimera::Status_t release( const uint32_t timeout_mS );
 
       bool isLocked();
 

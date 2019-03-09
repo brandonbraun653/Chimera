@@ -56,6 +56,11 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
+ 
+      virtual ~Interface() = default;
+
+      virtual void testfunc() {};
+
       /**
        *  @brief Initializes the SPI hardware according to the setup struct
        *
@@ -123,53 +128,6 @@ namespace Chimera
       {
         auto constexpr arr = static_cast<uint8_t *>( txBuffer.data() );
         return writeBytes( arr, txBuffer.size(), disableCS, autoRelease, timeoutMS );
-      }
-
-      /**
-       *  @brief Write multiple buffers of data onto the bus
-       *
-       *  This is useful when you want to queue up multiple transmissions but the
-       * calling program needs to go off and do something else instead of managing
-       * the transfers.
-       *
-       *
-       *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t queueTransfers( const std::vector<uint8_t *const> &txBuffers )
-      {
-        // TODO: This likely will need to turn into a struct with transfer specific
-        // information
-
-        return Chimera::SPI::Status::NOT_SUPPORTED;
-      }
-
-      /**
-       *  @brief Write multiple buffers of data onto the bus
-       *
-       *  This is useful when you want to queue up multiple transmissions but the
-       * calling program needs to go off and do something else instead of managing
-       * the transfers.
-       *
-       *
-       *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t queueTransfers( const uint8_t **const txBuffers )
-      {
-        // TODO: Same as other, but with an array of the struct type (more memory
-        // efficient)
-
-        return Chimera::SPI::Status::NOT_SUPPORTED;
-      }
-
-      /**
-       *  @brief Write data to the slave queue that will be clocked out on the next
-       * transfer
-       *
-       *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t writeSlaveQueue( const uint8_t *const txBuffer, size_t length )
-      {
-        return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
       /**
@@ -250,18 +208,6 @@ namespace Chimera
       }
 
       /**
-       *  @brief Reads a number of bytes out from the internal slave receive buffer
-       *
-       *  @param[in]   rxBuffer    Data buffer to read into
-       *  @param[in]   length      Number of bytes to read
-       *  @return Chimera::Status_t
-       */
-      virtual Chimera::Status_t readSlaveQueue( uint8_t *const rxBuffer, size_t length )
-      {
-        return Chimera::SPI::Status::NOT_SUPPORTED;
-      }
-
-      /**
        *  @brief Transmits and receives data on the SPI bus
        *
        *  @param[in]   txBuffer    Data buffer to write from
@@ -318,7 +264,10 @@ namespace Chimera
        * become available
        *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t reserve( const uint32_t &timeout_ms = 0u ) = 0;
+      virtual Chimera::Status_t reserve( const uint32_t timeout_mS ) override
+      {
+        return Chimera::SPI::Status::NOT_SUPPORTED;
+      }
 
       /**
        *  @brief Releases a previous reservation
@@ -327,7 +276,10 @@ namespace Chimera
        * release
        *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t release( const uint32_t &timeout_ms = 0u ) = 0;
+      virtual Chimera::Status_t release( const uint32_t timeout_mS ) override
+      {
+        return Chimera::SPI::Status::NOT_SUPPORTED;
+      }
 
       /**
        *  @brief Allows the user to assign a callback function to the write complete
@@ -400,7 +352,6 @@ namespace Chimera
 
 #endif /* !USING_FREERTOS */
 
-      virtual ~Interface() = default;
     };
   }  // namespace SPI
 
@@ -615,12 +566,12 @@ namespace Chimera
       }
 #endif
 
-      virtual bool reserve( const uint32_t timeout_mS ) noexcept override
+      virtual Chimera::Status_t reserve( const uint32_t timeout_mS ) override
       {
         return false;
       }
 
-      virtual bool release( const uint32_t timeout_mS ) noexcept override
+      virtual Chimera::Status_t release( const uint32_t timeout_mS ) override
       {
         return false;
       }

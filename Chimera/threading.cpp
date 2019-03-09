@@ -5,12 +5,12 @@ namespace Chimera
 {
   namespace Threading
   {
-    bool Lockable::reserve( const uint32_t timeout_mS ) noexcept
+    Chimera::Status_t Lockable::reserve( const uint32_t timeout_mS )
     {
       return false;
     }
 
-    bool Lockable::release( const uint32_t timeout_mS ) noexcept
+    Chimera::Status_t Lockable::release( const uint32_t timeout_mS )
     {
       return false;
     }
