@@ -25,6 +25,10 @@ namespace Chimera
     class SPIClass : public CHIMERA_INHERITED_SPI
     {
     public:
+
+      template<typename T>
+      SPIClass( T &var ) : CHIMERA_INHERITED_SPI( var ){};
+
       SPIClass() : CHIMERA_INHERITED_SPI(){};
       ~SPIClass() = default;
     };
