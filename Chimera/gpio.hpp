@@ -1,3 +1,13 @@
+/********************************************************************************
+ * File Name:
+ *    gpio.hpp
+ *
+ * Description:
+ *    Implements a common wrapper interface to the Chimera GPIO peripheral.
+ *
+ * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
 #pragma once
 #ifndef CHIMERA_GPIO_HPP
 #define CHIMERA_GPIO_HPP

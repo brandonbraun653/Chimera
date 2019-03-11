@@ -135,6 +135,9 @@ namespace Chimera
     class GPIOUnsupported : public Interface
     {
     public:
+      GPIOUnsupported()  = default;
+      ~GPIOUnsupported() = default;
+
       Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) final override
       {
         return Chimera::GPIO::Status::FAIL;
@@ -161,8 +164,7 @@ namespace Chimera
       }
     };
 
-    typedef GPIOUnsupported CHIMERA_INHERITED_GPIO;
-
+    using CHIMERA_INHERITED_GPIO = GPIOUnsupported;
 #endif /* !CHIMERA_INHERITED_GPIO */
 
   }  // namespace GPIO
@@ -456,6 +458,9 @@ namespace Chimera
     class SPIUnsupported : public Interface
     {
     public:
+      SPIUnsupported()  = default;
+      ~SPIUnsupported() = default;
+
       Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) final override
       {
         return Chimera::SPI::Status::FAIL;
@@ -509,8 +514,10 @@ namespace Chimera
       }
     };
 
+    using CHIMERA_INHERITED_SPI = SPIUnsupported;
 #endif /* !CHIMERA_INHERITED_SPI */
-  }    // namespace SPI
+
+  }  // namespace SPI
 
   namespace Serial
   {
@@ -737,6 +744,7 @@ namespace Chimera
 #ifndef CHIMERA_INHERITED_SERIAL
     typedef Interface CHIMERA_INHERITED_SERIAL;
 #endif
+
   }  // namespace Serial
 
   namespace System
@@ -756,6 +764,7 @@ namespace Chimera
 #if ( CHIMERA_HWM_SYSCTL == 0 )
     typedef Interface CHIMERA_INHERITED_SYSCTL;
 #endif
+
   }  // namespace System
 
   namespace Watchdog
@@ -842,6 +851,7 @@ namespace Chimera
 
       virtual ~Interface() = default;
     };
+
   }  // namespace Watchdog
 }  // namespace Chimera
 

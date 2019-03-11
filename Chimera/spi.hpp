@@ -1,3 +1,13 @@
+/********************************************************************************
+ * File Name:
+ *    spi.hpp
+ *
+ * Description:
+ *    Implements a common wrapper interface to the Chimera SPI peripheral.
+ *
+ * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
 #pragma once
 #ifndef CHIMERA_SPI_HPP
 #define CHIMERA_SPI_HPP
