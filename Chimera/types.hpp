@@ -35,6 +35,12 @@ namespace Chimera
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
     static constexpr Status_t FAILED_LOCK    = 32; /**< Could not lock a resource */
     static constexpr Status_t FAILED_RELEASE = 33; /**< Could not release a locked resource */
+
+    /*------------------------------------------------
+    Offsets to identify particular Chimera modules 
+    ------------------------------------------------*/
+    static constexpr Status_t status_offset_module_memory_flash = 1000;
+
   };
 
 
