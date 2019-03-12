@@ -18,6 +18,7 @@
 /* Chimera Includes */
 #include <Chimera/interface.hpp>
 
+#if defined( GMOCK_TEST )
 /* Test Framework Includes */
 #include <gmock/gmock.h>
 
@@ -50,5 +51,7 @@ namespace Chimera
     using SPIMock_uPtr = std::unique_ptr<SPIMock>;
   }
 }
+
+#endif /* GMOCK_TEST */
 
 #endif /* !CHIMERA_SPI_MOCK_HPP */

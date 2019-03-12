@@ -35,6 +35,9 @@ namespace Chimera
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
     static constexpr Status_t FAILED_LOCK    = 32; /**< Could not lock a resource */
     static constexpr Status_t FAILED_RELEASE = 33; /**< Could not release a locked resource */
+    static constexpr Status_t FAILED_WRITE   = 34; /**< Failed some kind of write operation */
+    static constexpr Status_t FAILED_READ    = 35; /**< Failed some kind of read operation */
+    static constexpr Status_t FAILED_ERASE   = 36; /**< Failed some kind of erase operation */
 
     /*------------------------------------------------
     Offsets to identify particular Chimera modules 

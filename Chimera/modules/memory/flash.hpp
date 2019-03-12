@@ -23,9 +23,16 @@ namespace Chimera
     {
       class Status : public Chimera::CommonStatusCodes
       {
-        static constexpr Status_t OUT_OF_MEMORY = status_offset_module_memory_flash + 1;
-        static constexpr Status_t OVERRUN       = status_offset_module_memory_flash + 2;
-        static constexpr Status_t UNALIGNED     = status_offset_module_memory_flash + 3;
+      public:
+        static constexpr Status_t OUT_OF_MEMORY = status_offset_module_memory_flash + 1; /**< Pretty self-explanatory... */
+        static constexpr Status_t OVERRUN       = status_offset_module_memory_flash
+                                            + 2; /**< The end of a buffer was hit pre-maturely */
+        static constexpr Status_t UNALIGNED_MEM = status_offset_module_memory_flash + 3; /**< Memory was not aligned correctly */
+        static constexpr Status_t UNKNOWN_JEDEC = status_offset_module_memory_flash
+                                                  + 4; /**< Device reported an invalid JEDEC code */
+        static constexpr Status_t HF_INIT_FAIL = status_offset_module_memory_flash
+                                                 + 5; /**< High frequency interface failed to initialize */
+        static constexpr Status_t NOT_PAGE_ALIGNED = status_offset_module_memory_flash + 6; /**< Memory is not page aligned */
       };
 
       /**
@@ -138,6 +145,18 @@ namespace Chimera
          *  |         FAIL | The callback registration failed                 |
          */
         virtual Chimera::Status_t eraseCompleteCallback( const Chimera::void_func_uint32_t func ) = 0;
+
+        /**
+         *	Checks if the device has been initialized properly and is ok to talk with
+         *	
+         *	@return bool
+         *
+         *  | Return Value |           Explanation           |
+         *  |:------------:|:-------------------------------:|
+         *  |         true | The device has been initialized |
+         *  |        false | The device is not initialized   |
+         */
+         virtual bool isInitialized() = 0;
       };
 
     }  // namespace Memory
