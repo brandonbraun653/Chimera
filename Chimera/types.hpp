@@ -29,7 +29,8 @@ namespace Chimera
     static constexpr Status_t TX_IN_PROGRESS     = 12; /**< A transmission is in progress */
     static constexpr Status_t RX_IN_PROGRESS     = 13; /**< A reception is in progress */
     static constexpr Status_t BUSY               = 14; /**< The system can't be bothered to respond right now. It's busy. */
-    static constexpr Status_t INVAL_FUNC_PARAM = 15; /**< A parameter passed into a function was invalid */
+    static constexpr Status_t INVAL_FUNC_PARAM   = 15; /**< A parameter passed into a function was invalid */
+    static constexpr Status_t EMPTY              = 16; /**< The result of the operation had no data */
 
     static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
@@ -226,7 +227,8 @@ namespace Chimera
       static constexpr Status_t FAILED_WRITE                = codeOffset + 11;
       static constexpr Status_t FAILED_READ                 = codeOffset + 12;
       static constexpr Status_t FAILED_OPEN                 = codeOffset + 13;
-      static constexpr Status_t FAILED_CONFIGURE            = codeOffset + 14;
+      static constexpr Status_t FAILED_CLOSE                = codeOffset + 14;
+      static constexpr Status_t FAILED_CONFIGURE            = codeOffset + 15;
     };
 
     enum class BaudRate : uint32_t
