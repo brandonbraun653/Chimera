@@ -138,6 +138,7 @@ namespace Chimera
       static constexpr Status_t INVALID_HARDWARE_PARAM      = codeOffset + 3;
       static constexpr Status_t FAILED_CHIP_SELECT_WRITE    = codeOffset + 4;
       static constexpr Status_t CLOCK_SET_LT                = codeOffset + 5;
+      static constexpr Status_t CLOCK_SET_GT                = codeOffset + 6;
       static constexpr Status_t CLOCK_SET_EQ                = OK;
     };
 
