@@ -24,6 +24,9 @@
 #include <cstdlib>
 #include <type_traits>
 
+/* Boost Includes */
+#include <boost/circular_buffer.hpp>
+
 /* Chimera Includes */
 #include <Chimera/config.hpp>
 #include <Chimera/preprocessor.hpp>
@@ -524,6 +527,15 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
+      
+      /**
+       *  Attaches and configures the physical hardware channel and GPIO pin setup
+       *
+       *  @param[in]  channel     The physical UART hardware channel to use
+       *  @param[in]  pins        TX and RX pin configuration
+       */
+      virtual Chimera::Status_t assignHW( const uint8_t channel, IOPins pins ) = 0;
+      
       /**
        *   Starts up the Serial interface with a baud rate and transfer mode
        *
@@ -551,7 +563,7 @@ namespace Chimera
        *   @param[in]  baud    Desired baud rate to be used
        *   @return Chimera::Status_t
        */
-      virtual Chimera::Status_t setBaud( const uint32_t buad ) = 0;
+      virtual Chimera::Status_t setBaud( const uint32_t baud ) = 0;
 
       /**
        *   Change the hardware transfer mode (Blocking, Interrupt, DMA)
@@ -593,16 +605,20 @@ namespace Chimera
        *   @note Depending on the mode, this function will behave a bit differently.
        *
        *   Blocking Mode:
-       *       The function won't return until the number of bytes specified has
-       * been received.
+       *    The function won't return until the number of bytes specified has been received
+       *    or the timeout has occurred.
        *
        *   Interrupt & DMA:
-       *       The function immediately returns after queuing up the reception.
-       * Double buffering must be enabled in order for these modes to work
-       * correctly. Up to two receptions can be queued at once, the length being
-       * limited to the size passed into enableDoubleBuffering().
+       *    The function immediately returns after queuing up the reception. The software can
+       *    use the given buffer as a temporary storage location until the data is copied into
+       *    the circular buffer that was passed in via enableBuffering(). The user can then be 
+       *    notified of completion by either an event notifier or by checking the available()
+       *    function.
        *
-       *  @param[in]  buffer        The data to be received from the wire
+       *  @see enableBuffering
+       *  @see attachEventNotifier
+       *
+       *  @param[in]  buffer        In blocking mode, will contain data read from RX
        *  @param[in]  length        How many bytes to read
        *  @param[in]  timeout_mS    How long to wait on hardware before aborting
        *  @return Chimera::Status_t
@@ -611,11 +627,12 @@ namespace Chimera
                                       const uint32_t timeout_mS = 500 ) = 0;
 
       /**
-       *   Read bytes from the wire, but the length to read is unknown.
+       *  Read data queued from the RX buffer. This buffer can only be filled if the 
+       *  hardware was placed in Interrupt or DMA RX mode.
        *
-       *   @param[in]  buffer  Array to store the data into
-       *   @param[in]  maxLen  Max number of bytes that can be read into the array
-       *   @return Chimera::Status_t
+       *  @param[in]  buffer  Array to store the data into
+       *  @param[in]  maxLen  Max number of bytes that can be read into the array
+       *  @return Chimera::Status_t
        */
       virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t maxLen )
       {
@@ -623,47 +640,33 @@ namespace Chimera
       }
 
       /**
-       *   Get the state of common hardware registers and status fields
+       *  Turns on buffering for asynchronous modes (Interrupt, DMA)
        *
-       *   @param[in]  status  Structure to fill with status information
-       *   @return void
-       */
-      virtual void status( HardwareStatus &status )
-      {
-      }
-
-      /**
-       *   Turns on double buffering for asynchronous modes (Interrupt, DMA)
+       *  Allows the Serial channel to read/write data on one buffer while the user
+       *  can read/write on the other. This should help prevent missing data when the
+       *  RX length is unknown or when there is lots of traffic.
        *
-       *   Allows the Serial channel to read/write data on one buffer while the user
-       * can read/write on the other. This should help prevent missing data when the
-       * RX length is unknown or when there is lots of traffic.
+       *   @note Either buffer could be modified inside an ISR, hence the necessity for volatile storage class.
        *
-       *   @note Either buffer could be modified inside an ISR, hence the necessity
-       * for volatile storage class.
-       *
-       *   @param[in]  periph      The peripheral (TX or RX) to use double buffering
-       * with
-       *   @param[in]  bufferOne   First buffer used
-       *   @param[in]  bufferTwo   Second buffer used
-       *   @param[in]  length      The minimum size of both buffers
+       *   @param[in]  periph      The peripheral (TX or RX) to buffer on
+       *   @param[in]  buffer      The buffer to use
+       *   @param[in]  length      The length of the buffer
        *   @return Chimera::Status_t
        */
-      virtual Chimera::Status_t enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
-                                                       volatile uint8_t *const bufferTwo, const size_t length )
+      virtual Chimera::Status_t enableBuffering( const SubPeripheral periph, boost::circular_buffer<uint8_t> *const buffer )
       {
         return Status::NOT_SUPPORTED;
       }
 
       /**
-       *   Turns off the double buffering feature
-       *
-       *   @note This will automatically transition both TX & RX sub-peripherals back
-       *    to blocking mode
-       *
-       *   @return Chimera::Status_t
+       *  Turns off the buffering feature
+       *  
+       *  @note This will automatically transition both TX & RX sub-peripherals back
+       *   to blocking mode
+       *  
+       *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t disableDoubleBuffering()
+      virtual Chimera::Status_t disableBuffering(const SubPeripheral periph)
       {
         return Status::NOT_SUPPORTED;
       }

@@ -47,8 +47,6 @@ namespace Chimera
 
   };
 
-
-  /** @namespace Chimera::GPIO */
   namespace GPIO
   {
     class Status : public CommonStatusCodes
@@ -124,7 +122,6 @@ namespace Chimera
 
   }  // namespace GPIO
 
-  /** @namespace Chimera::SPI */
   namespace SPI
   {
 
@@ -212,7 +209,6 @@ namespace Chimera
     };
   }  // namespace SPI
 
-  /** @namespace Chimera::Serial */
   namespace Serial
   {
     class Status : public CommonStatusCodes
@@ -225,6 +221,7 @@ namespace Chimera
       static constexpr Status_t RX_COMPLETE                 = codeOffset + 5;
       static constexpr Status_t NOT_READY                   = codeOffset + 6;
       static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 7;
+      static constexpr Status_t INVALID_BUFFER              = codeOffset + 8;
       static constexpr Status_t FAILED_WRITE                = codeOffset + 11;
       static constexpr Status_t FAILED_READ                 = codeOffset + 12;
       static constexpr Status_t FAILED_OPEN                 = codeOffset + 13;
@@ -302,6 +299,12 @@ namespace Chimera
       bool error;
       bool asyncReady;
     } HardwareStatus;
+
+    struct IOPins
+    {
+      GPIO::PinInit rx;
+      GPIO::PinInit tx;
+    };
 
   }  // namespace Serial
 
