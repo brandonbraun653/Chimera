@@ -31,7 +31,9 @@ extern "C"
 
   void vApplicationTickHook()
   {
+    #if defined( GMOCK_TEST )
     Chimera::Mock::SystemTickCallback();
+    #endif
 
     #ifdef SIM
     /*------------------------------------------------
@@ -41,6 +43,9 @@ extern "C"
     ------------------------------------------------*/
     boost::this_thread::interruption_point();
     #endif
+
+    // TODO: Use Chimera System to implement a callback for this
+
   }
 
   void vApplicationMallocFailedHook()

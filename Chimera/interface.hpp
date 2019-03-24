@@ -531,19 +531,19 @@ namespace Chimera
        *   @param[in]  rxMode  What mode to run the RX hardware in
        *   @return Chimera::Status_t
        */
-      virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) noexcept = 0;
+      virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) = 0;
 
       /**
        *   De-initializes the serial port
        */
-      virtual Chimera::Status_t end() noexcept = 0;
+      virtual Chimera::Status_t end() = 0;
 
       /**
        *   Configures the serial port with the desired properties
        *
        */
       virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
-                                           const FlowControl flow ) noexcept = 0;
+                                           const FlowControl flow ) = 0;
 
       /**
        *   Change the baud rate of the peripheral at run time
@@ -551,7 +551,7 @@ namespace Chimera
        *   @param[in]  baud    Desired baud rate to be used
        *   @return Chimera::Status_t
        */
-      virtual Chimera::Status_t setBaud( const uint32_t buad ) noexcept = 0;
+      virtual Chimera::Status_t setBaud( const uint32_t buad ) = 0;
 
       /**
        *   Change the hardware transfer mode (Blocking, Interrupt, DMA)
@@ -563,7 +563,7 @@ namespace Chimera
        *   @param[in]  periph  The peripheral to switch modes with
        *
        */
-      virtual Chimera::Status_t setMode( const SubPeripheral periph, const Modes mode ) noexcept = 0;
+      virtual Chimera::Status_t setMode( const SubPeripheral periph, const Modes mode ) = 0;
 
       /**
        *   Writes data onto the wire
@@ -585,7 +585,7 @@ namespace Chimera
        *  @return Chimera::Status_t
        */
       virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
-                                       const uint32_t timeout_mS = 500 ) noexcept = 0;
+                                       const uint32_t timeout_mS = 500 ) = 0;
 
       /**
        *   Read an exact number of bytes from the wire
@@ -608,7 +608,7 @@ namespace Chimera
        *  @return Chimera::Status_t
        */
       virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length,
-                                      const uint32_t timeout_mS = 500 ) noexcept = 0;
+                                      const uint32_t timeout_mS = 500 ) = 0;
 
       /**
        *   Read bytes from the wire, but the length to read is unknown.
@@ -617,7 +617,7 @@ namespace Chimera
        *   @param[in]  maxLen  Max number of bytes that can be read into the array
        *   @return Chimera::Status_t
        */
-      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t maxLen ) noexcept
+      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t maxLen )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -628,7 +628,7 @@ namespace Chimera
        *   @param[in]  status  Structure to fill with status information
        *   @return void
        */
-      virtual void status( HardwareStatus &status ) noexcept
+      virtual void status( HardwareStatus &status )
       {
       }
 
@@ -650,7 +650,7 @@ namespace Chimera
        *   @return Chimera::Status_t
        */
       virtual Chimera::Status_t enableDoubleBuffering( const SubPeripheral periph, volatile uint8_t *const bufferOne,
-                                                       volatile uint8_t *const bufferTwo, const size_t length ) noexcept
+                                                       volatile uint8_t *const bufferTwo, const size_t length )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -663,7 +663,7 @@ namespace Chimera
        *
        *   @return Chimera::Status_t
        */
-      virtual Chimera::Status_t disableDoubleBuffering() noexcept
+      virtual Chimera::Status_t disableDoubleBuffering()
       {
         return Status::NOT_SUPPORTED;
       }
@@ -675,7 +675,7 @@ namespace Chimera
        *   @param[in]  bytes   Optionally report back how many bytes are ready
        *   @return True if any data is ready, false if not
        */
-      virtual bool available( size_t *const bytes = nullptr ) noexcept
+      virtual bool available( size_t *const bytes = nullptr )
       {
         return false;
       }
@@ -687,7 +687,7 @@ namespace Chimera
        *   @param[in]  notifier    The notification variable
        *   @return void
        */
-      virtual Chimera::Status_t attachEventNotifier( const Event event, volatile bool *const notifier ) noexcept
+      virtual Chimera::Status_t attachEventNotifier( const Event event, volatile bool *const notifier )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -699,7 +699,7 @@ namespace Chimera
        *   @param[in]  notifier    The notification variable
        *   @return void
        */
-      virtual Chimera::Status_t removeEventNotifier( const Event event, volatile bool *const notifier ) noexcept
+      virtual Chimera::Status_t removeEventNotifier( const Event event, volatile bool *const notifier )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -712,7 +712,7 @@ namespace Chimera
        *   @param[in]  semphr  The notification variable
        *   @return void
        */
-      virtual Chimera::Status_t attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr ) noexcept
+      virtual Chimera::Status_t attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -724,7 +724,7 @@ namespace Chimera
        *   @param[in]  semphr  The notification variable
        *   @return void
        */
-      virtual Chimera::Status_t removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr ) noexcept
+      virtual Chimera::Status_t removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
       {
         return Status::NOT_SUPPORTED;
       }
