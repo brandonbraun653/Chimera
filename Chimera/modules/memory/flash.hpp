@@ -27,13 +27,37 @@ namespace Chimera
         static constexpr Status_t OUT_OF_MEMORY = status_offset_module_memory_flash + 1; /**< Pretty self-explanatory... */
         static constexpr Status_t OVERRUN       = status_offset_module_memory_flash
                                             + 2; /**< The end of a buffer was hit pre-maturely */
-        static constexpr Status_t UNALIGNED_MEM = status_offset_module_memory_flash + 3; /**< Memory was not aligned correctly */
+        static constexpr Status_t UNALIGNED_MEM = status_offset_module_memory_flash
+                                                  + 3; /**< Memory was not aligned correctly */
         static constexpr Status_t UNKNOWN_JEDEC = status_offset_module_memory_flash
                                                   + 4; /**< Device reported an invalid JEDEC code */
         static constexpr Status_t HF_INIT_FAIL = status_offset_module_memory_flash
                                                  + 5; /**< High frequency interface failed to initialize */
         static constexpr Status_t NOT_PAGE_ALIGNED = status_offset_module_memory_flash + 6; /**< Memory is not page aligned */
       };
+
+
+      enum class Section_t : uint8_t
+      {
+        PAGE = 0,
+        BLOCK,
+        SECTOR
+      };
+
+      struct SectionList
+      {
+        std::vector<uint32_t> pages;
+        std::vector<uint32_t> blocks;
+        std::vector<uint32_t> sectors;
+      };
+
+      struct DeviceDescriptor
+      {
+        uint32_t pageSize;   /**< Page size of the device in bytes */
+        uint32_t blockSize;  /**< Block size of the device in bytes */
+        uint32_t sectorSize; /**< Sector size of the device in bytes */
+      };
+
 
       /**
        * A helper class that generates memory ranging information useful in flash memory driver applications.
@@ -206,20 +230,6 @@ namespace Chimera
          */
         uint32_t endBytes();
 
-        /**
-         *	Calculates which Blocks are fully spanned by the ctor address range
-         *
-         *	@param[out]	start           The start Block number
-         *	@param[out]	end             The end Block number
-         *	@return void
-         *
-         *	|            Assigned Value            |                             Explanation                             |
-         *  |:------------------------------------:|:-------------------------------------------------------------------:|
-         *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
-         *  |                     All other values | The calculated data                                                 |
-         */
-        void getConsecutiveBlocks( uint32_t &start, uint32_t &end );
-
       protected:
         static constexpr uint32_t U32MAX = std::numeric_limits<uint32_t>::max();
 
@@ -227,18 +237,16 @@ namespace Chimera
 
         uint32_t _blockSize = U32MAX;
 
-        uint32_t _startBlock    = U32MAX;
+        uint32_t _startBlock   = U32MAX;
         uint32_t _startAddress = U32MAX;
         uint32_t _startOffset  = U32MAX;
-        uint32_t _startBytes  = U32MAX;
+        uint32_t _startBytes   = U32MAX;
 
-        uint32_t _endBlock    = U32MAX;
+        uint32_t _endBlock   = U32MAX;
         uint32_t _endAddress = U32MAX;
         uint32_t _endOffset  = U32MAX;
-        uint32_t _endBytes = U32MAX;
+        uint32_t _endBytes   = U32MAX;
       };
-
-
 
       /**
        *  Models interactions with a Flash memory device from the perspective that it is
@@ -296,8 +304,8 @@ namespace Chimera
          *  Erase a region of memory. Due to common device architecture, it is likely that the given
          *  address range will need to be page, block, or sector aligned.
          *
-         *	@param[in]	begin         The address to start erasing at
-         *	@param[in]	end           The address to stop erasing at
+         *	@param[in]	address       The address to start erasing at
+         *	@param[in]	length        How many bytes to erase
          *	@return Chimera::Status_t
          *
          *  | Return Value |                         Explanation                         |
@@ -307,7 +315,7 @@ namespace Chimera
          *  |         BUSY | Flash is doing something at the moment. Try again later.    |
          *  |    UNALIGNED | The range wasn't aligned with the device's erasable regions |
          */
-        virtual Chimera::Status_t erase( const uint32_t begin, const uint32_t end ) = 0;
+        virtual Chimera::Status_t erase( const uint32_t address, const uint32_t length ) = 0;
 
         /**
          *	Register a callback to be executed when the write has been completed. The input parameter
@@ -361,11 +369,74 @@ namespace Chimera
          *  |         true | The device has been initialized |
          *  |        false | The device is not initialized   |
          */
-         virtual bool isInitialized() = 0;
+        virtual bool isInitialized() = 0;
       };
 
+
+      class FlashUtilities
+      {
+      public:
+        FlashUtilities( const DeviceDescriptor &dev );
+        ~FlashUtilities() = default;
+
+        /**
+         *	Updates internal information about the memory device being modeled
+         *
+         *	@param[in]	dev         The device information
+         *	@return void
+         */
+        void updateDeviceInfo( const DeviceDescriptor &dev );
+
+        /**
+         *	Returns the section number of the address
+         *
+         *	@param[in]	section     Which section you are interested in
+         *	@param[in]	address     The address to be investigated
+         *	@return uint32_t
+         */
+        uint32_t getSectionNumber( const Section_t section, const uint32_t address );
+
+        /**
+         *	Converts a section number into that section's start address
+         *
+         *	@param[in]	section     Which section you are interested in
+         *	@param[in]	number      The specific section number to convert
+         *	@return uint32_t
+         */
+        uint32_t getSectionStartAddress( const Section_t section, const uint32_t number );
+
+        /**
+         *	An algorithm for re-structuring an address range into the largest memory groupings possible
+         *	to allow efficient access of the memory architecture.
+         *
+         *	This was originally designed to aide erase commands so that the programmer could erase in as
+         *	few commands as possible. For instance, a large erase of 139kB could be broken down into
+         *	2 sectors, several blocks, and a few pages. The alternative would be to erase one page at a
+         *	time, which isn't very efficient. Most chips have the option to erase by page, block, or sector,
+         *	so this minimizes the number of operations needed by software to erase a generic section of
+         *	memory.
+         *
+         *	@note For simplicity, this algorithm requires that the address and length given are page aligned.
+         *
+         *	@warning The algorithm relies on dynamic memory allocation. With FreeRTOS, use heap4 or heap5.
+         *
+         *	@param[in]	address     The page aligned starting address
+         *	@param[in]	len         The page aligned range of bytes to be composed
+         *	@return Chimera::Modules::Memory::SectionList
+         */
+        SectionList getCompositeSections( const uint32_t address, const uint32_t len );
+
+      private:
+        DeviceDescriptor device;
+
+        uint32_t pagesPerBlock;
+        uint32_t pagesPerSector;
+        uint32_t blocksPerSector;
+      };
+
+
     }  // namespace Memory
-  }    // namespace Module
+  }    // namespace Modules
 }  // namespace Chimera
 
 #endif /* !CHIMERA_MOD_MEMORY_FLASH_HPP */

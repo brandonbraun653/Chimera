@@ -1,15 +1,16 @@
 /********************************************************************************
- * File Name:
+ *  File Name:
+ *    chimera_flash.cpp
  *
+ *  Description:
+ *    Implements various utilities and drivers associated with the Chimera flash
+ *    memory module.
  *
- * Description:
- *
- *
- * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+/* Chimera Includes */
 #include <Chimera/modules/memory/flash.hpp>
-
 
 namespace Chimera
 {
@@ -86,8 +87,22 @@ namespace Chimera
         {
           if ( _startBytes == U32MAX )
           {
+            uint32_t memoryRange           = _endAddress - _startAddress;
             uint32_t nextBlockBeginAddress = ( startBlock() + 1 ) * _blockSize;
-            _startBytes                    = nextBlockBeginAddress - _startAddress;
+
+            /*------------------------------------------------
+            If the total number of bytes in the range doesn't exceed the next block
+            boundary address, return the range. Otherwise return the number of bytes
+            up to the boundary address.
+            ------------------------------------------------*/
+            if ( ( startOffset() + memoryRange ) < _blockSize )
+            {
+              _startBytes = memoryRange;
+            }
+            else
+            {
+              _startBytes = nextBlockBeginAddress - _startAddress;
+            }
           }
 
           retVal = _startBytes;
@@ -121,8 +136,14 @@ namespace Chimera
         {
           if ( _endOffset == U32MAX )
           {
-            uint32_t endBlockBeginAddress = endBlock() * _blockSize;
-            _endOffset                    = _endAddress - endBlockBeginAddress;
+            if ( endBlock() == startBlock() )
+            {
+              _endOffset = 0u;
+            }
+            else
+            {
+              _endOffset = _endAddress - ( endBlock() * _blockSize );
+            }
           }
 
           retVal = _endOffset;
@@ -139,7 +160,7 @@ namespace Chimera
         {
           if ( _endBytes == U32MAX )
           {
-            uint32_t nextBlockBeginAddress = ( endBlock() + 1 )* _blockSize;
+            uint32_t nextBlockBeginAddress = ( endBlock() + 1 ) * _blockSize;
             _endBytes                      = nextBlockBeginAddress - _endAddress;
           }
 
@@ -149,28 +170,179 @@ namespace Chimera
         return retVal;
       }
 
-      void MemoryBlockRange::getConsecutiveBlocks( uint32_t &start, uint32_t &end )
+
+      FlashUtilities::FlashUtilities( const DeviceDescriptor &dev ) : device( dev )
       {
-        if ( initialized )
+        pagesPerBlock   = 0u;
+        pagesPerSector  = 0u;
+        blocksPerSector = 0u;
+
+        updateDeviceInfo( dev );
+      }
+
+      void FlashUtilities::updateDeviceInfo( const DeviceDescriptor &dev )
+      {
+        device = dev;
+
+        assert( device.pageSize != 0 );
+        assert( device.blockSize != 0 );
+        assert( device.sectorSize != 0 );
+
+        pagesPerBlock   = device.blockSize / device.pageSize;
+        pagesPerSector  = device.sectorSize / device.pageSize;
+        blocksPerSector = device.sectorSize / device.blockSize;
+      }
+
+      uint32_t FlashUtilities::getSectionNumber( const Section_t section, const uint32_t address )
+      {
+        uint32_t sectionNumber = std::numeric_limits<uint32_t>::max();
+
+        switch ( section )
         {
-          start = startBlock();
-          if ( startOffset() )
+          case Section_t::PAGE:
+            assert( device.pageSize != 0 );
+            sectionNumber = address / device.pageSize;
+            break;
+
+          case Section_t::BLOCK:
+            assert( device.blockSize != 0 );
+            sectionNumber = address / device.blockSize;
+            break;
+
+          case Section_t::SECTOR:
+            assert( device.sectorSize != 0 );
+            sectionNumber = address / device.sectorSize;
+            break;
+
+          default:
+            break;
+        };
+
+        return sectionNumber;
+      }
+
+      uint32_t FlashUtilities::getSectionStartAddress( const Section_t section, const uint32_t number )
+      {
+        uint32_t address = std::numeric_limits<uint32_t>::max();
+
+        switch ( section )
+        {
+          case Section_t::PAGE:
+            address = number * device.pageSize;
+            break;
+
+          case Section_t::BLOCK:
+            address = number * device.blockSize;
+            break;
+
+          case Section_t::SECTOR:
+            address = number * device.sectorSize;
+            break;
+
+          default:
+            break;
+        };
+
+        return address;
+      }
+
+      SectionList FlashUtilities::getCompositeSections( const uint32_t address, const uint32_t len )
+      {
+        SectionList section;
+        MemoryBlockRange pageRange( address, address + len, device.pageSize );
+
+        /*------------------------------------------------
+        Initialize the algorithm, performing the first
+        iteration manually.
+        ------------------------------------------------*/
+        uint32_t numPages = pageRange.endBlock() - pageRange.startBlock();
+
+        uint32_t currentBlock      = getSectionNumber( Section_t::BLOCK, address );
+        uint32_t lastBlock         = currentBlock;
+        uint32_t consecutiveBlocks = 1;
+
+        uint32_t currentSector      = getSectionNumber( Section_t::SECTOR, address );
+        uint32_t lastSector         = currentSector;
+        uint32_t consecutiveSectors = 1;
+
+        uint32_t currentPage = pageRange.startBlock() + 1;
+        section.pages.push_back( pageRange.startBlock() );
+
+        /*------------------------------------------------
+        Iterate through the remaining pages and collapse them into
+        blocks and sectors as they pass the threshold for their
+        respective memory boundaries.
+        ------------------------------------------------*/
+        for ( uint32_t x = 1; x < numPages; x++ )
+        {
+          uint32_t currentAddress = currentPage * device.pageSize;
+          currentBlock            = getSectionNumber( Section_t::BLOCK, currentAddress );
+          currentSector           = getSectionNumber( Section_t::SECTOR, currentAddress );
+
+          /*------------------------------------------------
+          Update page tracking metrics. This is the smallest
+          memory unit, so there isn't much to do here.
+          ------------------------------------------------*/
+          section.pages.push_back( currentPage );
+
+          /*------------------------------------------------
+          Update block tracking metrics
+          ------------------------------------------------*/
+          if ( currentBlock == lastBlock )
           {
-            start += 1u;
+            consecutiveBlocks++;
+          }
+          else
+          {
+            consecutiveBlocks = 1;
+            lastBlock         = currentBlock;
           }
 
-          end = endBlock();
-          if ( ( end != start ) && endOffset() )
+          if ( consecutiveBlocks == pagesPerBlock )
           {
-            end -= 1u;
+            /*------------------------------------------------
+            Consolidate the accrued consecutive pages into a single block
+            ------------------------------------------------*/
+            section.blocks.push_back( currentBlock );
+            section.pages.resize( section.pages.size() - pagesPerBlock );
+
+            consecutiveBlocks = 1;
           }
+
+          /*------------------------------------------------
+          Update sector tracking metrics
+          ------------------------------------------------*/
+          if ( currentSector == lastSector )
+          {
+            consecutiveSectors++;
+          }
+          else
+          {
+            consecutiveSectors = 1;
+            lastSector         = currentSector;
+          }
+
+          if ( consecutiveSectors == pagesPerSector )
+          {
+            /*------------------------------------------------
+            Consolidate the accrued consecutive blocks into a single sector
+            ------------------------------------------------*/
+            section.sectors.push_back( currentSector );
+            section.blocks.resize( section.blocks.size() - blocksPerSector );
+
+            consecutiveSectors = 1;
+          }
+
+          /*------------------------------------------------
+          Update the actual page we are at
+          ------------------------------------------------*/
+          currentPage++;
         }
-        else
-        {
-          start = U32MAX;
-          end   = U32MAX;
-        }
+
+        return section;
       }
+
+
     }  // namespace Memory
   }    // namespace Modules
 }  // namespace Chimera
