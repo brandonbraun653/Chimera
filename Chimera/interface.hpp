@@ -524,18 +524,22 @@ namespace Chimera
 
   namespace Serial
   {
+    class Interface;
+    using Interface_sPtr = std::shared_ptr<Interface>;
+    using Interface_uPtr = std::unique_ptr<Interface>;
+
     class Interface : public Threading::Lockable
     {
     public:
-      
+
       /**
        *  Attaches and configures the physical hardware channel and GPIO pin setup
        *
        *  @param[in]  channel     The physical UART hardware channel to use
        *  @param[in]  pins        TX and RX pin configuration
        */
-      virtual Chimera::Status_t assignHW( const uint8_t channel, IOPins pins ) = 0;
-      
+      virtual Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) = 0;
+
       /**
        *   Starts up the Serial interface with a baud rate and transfer mode
        *
@@ -611,7 +615,7 @@ namespace Chimera
        *   Interrupt & DMA:
        *    The function immediately returns after queuing up the reception. The software can
        *    use the given buffer as a temporary storage location until the data is copied into
-       *    the circular buffer that was passed in via enableBuffering(). The user can then be 
+       *    the circular buffer that was passed in via enableBuffering(). The user can then be
        *    notified of completion by either an event notifier or by checking the available()
        *    function.
        *
@@ -627,14 +631,22 @@ namespace Chimera
                                       const uint32_t timeout_mS = 500 ) = 0;
 
       /**
-       *  Read data queued from the RX buffer. This buffer can only be filled if the 
+       *	Flushes out the given subperipheral queues
+       *
+       *	@param[in]	periph        The peripheral to be flushed
+       *	@return Chimera::Status_t
+       */
+       virtual Chimera::Status_t flush( const SubPeripheral periph ) = 0;
+
+      /**
+       *  Read data queued from the RX buffer. This buffer can only be filled if the
        *  hardware was placed in Interrupt or DMA RX mode.
        *
        *  @param[in]  buffer  Array to store the data into
-       *  @param[in]  maxLen  Max number of bytes that can be read into the array
+       *  @param[in]  len     The number of bytes to read from the RX buffer
        *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t maxLen )
+      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -660,10 +672,10 @@ namespace Chimera
 
       /**
        *  Turns off the buffering feature
-       *  
+       *
        *  @note This will automatically transition both TX & RX sub-peripherals back
        *   to blocking mode
-       *  
+       *
        *  @return Chimera::Status_t
        */
       virtual Chimera::Status_t disableBuffering(const SubPeripheral periph)
@@ -745,7 +757,15 @@ namespace Chimera
     };
 
 #ifndef CHIMERA_INHERITED_SERIAL
-    typedef Interface CHIMERA_INHERITED_SERIAL;
+
+    class SerialUnsupported : public Interface
+    {
+
+      //TODO: Do this once you have access to VAssist again...
+
+    };
+
+    using CHIMERA_INHERITED_SERIAL = SerialUnsupported;
 #endif
 
   }  // namespace Serial

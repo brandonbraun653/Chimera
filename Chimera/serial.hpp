@@ -17,24 +17,22 @@ namespace Chimera
 {
   namespace Serial
   {
-#if 0
+
   class SerialClass : public CHIMERA_INHERITED_SERIAL
     {
     public:
-      SerialClass( const uint8_t channel ) : CHIMERA_INHERITED_SERIAL( channel )
-      {
-        serialChannel = channel;
-      }
-
+      SerialClass()  = default;
       ~SerialClass() = default;
 
-    private:
-      uint8_t serialChannel;
+      /**
+       *  Special ctor for specifying the size of internal buffers
+       */
+      SerialClass( const size_t bufferSize ) : CHIMERA_INHERITED_SERIAL( bufferSize ) {}
     };
 
     typedef std::shared_ptr<SerialClass> SerialClass_sPtr;
     typedef std::unique_ptr<SerialClass> SerialClass_uPtr;
-#endif
+
     // TODO: For some reason this causes an assert even though all virtual methods
     // are implmented?
     // static_assert(std::is_base_of<Chimera::Serial::Interface,

@@ -41,7 +41,7 @@ namespace Chimera
     static constexpr Status_t FAILED_ERASE   = 36; /**< Failed some kind of erase operation */
 
     /*------------------------------------------------
-    Offsets to identify particular Chimera modules 
+    Offsets to identify particular Chimera modules
     ------------------------------------------------*/
     static constexpr Status_t status_offset_module_memory_flash = 1000;
 
@@ -114,7 +114,7 @@ namespace Chimera
     {
       Pull pull          = Pull::UNKNOWN_PULL; /**< Pull-up/down configuration */
       Port port          = Port::UNKNOWN_PORT; /**< Pin IO port */
-      Drive mode         = Drive::INPUT;       /**< Pin IO drive type */
+      Drive drive         = Drive::INPUT;       /**< Pin IO drive type */
       State state        = State::LOW;         /**< Default logical pin state on init */
       uint16_t pin       = 0u;                 /**< Pin number on the given port */
       uint32_t alternate = 0u;                 /**< Project specific indicator of pin AF config*/
