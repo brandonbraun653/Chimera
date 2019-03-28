@@ -747,12 +747,12 @@ namespace Chimera
 
       virtual Chimera::Status_t reserve( const uint32_t timeout_mS ) override
       {
-        return false;
+        return Status::NOT_SUPPORTED;
       }
 
       virtual Chimera::Status_t release( const uint32_t timeout_mS ) override
       {
-        return false;
+        return Status::NOT_SUPPORTED;
       }
     };
 

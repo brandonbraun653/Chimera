@@ -19,9 +19,15 @@ namespace Chimera
     class Lockable
     {
     public:
-      virtual Chimera::Status_t reserve( const uint32_t timeout_mS );
+      virtual Chimera::Status_t reserve( const uint32_t timeout_mS )
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
 
-      virtual Chimera::Status_t release( const uint32_t timeout_mS );
+      virtual Chimera::Status_t release( const uint32_t timeout_mS )
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
 
       bool isLocked();
 
