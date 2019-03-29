@@ -10,7 +10,6 @@
 /* Chimera Includes */
 #include "chimeraPort.hpp"
 #include <Chimera/chimera.hpp>
-#include <Chimera/config.hpp>
 #include <Chimera/interface.hpp>
 
 namespace Chimera

@@ -1,6 +1,5 @@
 #include "chimeraPort.hpp"
 #include <Chimera/chimera.hpp>
-#include <Chimera/config.hpp>
 
 #ifdef CHIMERA_FREERTOS
 #include <Chimera/threading.hpp>

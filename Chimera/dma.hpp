@@ -1,16 +1,16 @@
 /********************************************************************************
- * File Name:
- *    gpio.hpp
+ *  File Name:
+ *    dma.hpp
  *
- * Description:
- *    Implements a common wrapper interface to the Chimera GPIO peripheral.
+ *  Description:
+ *    Implements a common wrapper interface to the Chimera DMA peripheral.
  *
- * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_GPIO_HPP
-#define CHIMERA_GPIO_HPP
+#ifndef CHIMERA_DMA_HPP
+#define CHIMERA_DMA_HPP
 
 /* C/C++ Includes */
 #include <memory>
@@ -18,11 +18,13 @@
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
+#include <Chimera/config.hpp>
+
 #include "chimeraPort.hpp"
 
 namespace Chimera
 {
-  namespace GPIO
+  namespace DMA
   {
     /**
      *  A simple wrapper to provide a common GPIO class type for programs built
@@ -32,18 +34,18 @@ namespace Chimera
      *  If no user class is provided, a default disabled behavior version will be
      *  substituted in its place.
      */
-    class GPIOClass : public CHIMERA_INHERITED_GPIO
+    class DMAClass : public CHIMERA_INHERITED_DMA
     {
     public:
-      GPIOClass() : CHIMERA_INHERITED_GPIO(){};
-      ~GPIOClass() = default;
+      DMAClass() : CHIMERA_INHERITED_DMA(){};
+      ~DMAClass() = default;
     };
 
-    using GPIOClass_sPtr = std::shared_ptr<Chimera::GPIO::GPIOClass>;
-    using GPIOClass_uPtr = std::unique_ptr<Chimera::GPIO::GPIOClass>;
+    using DMAClass_sPtr = std::shared_ptr<DMAClass>;
+    using DMAClass_uPtr = std::unique_ptr<DMAClass>;
 
-    static_assert( std::is_base_of<Interface, GPIOClass>::value, "Base class implements the wrong interface" );
+    static_assert( std::is_base_of<Interface, DMAClass>::value, "Base class implements the wrong interface" );
   }  // namespace GPIO
 }  // namespace Chimera
 
-#endif
+#endif /* !CHIMERA_DMA_HPP */
