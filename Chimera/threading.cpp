@@ -1,20 +1,18 @@
+/********************************************************************************
+* File Name:
+*   threading.cpp
+*
+* Description:
+*   Implements the threading functions for Chimera
+*
+* 2019 | Brandon Braun | brandonbraun653@gmail.com
+********************************************************************************/
 #include <Chimera/threading.hpp>
-#include <boost/container/static_vector.hpp>
 
 namespace Chimera
 {
   namespace Threading
   {
-    Chimera::Status_t Lockable::reserve( const uint32_t timeout_mS )
-    {
-      return false;
-    }
-
-    Chimera::Status_t Lockable::release( const uint32_t timeout_mS )
-    {
-      return false;
-    }
-
     bool Lockable::isLocked()
     {
       return mutex;
@@ -32,13 +30,17 @@ namespace Chimera
 
 #ifdef CHIMERA_FREERTOS
 
+    static uint32_t numRegThreads = 0u;
+
+
     TaskHandle_t INIT_THREAD;
     bool setupCallbacksEnabled = true;
-    static boost::container::static_vector<Thread_t, maxThreads> registeredThreads;
+    static std::array<Thread_t, maxThreads> registeredThreads;
 
     /* Private Function:
      *	Implements a simple timeout while waiting for a newly created thread to
      *complete its initialization sequence and signal back to the init thread. */
+
     BaseType_t threadInitTimeout()
     {
       volatile BaseType_t error = pdPASS;
@@ -137,9 +139,16 @@ namespace Chimera
       volatile BaseType_t error = pdPASS;
 
       if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+      {
         error = xTaskCreate( threadFunc, threadName, stackDepth, threadFuncParams, threadPriority, &threadHandle );
+      }
       else
-        registeredThreads.push_back( { threadFunc, threadName, stackDepth, threadFuncParams, threadPriority, threadHandle } );
+      {
+        registeredThreads[ numRegThreads ] = { threadFunc,       threadName,     stackDepth,
+                                               threadFuncParams, threadPriority, threadHandle };
+        numRegThreads++;
+      }
+
 
       return error;
     }
