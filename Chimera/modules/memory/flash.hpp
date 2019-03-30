@@ -329,7 +329,7 @@ namespace Chimera
          *  |           OK | The callback registration completed successfully |
          *  |         FAIL | The callback registration failed                 |
          */
-        virtual Chimera::Status_t writeCompleteCallback( const Chimera::void_func_uint32_t func ) = 0;
+        virtual Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) = 0;
 
         /**
          *	Register a callback to be executed when the read has been completed. The input parameter
@@ -343,7 +343,7 @@ namespace Chimera
          *  |           OK | The callback registration completed successfully |
          *  |         FAIL | The callback registration failed                 |
          */
-        virtual Chimera::Status_t readCompleteCallback( const Chimera::void_func_uint32_t func ) = 0;
+        virtual Chimera::Status_t readCompleteCallback( const Chimera::Function::void_func_uint32_t func ) = 0;
 
         /**
          *	Register a callback to be executed when the erase has been completed. The input parameter
@@ -357,7 +357,7 @@ namespace Chimera
          *  |           OK | The callback registration completed successfully |
          *  |         FAIL | The callback registration failed                 |
          */
-        virtual Chimera::Status_t eraseCompleteCallback( const Chimera::void_func_uint32_t func ) = 0;
+        virtual Chimera::Status_t eraseCompleteCallback( const Chimera::Function::void_func_uint32_t func ) = 0;
 
         /**
          *	Checks if the device has been initialized properly and is ok to talk with

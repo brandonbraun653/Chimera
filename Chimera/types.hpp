@@ -9,9 +9,7 @@
 /** @namespace Chimera */
 namespace Chimera
 {
-  typedef void ( *void_func_void )( void );
-  typedef void ( *void_func_void_ptr )( void * );
-  typedef void ( *void_func_uint32_t )( uint32_t );
+
 
   using Status_t = uint16_t;
 
@@ -31,6 +29,7 @@ namespace Chimera
     static constexpr Status_t BUSY               = 14; /**< The system can't be bothered to respond right now. It's busy. */
     static constexpr Status_t INVAL_FUNC_PARAM   = 15; /**< A parameter passed into a function was invalid */
     static constexpr Status_t EMPTY              = 16; /**< The result of the operation had no data */
+    static constexpr Status_t MEMORY             = 17; /**< There was a generic issue with memory of some kind */
 
     static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
@@ -46,6 +45,13 @@ namespace Chimera
     static constexpr Status_t status_offset_module_memory_flash = 1000;
 
   };
+
+  namespace Function
+  {
+    typedef void ( *void_func_void )( void );
+    typedef void ( *void_func_void_ptr )( void * );
+    typedef void ( *void_func_uint32_t )( uint32_t );
+  }
 
   namespace GPIO
   {
@@ -275,10 +281,10 @@ namespace Chimera
 
     enum class Modes : uint8_t
     {
-      MODE_UNDEFINED,
-      BLOCKING,
+      BLOCKING = 0,
       INTERRUPT,
-      DMA
+      DMA,
+      MODE_UNDEFINED
     };
 
     enum class SubPeripheral : uint8_t

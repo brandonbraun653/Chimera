@@ -70,7 +70,7 @@ namespace Chimera
       Thread_t thread;
 
       /* Create all the threads */
-      for ( size_t i = 0; i < registeredThreads.size(); i++ )
+      for ( size_t i = 0; i < numRegThreads; i++ )
       {
         thread = registeredThreads[ i ];
         error  = xTaskCreate( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, &thread.handle );
@@ -108,7 +108,7 @@ namespace Chimera
       /* Resume threads in the order which they were registered */
       if ( setupCallbacksEnabled )
       {
-        for ( size_t i = 0; i < registeredThreads.size(); i++ )
+        for ( size_t i = 0; i < numRegThreads; i++ )
         {
           xTaskNotify( registeredThreads[ i ].handle, 1u, eSetValueWithOverwrite );
         }

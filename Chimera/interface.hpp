@@ -1,17 +1,17 @@
 /********************************************************************************
  *  File Name:
  *      interface.hpp
- *  
+ *
  *  Description:
  *      Defines the hardware interface for the Chimera HAL. All libraries that
  *      depend upon Chimera are guaranteed to, at a bare minimum, have the
  *      behavior described here. IF that behavior is not implemented, that is
  *      the fault of the underlying hardware drivers.
- *  
+ *
  *  Note:
  *      This file is kept separate from the actual HAL include file for each HW
  *      driver to prevent possible recursive includes.
- *  
+ *
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 #pragma once
@@ -39,7 +39,7 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
-      
+
     };
 
 #ifndef CHIMERA_INHERITED_DMA
@@ -417,7 +417,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onWriteCompleteCallback(const Chimera::void_func_uint32_t func)
+      virtual Chimera::Status_t onWriteCompleteCallback(const Chimera::Function::void_func_uint32_t func)
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -435,7 +435,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onReadCompleteCallback(const Chimera::void_func_uint32_t func)
+      virtual Chimera::Status_t onReadCompleteCallback(const Chimera::Function::void_func_uint32_t func)
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -453,7 +453,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onReadWriteCompleteCallback(const Chimera::void_func_uint32_t func)
+      virtual Chimera::Status_t onReadWriteCompleteCallback(const Chimera::Function::void_func_uint32_t func)
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -472,7 +472,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onErrorCallback(const Chimera::void_func_uint32_t func)
+      virtual Chimera::Status_t onErrorCallback(const Chimera::Function::void_func_uint32_t func)
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -635,20 +635,21 @@ namespace Chimera
         const uint32_t timeout_mS = 500) = 0;
 
       /**
-       *   Read an exact number of bytes from the wire
+       *  Read an exact number of bytes from the wire
        *
-       *   @note Depending on the mode, this function will behave a bit differently.
+       *  @note Depending on the hardware mode, this function will behave a bit differently.
+       *  @warning Interrupt and DMA mode only work if you give the software a circular buffer for asynchronous transfers
        *
-       *   Blocking Mode:
+       *  Blocking Mode:
        *    The function won't return until the number of bytes specified has been received
-       *    or the timeout has occurred.
+       *    or the timeout has occurred. The data will be placed directly into the given buffer
+       *    and nothing will be copied to the user's circular buffer if it exists.
        *
-       *   Interrupt & DMA:
-       *    The function immediately returns after queuing up the reception. The software can
-       *    use the given buffer as a temporary storage location until the data is copied into
-       *    the circular buffer that was passed in via enableBuffering(). The user can then be
-       *    notified of completion by either an event notifier or by checking the available()
-       *    function.
+       *  Interrupt & DMA:
+       *    The function immediately returns after queuing up the reception. The implementation software can
+       *    use the given buffer as a temporary storage location or simply ignored. Once the tranfer is complete,
+       *    received data is dumped into the circular buffer, which can be read using readAsync(). The user can
+       *    then be notified of completion by either an event notifier or by checking the available() function.
        *
        *  @see enableBuffering
        *  @see attachEventNotifier
@@ -658,9 +659,7 @@ namespace Chimera
        *  @param[in]  timeout_mS    How long to wait on hardware before aborting
        *  @return Chimera::Status_t
        */
-      virtual Chimera::Status_t read( uint8_t *const buffer,
-        const size_t length,
-        const uint32_t timeout_mS = 500) = 0;
+      virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500) = 0;
 
       /**
        *	Flushes out the given subperipheral queues
