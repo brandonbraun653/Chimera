@@ -19,7 +19,7 @@
 
 /* Chimera Includes */
 #include "chimeraPort.hpp"
-#include <Chimera/config.hpp>
+
 
 namespace Chimera
 {

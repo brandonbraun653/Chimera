@@ -18,7 +18,7 @@
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
-#include <Chimera/config.hpp>
+
 
 #include "chimeraPort.hpp"
 

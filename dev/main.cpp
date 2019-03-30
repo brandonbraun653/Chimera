@@ -3,7 +3,7 @@
 #endif
 
 #include <Chimera/chimera.hpp>
-#include <Chimera/config.hpp>
+
 
 #include <Thor/include/threads.hpp>
 
