@@ -14,7 +14,13 @@ local chimera_src_dir = Chimera ;
 # ------------------------------------------
 # Source Files
 # ------------------------------------------
-local chimera_src = [ glob Chimera/*.cpp ] ;
+local chimera_src_root = [ glob Chimera/*.cpp ] ;
+local chimera_src_modules_freertos = [ glob Chimera/modules/freertos/*.cpp ] ;
+
+local chimera_src = 
+    $(chimera_src_root)
+    $(chimera_src_modules_freertos)
+    ;
 
 
 project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
