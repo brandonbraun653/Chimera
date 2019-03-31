@@ -1,3 +1,7 @@
+import feature ;
+
+feature.feature Chimera : disabled enabled : optional propagated ;
+feature.feature ChimeraBackend : none Thor Sim : optional propagated ;
 
 rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
     {
