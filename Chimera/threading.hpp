@@ -79,7 +79,6 @@ namespace Chimera
       UBaseType_t priority; /**< FreeRTOS priority number, ranging from 0 to (configMAX_PRIORITIES - 1) lowest to highest */
       void *funcParams;     /**< Thread parameters to be passed in upon creation */
       uint32_t stackDepth;  /**< Size of the thread stack, in multiples of **WORDS** (x4 bytes), ie stack of 150 == 600 bytes */
-      char name[ configMAX_TASK_NAME_LEN ]; /**< User friendly name for the thread */
     };
 
     /**

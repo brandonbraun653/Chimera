@@ -39,12 +39,7 @@ namespace Chimera
     static constexpr uint32_t MSG_SETUP_COMPLETE = 0xbf931c86;
     static constexpr uint32_t MSG_SETUP_RESUME   = 0x2e526078;
 
-#if !defined( SYSTEM_THREADS_HINT )
-#define SYSTEM_THREADS_HINT 10
-#endif
-
-    std::vector<Thread_t> systemThreads( SYSTEM_THREADS_HINT );
-
+    static std::vector<Thread_t> systemThreads;
     static TaskHandle_t INIT_THREAD;
     static bool setupCallbacksEnabled = false;
 
@@ -105,7 +100,7 @@ namespace Chimera
       for ( size_t i = 0; i < systemThreads.size(); i++ )
       {
         thread = systemThreads[ i ];
-        error  = xTaskCreate( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, &thread.handle );
+        error  = xTaskCreate( thread.func, "", thread.stackDepth, thread.funcParams, thread.priority, &thread.handle );
 
         /*------------------------------------------------
         If you get stuck here, the current thread tried to allocate
@@ -196,7 +191,6 @@ namespace Chimera
 
       Thread_t newThread;
       newThread.func       = threadFunc;
-      newThread.name       = threadName;
       newThread.stackDepth = stackDepth;
       newThread.funcParams = threadFuncParams;
       newThread.priority   = threadPriority;
@@ -224,10 +218,10 @@ namespace Chimera
 
     BaseType_t addThread( Thread_t &thread )
     {
-      return addThread( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, thread.handle );
+      return addThread( thread.func, "", thread.stackDepth, thread.funcParams, thread.priority, thread.handle );
     }
 
-    BaseType_t signalThreadSetupComplete()
+    BaseType_t signalSetupComplete()
     {
       if ( setupCallbacksEnabled && INIT_THREAD )
       {
