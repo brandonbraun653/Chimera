@@ -7,6 +7,9 @@
 *
 * 2019 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
+
+/* Chimera Includes */
+#include <Chimera/chimera.hpp>
 #include <Chimera/threading.hpp>
 
 namespace Chimera
@@ -28,127 +31,193 @@ namespace Chimera
       mutex = false;
     }
 
-#ifdef CHIMERA_FREERTOS
+#ifdef USING_FREERTOS
+    /*------------------------------------------------
+    These bytes were generated from atmospheric noise, so they
+    are pretty random I guess. https://www.random.org/bytes/
+    ------------------------------------------------*/
+    static constexpr uint32_t MSG_SETUP_COMPLETE = 0xbf931c86;
+    static constexpr uint32_t MSG_SETUP_RESUME   = 0x2e526078;
 
-    static uint32_t numRegThreads = 0u;
-
-
-    TaskHandle_t INIT_THREAD;
-    bool setupCallbacksEnabled = true;
-    static std::array<Thread_t, maxThreads> registeredThreads;
-
-    /* Private Function:
-     *	Implements a simple timeout while waiting for a newly created thread to
-     *complete its initialization sequence and signal back to the init thread. */
-
-    BaseType_t threadInitTimeout()
-    {
-      volatile BaseType_t error = pdPASS;
-      TickType_t lastTimeWoken  = xTaskGetTickCount();
-      uint32_t timeoutCounter   = 0;
-
-      while ( !ulTaskNotifyTake( pdTRUE, 0 ) )
-      {
-        vTaskDelayUntil( &lastTimeWoken, pdMS_TO_TICKS( threadInitCheckDelay_ms ) );
-        timeoutCounter += threadInitCheckDelay_ms;
-
-        if ( timeoutCounter > maxThreadInitTimeout_ms )
-        {
-          error = pdFAIL;
-          break;
-        }
-      }
-
-      return error;
-    }
-
-    /* Private Function: Initializes all the threads registered before
-     * startScheduler() was called. */
-    void initThreads( void *arguments )
-    {
-      volatile BaseType_t error = pdPASS;
-      Thread_t thread;
-
-      /* Create all the threads */
-      for ( size_t i = 0; i < numRegThreads; i++ )
-      {
-        thread = registeredThreads[ i ];
-        error  = xTaskCreate( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, &thread.handle );
-
-        if ( error == errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY )
-        {
-          /* If you hit this point, one of the above tasks tried to allocate more
-           * heap space than was available. */
-#ifndef MOD_TEST
-          volatile size_t bytesRemaining __attribute( ( unused ) ) = xPortGetFreeHeapSize();
+#if !defined( SYSTEM_THREADS_HINT )
+#define SYSTEM_THREADS_HINT 10
 #endif
-          for ( ;; )
-            ;
-        }
 
-        /* If using initialization callbacks, wait for setup to be complete.
-         * Otherwise do nothing. Tasks are running. */
-        if ( setupCallbacksEnabled )
+    std::vector<Thread_t> systemThreads( SYSTEM_THREADS_HINT );
+
+    static TaskHandle_t INIT_THREAD;
+    static bool setupCallbacksEnabled = false;
+
+    /**
+     *  Implements a simple timeout while waiting for a newly created thread to
+     *  complete its initialization sequence.
+     *
+     *  @return BaseType_t
+     */
+    static BaseType_t threadInitTimeout()
+    {
+      BaseType_t error = pdPASS;
+
+      /*------------------------------------------------
+      Immediately return pdPASS if we aren't using setup callbacks
+      ------------------------------------------------*/
+      if ( setupCallbacksEnabled )
+      {
+        static constexpr uint32_t checkDelay_mS  = 10;
+        static constexpr uint32_t initTimeout_mS = 10000;
+
+        TickType_t lastTimeWoken = xTaskGetTickCount();
+        uint32_t timeoutCounter  = 0;
+
+        /*------------------------------------------------
+        Wait for the thread currently being initialized to signal back that it's ready
+        ------------------------------------------------*/
+        while ( !ulTaskNotifyTake( pdTRUE, 0 ) || ( error == pdFAIL ) )
         {
-          if ( error == pdPASS && threadInitTimeout() == pdPASS )
-            registeredThreads[ i ].handle = thread.handle;
-          else
+          vTaskDelayUntil( &lastTimeWoken, pdMS_TO_TICKS( checkDelay_mS ) );
+          timeoutCounter += checkDelay_mS;
+
+          if ( timeoutCounter > initTimeout_mS )
           {
-            /* If you get stuck here, it's because you did not call back to this
-             * thread after initialization code was completed. Call
-             * "signalThreadSetupComplete()" after setup code and just before the
-             * infinite loop. */
-            vTaskSuspendAll();
-            while ( 1 )
-              ;
+            error = pdFAIL;
           }
         }
       }
 
-      /* Resume threads in the order which they were registered */
+
+      return error;
+    }
+
+    /**
+     *  Private thread that performs the startup sequence on all threads registered
+     *  before startScheduler() was called
+     *
+     *  @return void
+     */
+    static void initThread( void *arguments )
+    {
+      BaseType_t error = pdPASS;
+      Thread_t thread;
+
+      /*------------------------------------------------
+      Initialize all threads registered in the system
+      ------------------------------------------------*/
+      for ( size_t i = 0; i < systemThreads.size(); i++ )
+      {
+        thread = systemThreads[ i ];
+        error  = xTaskCreate( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, &thread.handle );
+
+        /*------------------------------------------------
+        If you get stuck here, the current thread tried to allocate
+        more memory than what is left in the heap.
+        ------------------------------------------------*/
+        if ( error == errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY )
+        {
+          /* Uncomment this to figure out how much stack size is remaining */
+          //volatile size_t bytesRemaining __attribute( ( unused ) ) = xPortGetFreeHeapSize();
+          while ( 1 )
+          {
+            /* Kill time while we wait for the watchdog to reset us */
+          }
+        }
+
+        /*------------------------------------------------
+        Wait for the setup to complete. If you get stuck here, it's probably
+        because you didn't use the signalSetupComplete() callback...
+        ------------------------------------------------*/
+        if ( threadInitTimeout() != pdPASS )
+        {
+          vTaskSuspendAll();
+          while ( 1 )
+          {
+            /* Kill time while we wait for the watchdog to reset us */
+          }
+        }
+
+        /*------------------------------------------------
+        Getting to this point means everything was initialized ok. Go
+        ahead and register the proper handle with the system.
+        ------------------------------------------------*/
+        systemThreads[ i ].handle = thread.handle;
+      }
+
+      /*------------------------------------------------
+      Resume all threads registered in the system
+      ------------------------------------------------*/
       if ( setupCallbacksEnabled )
       {
-        for ( size_t i = 0; i < numRegThreads; i++ )
+        for ( size_t i = 0; i < systemThreads.size(); i++ )
         {
-          xTaskNotify( registeredThreads[ i ].handle, 1u, eSetValueWithOverwrite );
+          if ( systemThreads[ i ].handle )
+          {
+            xTaskNotify( systemThreads[ i ].handle, MSG_SETUP_RESUME, eSetValueWithOverwrite );
+          }
+          else
+          {
+            while ( 1 )
+            {
+              /* Chill out while the watchdog resets us...this really shouldn't be happening at this point */
+            }
+          }
         }
       }
 
-      /* Cleanly exit this thread */
+      /*------------------------------------------------
+      Cleanly exit the thread
+      ------------------------------------------------*/
       INIT_THREAD = nullptr;
+      setupCallbacksEnabled = false;
       vTaskDelete( NULL );
     }
 
-    void startScheduler( bool useSetupCallbacks )
+    void startScheduler( const bool useSetupCallbacks )
     {
       setupCallbacksEnabled = useSetupCallbacks;
-      xTaskCreate( initThreads, "thor_init", 500, NULL, 1, &INIT_THREAD );
+      xTaskCreate( initThread, "threading_init", 500, NULL, 1, &INIT_THREAD );
       vTaskStartScheduler();
     }
 
-#ifdef SIM
-    void endScheduler()
+    BaseType_t addThread( const Thread_t *const threadArray, const uint8_t numThreads )
     {
-      vTaskEndScheduler();
+      Thread_t tmp;
+      for ( uint8_t x = 0; x < numThreads; x++ )
+      {
+        tmp = threadArray[ x ];
+        systemThreads.push_back( tmp );
+      }
+
+      return pdPASS;
     }
-#endif
 
     BaseType_t addThread( TaskFunction_t threadFunc, const char *threadName, const uint16_t stackDepth,
                           void *const threadFuncParams, UBaseType_t threadPriority, TaskHandle_t threadHandle )
     {
-      volatile BaseType_t error = pdPASS;
+      BaseType_t error = pdPASS;
 
+      Thread_t newThread;
+      newThread.func       = threadFunc;
+      newThread.name       = threadName;
+      newThread.stackDepth = stackDepth;
+      newThread.funcParams = threadFuncParams;
+      newThread.priority   = threadPriority;
+      newThread.handle     = threadHandle;
+
+      /*------------------------------------------------
+      Immediately create the new thread if the scheduler is already running
+      ------------------------------------------------*/
       if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
       {
         error = xTaskCreate( threadFunc, threadName, stackDepth, threadFuncParams, threadPriority, &threadHandle );
       }
-      else
-      {
-        registeredThreads[ numRegThreads ] = { threadFunc,       threadName,     stackDepth,
-                                               threadFuncParams, threadPriority, threadHandle };
-        numRegThreads++;
-      }
 
+      /*------------------------------------------------
+      Regardless of if the scheduler is running or not, it we have
+      success, then register the thread with the system.
+      ------------------------------------------------*/
+      if ( error == pdPASS )
+      {
+        systemThreads.push_back( newThread );
+      }
 
       return error;
     }
@@ -158,59 +227,29 @@ namespace Chimera
       return addThread( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, thread.handle );
     }
 
-    void deleteThread( TaskHandle_t task )
-    {
-      vTaskDelete( task );
-    }
-
     BaseType_t signalThreadSetupComplete()
     {
-
-      // BUG: Completely freezes the system if this function is called
-      //      after the scheduler has finished the INIT_THREAD and can
-      //      no longer re-enable the calling thread.
-      if ( setupCallbacksEnabled )
+      if ( setupCallbacksEnabled && INIT_THREAD )
       {
-        uint32_t tmp;
-
-        // Notify the initialization thread that this task setup is complete
-        xTaskNotify( INIT_THREAD, 1u, eSetValueWithOverwrite );
-
-        // Block this task until the init thread resumes it
-        xTaskNotifyWait( 0u, 0u, &tmp, portMAX_DELAY );
+        uint32_t tmp = ~MSG_SETUP_RESUME;
+        while ( tmp != MSG_SETUP_RESUME )
+        {
+          xTaskNotify( INIT_THREAD, MSG_SETUP_COMPLETE, eSetValueWithOverwrite );
+          xTaskNotifyWait( 0u, 0u, &tmp, portMAX_DELAY );
+        }
       }
 
       return pdPASS;
     }
 
-    BaseType_t sendMessage( TaskHandle_t task, const uint32_t msg )
+#ifdef SIM
+    void endScheduler()
     {
-      if ( task )
-      {
-        return xTaskNotify( task, msg, eSetValueWithOverwrite );
-      }
-      else
-      {
-        return pdFAIL;
-      }
+      vTaskEndScheduler();
     }
-
-    extern BaseType_t xSemaphoreTakeMultiple( SemaphoreHandle_t xSemaphore, TickType_t xTicksToWait, size_t numTake )
-    {
-      BaseType_t returnCode = pdPASS;
-
-      for ( size_t x = 0; x < numTake; x++ )
-      {
-        if ( xSemaphoreTake( xSemaphore, xTicksToWait ) != pdPASS )
-        {
-          returnCode = pdFAIL;
-        }
-      }
-
-      return returnCode;
-    }
-
 #endif
+
+#endif  /* USING_FREERTOS */
 
   }  // namespace Threading
 }  // namespace Chimera
