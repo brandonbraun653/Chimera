@@ -37,34 +37,54 @@ namespace Chimera
   namespace Threading
   {
     /**
-     *  Implements lock functionality that can simply be inherited into other classes.
-     *  Only guaranteed to be thread safe if using FreeRTOS.
+     *  Implements generic lock functionality that can simply be inherited into other classes.
+     *  This is primarily intended for use with FreeRTOS, but also implements an extremely
+     *  rudimentary (not guaranteed thread safe) lock using std::atomic. The actual atomicity
+     *  of the non-FreeRTOS implementation is going to be processor specific.
      */
     class Lockable
     {
     public:
-      virtual Chimera::Status_t reserve( const uint32_t timeout_mS )
-      {
-        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-      }
+      /**
+       *  Attempts to reserve the inheriting object
+       *
+       *  @note If not using FreeRTOS, this function will ignore the timeout
+       *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
+       *
+       *  @param[in]  timeout_mS    If using FreeRTOS, how long to wait for the object to be reserved
+       *  @return Chimera::Status_t
+       *
+       *  | Return Value |                     Explanation                    |
+       *  |:------------:|:--------------------------------------------------:|
+       *  |           OK | The object was reserved before the timeout expired |
+       *  |         FAIL | The object was not reserved                        |
+       */
+      Chimera::Status_t reserve( const uint32_t timeout_mS );
 
-      virtual Chimera::Status_t release( const uint32_t timeout_mS )
-      {
-        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-      }
+      /**
+       *  Attempts to release the inheriting object
+       *
+       *  @note If not using FreeRTOS, this function will release the lock regardless of who holds it.
+       *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
 
-      bool isLocked();
+       *  @return Chimera::Status_t
+       *
+       *  | Return Value |         Explanation          |
+       *  |:------------:|:----------------------------:|
+       *  |           OK | The object was released      |
+       *  |         FAIL | The object was not released  |
+       */
+      Chimera::Status_t release();
 
-      Lockable()  = default;
+      Lockable();
       ~Lockable() = default;
 
-    protected:
-      void lock();
-
-      void unlock();
-
     private:
-      std::atomic<bool> mutex;
+#if defined( USING_FREERTOS )
+      SemaphoreHandle_t mutex;
+#else
+      std::atomic<bool> simple_mutex;
+#endif
     };
 
 #ifdef USING_FREERTOS
@@ -151,7 +171,7 @@ namespace Chimera
      */
     BaseType_t signalSetupComplete();
 
-#endif /* !CHIMERA_FREERTOS */
+#endif /* !USING_FREERTOS */
 
 
   }  // namespace Threading

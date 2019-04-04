@@ -16,19 +16,45 @@ namespace Chimera
 {
   namespace Threading
   {
-    bool Lockable::isLocked()
+    Lockable::Lockable()
     {
-      return mutex;
+#if defined( USING_FREERTOS )
+      mutex = xSemaphoreCreateMutex();
+#else
+      simple_mutex = false;
+#endif
     }
 
-    void Lockable::lock()
+    Chimera::Status_t Lockable::reserve( const uint32_t timeout_mS )
     {
-      mutex = true;
+      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
+
+#if defined( USING_FREERTOS )
+      if ( xSemaphoreTake( mutex, pdMS_TO_TICKS( timeout_mS ) ) != pdPASS )
+      {
+        error = Chimera::CommonStatusCodes::FAIL;
+      }
+#else
+      simple_mutex = false;
+#endif
+
+      return error;
     }
 
-    void Lockable::unlock()
+    Chimera::Status_t Lockable::release()
     {
-      mutex = false;
+      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
+
+#if defined( USING_FREERTOS )
+      if ( xSemaphoreGive( mutex ) != pdPASS )
+      {
+        error = Chimera::CommonStatusCodes::FAIL;
+      }
+#else
+      simple_mutex = false;
+#endif
+
+      return error;
     }
 
 #ifdef USING_FREERTOS
