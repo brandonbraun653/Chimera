@@ -295,7 +295,7 @@ namespace Chimera
 
     enum class Event : uint8_t
     {
-      ASYNC_READ_COMPLETE = 0,
+      READ_COMPLETE = 0,
       WRITE_COMPLETE
     };
 

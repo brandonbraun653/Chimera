@@ -39,7 +39,6 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
-
     };
 
 #ifndef CHIMERA_INHERITED_DMA
@@ -51,12 +50,11 @@ namespace Chimera
     {
     public:
       DMAUnsupported() = default;
-
     };
 
     using CHIMERA_INHERITED_DMA = DMAUnsupported;
 #endif
-  }
+  }  // namespace DMA
 
   namespace GPIO
   {
@@ -86,7 +84,7 @@ namespace Chimera
        *  |             FAIL | The GPIO failed initialization     |
        *  | INVAL_FUNC_PARAM | User passed in an invalid value    |
        */
-      virtual Chimera::Status_t init(const Chimera::GPIO::Port port, const uint8_t pin) = 0;
+      virtual Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) = 0;
 
       /**
        *  Change the GPIO pin electrical input/output behavior mode
@@ -102,7 +100,7 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | User passed in an invalid value             |
        *  |  NOT_INITIALIZED | The GPIO object has not been initialized    |
        */
-      virtual Chimera::Status_t setMode(const Chimera::GPIO::Drive drive, const bool pullup) = 0;
+      virtual Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const bool pullup ) = 0;
 
       /**
        *  Change the logical state of the pin
@@ -116,7 +114,7 @@ namespace Chimera
        *  |             FAIL | The pin failed applying the settings        |
        *  |  NOT_INITIALIZED | The GPIO object has not been initialized    |
        */
-      virtual Chimera::Status_t setState(const Chimera::GPIO::State state) = 0;
+      virtual Chimera::Status_t setState( const Chimera::GPIO::State state ) = 0;
 
       /**
        *  Read the current logical state of the pin
@@ -131,7 +129,7 @@ namespace Chimera
        *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
        *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
        */
-      virtual Chimera::Status_t getState(Chimera::GPIO::State &state)
+      virtual Chimera::Status_t getState( Chimera::GPIO::State &state )
       {
         /* Prevent GMOCK abstract instantiation error */
         return Chimera::GPIO::Status::NOT_SUPPORTED;
@@ -164,22 +162,22 @@ namespace Chimera
       GPIOUnsupported()  = default;
       ~GPIOUnsupported() = default;
 
-      Chimera::Status_t init(const Chimera::GPIO::Port port, const uint8_t pin) final override
+      Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) final override
       {
         return Chimera::GPIO::Status::FAIL;
       }
 
-      Chimera::Status_t setMode(const Chimera::GPIO::Drive drive, const bool pullup) final override
+      Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const bool pullup ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
 
-      Chimera::Status_t setState(const Chimera::GPIO::State state) final override
+      Chimera::Status_t setState( const Chimera::GPIO::State state ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
 
-      Chimera::Status_t getState(Chimera::GPIO::State &state) final override
+      Chimera::Status_t getState( Chimera::GPIO::State &state ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
@@ -214,7 +212,7 @@ namespace Chimera
        *  |             FAIL | The operation failed                                      |
        *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
        */
-      virtual Chimera::Status_t init(const Chimera::SPI::Setup &setupStruct) = 0;
+      virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
 
       /**
        *	Destroys all previous hardware setup (virtually or physically), which requires
@@ -242,7 +240,7 @@ namespace Chimera
        *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
        *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t setChipSelect(const Chimera::GPIO::State &value) = 0;
+      virtual Chimera::Status_t setChipSelect( const Chimera::GPIO::State &value ) = 0;
 
       /**
        *  Instruct the chip select to behave in a specific manner
@@ -255,7 +253,7 @@ namespace Chimera
        *  |              OK | The operation completed successfully         |
        *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t setChipSelectControlMode(const Chimera::SPI::ChipSelectMode &mode) = 0;
+      virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode &mode ) = 0;
 
       /**
        *  Writes data onto the SPI bus. The number of bytes actually written will be returned
@@ -272,7 +270,7 @@ namespace Chimera
        *  |            FAIL | The operation failed                         |
        *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t writeBytes(const uint8_t *const txBuffer, const size_t length, const uint32_t timeoutMS) = 0;
+      virtual Chimera::Status_t writeBytes( const uint8_t *const txBuffer, const size_t length, const uint32_t timeoutMS ) = 0;
 
       /**
        *  Reads data from the SPI bus. The number of bytes actually read will be returned
@@ -289,7 +287,7 @@ namespace Chimera
        *  |            FAIL | The operation failed                         |
        *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t readBytes(uint8_t *const rxBuffer, const size_t length, const uint32_t timeoutMS) = 0;
+      virtual Chimera::Status_t readBytes( uint8_t *const rxBuffer, const size_t length, const uint32_t timeoutMS ) = 0;
 
       /**
        *  Transmits and receives data on the SPI bus in a single operation. Returns the actual
@@ -307,10 +305,8 @@ namespace Chimera
        *  |            FAIL | The operation failed                         |
        *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
-      virtual Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer,
-        uint8_t *const rxBuffer,
-        const size_t length,
-        const uint32_t timeoutMS) = 0;
+      virtual Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, const size_t length,
+                                                const uint32_t timeoutMS ) = 0;
 
       /**
        *  Set the hardware operational mode in either Blocking, Interrupt, or DMA.
@@ -326,7 +322,7 @@ namespace Chimera
        *  | NOT_INITIALIZED | The class object has not been initialized    |
        */
       virtual Chimera::Status_t setPeripheralMode( const Chimera::SPI::SubPeripheral periph,
-        const Chimera::SPI::SubPeripheralMode mode) = 0;
+                                                   const Chimera::SPI::SubPeripheralMode mode ) = 0;
 
       /**
        *  Change the frequency of the SPI output clock
@@ -352,7 +348,7 @@ namespace Chimera
        *  |    CLOCK_SET_EQ | The desired clock value was achieved exactly or within tolerance     |
        *  |    CLOCK_SET_LT | The actual clock value achieved was less than the user desired value |
        */
-      virtual Chimera::Status_t setClockFrequency(const uint32_t freq, const uint32_t tolerance) = 0;
+      virtual Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) = 0;
 
       /**
        *  Get the current SPI clock frequency.
@@ -368,41 +364,7 @@ namespace Chimera
        *  |            FAIL | The operation failed                      |
        *  | NOT_INITIALIZED | The class object has not been initialized |
        */
-      virtual Chimera::Status_t getClockFrequency(uint32_t &freq) = 0;
-
-      /**
-       *  Reserves the SPI hardware to allow unobstructed use
-       *
-       *  @param[in]  timeout_mS      How many milliseconds to wait for the hardware to become available
-       *  @return Chimera::Status_t
-       *
-       *  |  Return Value |                  Explanation                 |
-       *  |:-------------:|:--------------------------------------------:|
-       *  |            OK | The operation completed successfully         |
-       *  |          FAIL | The operation failed                         |
-       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
-       */
-      virtual Chimera::Status_t reserve(const uint32_t timeout_mS) override
-      {
-        return Chimera::SPI::Status::NOT_SUPPORTED;
-      }
-
-      /**
-       *  Releases a previous reservation
-       *
-       *  @param[in]  timeout_mS      How many milliseconds to wait for the hardware to release
-       *  @return Chimera::Status_t
-       *
-       *  |  Return Value |                  Explanation                 |
-       *  |:-------------:|:--------------------------------------------:|
-       *  |            OK | The operation completed successfully         |
-       *  |          FAIL | The operation failed                         |
-       *  | NOT_SUPPORTED | This behavior is not supported on the driver |
-       */
-      virtual Chimera::Status_t release(const uint32_t timeout_mS) override
-      {
-        return Chimera::SPI::Status::NOT_SUPPORTED;
-      }
+      virtual Chimera::Status_t getClockFrequency( uint32_t &freq ) = 0;
 
       /**
        *  Allows the user to assign a callback function to the write complete event.
@@ -417,7 +379,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onWriteCompleteCallback(const Chimera::Function::void_func_uint32_t func)
+      virtual Chimera::Status_t onWriteCompleteCallback( const Chimera::Function::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -435,7 +397,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onReadCompleteCallback(const Chimera::Function::void_func_uint32_t func)
+      virtual Chimera::Status_t onReadCompleteCallback( const Chimera::Function::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -453,7 +415,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onReadWriteCompleteCallback(const Chimera::Function::void_func_uint32_t func)
+      virtual Chimera::Status_t onReadWriteCompleteCallback( const Chimera::Function::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -472,7 +434,7 @@ namespace Chimera
        *  |          FAIL | The operation failed                         |
        *  | NOT_SUPPORTED | This behavior is not supported on the driver |
        */
-      virtual Chimera::Status_t onErrorCallback(const Chimera::Function::void_func_uint32_t func)
+      virtual Chimera::Status_t onErrorCallback( const Chimera::Function::void_func_uint32_t func )
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
@@ -489,7 +451,7 @@ namespace Chimera
       SPIUnsupported()  = default;
       ~SPIUnsupported() = default;
 
-      Chimera::Status_t init(const Chimera::SPI::Setup &setupStruct) final override
+      Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
@@ -499,46 +461,44 @@ namespace Chimera
         return Chimera::SPI::Status::FAIL;
       }
 
-      Chimera::Status_t setChipSelect(const Chimera::GPIO::State &value) final override
+      Chimera::Status_t setChipSelect( const Chimera::GPIO::State &value ) final override
       {
         return Chimera::SPI::Status::NOT_SUPPORTED;
       }
 
-      Chimera::Status_t setChipSelectControlMode(const Chimera::SPI::ChipSelectMode &mode) final override
+      Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode &mode ) final override
       {
         return Chimera::SPI::Status::NOT_INITIALIZED;
       }
 
-      Chimera::Status_t writeBytes(const uint8_t *const txBuffer, size_t length, uint32_t timeoutMS) final override
+      Chimera::Status_t writeBytes( const uint8_t *const txBuffer, size_t length, uint32_t timeoutMS ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
 
-      Chimera::Status_t readBytes(uint8_t *const rxBuffer, size_t length, uint32_t timeoutMS) final override
+      Chimera::Status_t readBytes( uint8_t *const rxBuffer, size_t length, uint32_t timeoutMS ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
 
-      Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer,
-        uint8_t *const rxBuffer,
-        size_t length,
-        uint32_t timeoutMS) final override
+      Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
+                                        uint32_t timeoutMS ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
 
       Chimera::Status_t setPeripheralMode( const Chimera::SPI::SubPeripheral periph,
-        const Chimera::SPI::SubPeripheralMode mode) final override
+                                           const Chimera::SPI::SubPeripheralMode mode ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
 
-      Chimera::Status_t setClockFrequency(const uint32_t freq, const uint32_t tolerance) final override
+      Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
 
-      Chimera::Status_t getClockFrequency(uint32_t &freq) final override
+      Chimera::Status_t getClockFrequency( uint32_t &freq ) final override
       {
         return Chimera::SPI::Status::FAIL;
       }
@@ -558,7 +518,6 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
-
       /**
        *  Attaches and configures the physical hardware channel and GPIO pin setup
        *
@@ -571,7 +530,7 @@ namespace Chimera
        *  |           OK | Everything worked as expected |
        *  |         FAIL | The function failed           |
        */
-      virtual Chimera::Status_t assignHW(const uint8_t channel, const IOPins &pins) = 0;
+      virtual Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) = 0;
 
       /**
        *  Starts up the Serial interface with a baud rate and transfer mode
@@ -585,7 +544,7 @@ namespace Chimera
        *  |           OK | Everything worked as expected |
        *  |         FAIL | The function failed           |
        */
-      virtual Chimera::Status_t begin(const Modes txMode, const Modes rxMode) = 0;
+      virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) = 0;
 
       /**
        *  De-initializes the serial port
@@ -616,8 +575,8 @@ namespace Chimera
        *  |  NOT_INITIALIZED | The serial hardware is not ready for configuration |
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function      |
        */
-      virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity,
-                                           const StopBits stop, const FlowControl flow) = 0;
+      virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
+                                           const FlowControl flow ) = 0;
 
       /**
        *  Change the baud rate of the peripheral at run time
@@ -631,7 +590,7 @@ namespace Chimera
        *  |             FAIL | The function failed configuration of the hardware  |
        *  |  NOT_INITIALIZED | The serial hardware is not ready for configuration |
        */
-      virtual Chimera::Status_t setBaud(const uint32_t baud) = 0;
+      virtual Chimera::Status_t setBaud( const uint32_t baud ) = 0;
 
       /**
        *  Change the hardware transfer mode (Blocking, Interrupt, DMA)
@@ -650,7 +609,7 @@ namespace Chimera
        *  |  NOT_INITIALIZED | The serial hardware is not ready for configuration |
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function      |
        */
-      virtual Chimera::Status_t setMode(const SubPeripheral periph, const Modes mode) = 0;
+      virtual Chimera::Status_t setMode( const SubPeripheral periph, const Modes mode ) = 0;
 
       /**
        *  Writes data onto the wire
@@ -679,7 +638,7 @@ namespace Chimera
        *  |  NOT_INITIALIZED | The serial hardware is not ready              |
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function |
        */
-      virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500) = 0;
+      virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
 
       /**
        *  Read an exact number of bytes from the wire
@@ -713,7 +672,7 @@ namespace Chimera
        *  |  NOT_INITIALIZED | The serial hardware is not ready              |
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function |
        */
-      virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500) = 0;
+      virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
 
       /**
        *	Flushes out the given subperipheral queues
@@ -726,7 +685,7 @@ namespace Chimera
        *  |           OK | Everything worked as expected |
        *  |         FAIL | The function failed           |
        */
-      virtual Chimera::Status_t flush(const SubPeripheral periph) = 0;
+      virtual Chimera::Status_t flush( const SubPeripheral periph ) = 0;
 
       /**
        *  Read data queued from the RX buffer. This buffer can only be filled if the
@@ -742,7 +701,7 @@ namespace Chimera
        *  |            EMPTY | There were not enough queued bytes to read out |
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
        */
-      virtual Chimera::Status_t readAsync(uint8_t *const buffer, const size_t len)
+      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -763,7 +722,7 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
        *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
        */
-      virtual Chimera::Status_t enableBuffering(const SubPeripheral periph, boost::circular_buffer<uint8_t> *const buffer)
+      virtual Chimera::Status_t enableBuffering( const SubPeripheral periph, boost::circular_buffer<uint8_t> *const buffer )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -782,7 +741,7 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
        *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
        */
-      virtual Chimera::Status_t disableBuffering(const SubPeripheral periph)
+      virtual Chimera::Status_t disableBuffering( const SubPeripheral periph )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -798,7 +757,7 @@ namespace Chimera
        *  |         true | Data is available    |
        *  |        false | No data is available |
        */
-      virtual bool available(size_t *const bytes = nullptr)
+      virtual bool available( size_t *const bytes = nullptr )
       {
         return false;
       }
@@ -816,7 +775,7 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
        *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
        */
-      virtual Chimera::Status_t attachEventNotifier(const Event event, volatile bool *const notifier)
+      virtual Chimera::Status_t attachEventNotifier( const Event event, volatile bool *const notifier )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -834,7 +793,7 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
        *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
        */
-      virtual Chimera::Status_t removeEventNotifier(const Event event, volatile bool *const notifier)
+      virtual Chimera::Status_t removeEventNotifier( const Event event, volatile bool *const notifier )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -853,7 +812,7 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
        *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
        */
-      virtual Chimera::Status_t attachEventNotifier(const Event event, SemaphoreHandle_t *const semphr)
+      virtual Chimera::Status_t attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -871,30 +830,18 @@ namespace Chimera
        *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
        *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
        */
-      virtual Chimera::Status_t removeEventNotifier(const Event event, SemaphoreHandle_t *const semphr)
+      virtual Chimera::Status_t removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr )
       {
         return Status::NOT_SUPPORTED;
       }
 #endif
-
-      virtual Chimera::Status_t reserve(const uint32_t timeout_mS) override
-      {
-        return Status::NOT_SUPPORTED;
-      }
-
-      virtual Chimera::Status_t release(const uint32_t timeout_mS) override
-      {
-        return Status::NOT_SUPPORTED;
-      }
     };
 
 #ifndef CHIMERA_INHERITED_SERIAL
 
     class SerialUnsupported : public Interface
     {
-
-      //TODO: Do this once you have access to VAssist again...
-
+      // TODO: Do this once you have access to VAssist again...
     };
 
     using CHIMERA_INHERITED_SERIAL = SerialUnsupported;
@@ -907,7 +854,7 @@ namespace Chimera
     class Interface
     {
     public:
-      virtual Status reasonForReset(ResetType &reason)
+      virtual Status reasonForReset( ResetType &reason )
       {
         reason = ResetType::UNKNOWN_RESET;
         return Status::NOT_SUPPORTED;
@@ -939,7 +886,7 @@ namespace Chimera
        *   @return Status::OK if the initialization was a success, Status::FAIL if
        * not
        */
-      virtual Status initialize(const uint32_t timeout_mS)
+      virtual Status initialize( const uint32_t timeout_mS )
       {
         return Status::NOT_SUPPORTED;
       }
@@ -981,7 +928,7 @@ namespace Chimera
        *   @param[out] timeout     Timeout value in milliseconds
        *   @return Peripheral status
        */
-      virtual Status getTimeout(uint32_t &timeout)
+      virtual Status getTimeout( uint32_t &timeout )
       {
         timeout = 0u;
         return Status::NOT_SUPPORTED;
@@ -994,7 +941,7 @@ namespace Chimera
        * it continues running
        *   @return Peripheral status
        */
-      virtual Status pauseOnDebugHalt(const bool enable)
+      virtual Status pauseOnDebugHalt( const bool enable )
       {
         return Status::NOT_SUPPORTED;
       }
