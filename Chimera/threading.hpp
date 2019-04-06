@@ -99,6 +99,7 @@ namespace Chimera
       UBaseType_t priority; /**< FreeRTOS priority number, ranging from 0 to (configMAX_PRIORITIES - 1) lowest to highest */
       void *funcParams;     /**< Thread parameters to be passed in upon creation */
       uint32_t stackDepth;  /**< Size of the thread stack, in multiples of **WORDS** (x4 bytes), ie stack of 150 == 600 bytes */
+      char name[ configMAX_TASK_NAME_LEN ];
     };
 
     /**
@@ -134,7 +135,7 @@ namespace Chimera
      *	@param[in]	threads     Array of threads that will be registered
      *	@return BaseType_t
      */
-    BaseType_t addThread( const Thread_t *const threadArray, const uint8_t numThreads );
+    BaseType_t addThread( Thread_t *const threadArray, const uint8_t numThreads );
 
     /**
      *  Adds a new thread to the FreeRTOS kernel. If the scheduler has been started already, the

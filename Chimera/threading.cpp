@@ -8,6 +8,9 @@
 * 2019 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
+/* C++ Includes */
+#include <cstring>
+
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 #include <Chimera/threading.hpp>
@@ -65,7 +68,7 @@ namespace Chimera
     static constexpr uint32_t MSG_SETUP_COMPLETE = 0xbf931c86;
     static constexpr uint32_t MSG_SETUP_RESUME   = 0x2e526078;
 
-    static std::vector<Thread_t> systemThreads;
+    static std::vector<Thread_t *> systemThreads;
     static TaskHandle_t INIT_THREAD;
     static bool setupCallbacksEnabled = false;
 
@@ -118,7 +121,7 @@ namespace Chimera
     static void initThread( void *arguments )
     {
       BaseType_t error = pdPASS;
-      Thread_t thread;
+      Thread_t *thread;
 
       /*------------------------------------------------
       Initialize all threads registered in the system
@@ -126,7 +129,7 @@ namespace Chimera
       for ( size_t i = 0; i < systemThreads.size(); i++ )
       {
         thread = systemThreads[ i ];
-        error  = xTaskCreate( thread.func, "", thread.stackDepth, thread.funcParams, thread.priority, &thread.handle );
+        error  = xTaskCreate( thread->func, thread->name, thread->stackDepth, thread->funcParams, thread->priority, &thread->handle );
 
         /*------------------------------------------------
         If you get stuck here, the current thread tried to allocate
@@ -154,12 +157,6 @@ namespace Chimera
             /* Kill time while we wait for the watchdog to reset us */
           }
         }
-
-        /*------------------------------------------------
-        Getting to this point means everything was initialized ok. Go
-        ahead and register the proper handle with the system.
-        ------------------------------------------------*/
-        systemThreads[ i ].handle = thread.handle;
       }
 
       /*------------------------------------------------
@@ -169,9 +166,9 @@ namespace Chimera
       {
         for ( size_t i = 0; i < systemThreads.size(); i++ )
         {
-          if ( systemThreads[ i ].handle )
+          if ( systemThreads[ i ]->handle )
           {
-            xTaskNotify( systemThreads[ i ].handle, MSG_SETUP_RESUME, eSetValueWithOverwrite );
+            xTaskNotify( systemThreads[ i ]->handle, MSG_SETUP_RESUME, eSetValueWithOverwrite );
           }
           else
           {
@@ -184,7 +181,7 @@ namespace Chimera
       }
 
       /*------------------------------------------------
-      Cleanly exit the thread
+      Cleanly exit this initialization thread
       ------------------------------------------------*/
       INIT_THREAD = nullptr;
       setupCallbacksEnabled = false;
@@ -198,13 +195,11 @@ namespace Chimera
       vTaskStartScheduler();
     }
 
-    BaseType_t addThread( const Thread_t *const threadArray, const uint8_t numThreads )
+    BaseType_t addThread( Thread_t *const threadArray, const uint8_t numThreads )
     {
-      Thread_t tmp;
       for ( uint8_t x = 0; x < numThreads; x++ )
       {
-        tmp = threadArray[ x ];
-        systemThreads.push_back( tmp );
+        systemThreads.push_back( &threadArray[ x ] );
       }
 
       return pdPASS;
@@ -215,19 +210,21 @@ namespace Chimera
     {
       BaseType_t error = pdPASS;
 
-      Thread_t newThread;
-      newThread.func       = threadFunc;
-      newThread.stackDepth = stackDepth;
-      newThread.funcParams = threadFuncParams;
-      newThread.priority   = threadPriority;
-      newThread.handle     = threadHandle;
+      Thread_t *newThread = new Thread_t;
+      newThread->func       = threadFunc;
+      newThread->stackDepth = stackDepth;
+      newThread->funcParams = threadFuncParams;
+      newThread->priority   = threadPriority;
+      newThread->handle     = threadHandle;
+      memcpy( &newThread->name[0], threadName, sizeof( Thread_t::name ) );
 
       /*------------------------------------------------
       Immediately create the new thread if the scheduler is already running
       ------------------------------------------------*/
       if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
       {
-        error = xTaskCreate( threadFunc, threadName, stackDepth, threadFuncParams, threadPriority, &threadHandle );
+        error = xTaskCreate( newThread->func, newThread->name, newThread->stackDepth, newThread->funcParams, newThread->priority,
+                             &newThread->handle );
       }
 
       /*------------------------------------------------
@@ -244,7 +241,7 @@ namespace Chimera
 
     BaseType_t addThread( Thread_t &thread )
     {
-      return addThread( thread.func, "", thread.stackDepth, thread.funcParams, thread.priority, thread.handle );
+      return addThread( thread.func, thread.name, thread.stackDepth, thread.funcParams, thread.priority, thread.handle );
     }
 
     BaseType_t signalSetupComplete()
