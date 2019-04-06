@@ -33,6 +33,13 @@ Test Environment
 #endif
 
 /*------------------------------------------------
+Target CPU
+------------------------------------------------*/
+#if !defined( CHIMERA_LITTLE_ENDIAN ) && !defined( CHIMERA_BIG_ENDIAN )
+#error Please define the target CPU endianness: CHIMERA_LITTLE_ENDIAN or CHIMERA_BIG_ENDIAN
+#endif 
+
+/*------------------------------------------------
 FreeRTOS
 ------------------------------------------------*/
 #if __has_include( "FreeRTOS.h" ) && !defined( USING_FREERTOS )
