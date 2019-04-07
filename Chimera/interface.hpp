@@ -838,7 +838,6 @@ namespace Chimera
     };
 
 #ifndef CHIMERA_INHERITED_SERIAL
-
     class SerialUnsupported : public Interface
     {
       // TODO: Do this once you have access to VAssist again...
@@ -866,6 +865,38 @@ namespace Chimera
 #if ( CHIMERA_HWM_SYSCTL == 0 )
     typedef Interface CHIMERA_INHERITED_SYSCTL;
 #endif
+
+
+    class IdentifierInterface
+    {
+    public:
+      virtual ~IdentifierInterface() = default;
+      
+      virtual uint32_t deviceID() = 0;
+      
+      // TODO: Need a way to provision variable number of bytes. STM32 unique id is 96 bits
+      virtual uint32_t uniqueID() = 0;
+    };
+    
+#ifndef CHIMERA_INHERITED_SYSTEM_IDENTIFIER
+    class IdentifierInterfaceUnsupported : public IdentifierInterface
+    {
+    public:
+      IdentifierInterfaceUnsupported() = default;
+      
+      uint32_t deviceID() final override
+      {
+        return 0u;
+      }
+
+      uint32_t uniqueID() final override
+      {
+        return 0u;
+      }
+    };
+
+    using CHIMERA_INHERITED_SYSTEM_IDENTIFIER = IdentifierInterfaceUnsupported;
+#endif /* !CHIMERA_INHERITED_SYSTEM_IDENTIFIER */
 
   }  // namespace System
 

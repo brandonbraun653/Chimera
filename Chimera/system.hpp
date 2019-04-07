@@ -25,7 +25,7 @@ namespace Chimera
 {
   namespace System
   {
-    class SystemControl : CHIMERA_INHERITED_SYSCTL
+    class SystemControl : public CHIMERA_INHERITED_SYSCTL
     {
     public:
       SystemControl()  = default;
@@ -37,8 +37,20 @@ namespace Chimera
     typedef std::shared_ptr<SystemControl> SystemControl_sPtr;
     typedef std::unique_ptr<SystemControl> SystemControl_uPtr;
 
-    static_assert( std::is_base_of<Interface, SystemControl>::value,
-                   "CHIMERA: Base class does not implement the correct interface" );
+    static_assert( std::is_base_of<Interface, SystemControl>::value, "Class implements incorrect interface" );
+
+    
+    class Identifier : public CHIMERA_INHERITED_SYSTEM_IDENTIFIER
+    {
+    public:
+      Identifier() = default;
+      ~Identifier() = default;
+      
+    };
+
+    using Identifier_sPtr = std::shared_ptr<Identifier>;
+    using Identifier_uPtr = std::unique_ptr<Identifier>;
+    static_assert( std::is_base_of<IdentifierInterface, Identifier>::value, "Class implements incorrect interface" );
   }  // namespace System
 }  // namespace Chimera
 
