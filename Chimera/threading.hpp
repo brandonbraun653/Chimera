@@ -13,7 +13,7 @@
 #define CHIMERA_THREADING_HPP
 
 /* C++ Includes */
-#include <atomic>
+#include <mutex>
 
 /* Chimera Includes */
 #include <Chimera/types.hpp>
@@ -36,6 +36,8 @@ namespace Chimera
 {
   namespace Threading
   {
+    static constexpr uint32_t TIMEOUT_DONT_WAIT = 0u;
+
     /**
      *  Implements generic lock functionality that can simply be inherited into other classes.
      *  This is primarily intended for use with FreeRTOS, but also implements an extremely
@@ -81,9 +83,9 @@ namespace Chimera
 
     private:
 #if defined( USING_FREERTOS )
-      SemaphoreHandle_t mutex;
+      SemaphoreHandle_t recursive_mutex;
 #else
-      std::atomic<bool> simple_mutex;
+      std::recursive_mutex recursive_mutex;
 #endif
     };
 

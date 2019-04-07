@@ -22,9 +22,9 @@ namespace Chimera
     Lockable::Lockable()
     {
 #if defined( USING_FREERTOS )
-      mutex = xSemaphoreCreateMutex();
+      recursive_mutex = xSemaphoreCreateRecursiveMutex();
 #else
-      simple_mutex = false;
+      // Handle standard std::recursive_mutex
 #endif
     }
 
@@ -33,12 +33,12 @@ namespace Chimera
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
 #if defined( USING_FREERTOS )
-      if ( xSemaphoreTake( mutex, pdMS_TO_TICKS( timeout_mS ) ) != pdPASS )
+      if ( xSemaphoreTake( recursive_mutex, pdMS_TO_TICKS( timeout_mS ) ) != pdPASS )
       {
         error = Chimera::CommonStatusCodes::FAIL;
       }
 #else
-      simple_mutex = false;
+      // Handle standard std::recursive_mutex
 #endif
 
       return error;
@@ -49,12 +49,12 @@ namespace Chimera
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
 #if defined( USING_FREERTOS )
-      if ( xSemaphoreGive( mutex ) != pdPASS )
+      if ( xSemaphoreGive( recursive_mutex ) != pdPASS )
       {
         error = Chimera::CommonStatusCodes::FAIL;
       }
 #else
-      simple_mutex = false;
+      // Handle standard std::recursive_mutex
 #endif
 
       return error;
