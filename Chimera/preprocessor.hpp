@@ -42,8 +42,10 @@ Target CPU
 /*------------------------------------------------
 FreeRTOS
 ------------------------------------------------*/
-#if __has_include( "FreeRTOS.h" ) && !defined( USING_FREERTOS )
+#if __has_include( "FreeRTOS.h" ) && __has_include( "tasks.c" )
+#if !defined( USING_FREERTOS )
 #define USING_FREERTOS
+#endif
 #endif
 
 /*------------------------------------------------
