@@ -14,6 +14,7 @@
  *
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
+
 #pragma once
 #ifndef CHIMERA_INTERFACE_HPP
 #define CHIMERA_INTERFACE_HPP
@@ -34,6 +35,47 @@
 
 namespace Chimera
 {
+  namespace HWCRC
+  {
+    class HWInterface : public Threading::Lockable
+    {
+    public:
+      virtual ~HWInterface() = default;
+
+      virtual Chimera::Status_t init( const uint32_t polynomial, const uint8_t crcWidth ) = 0;
+
+      virtual uint32_t accumulate( const uint32_t *const buffer, const uint32_t length ) = 0;
+
+      virtual uint32_t calculate( const uint32_t *const buffer, const uint32_t length ) = 0;
+    };
+    
+#ifndef CHIMERA_INHERITED_HW_CRC
+    class HWInterfaceUnsupported : public HWInterface
+    {
+    public:
+      HWInterfaceUnsupported() = default;
+      ~HWInterfaceUnsupported() = default;
+
+      Chimera::Status_t init( const uint32_t polynomial, const uint8_t crcWidth ) final override
+      {
+        return Chimera::CommonStatusCodes::OK;
+      }
+
+      uint32_t accumulate( const uint32_t *const buffer, const uint32_t length ) final override
+      {
+        return 0u;
+      }
+
+      uint32_t calculate( const uint32_t *const buffer, const uint32_t length ) final override
+      {
+        return 0u;
+      }
+    };
+
+    using CHIMERA_INHERITED_HW_CRC = HWInterfaceUnsupported;
+#endif /* !CHIMERA_INHERITED_HW_CRC */
+  }
+  
   namespace DMA
   {
     class Interface : public Threading::Lockable
@@ -62,7 +104,7 @@ namespace Chimera
      * Defines expected behavior for all embedded systems that allow the user to control
      * GPIO pins. This is a pure virtual/abstract class.
      */
-    class Interface : Threading::Lockable
+    class Interface : public Threading::Lockable
     {
     public:
       /**
@@ -905,6 +947,8 @@ namespace Chimera
     class Interface
     {
     public:
+      virtual ~Interface() = default;
+      
       /**
        *   Initializes the low level hardware needed to configure the watchdog
        * peripheral. This does not start the timer.
@@ -912,15 +956,12 @@ namespace Chimera
        *   @note   Guarantees a minimum resolution of +/- 500uS around the specified
        * timeout
        *
-       *   @param[in]  timeout_mS      How many milliseconds can elapse before
-       * watchdog expires
+       *   @param[in] timeout_mS        How many milliseconds can elapse before watchdog expires
+       *   @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked 
        *   @return Status::OK if the initialization was a success, Status::FAIL if
        * not
        */
-      virtual Status initialize( const uint32_t timeout_mS )
-      {
-        return Status::NOT_SUPPORTED;
-      }
+      virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) = 0;
 
       /**
        *   Starts the watchdog timer. If successful, Interface::kick() must
@@ -928,30 +969,21 @@ namespace Chimera
        *
        *   @return Peripheral status
        */
-      virtual Status start()
-      {
-        return Status::NOT_SUPPORTED;
-      }
+      virtual Status_t start() = 0;
 
       /**
        *   Stops the watchdog timer.
        *
        *   @return Peripheral status
        */
-      virtual Status stop()
-      {
-        return Status::NOT_SUPPORTED;
-      }
+      virtual Status_t stop() = 0;
 
       /**
        *   Kicks the watchdog timer, starting a new countdown cycle.
        *
        *   @return Peripheral status
        */
-      virtual Status kick()
-      {
-        return Status::NOT_SUPPORTED;
-      }
+      virtual Status_t kick() = 0;
 
       /**
        *   Gets the actual timeout value achieved by the hardware
@@ -959,11 +991,7 @@ namespace Chimera
        *   @param[out] timeout     Timeout value in milliseconds
        *   @return Peripheral status
        */
-      virtual Status getTimeout( uint32_t &timeout )
-      {
-        timeout = 0u;
-        return Status::NOT_SUPPORTED;
-      }
+      virtual Status_t getTimeout( uint32_t &timeout ) = 0;
 
       /**
        *   Configures the watchdog to stop on connection to a debugger
@@ -972,18 +1000,18 @@ namespace Chimera
        * it continues running
        *   @return Peripheral status
        */
-      virtual Status pauseOnDebugHalt( const bool enable )
-      {
-        return Status::NOT_SUPPORTED;
-      }
-
-      virtual bool isSupported()
-      {
-        return false;
-      }
-
-      virtual ~Interface() = default;
+      virtual Status_t pauseOnDebugHalt( const bool enable ) = 0;
     };
+
+#ifndef CHIMERA_INHERITED_WATCHDOG
+    class WatchdogUnsupported : public Interface
+    {
+    public:
+      
+    };
+
+    using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
+#endif /* !CHIMERA_INHERITED_WATCHDOG */
 
   }  // namespace Watchdog
 }  // namespace Chimera

@@ -25,24 +25,17 @@ namespace Chimera
 {
   namespace Watchdog
   {
-#ifndef CHIMERA_INHERITED_WATCHDOG
-    typedef Interface CHIMERA_INHERITED_WATCHDOG;
-#endif
-
     class WatchdogClass : public CHIMERA_INHERITED_WATCHDOG
     {
     public:
       WatchdogClass()  = default;
       ~WatchdogClass() = default;
-
-    private:
     };
 
-    typedef std::shared_ptr<Chimera::Watchdog::WatchdogClass> WatchdogClass_sPtr;
-    typedef std::unique_ptr<Chimera::Watchdog::WatchdogClass> WatchdogClass_uPtr;
+    using WatchdogClass_sPtr = std::shared_ptr<WatchdogClass>;
+    using WatchdogClass_uPtr = std::unique_ptr<WatchdogClass>;
 
-    static_assert( std::is_base_of<Interface, WatchdogClass>::value,
-                   "CHIMERA: Base class does not implement the correct interface" );
+    static_assert( std::is_base_of<Interface, WatchdogClass>::value, "Class implements wrong interface" );
   }  // namespace Watchdog
 }  // namespace Chimera
 
