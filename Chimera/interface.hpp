@@ -36,12 +36,12 @@
 
 namespace Chimera
 {
-  namespace HWCRC
+  namespace AlgCRC
   {
-    class HWInterface : public Threading::Lockable
+    class Interface : public Threading::Lockable
     {
     public:
-      virtual ~HWInterface() = default;
+      virtual ~Interface() = default;
 
       /**
        *  Initializes the CRC unit. Some devices may not be configurable, so the code
@@ -102,7 +102,7 @@ namespace Chimera
     };
 
 #ifndef CHIMERA_INHERITED_HW_CRC
-    class HWInterfaceUnsupported : public HWInterface
+    class HWInterfaceUnsupported : public Interface
     {
     public:
       HWInterfaceUnsupported()  = default;
