@@ -1,6 +1,0 @@
-[submodule "dev/vnv/support/freertos"]
-	path = dev/vnv/support/freertos
-	url = https://github.com/brandonbraun653/FreeRTOS.git
-[submodule "tools/CommonTools"]
-	path = tools/CommonTools
-	url = https://github.com/brandonbraun653/CommonTools.git
