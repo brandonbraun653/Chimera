@@ -18,7 +18,7 @@ namespace Chimera
   {
     namespace Memory
     {
-      MemoryBlockRange::MemoryBlockRange( const uint32_t startAddress, const uint32_t endAddress, const uint32_t blockSize )
+      BlockRange::BlockRange( const uint32_t startAddress, const uint32_t endAddress, const uint32_t blockSize )
       {
         if ( ( startAddress < endAddress ) && ( blockSize > 0 ) )
         {
@@ -29,7 +29,7 @@ namespace Chimera
         }
       }
 
-      MemoryBlockRange::MemoryBlockRange( const MemoryBlockRange &cls )
+      BlockRange::BlockRange( const BlockRange &cls )
       {
         this->_blockSize = cls._blockSize;
 
@@ -44,7 +44,7 @@ namespace Chimera
         this->initialized = cls.initialized;
       }
 
-      uint32_t MemoryBlockRange::startBlock()
+      uint32_t BlockRange::startBlock()
       {
         uint32_t retVal = U32MAX;
 
@@ -61,7 +61,7 @@ namespace Chimera
         return retVal;
       }
 
-      uint32_t MemoryBlockRange::startOffset()
+      uint32_t BlockRange::startOffset()
       {
         uint32_t retVal = U32MAX;
 
@@ -79,7 +79,7 @@ namespace Chimera
         return retVal;
       }
 
-      uint32_t MemoryBlockRange::startBytes()
+      uint32_t BlockRange::startBytes()
       {
         uint32_t retVal = U32MAX;
 
@@ -111,7 +111,7 @@ namespace Chimera
         return retVal;
       }
 
-      uint32_t MemoryBlockRange::endBlock()
+      uint32_t BlockRange::endBlock()
       {
         uint32_t retVal = U32MAX;
 
@@ -128,7 +128,7 @@ namespace Chimera
         return retVal;
       }
 
-      uint32_t MemoryBlockRange::endOffset()
+      uint32_t BlockRange::endOffset()
       {
         uint32_t retVal = U32MAX;
 
@@ -152,7 +152,7 @@ namespace Chimera
         return retVal;
       }
 
-      uint32_t MemoryBlockRange::endBytes()
+      uint32_t BlockRange::endBytes()
       {
         uint32_t retVal = U32MAX;
 
@@ -171,7 +171,7 @@ namespace Chimera
       }
 
 
-      FlashUtilities::FlashUtilities( const DeviceDescriptor &dev ) : device( dev )
+      Utilities::Utilities( const DeviceDescriptor &dev ) : device( dev )
       {
         pagesPerBlock   = 0u;
         pagesPerSector  = 0u;
@@ -180,7 +180,7 @@ namespace Chimera
         updateDeviceInfo( dev );
       }
 
-      void FlashUtilities::updateDeviceInfo( const DeviceDescriptor &dev )
+      void Utilities::updateDeviceInfo( const DeviceDescriptor &dev )
       {
         device = dev;
 
@@ -193,7 +193,7 @@ namespace Chimera
         blocksPerSector = device.sectorSize / device.blockSize;
       }
 
-      uint32_t FlashUtilities::getSectionNumber( const Section_t section, const uint32_t address )
+      uint32_t Utilities::getSectionNumber( const Section_t section, const uint32_t address )
       {
         uint32_t sectionNumber = std::numeric_limits<uint32_t>::max();
 
@@ -221,7 +221,7 @@ namespace Chimera
         return sectionNumber;
       }
 
-      uint32_t FlashUtilities::getSectionStartAddress( const Section_t section, const uint32_t number )
+      uint32_t Utilities::getSectionStartAddress( const Section_t section, const uint32_t number )
       {
         uint32_t address = std::numeric_limits<uint32_t>::max();
 
@@ -246,10 +246,10 @@ namespace Chimera
         return address;
       }
 
-      SectionList FlashUtilities::getCompositeSections( const uint32_t address, const uint32_t len )
+      SectionList Utilities::getCompositeSections( const uint32_t address, const uint32_t len )
       {
         SectionList section;
-        MemoryBlockRange pageRange( address, address + len, device.pageSize );
+        BlockRange pageRange( address, address + len, device.pageSize );
 
         /*------------------------------------------------
         Initialize the algorithm, performing the first

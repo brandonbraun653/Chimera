@@ -58,12 +58,11 @@ namespace Chimera
         uint32_t sectorSize; /**< Sector size of the device in bytes */
       };
 
-
       /**
-       * A helper class that generates memory ranging information useful in flash memory driver applications.
-       * While named with 'Block', this technically can apply to pages, sectors, etc.
+       *  A helper class that generates memory ranging information useful in flash memory driver applications.
+       *  While named with 'Block', this technically can apply to pages, sectors, etc.
        */
-      class MemoryBlockRange
+      class BlockRange
       {
       public:
         /**
@@ -73,16 +72,16 @@ namespace Chimera
          *	@param[in]	endAddress      Absolute address greater than startAddress to end at
          *	@param[in]	blockSize       The block size in bytes
          */
-        MemoryBlockRange( const uint32_t startAddress, const uint32_t endAddress, const uint32_t blockSize );
+        BlockRange( const uint32_t startAddress, const uint32_t endAddress, const uint32_t blockSize );
 
         /**
          *	Copy constructor to generate a new class from an existing one
          *
          *	@param[in]	cls             The existing class object
          */
-        MemoryBlockRange( const MemoryBlockRange &cls );
+        BlockRange( const BlockRange &cls );
 
-        ~MemoryBlockRange() = default;
+        ~BlockRange() = default;
 
         /**
          *  Calculates the block of the startAddress
@@ -249,18 +248,18 @@ namespace Chimera
       };
 
       /**
-       *  Models interactions with a Flash memory device from the perspective that it is
+       *  Models interactions with a memory device from the perspective that it is
        *  one continuous block of memory. Paging, partitioning, and all other device specific
        *  information is left up to the inheriting driver. All the user cares about is that
        *  data can be written, read, and erased.
        */
-      class GenericFlashInterface
+      class GenericInterface
       {
       public:
         /**
          *	Virtual destructor necessary for GMock as well as inheritors
          */
-        virtual ~GenericFlashInterface() = default;
+        virtual ~GenericInterface() = default;
 
         /**
          *	Writes data into flash memory.
@@ -373,11 +372,15 @@ namespace Chimera
       };
 
 
-      class FlashUtilities
+      /**
+       *  Contains useful helper functions for interacting with a memory device that can be
+       *  described with a DeviceDescriptor.
+       */
+      class Utilities
       {
       public:
-        FlashUtilities( const DeviceDescriptor &dev );
-        ~FlashUtilities() = default;
+        Utilities( const DeviceDescriptor &dev );
+        ~Utilities() = default;
 
         /**
          *	Updates internal information about the memory device being modeled
@@ -410,7 +413,7 @@ namespace Chimera
          *	to allow efficient access of the memory architecture.
          *
          *	This was originally designed to aide erase commands so that the programmer could erase in as
-         *	few commands as possible. For instance, a large erase of 139kB could be broken down into
+         *	few commands as possible. For instance, a large erase of 139kB might be broken down into
          *	2 sectors, several blocks, and a few pages. The alternative would be to erase one page at a
          *	time, which isn't very efficient. Most chips have the option to erase by page, block, or sector,
          *	so this minimizes the number of operations needed by software to erase a generic section of

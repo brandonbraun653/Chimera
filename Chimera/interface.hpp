@@ -32,6 +32,7 @@
 #include <Chimera/preprocessor.hpp>
 #include <Chimera/threading.hpp>
 #include <Chimera/types.hpp>
+#include <Chimera/modules/memory/flash.hpp>
 
 namespace Chimera
 {
@@ -99,12 +100,12 @@ namespace Chimera
        */
       virtual uint32_t getPolynomial() = 0;
     };
-    
+
 #ifndef CHIMERA_INHERITED_HW_CRC
     class HWInterfaceUnsupported : public HWInterface
     {
     public:
-      HWInterfaceUnsupported() = default;
+      HWInterfaceUnsupported()  = default;
       ~HWInterfaceUnsupported() = default;
 
       Chimera::Status_t init( const uint32_t polynomial, const uint8_t crcWidth ) final override
@@ -125,8 +126,8 @@ namespace Chimera
 
     using CHIMERA_INHERITED_HW_CRC = HWInterfaceUnsupported;
 #endif /* !CHIMERA_INHERITED_HW_CRC */
-  }
-  
+  }  // namespace HWCRC
+
   namespace DMA
   {
     class Interface : public Threading::Lockable
@@ -285,6 +286,95 @@ namespace Chimera
 #endif /* !CHIMERA_INHERITED_GPIO */
 
   }  // namespace GPIO
+
+  namespace Memory
+  {
+#ifndef CHIMERA_INHERITED_SYSTEM_FLASH
+    class SystemFlashUnsupported : public Chimera::Modules::Memory::GenericInterface
+    {
+    public:
+      Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t erase( const uint32_t address, const uint32_t length ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t readCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t eraseCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      bool isInitialized() final override
+      {
+        return false;
+      }
+    };
+
+    using CHIMERA_INHERITED_SYSTEM_FLASH = SystemFlashUnsupported;
+#endif /* !CHIMERA_INHERITED_SYSTEM_FLASH */
+
+#ifndef CHIMERA_INHERITED_SYSTEM_SRAM
+    class SystemSRAMUnsupported : public Chimera::Modules::Memory::GenericInterface
+    {
+    public:
+      Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t erase( const uint32_t address, const uint32_t length ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t readCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      Chimera::Status_t eraseCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      bool isInitialized() final override
+      {
+        return false;
+      }
+    };
+
+    using CHIMERA_INHERITED_SYSTEM_SRAM = SystemSRAMUnsupported;
+#endif /* !CHIMERA_INHERITED_SYSTEM_FLASH */
+  }  // namespace Memory
 
   namespace SPI
   {
