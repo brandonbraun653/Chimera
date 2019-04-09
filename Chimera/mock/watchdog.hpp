@@ -38,7 +38,7 @@ namespace Chimera
         MOCK_METHOD0( isSupported, bool() );
       };
 
-#if defined( USING_FREERTOS ) 
+#if defined( USING_FREERTOS )
       class SimWatchdog : public Chimera::Watchdog::Interface
       {
       public:

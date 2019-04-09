@@ -1,12 +1,12 @@
 /********************************************************************************
-* File Name:
-*   threading.cpp
-*
-* Description:
-*   Implements the threading functions for Chimera
-*
-* 2019 | Brandon Braun | brandonbraun653@gmail.com
-********************************************************************************/
+ * File Name:
+ *   threading.cpp
+ *
+ * Description:
+ *   Implements the threading functions for Chimera
+ *
+ * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
 
 /* C++ Includes */
 #include <cstring>
@@ -129,7 +129,8 @@ namespace Chimera
       for ( size_t i = 0; i < systemThreads.size(); i++ )
       {
         thread = systemThreads[ i ];
-        error  = xTaskCreate( thread->func, thread->name, thread->stackDepth, thread->funcParams, thread->priority, &thread->handle );
+        error  = xTaskCreate( thread->func, thread->name, thread->stackDepth, thread->funcParams, thread->priority,
+                             &thread->handle );
 
         /*------------------------------------------------
         If you get stuck here, the current thread tried to allocate
@@ -138,7 +139,7 @@ namespace Chimera
         if ( error == errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY )
         {
           /* Uncomment this to figure out how much stack size is remaining */
-          //volatile size_t bytesRemaining __attribute( ( unused ) ) = xPortGetFreeHeapSize();
+          // volatile size_t bytesRemaining __attribute( ( unused ) ) = xPortGetFreeHeapSize();
           while ( 1 )
           {
             /* Kill time while we wait for the watchdog to reset us */
@@ -183,7 +184,7 @@ namespace Chimera
       /*------------------------------------------------
       Cleanly exit this initialization thread
       ------------------------------------------------*/
-      INIT_THREAD = nullptr;
+      INIT_THREAD           = nullptr;
       setupCallbacksEnabled = false;
       vTaskDelete( NULL );
     }
@@ -210,21 +211,21 @@ namespace Chimera
     {
       BaseType_t error = pdPASS;
 
-      Thread_t *newThread = new Thread_t;
+      Thread_t *newThread   = new Thread_t;
       newThread->func       = threadFunc;
       newThread->stackDepth = stackDepth;
       newThread->funcParams = threadFuncParams;
       newThread->priority   = threadPriority;
       newThread->handle     = threadHandle;
-      memcpy( &newThread->name[0], threadName, sizeof( Thread_t::name ) );
+      memcpy( &newThread->name[ 0 ], threadName, sizeof( Thread_t::name ) );
 
       /*------------------------------------------------
       Immediately create the new thread if the scheduler is already running
       ------------------------------------------------*/
       if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
       {
-        error = xTaskCreate( newThread->func, newThread->name, newThread->stackDepth, newThread->funcParams, newThread->priority,
-                             &newThread->handle );
+        error = xTaskCreate( newThread->func, newThread->name, newThread->stackDepth, newThread->funcParams,
+                             newThread->priority, &newThread->handle );
       }
 
       /*------------------------------------------------
@@ -266,7 +267,7 @@ namespace Chimera
     }
 #endif
 
-#endif  /* USING_FREERTOS */
+#endif /* USING_FREERTOS */
 
   }  // namespace Threading
 }  // namespace Chimera

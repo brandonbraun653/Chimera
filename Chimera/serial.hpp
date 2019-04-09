@@ -16,8 +16,7 @@ namespace Chimera
 {
   namespace Serial
   {
-
-  class SerialClass : public CHIMERA_INHERITED_SERIAL
+    class SerialClass : public CHIMERA_INHERITED_SERIAL
     {
     public:
       SerialClass()  = default;
@@ -26,7 +25,9 @@ namespace Chimera
       /**
        *  Special ctor for specifying the size of internal buffers
        */
-      SerialClass( const size_t bufferSize ) : CHIMERA_INHERITED_SERIAL( bufferSize ) {}
+      SerialClass( const size_t bufferSize ) : CHIMERA_INHERITED_SERIAL( bufferSize )
+      {
+      }
     };
 
     typedef std::shared_ptr<SerialClass> SerialClass_sPtr;

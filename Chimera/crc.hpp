@@ -24,20 +24,18 @@ namespace Chimera
 {
   namespace AlgCRC
   {
-    
-    
     class HW : public CHIMERA_INHERITED_HW_CRC
     {
     public:
-      HW() = default;
+      HW()  = default;
       ~HW() = default;
     };
 
     using HW_sPtr = std::shared_ptr<HW>;
     using HW_uPtr = std::unique_ptr<HW>;
-    
-    static_assert( std::is_base_of<Chimera::AlgCRC::Interface, HW>::value, "Class implements wrong interface");
-    
+
+    static_assert( std::is_base_of<Chimera::AlgCRC::Interface, HW>::value, "Class implements wrong interface" );
+
     class SW : public Chimera::AlgCRC::Interface
     {
     public:
@@ -58,7 +56,7 @@ namespace Chimera
       uint32_t previous;
     };
 
-  }  // namespace CRC
+  }  // namespace AlgCRC
 }  // namespace Chimera
 
 #endif /* !CHIMERA_CRC_HPP */

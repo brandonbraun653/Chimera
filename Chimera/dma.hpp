@@ -45,7 +45,7 @@ namespace Chimera
     using DMAClass_uPtr = std::unique_ptr<DMAClass>;
 
     static_assert( std::is_base_of<Interface, DMAClass>::value, "Base class implements the wrong interface" );
-  }  // namespace GPIO
+  }  // namespace DMA
 }  // namespace Chimera
 
 #endif /* !CHIMERA_DMA_HPP */

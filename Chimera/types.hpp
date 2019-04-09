@@ -9,27 +9,25 @@
 /** @namespace Chimera */
 namespace Chimera
 {
-
-
   using Status_t = uint16_t;
 
   class CommonStatusCodes
   {
   public:
-    static constexpr Status_t UNKNOWN_ERROR      = 0;  /**< Don't know what went wrong, but need to report an error */
-    static constexpr Status_t OK                 = 1;  /**< Everything is just fine. No errors. */
-    static constexpr Status_t NOT_INITIALIZED    = 2;  /**< The system has not been initialized yet. */
-    static constexpr Status_t LOCKED             = 3;  /**< The system has been locked */
-    static constexpr Status_t EXCEPTION          = 4;  /**< An exception was thrown */
-    static constexpr Status_t TIMEOUT            = 5;  /**< The system timed-out on an operation */
-    static constexpr Status_t NOT_SUPPORTED      = 10; /**< Some system functionality is not enabled/supported */
-    static constexpr Status_t NOT_READY          = 11; /**< The system is not ready to go yet */
-    static constexpr Status_t TX_IN_PROGRESS     = 12; /**< A transmission is in progress */
-    static constexpr Status_t RX_IN_PROGRESS     = 13; /**< A reception is in progress */
-    static constexpr Status_t BUSY               = 14; /**< The system can't be bothered to respond right now. It's busy. */
-    static constexpr Status_t INVAL_FUNC_PARAM   = 15; /**< A parameter passed into a function was invalid */
-    static constexpr Status_t EMPTY              = 16; /**< The result of the operation had no data */
-    static constexpr Status_t MEMORY             = 17; /**< There was a generic issue with memory of some kind */
+    static constexpr Status_t UNKNOWN_ERROR    = 0;  /**< Don't know what went wrong, but need to report an error */
+    static constexpr Status_t OK               = 1;  /**< Everything is just fine. No errors. */
+    static constexpr Status_t NOT_INITIALIZED  = 2;  /**< The system has not been initialized yet. */
+    static constexpr Status_t LOCKED           = 3;  /**< The system has been locked */
+    static constexpr Status_t EXCEPTION        = 4;  /**< An exception was thrown */
+    static constexpr Status_t TIMEOUT          = 5;  /**< The system timed-out on an operation */
+    static constexpr Status_t NOT_SUPPORTED    = 10; /**< Some system functionality is not enabled/supported */
+    static constexpr Status_t NOT_READY        = 11; /**< The system is not ready to go yet */
+    static constexpr Status_t TX_IN_PROGRESS   = 12; /**< A transmission is in progress */
+    static constexpr Status_t RX_IN_PROGRESS   = 13; /**< A reception is in progress */
+    static constexpr Status_t BUSY             = 14; /**< The system can't be bothered to respond right now. It's busy. */
+    static constexpr Status_t INVAL_FUNC_PARAM = 15; /**< A parameter passed into a function was invalid */
+    static constexpr Status_t EMPTY            = 16; /**< The result of the operation had no data */
+    static constexpr Status_t MEMORY           = 17; /**< There was a generic issue with memory of some kind */
 
     static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
@@ -43,7 +41,6 @@ namespace Chimera
     Offsets to identify particular Chimera modules
     ------------------------------------------------*/
     static constexpr Status_t status_offset_module_memory_flash = 1000;
-
   };
 
   namespace Function
@@ -51,7 +48,7 @@ namespace Chimera
     typedef void ( *void_func_void )( void );
     typedef void ( *void_func_void_ptr )( void * );
     typedef void ( *void_func_uint32_t )( uint32_t );
-  }
+  }  // namespace Function
 
   namespace GPIO
   {
@@ -120,9 +117,9 @@ namespace Chimera
     {
       Pull pull          = Pull::UNKNOWN_PULL; /**< Pull-up/down configuration */
       Port port          = Port::UNKNOWN_PORT; /**< Pin IO port */
-      Drive drive         = Drive::INPUT;       /**< Pin IO drive type */
+      Drive drive        = Drive::INPUT;       /**< Pin IO drive type */
       State state        = State::LOW;         /**< Default logical pin state on init */
-      uint8_t pin       = 0u;                 /**< Pin number on the given port */
+      uint8_t pin        = 0u;                 /**< Pin number on the given port */
       uint32_t alternate = 0u;                 /**< Project specific indicator of pin AF config*/
     };
 
@@ -130,7 +127,6 @@ namespace Chimera
 
   namespace SPI
   {
-
     class Status : public CommonStatusCodes
     {
     public:

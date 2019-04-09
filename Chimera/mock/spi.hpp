@@ -36,12 +36,13 @@ namespace Chimera
       MOCK_METHOD3( writeBytes, Chimera::Status_t( const uint8_t *const, const size_t, const uint32_t ) );
       MOCK_METHOD3( readBytes, Chimera::Status_t( uint8_t *const, const size_t, const uint32_t ) );
       MOCK_METHOD4( readWriteBytes, Chimera::Status_t( const uint8_t *const, uint8_t *const, const size_t, const uint32_t ) );
-      MOCK_METHOD2( setPeripheralMode, Chimera::Status_t( const Chimera::SPI::SubPeripheral, const Chimera::SPI::SubPeripheralMode ) );
+      MOCK_METHOD2( setPeripheralMode,
+                    Chimera::Status_t( const Chimera::SPI::SubPeripheral, const Chimera::SPI::SubPeripheralMode ) );
       MOCK_METHOD2( setClockFrequency, Chimera::Status_t( const uint32_t, const uint32_t ) );
       MOCK_METHOD1( getClockFrequency, Chimera::Status_t( uint32_t & ) );
-      MOCK_METHOD1( reserve, Chimera::Status_t( const uint32_t ));
-      MOCK_METHOD1( release, Chimera::Status_t( const uint32_t ));
-      MOCK_METHOD1( onWriteCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t));
+      MOCK_METHOD1( reserve, Chimera::Status_t( const uint32_t ) );
+      MOCK_METHOD1( release, Chimera::Status_t( const uint32_t ) );
+      MOCK_METHOD1( onWriteCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t ) );
       MOCK_METHOD1( onReadCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t ) );
       MOCK_METHOD1( onReadWriteCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t ) );
       MOCK_METHOD1( onErrorCompleteCallback, Chimera::Status_t( const Chimera::void_func_uint32_t ) );
@@ -49,8 +50,8 @@ namespace Chimera
 
     using SPIMock_sPtr = std::shared_ptr<SPIMock>;
     using SPIMock_uPtr = std::unique_ptr<SPIMock>;
-  }
-}
+  }  // namespace Mock
+}  // namespace Chimera
 
 #endif /* GMOCK_TEST */
 

@@ -126,7 +126,7 @@ namespace Chimera
 
     using CHIMERA_INHERITED_HW_CRC = HWInterfaceUnsupported;
 #endif /* !CHIMERA_INHERITED_HW_CRC */
-  }  // namespace HWCRC
+  }    // namespace AlgCRC
 
   namespace DMA
   {
@@ -374,7 +374,7 @@ namespace Chimera
 
     using CHIMERA_INHERITED_SYSTEM_SRAM = SystemSRAMUnsupported;
 #endif /* !CHIMERA_INHERITED_SYSTEM_FLASH */
-  }  // namespace Memory
+  }    // namespace Memory
 
   namespace SPI
   {
@@ -1054,19 +1054,19 @@ namespace Chimera
     {
     public:
       virtual ~IdentifierInterface() = default;
-      
+
       virtual uint32_t deviceID() = 0;
-      
+
       // TODO: Need a way to provision variable number of bytes. STM32 unique id is 96 bits
       virtual uint32_t uniqueID() = 0;
     };
-    
+
 #ifndef CHIMERA_INHERITED_SYSTEM_IDENTIFIER
     class IdentifierInterfaceUnsupported : public IdentifierInterface
     {
     public:
       IdentifierInterfaceUnsupported() = default;
-      
+
       uint32_t deviceID() final override
       {
         return 0u;
@@ -1089,7 +1089,7 @@ namespace Chimera
     {
     public:
       virtual ~Interface() = default;
-      
+
       /**
        *   Initializes the low level hardware needed to configure the watchdog
        * peripheral. This does not start the timer.
@@ -1098,7 +1098,7 @@ namespace Chimera
        * timeout
        *
        *   @param[in] timeout_mS        How many milliseconds can elapse before watchdog expires
-       *   @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked 
+       *   @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked
        *   @return Status::OK if the initialization was a success, Status::FAIL if
        * not
        */
@@ -1148,7 +1148,6 @@ namespace Chimera
     class WatchdogUnsupported : public Interface
     {
     public:
-      
     };
 
     using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;

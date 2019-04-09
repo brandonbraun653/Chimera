@@ -39,13 +39,12 @@ namespace Chimera
 
     static_assert( std::is_base_of<Interface, SystemControl>::value, "Class implements incorrect interface" );
 
-    
+
     class Identifier : public CHIMERA_INHERITED_SYSTEM_IDENTIFIER
     {
     public:
-      Identifier() = default;
+      Identifier()  = default;
       ~Identifier() = default;
-      
     };
 
     using Identifier_sPtr = std::shared_ptr<Identifier>;

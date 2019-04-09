@@ -31,21 +31,20 @@ extern "C"
 
   void vApplicationTickHook()
   {
-    #if defined( GMOCK_TEST )
+#if defined( GMOCK_TEST )
     Chimera::Mock::SystemTickCallback();
-    #endif
+#endif
 
-    #ifdef SIM
+#ifdef SIM
     /*------------------------------------------------
     Allow our simulation environment to interrupt the primary
     FreeRTOS thread. This will throw a boost::thread_interrupted
     exception.
     ------------------------------------------------*/
     boost::this_thread::interruption_point();
-    #endif
+#endif
 
     // TODO: Use Chimera System to implement a callback for this
-
   }
 
   void vApplicationMallocFailedHook()
@@ -55,14 +54,14 @@ extern "C"
 
   void vApplicationIdleHook()
   {
-    #ifdef SIM
+#ifdef SIM
     /*------------------------------------------------
     Allow our simulation environment to interrupt the primary
     FreeRTOS thread. This will throw a boost::thread_interrupted
     exception.
     ------------------------------------------------*/
     boost::this_thread::interruption_point();
-    #endif
+#endif
   }
 
 

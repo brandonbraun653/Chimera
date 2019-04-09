@@ -151,6 +151,6 @@ namespace Chimera
       }
     }  // namespace Pointers
   }    // namespace Utilities
-};  // namespace Chimera
+};     // namespace Chimera
 
 #endif

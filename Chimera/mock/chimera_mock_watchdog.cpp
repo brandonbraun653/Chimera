@@ -20,8 +20,7 @@ namespace Chimera
   {
     namespace Watchdog
     {
-
-      #if defined( USING_FREERTOS )
+#if defined( USING_FREERTOS )
       static void simWatchdogThread( void *arguments )
       {
         SimWatchdog *wd = reinterpret_cast<SimWatchdog *>( arguments );

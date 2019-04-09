@@ -28,7 +28,7 @@ namespace Chimera
 
     /**
      *  Checks if an out of range exception has been thrown.
-     *  
+     *
      *  @return bool
      */
     bool out_of_range_thrown();
@@ -39,7 +39,7 @@ namespace Chimera
      *  @return void
      */
     void out_of_range_clear();
-  }
-}
+  }  // namespace Exception
+}  // namespace Chimera
 
 #endif /* !CHIMERA_EXCEPTION_HPP */

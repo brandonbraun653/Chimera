@@ -20,8 +20,8 @@ namespace Chimera
   {
     SW::SW()
     {
-      poly = 0u;
-      bits = 0u;
+      poly     = 0u;
+      bits     = 0u;
       previous = 0u;
     }
 
@@ -46,5 +46,5 @@ namespace Chimera
     {
       return poly;
     }
-  }
-}
+  }  // namespace AlgCRC
+}  // namespace Chimera

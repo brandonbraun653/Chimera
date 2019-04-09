@@ -46,7 +46,6 @@ namespace boost
   {
     void throw_bad_alloc()
     {
-
     }
 
     void throw_out_of_range( const char *str )
@@ -56,19 +55,15 @@ namespace boost
 
     void throw_length_error( const char *str )
     {
-
     }
 
     void throw_logic_error( const char *str )
     {
-
     }
 
     void throw_runtime_error( const char *str )
     {
-
     }
-  }
+  }  // namespace container
 }  // namespace boost
 #endif /* BOOST_CONTAINER_USER_DEFINED_THROW_CALLBACKS */
-
