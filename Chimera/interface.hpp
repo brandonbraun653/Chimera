@@ -1023,7 +1023,11 @@ namespace Chimera
 #ifndef CHIMERA_INHERITED_SERIAL
     class SerialUnsupported : public Interface
     {
-      // TODO: Do this once you have access to VAssist again...
+    public:
+      SerialUnsupported( const size_t bufferSize )
+      {
+
+      }
     };
 
     using CHIMERA_INHERITED_SERIAL = SerialUnsupported;

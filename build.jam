@@ -55,6 +55,7 @@ lib CORE
     :   <Chimera>enabled
         <ChimeraBackend>Thor
         <link>static
+        <toolset>gcc
         <include>$(chimera_inc_dir)
 
         <use>/THOR//PUB
@@ -63,6 +64,41 @@ lib CORE
     :   
     :   
     ;
+
+# Core Chimera functionality WITHOUT FreeRTOS 
+lib CORE
+    :   $(chimera_src_root)
+
+    :   <Chimera>enabled
+        <ChimeraBackend>Sim
+        <FreeRTOS>disabled
+        <link>static
+        <include>$(chimera_inc_dir)
+        <define>NOMINMAX
+
+        <use>/PRJ//BOOST                # All things boost
+        <use>/PRJ//CHIMERA_PORT         # chimeraPort.hpp
+        <use>/PRJ//CHIMERA_DEFS         # Missing #defines normally included in the backend driver
+    ;
+
+# Core Chimera functionality WITH FreeRTOS 
+lib CORE
+    :   $(chimera_src_root)
+        $(chimera_src_modules_freertos)
+
+    :   <Chimera>enabled
+        <ChimeraBackend>Sim
+        <FreeRTOS>enabled
+        <link>static
+        <include>$(chimera_inc_dir)
+        <define>NOMINMAX
+
+        <use>RTOS                       # Pull in FreeRTOS from the alias up above
+        <use>/PRJ//BOOST                # All things boost
+        <use>/PRJ//CHIMERA_PORT         # chimeraPort.hpp
+        <use>/PRJ//CHIMERA_DEFS         # Missing #defines normally included in the backend driver
+    ;
+
 explicit CORE ;
 
 explicit_alias CHIMERA_CORE : CORE : : <Chimera>disabled ;
