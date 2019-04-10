@@ -85,7 +85,7 @@ namespace Chimera
 #if defined( USING_FREERTOS )
       SemaphoreHandle_t recursive_mutex;
 #else
-      std::recursive_mutex recursive_mutex;
+      //std::recursive_mutex recursive_mutex;
 #endif
     };
 
