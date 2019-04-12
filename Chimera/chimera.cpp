@@ -28,7 +28,7 @@ void ChimeraInit()
   // Backend namespace has class that inherits from chimera::System::interface or something
   // and then has static member functions that perform initialization. Do the same for the
   // timer and delay functionality.
-  cSystemInit();
+  //cSystemInit();
 #endif
 
   Chimera::Exception::initialize();
