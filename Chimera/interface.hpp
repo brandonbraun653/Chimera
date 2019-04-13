@@ -223,11 +223,7 @@ namespace Chimera
        *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
        *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
        */
-      virtual Chimera::Status_t getState( Chimera::GPIO::State &state )
-      {
-        /* Prevent GMOCK abstract instantiation error */
-        return Chimera::GPIO::Status::NOT_SUPPORTED;
-      }
+      virtual Chimera::Status_t getState( Chimera::GPIO::State &state ) = 0;
 
       /**
        *  Toggle the state of the pin
