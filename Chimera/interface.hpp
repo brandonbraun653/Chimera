@@ -697,6 +697,8 @@ namespace Chimera
     class Interface : public Threading::Lockable
     {
     public:
+      virtual ~Interface() = default;
+
       /**
        *  Attaches and configures the physical hardware channel and GPIO pin setup
        *
@@ -1022,8 +1024,97 @@ namespace Chimera
     public:
       SerialUnsupported( const size_t bufferSize )
       {
-
       }
+
+      virtual Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t end() override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
+                                           const FlowControl flow ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t setBaud( const uint32_t baud ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t setMode( const SubPeripheral periph, const Modes mode ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
+                                       const uint32_t timeout_mS = 500 ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t flush( const SubPeripheral periph ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t enableBuffering( const SubPeripheral periph,
+                                                 boost::circular_buffer<uint8_t> *const buffer ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t disableBuffering( const SubPeripheral periph ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual bool available( size_t *const bytes = nullptr ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t attachEventNotifier( const Event event, volatile bool *const notifier ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t removeEventNotifier( const Event event, volatile bool *const notifier ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+#if defined( USING_FREERTOS )
+      virtual Chimera::Status_t attachEventNotifier( const Event event, SemaphoreHandle_t *const semphr ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+
+      virtual Chimera::Status_t removeEventNotifier( const Event event, SemaphoreHandle_t *const semphr ) override
+      {
+        throw std::logic_error( "The method or operation is not implemented." );
+      }
+#endif /* USING_FREERTOS */
     };
 
     using CHIMERA_INHERITED_SERIAL = SerialUnsupported;

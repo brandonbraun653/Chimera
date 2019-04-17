@@ -17,7 +17,7 @@
 
 /* Chimera Includes */
 #include "chimeraPort.hpp"
-#include <Chimera/test/fixtures/gpio_integration.hpp>
+#include <Chimera/test/fixtures/gpio_integration_fixture.hpp>
 
 namespace Chimera
 {
