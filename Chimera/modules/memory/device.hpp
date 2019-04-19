@@ -1,19 +1,20 @@
 /********************************************************************************
  *  File Name:
- *    flash.hpp
+ *    device.hpp
  *
  *  Description:
- *    Describes common interface to low level flash memory
+ *    Tools useful when interfacing with a device that has controllable memory
  *
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_MOD_MEMORY_FLASH_HPP
-#define CHIMERA_MOD_MEMORY_FLASH_HPP
+#ifndef CHIMERA_MOD_MEMORY_DEVICE_HPP
+#define CHIMERA_MOD_MEMORY_DEVICE_HPP
 
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
+#include <Chimera/types/common_types.hpp>
 
 namespace Chimera
 {
@@ -442,4 +443,4 @@ namespace Chimera
   }    // namespace Modules
 }  // namespace Chimera
 
-#endif /* !CHIMERA_MOD_MEMORY_FLASH_HPP */
+#endif /* !CHIMERA_MOD_MEMORY_DEVICE_HPP */

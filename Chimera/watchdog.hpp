@@ -14,17 +14,21 @@
 
 /* C++ Includes */
 #include <cstdint>
-#include <memory>
 #include <type_traits>
 
 /* Chimera Includes */
+#include <Chimera/interface/macro.hpp>
+#include <Chimera/interface/watchdog_intf.hpp>
 #include "chimeraPort.hpp"
-#include <Chimera/interface.hpp>
 
 namespace Chimera
 {
   namespace Watchdog
   {
+#if !defined( CHIMERA_INHERITED_WATCHDOG )
+    using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
+#endif
+    
     class WatchdogClass : public CHIMERA_INHERITED_WATCHDOG
     {
     public:
@@ -32,10 +36,15 @@ namespace Chimera
       ~WatchdogClass() = default;
     };
 
-    using WatchdogClass_sPtr = std::shared_ptr<WatchdogClass>;
-    using WatchdogClass_uPtr = std::unique_ptr<WatchdogClass>;
 
     static_assert( std::is_base_of<Interface, WatchdogClass>::value, "Class implements wrong interface" );
+
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<WatchdogUnsupported, WatchdogClass>::value ),
+                    "No power interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
+    
   }  // namespace Watchdog
 }  // namespace Chimera
 

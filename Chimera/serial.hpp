@@ -1,43 +1,53 @@
+/********************************************************************************
+ *   File Name:
+ *    serial.hpp
+ *
+ *   Description:
+ *    Defines the interface to the UART/USART hardware
+ *
+ *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
 #pragma once
 #ifndef CHIMERA_SERIAL_HPP
 #define CHIMERA_SERIAL_HPP
 
 /* C++ Includes */
 #include <cstdint>
-#include <cstdlib>
 #include <memory>
 
 /* Chimera Includes */
+#include <Chimera/interface/macro.hpp>
+#include <Chimera/interface/serial_intf.hpp>
 #include "chimeraPort.hpp"
-#include <Chimera/chimera.hpp>
-#include <Chimera/interface.hpp>
 
 namespace Chimera
 {
   namespace Serial
   {
+#if !defined( CHIMERA_INHERITED_SERIAL )
+    using CHIMERA_INHERITED_SERIAL = SerialUnsupported;
+#endif
+    
     class SerialClass : public CHIMERA_INHERITED_SERIAL
     {
     public:
       SerialClass()  = default;
       ~SerialClass() = default;
 
-      /**
-       *  Special ctor for specifying the size of internal buffers
-       */
       SerialClass( const size_t bufferSize ) : CHIMERA_INHERITED_SERIAL( bufferSize )
       {
       }
     };
-
-    typedef std::shared_ptr<SerialClass> SerialClass_sPtr;
-    typedef std::unique_ptr<SerialClass> SerialClass_uPtr;
-
-    // TODO: For some reason this causes an assert even though all virtual methods
-    // are implmented?
-    // static_assert(std::is_base_of<Chimera::Serial::Interface,
-    // Chimera::Serial::SerialClass>::value, "CHIMERA: Base class does not implement
-    // the correct interface");
+    
+    static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
+    
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<SerialUnsupported, SerialClass>::value ),
+                    "No Serial interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
+    
   }  // namespace Serial
 }  // namespace Chimera
 

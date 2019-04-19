@@ -23,12 +23,6 @@
 #include <boost/shared_ptr.hpp>
 #endif
 
-/** Returns the number of bytes in an array
- *	@param[in] x an array (not pointer)
- **/
-//#define cnt_of_array( x ) ( sizeof( x ) / sizeof( *x ) )
-
-
 namespace Chimera
 {
   namespace Utilities

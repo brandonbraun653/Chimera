@@ -9,7 +9,6 @@
  ********************************************************************************/
 
 #include <Chimera/chimera.hpp>
-#include <Chimera/mock/delay.hpp>
 #include <Chimera/modules/freertos/freertos_hooks_prj.hpp>
 
 #ifdef SIM

@@ -1,16 +1,16 @@
 /********************************************************************************
  *  File Name:
- *    chimera_flash.cpp
+ *    chimera_memory_device.cpp
  *
  *  Description:
- *    Implements various utilities and drivers associated with the Chimera flash
- *    memory module.
+ *    Implements various utilities and drivers associated with the Chimera memory 
+ *    module.
  *
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 /* Chimera Includes */
-#include <Chimera/modules/memory/flash.hpp>
+#include <Chimera/modules/memory/device.hpp>
 
 namespace Chimera
 {

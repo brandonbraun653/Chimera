@@ -16,14 +16,18 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/chimera.hpp>
-
+#include <Chimera/interface/macro.hpp>
+#include <Chimera/interface/spi_intf.hpp>
 #include "chimeraPort.hpp"
 
 namespace Chimera
 {
   namespace SPI
   {
+#if !defined( CHIMERA_INHERITED_SPI )
+    using CHIMERA_INHERITED_SPI = SPIUnsupported;
+#endif
+    
     /**
      *  A simple wrapper to provide a common SPI class type for programs built
      *  with Chimera. The runtime behavior of this class is defined by the user
@@ -42,10 +46,14 @@ namespace Chimera
       ~SPIClass() = default;
     };
 
-    using SPIClass_sPtr = std::shared_ptr<SPIClass>;
-    using SPIClass_uPtr = std::unique_ptr<SPIClass>;
 
     static_assert( std::is_base_of<Interface, SPIClass>::value, "Base class implements the wrong interface" );
+    
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<SPIUnsupported, SPIClass>::value ),
+                    "No SPI interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
 
   }  // namespace SPI
 }  // namespace Chimera

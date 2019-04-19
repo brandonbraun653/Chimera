@@ -18,6 +18,8 @@
 #include <type_traits>
 
 /* Chimera Includes */
+#include <Chimera/interface/macro.hpp>
+#include <Chimera/interface/system_intf.hpp>
 #include "chimeraPort.hpp"
 
 
@@ -25,6 +27,10 @@ namespace Chimera
 {
   namespace System
   {
+#if !defined( CHIMERA_INHERITED_SYSCTL )
+    using CHIMERA_INHERITED_SYSCTL = ControlUnsupported;
+#endif
+    
     class SystemControl : public CHIMERA_INHERITED_SYSCTL
     {
     public:
@@ -33,13 +39,21 @@ namespace Chimera
 
     private:
     };
+    
+    static_assert( std::is_base_of<ControlInterface, SystemControl>::value, "Class implements incorrect interface" );
 
-    typedef std::shared_ptr<SystemControl> SystemControl_sPtr;
-    typedef std::unique_ptr<SystemControl> SystemControl_uPtr;
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<ControlUnsupported, SystemControl>::value ),
+                    "No system control interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
+    
 
-    static_assert( std::is_base_of<Interface, SystemControl>::value, "Class implements incorrect interface" );
-
-
+    
+#if !defined( CHIMERA_INHERITED_SYSTEM_IDENTIFIER )
+    using CHIMERA_INHERITED_SYSTEM_IDENTIFIER = IdentifierUnsupported;
+#endif
+    
     class Identifier : public CHIMERA_INHERITED_SYSTEM_IDENTIFIER
     {
     public:
@@ -47,9 +61,12 @@ namespace Chimera
       ~Identifier() = default;
     };
 
-    using Identifier_sPtr = std::shared_ptr<Identifier>;
-    using Identifier_uPtr = std::unique_ptr<Identifier>;
     static_assert( std::is_base_of<IdentifierInterface, Identifier>::value, "Class implements incorrect interface" );
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<IdentifierUnsupported, SystemControl>::value ),
+                    "No system identifier interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
   }  // namespace System
 }  // namespace Chimera
 

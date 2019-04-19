@@ -16,7 +16,7 @@
 #include <mutex>
 
 /* Chimera Includes */
-#include <Chimera/types.hpp>
+#include <Chimera/types/common_types.hpp>
 
 #ifdef USING_FREERTOS
 
@@ -30,7 +30,7 @@ extern "C"
 #include "semphr.h"
 }
 #endif /* __cplusplus */
-#endif /* CHIMERA_FREERTOS */
+#endif /* USING_FREERTOS */
 
 namespace Chimera
 {
@@ -179,6 +179,5 @@ namespace Chimera
 
   }  // namespace Threading
 }  // namespace Chimera
-
 
 #endif

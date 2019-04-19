@@ -13,12 +13,17 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/interface.hpp>
+#include <Chimera/interface/macro.hpp>
+#include <Chimera/interface/memory_intf.hpp>
 
 namespace Chimera
 {
   namespace Memory
   {
+#if !defined( CHIMERA_INHERITED_SYSTEM_FLASH )
+    using CHIMERA_INHERITED_SYSTEM_FLASH = SystemFlashUnsupported;
+#endif
+    
     class SystemFlash : public CHIMERA_INHERITED_SYSTEM_FLASH
     {
     public:
@@ -26,13 +31,21 @@ namespace Chimera
       ~SystemFlash() = default;
     };
 
-    using SystemFlash_sPtr = std::shared_ptr<SystemFlash>;
-    using SystemFlash_uPtr = std::unique_ptr<SystemFlash>;
-
     static_assert( std::is_base_of<Chimera::Modules::Memory::GenericInterface, SystemFlash>::value,
                    "Class implements wrong interface" );
 
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<SystemFlashUnsupported, SystemFlash>::value ),
+                    "No system Flash interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
+    
+    
 
+#if !defined( CHIMERA_INHERITED_SYSTEM_SRAM )
+    using CHIMERA_INHERITED_SYSTEM_SRAM = SystemSRAMUnsupported;
+#endif
+    
     class SystemSRAM : public CHIMERA_INHERITED_SYSTEM_SRAM
     {
     public:
@@ -40,11 +53,14 @@ namespace Chimera
       ~SystemSRAM() = default;
     };
 
-    using SystemSRAM_sPtr = std::shared_ptr<SystemSRAM>;
-    using SystemSRAM_uPtr = std::unique_ptr<SystemSRAM>;
-
     static_assert( std::is_base_of<Chimera::Modules::Memory::GenericInterface, SystemSRAM>::value,
                    "Class implements wrong interface" );
 
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<SystemSRAMUnsupported, SystemSRAM>::value ),
+                    "No system SRAM interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
+    
   }  // namespace Memory
 }  // namespace Chimera

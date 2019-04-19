@@ -17,13 +17,18 @@
 #include <memory>
 
 /* Chimera Includes */
+#include <Chimera/interface/macro.hpp>
+#include <Chimera/interface/crc_intf.hpp>
 #include "chimeraPort.hpp"
-#include <Chimera/interface.hpp>
 
 namespace Chimera
 {
   namespace AlgCRC
   {
+#if !defined( CHIMERA_INHERITED_HW_CRC )
+    using CHIMERA_INHERITED_HW_CRC = HWInterfaceUnsupported;
+#endif
+    
     class HW : public CHIMERA_INHERITED_HW_CRC
     {
     public:
@@ -31,11 +36,15 @@ namespace Chimera
       ~HW() = default;
     };
 
-    using HW_sPtr = std::shared_ptr<HW>;
-    using HW_uPtr = std::unique_ptr<HW>;
-
     static_assert( std::is_base_of<Chimera::AlgCRC::Interface, HW>::value, "Class implements wrong interface" );
 
+#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
+    STATIC_WARNING( !( std::is_base_of<HWInterfaceUnsupported, HW>::value ),
+                    "No hardware CRC interface defined in backend driver. You can disable these warnings by defining "
+                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+#endif
+    
+    
     class SW : public Chimera::AlgCRC::Interface
     {
     public:
@@ -55,6 +64,8 @@ namespace Chimera
       uint32_t poly;
       uint32_t previous;
     };
+    
+    static_assert( std::is_base_of<Chimera::AlgCRC::Interface, SW>::value, "Base class implements the wrong interface" );
 
   }  // namespace AlgCRC
 }  // namespace Chimera
