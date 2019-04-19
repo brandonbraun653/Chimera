@@ -12,6 +12,7 @@
 #include <Chimera/gpio.hpp>
 
 /* Testing Includes */
+#include <Chimera/test/fixtures/common_fixture.hpp>
 #include <Chimera/test/fixtures/gpio_integration_fixture.hpp>
 
 namespace Chimera
@@ -21,11 +22,15 @@ namespace Chimera
     void GPIOIntegrationTestFixture::SetUp()
     {
       gpio = new CHIMERA_INHERITED_GPIO();
+
+      Chimera::IntegrationTests::CommonSetUp();
     }
 
     void GPIOIntegrationTestFixture::TearDown()
     {
       delete gpio;
+
+      Chimera::IntegrationTests::CommonTearDown();
     }
 
     void GPIOIntegrationTestFixture::defaultInit()
