@@ -22,21 +22,23 @@ namespace Chimera
   {
     namespace Memory
     {
+      /* clang-format off */
       class Status : public Chimera::CommonStatusCodes
       {
       public:
-        static constexpr Status_t OUT_OF_MEMORY = status_offset_module_memory_flash + 1; /**< Pretty self-explanatory... */
-        static constexpr Status_t OVERRUN       = status_offset_module_memory_flash
-                                            + 2; /**< The end of a buffer was hit pre-maturely */
-        static constexpr Status_t UNALIGNED_MEM = status_offset_module_memory_flash
-                                                  + 3; /**< Memory was not aligned correctly */
-        static constexpr Status_t UNKNOWN_JEDEC = status_offset_module_memory_flash
-                                                  + 4; /**< Device reported an invalid JEDEC code */
-        static constexpr Status_t HF_INIT_FAIL = status_offset_module_memory_flash
-                                                 + 5; /**< High frequency interface failed to initialize */
-        static constexpr Status_t NOT_PAGE_ALIGNED = status_offset_module_memory_flash + 6; /**< Memory is not page aligned */
+        static constexpr Status_t OUT_OF_MEMORY     = status_offset_module_memory_flash + 1; /**< Pretty self-explanatory... */
+        static constexpr Status_t OVERRUN           = status_offset_module_memory_flash + 2; /**< The end of a buffer was hit pre-maturely */
+        static constexpr Status_t UNALIGNED_MEM     = status_offset_module_memory_flash + 3; /**< Memory was not aligned correctly */
+        static constexpr Status_t UNKNOWN_JEDEC     = status_offset_module_memory_flash + 4; /**< Device reported an invalid JEDEC code */
+        static constexpr Status_t HF_INIT_FAIL      = status_offset_module_memory_flash + 5; /**< High frequency interface failed to initialize */
+        static constexpr Status_t NOT_PAGE_ALIGNED  = status_offset_module_memory_flash + 6; /**< Memory is not page aligned */
+        static constexpr Status_t ERR_READ_PROTECT  = status_offset_module_memory_flash + 7;
+        static constexpr Status_t ERR_PGM_SEQUENCE  = status_offset_module_memory_flash + 8;
+        static constexpr Status_t ERR_PGM_PARALLEL  = status_offset_module_memory_flash + 9;
+        static constexpr Status_t ERR_PGM_ALIGNMENT = status_offset_module_memory_flash + 10; 
+        static constexpr Status_t ERR_WRITE_PROTECT = status_offset_module_memory_flash + 11;
       };
-
+      /* clang-format on */
 
       enum class Section_t : uint8_t
       {
@@ -301,8 +303,10 @@ namespace Chimera
         virtual Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) = 0;
 
         /**
-         *  Erase a region of memory. Due to common device architecture, it is likely that the given
-         *  address range will need to be page, block, or sector aligned.
+         *  Erase a region of memory. The given address range will need to be page, block, or 
+         *  sector aligned, depending upon what the underlying system requires. Because this is
+         *  an extremely generic function that cannot possibly anticipate all flash configurations,
+         *  please check the back end driver implementation for exact behavioral details.
          *
          *	@param[in]	address       The address to start erasing at
          *	@param[in]	length        How many bytes to erase
