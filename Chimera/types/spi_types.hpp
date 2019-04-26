@@ -104,6 +104,7 @@ namespace Chimera
       GPIO::PinInit MISO; /**< The GPIO pin settings used for MISO */
       GPIO::PinInit CS;   /**< The GPIO pin settings used for CS */
 
+      uint8_t channel         = 0;
       Mode mode               = Mode::MASTER;        /**< The primary control method for the peripheral */
       DataSize dataSize       = DataSize::SZ_8BIT;   /**< How wide each transfer should minimally be */
       BitOrder bitOrder       = BitOrder::MSB_FIRST; /**< Sets LSB or MSB ordering */
