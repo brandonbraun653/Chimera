@@ -8,7 +8,7 @@
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#pragma once 
+#pragma once
 #ifndef CHIMERA_COMMON_TYPES_HPP
 #define CHIMERA_COMMON_TYPES_HPP
 
@@ -34,8 +34,9 @@ namespace Chimera
     static constexpr Status_t RX_IN_PROGRESS   = 13; /**< A reception is in progress */
     static constexpr Status_t BUSY             = 14; /**< The system can't be bothered to respond right now. It's busy. */
     static constexpr Status_t INVAL_FUNC_PARAM = 15; /**< A parameter passed into a function was invalid */
-    static constexpr Status_t EMPTY            = 16; /**< The result of the operation had no data */
-    static constexpr Status_t MEMORY           = 17; /**< There was a generic issue with memory of some kind */
+    static constexpr Status_t EMPTY            = 16; /**< The result of the operation had no data available */
+    static constexpr Status_t FULL             = 17; /**< The result of the operation had no data left */
+    static constexpr Status_t MEMORY           = 18; /**< There was a generic issue with memory of some kind */
 
     static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */
@@ -50,13 +51,31 @@ namespace Chimera
     ------------------------------------------------*/
     static constexpr Status_t status_offset_module_memory_flash = 1000;
   };
-  
+
   namespace Function
   {
     typedef void ( *void_func_void )( void );
     typedef void ( *void_func_void_ptr )( void * );
     typedef void ( *void_func_uint32_t )( uint32_t );
   }  // namespace Function
+
+  namespace Hardware
+  {
+    enum class SubPeripheral : uint8_t
+    {
+      RX = 0,
+      TX,
+      TXRX
+    };
+
+    enum class SubPeripheralMode : uint8_t
+    {
+      UNKNOWN_MODE = 0,
+      BLOCKING,
+      INTERRUPT,
+      DMA
+    };
+  }
 }  // namespace Chimera
 
 #endif /* !CHIMERA_COMMON_TYPES_HPP */

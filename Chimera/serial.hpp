@@ -32,12 +32,8 @@ namespace Chimera
     class SerialClass : public CHIMERA_INHERITED_SERIAL
     {
     public:
-      SerialClass()  = default;
+      SerialClass() : CHIMERA_INHERITED_SERIAL(){}
       ~SerialClass() = default;
-
-      SerialClass( const size_t bufferSize ) : CHIMERA_INHERITED_SERIAL( bufferSize )
-      {
-      }
     };
     
     static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
