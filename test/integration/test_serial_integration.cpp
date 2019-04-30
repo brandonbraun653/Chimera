@@ -19,12 +19,18 @@
 #include "chimeraPort.hpp"
 #include <Chimera/test/fixtures/serial_integration_fixture.hpp>
 
+
+using namespace Chimera::GPIO;
+
+static const Chimera::Serial::IOPins validPins{ { Pull::NO_PULL, Port::PORTA, Drive::INPUT, State::LOW, 0u, 0u },
+                                                { Pull::NO_PULL, Port::PORTA, Drive::INPUT, State::LOW, 0u, 0u } };
+
 namespace Chimera
 {
   namespace Serial
   {
     /*------------------------------------------------
-    Chimera::Serial::assignHW()
+    Chimera::Serial::Interface::assignHW()
     ------------------------------------------------*/
     TEST_F( SerialIntegrationTestFixture, assignHW_badChannel )
     {
@@ -42,7 +48,7 @@ namespace Chimera
 
     TEST_F( SerialIntegrationTestFixture, assignHW_badPins )
     {
-      auto expected = Chimera::CommonStatusCodes::FAIL;
+      auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
 
       Chimera::Serial::IOPins pins;
       pins.rx.pin  = 0;
@@ -65,6 +71,63 @@ namespace Chimera
 
       EXPECT_EQ( expected, serial->assignHW( 1, pins ) );
     }
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::begin()
+    ------------------------------------------------*/
+    TEST_F( SerialIntegrationTestFixture, begin_invalidModes )
+    {
+      auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+
+
+
+      EXPECT_EQ( expected, serial->begin( Modes::MODE_UNDEFINED, Modes::BLOCKING ) );
+      EXPECT_EQ( expected, serial->begin( Modes::BLOCKING, Modes::MODE_UNDEFINED ) );
+    }
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::end()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::configure()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::setBaud()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::setMode()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::write()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::read()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::flush()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::readAsync()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::enableBuffering()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::disableBuffering()
+    ------------------------------------------------*/
+
+    /*------------------------------------------------
+    Chimera::Serial::Interface::available()
+    ------------------------------------------------*/
 
 
   }  // namespace Serial

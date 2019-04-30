@@ -86,7 +86,7 @@ namespace Chimera::Event
      *  Attach a signal to get notified when an event occurs. All thread safety 
      *  shall performed by FreeRTOS semaphore function calls.
      *
-     *  @note Queueing multiple notifiers for an event is optional
+     *  @note Queuing multiple notifiers for an event is optional
      *
      *  @param[in]  event   The event to be notified on
      *  @param[in]  semphr  The notification variable

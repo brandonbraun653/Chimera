@@ -38,10 +38,11 @@ namespace Chimera::Serial
      *  @param[in]  pins          TX and RX pin configuration
      *  @return Chimera::Status_t
      *
-     *  | Return Value |          Explanation          |
-     *  |:------------:|:-----------------------------:|
-     *  |           OK | Everything worked as expected |
-     *  |         FAIL | The function failed           |
+     *  |   Return Value   |            Explanation             |
+     *  |:----------------:|:----------------------------------:|
+     *  |               OK | Everything worked as expected      |
+     *  |             FAIL | The function failed                |
+     *  | INVAL_FUNC_PARAM | An invalid parameter was passed in |
      */
     virtual Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) = 0;
 
@@ -52,10 +53,11 @@ namespace Chimera::Serial
      *  @param[in]  rxMode        What mode to run the RX hardware in
      *  @return Chimera::Status_t
      *
-     *  | Return Value |          Explanation          |
-     *  |:------------:|:-----------------------------:|
-     *  |           OK | Everything worked as expected |
-     *  |         FAIL | The function failed           |
+     *  |   Return Value   |            Explanation             |
+     *  |:----------------:|:----------------------------------:|
+     *  |               OK | Everything worked as expected      |
+     *  |             FAIL | The function failed                |
+     *  | INVAL_FUNC_PARAM | An invalid parameter was passed in |
      */
     virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) = 0;
 

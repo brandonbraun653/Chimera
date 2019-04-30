@@ -31,7 +31,7 @@ extern "C"
   void vApplicationTickHook()
   {
 #if defined( GMOCK_TEST )
-    Chimera::Mock::SystemTickCallback();
+    //Chimera::Mock::SystemTickCallback();
 #endif
 
 #ifdef SIM
