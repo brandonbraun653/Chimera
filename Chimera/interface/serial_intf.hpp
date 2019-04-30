@@ -57,6 +57,7 @@ namespace Chimera::Serial
      *  |:----------------:|:----------------------------------:|
      *  |               OK | Everything worked as expected      |
      *  |             FAIL | The function failed                |
+     *  |  NOT_INITIALIZED | The serial hardware has not been configuration |
      *  | INVAL_FUNC_PARAM | An invalid parameter was passed in |
      */
     virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) = 0;
@@ -203,7 +204,7 @@ namespace Chimera::Serial
     virtual Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph ) = 0;
 
     /**
-     *	Handles post processing steps that are too long to justify executing inside an ISR 
+     *	Handles post processing steps that are too long to justify executing inside an ISR
      *
      *	@return void
      */
@@ -292,55 +293,59 @@ namespace Chimera::Serial
   class SerialUnsupported : public Interface
   {
   public:
-    SerialUnsupported( const size_t bufferSize )
+    SerialUnsupported()
     {
     }
 
-    virtual Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) final override
+    Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t end() final override
+    Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
+    Chimera::Status_t end() final override
+    {
+      return Chimera::CommonStatusCodes::FAIL;
+    }
+
+    Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
                                          const FlowControl flow ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t setBaud( const uint32_t baud ) final override
+    Chimera::Status_t setBaud( const uint32_t baud ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Modes mode ) final override
+    Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Modes mode ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
+    Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
                                      const uint32_t timeout_mS = 500 ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) final override
+    Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    virtual Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph ) final override
+    Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
+    }
+
+    void postISRProcessing() final override
+    {
     }
   };
 

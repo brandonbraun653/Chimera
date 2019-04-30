@@ -22,8 +22,9 @@
 
 using namespace Chimera::GPIO;
 
-static const Chimera::Serial::IOPins validPins{ { Pull::NO_PULL, Port::PORTA, Drive::INPUT, State::LOW, 0u, 0u },
-                                                { Pull::NO_PULL, Port::PORTA, Drive::INPUT, State::LOW, 0u, 0u } };
+static constexpr uint8_t validChannel = 1u;
+static constexpr Chimera::Serial::IOPins validPins{ { Pull::NO_PULL, Port::PORTA, Drive::INPUT, State::LOW, 0u, 0u },
+                                                    { Pull::NO_PULL, Port::PORTA, Drive::INPUT, State::LOW, 0u, 0u } };
 
 namespace Chimera
 {
@@ -75,14 +76,37 @@ namespace Chimera
     /*------------------------------------------------
     Chimera::Serial::Interface::begin()
     ------------------------------------------------*/
+    TEST_F( SerialIntegrationTestFixture, begin_notInitializedYet )
+    {
+      auto expected1 = Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      auto expected2 = Chimera::CommonStatusCodes::FAIL;
+
+      auto result = serial->begin( Modes::BLOCKING, Modes::BLOCKING );
+      EXPECT_TRUE( ( result == expected1 ) || ( result == expected2 ) );
+
+      reset_test();
+      result = serial->begin( Modes::INTERRUPT, Modes::INTERRUPT );
+      EXPECT_TRUE( ( result == expected1 ) || ( result == expected2 ) );
+
+      reset_test();
+      result = serial->begin( Modes::DMA, Modes::DMA );
+      EXPECT_TRUE( ( result == expected1 ) || ( result == expected2 ) );
+
+      reset_test();
+      result = serial->begin( Modes::MODE_UNDEFINED, Modes::MODE_UNDEFINED );
+      EXPECT_TRUE( ( result == expected1 ) || ( result == expected2 ) );
+    }
+
     TEST_F( SerialIntegrationTestFixture, begin_invalidModes )
     {
       auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
 
-
+      serial->assignHW( validChannel, validPins );
 
       EXPECT_EQ( expected, serial->begin( Modes::MODE_UNDEFINED, Modes::BLOCKING ) );
       EXPECT_EQ( expected, serial->begin( Modes::BLOCKING, Modes::MODE_UNDEFINED ) );
+
+      #error Add the IT/DMA tests before continuing.
     }
 
     /*------------------------------------------------

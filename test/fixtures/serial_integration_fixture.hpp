@@ -36,6 +36,8 @@ namespace Chimera
        */
        void defaultInit();
 
+       void reset_test();
+
       CHIMERA_INHERITED_SERIAL *serial = nullptr;
     };
   }  // namespace Serial

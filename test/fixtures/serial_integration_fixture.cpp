@@ -37,5 +37,11 @@ namespace Chimera
     {
     }
 
+    void SerialIntegrationTestFixture::reset_test()
+    {
+      TearDown();
+      SetUp();
+    }
+
   }  // namespace Serial
 }  // namespace Chimera
