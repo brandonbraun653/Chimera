@@ -18,29 +18,49 @@
 /* Chimera Includes */
 #include "chimeraPort.hpp"
 
-namespace Chimera
+namespace Chimera::Serial
 {
-  namespace Serial
+  class SerialIntegrationTestFixture : public ::testing::Test
   {
-    class SerialIntegrationTestFixture : public ::testing::Test
-    {
-    protected:
-      virtual void SetUp() override;
+  protected:
+    virtual void SetUp() override;
 
-      virtual void TearDown() override;
+    virtual void TearDown() override;
 
-      /**
-       *	Passes the Serial initialization sequence
-       *	
-       *	@return void
-       */
-       void defaultInit();
+    /**
+     *	Passes the Serial initialization sequence
+     *
+     *	@return void
+     */
+    void defaultInit();
 
-       void reset_test();
+    /**
+     *	Resets the testing environment manually
+     *	
+     *	@return void
+     */
+     void reset_test();
 
-      CHIMERA_INHERITED_SERIAL *serial = nullptr;
-    };
-  }  // namespace Serial
-}  // namespace Chimera
+    /**
+     *	Hooks into the Backend test fixture to provide a valid UART channel. Some 
+     *	libraries may combine the USART and UART drivers into the Serial driver
+     *	for interface consistency reasons.
+     *	
+     *	@return uint8_t
+     */
+     uint8_t getValidUARTChannel();
+
+    /**
+     *	Hooks into the Backend test fixture to provide a valid USART channel. Some 
+     *	libraries may combine the USART and UART drivers into the Serial driver
+     *	for interface consistency reasons.
+     *	
+     *	@return uint8_t
+     */
+     uint8_t getValidUSARTChannel();
+
+    CHIMERA_INHERITED_SERIAL *serial = nullptr;
+  };
+}  // namespace Chimera::Serial
 
 #endif  // !CHIMERA_SERIAL_INTEGRATION_TEST_FIXTURE_HPP

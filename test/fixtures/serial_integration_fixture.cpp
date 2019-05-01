@@ -15,10 +15,8 @@
 #include <Chimera/test/fixtures/common_fixture.hpp>
 #include <Chimera/test/fixtures/serial_integration_fixture.hpp>
 
-namespace Chimera
+namespace Chimera::Serial
 {
-  namespace Serial
-  {
     void SerialIntegrationTestFixture::SetUp()
     {
       serial = new CHIMERA_INHERITED_SERIAL();
@@ -43,5 +41,13 @@ namespace Chimera
       SetUp();
     }
 
-  }  // namespace Serial
+    uint8_t SerialIntegrationTestFixture::getValidUARTChannel()
+    {
+      return Chimera::IntegrationTests::Serial::validUARTChannel();
+    }
+
+    uint8_t SerialIntegrationTestFixture::getValidUSARTChannel()
+    {
+      return Chimera::IntegrationTests::Serial::validUSARTChannel();
+    }
 }  // namespace Chimera

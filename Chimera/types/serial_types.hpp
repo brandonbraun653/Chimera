@@ -92,14 +92,6 @@ namespace Chimera::Serial
     FCTRL_HW
   };
 
-  enum class Modes : uint8_t
-  {
-    BLOCKING = 0,
-    INTERRUPT,
-    DMA,
-    MODE_UNDEFINED
-  };
-
   typedef struct
   {
     bool overrun;

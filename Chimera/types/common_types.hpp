@@ -65,15 +65,20 @@ namespace Chimera
     {
       RX = 0,
       TX,
-      TXRX
+      TXRX,
+
+      NUM_SUBPERIPH,
+      UNKNOWN_SUBPERIPH
     };
 
     enum class SubPeripheralMode : uint8_t
     {
-      UNKNOWN_MODE = 0,
-      BLOCKING,
+      BLOCKING = 0,
       INTERRUPT,
-      DMA
+      DMA,
+
+      NUM_SUBPERIPH_MODES,
+      UNKNOWN_MODE
     };
   }
 }  // namespace Chimera

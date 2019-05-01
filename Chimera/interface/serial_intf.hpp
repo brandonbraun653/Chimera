@@ -57,10 +57,11 @@ namespace Chimera::Serial
      *  |:----------------:|:----------------------------------:|
      *  |               OK | Everything worked as expected      |
      *  |             FAIL | The function failed                |
-     *  |  NOT_INITIALIZED | The serial hardware has not been configuration |
+     *  |  NOT_INITIALIZED | The serial hardware has not been configured properly |
      *  | INVAL_FUNC_PARAM | An invalid parameter was passed in |
      */
-    virtual Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) = 0;
+    virtual Chimera::Status_t begin( const Chimera::Hardware::SubPeripheralMode txMode,
+                                     const Chimera::Hardware::SubPeripheralMode rxMode ) = 0;
 
     /**
      *  De-initializes the serial port
@@ -125,7 +126,8 @@ namespace Chimera::Serial
      *  |  NOT_INITIALIZED | The serial hardware is not ready for configuration |
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function      |
      */
-    virtual Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Modes mode ) = 0;
+    virtual Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph,
+                                       const Chimera::Hardware::SubPeripheralMode mode ) = 0;
 
     /**
      *  Writes data onto the wire
@@ -191,7 +193,7 @@ namespace Chimera::Serial
     virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
 
     /**
-     *	Flushes out the given subperipheral queues
+     *	Flushes out the given sub peripheral queues
      *
      *	@param[in]	periph        The peripheral to be flushed
      *	@return Chimera::Status_t
@@ -302,7 +304,8 @@ namespace Chimera::Serial
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    Chimera::Status_t begin( const Modes txMode, const Modes rxMode ) final override
+    Chimera::Status_t begin( const Chimera::Hardware::SubPeripheralMode txMode,
+                             const Chimera::Hardware::SubPeripheralMode rxMode ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
@@ -313,7 +316,7 @@ namespace Chimera::Serial
     }
 
     Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
-                                         const FlowControl flow ) final override
+                                 const FlowControl flow ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
@@ -323,13 +326,13 @@ namespace Chimera::Serial
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Modes mode ) final override
+    Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph,
+                               const Chimera::Hardware::SubPeripheralMode mode ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    Chimera::Status_t write( const uint8_t *const buffer, const size_t length,
-                                     const uint32_t timeout_mS = 500 ) final override
+    Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
