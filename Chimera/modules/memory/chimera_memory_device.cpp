@@ -9,6 +9,9 @@
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+/* C++ Includes */
+#include <cstring>
+
 /* Chimera Includes */
 #include <Chimera/modules/memory/device.hpp>
 
@@ -343,7 +346,7 @@ namespace Chimera::Modules::Memory
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
     auto offset              = rawData + address;
-    auto endAddr             = reinterpret_cast<uint32_t>( offset ) + length;
+    auto endAddr             = reinterpret_cast<uintptr_t>( offset ) + length;
 
     if ( !data || ( endAddr > deviceDescriptor.endAddress ) )
     {
@@ -361,7 +364,7 @@ namespace Chimera::Modules::Memory
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
     auto offset              = rawData + address;
-    auto endAddr             = reinterpret_cast<uint32_t>( offset ) + length;
+    auto endAddr             = reinterpret_cast<uintptr_t>( offset ) + length;
 
     if ( !data || ( endAddr > deviceDescriptor.endAddress ) )
     {
@@ -379,7 +382,7 @@ namespace Chimera::Modules::Memory
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
     auto offset              = rawData + address;
-    auto endAddr             = reinterpret_cast<uint32_t>( offset ) + length;
+    auto endAddr             = reinterpret_cast<uintptr_t>( offset ) + length;
 
     if ( endAddr > deviceDescriptor.endAddress )
     {

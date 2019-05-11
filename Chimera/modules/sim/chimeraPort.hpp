@@ -8,15 +8,7 @@
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 #pragma once
-#ifndef CHIMERA_PORT_MOCK_HPP
-#define CHIMERA_PORT_MOCK_HPP
-
-#include <Chimera/mock/Chimera/gpio.hpp>
-#include <Chimera/mock/Chimera/spi.hpp>
-
-namespace BACKEND_NAMESPACE = Chimera::Mock;
-
-#define CHIMERA_INHERITED_GPIO Chimera::Mock::GPIOMock
-#define CHIMERA_INHERITED_SPI Chimera::Mock::SPIMock
+#ifndef CHIMERA_PORT_SIM_HPP
+#define CHIMERA_PORT_SIM_HPP
 
 #endif /* !CHIMERA_PORT_MOCK_HPP */

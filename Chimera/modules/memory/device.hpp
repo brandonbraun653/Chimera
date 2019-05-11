@@ -454,7 +454,7 @@ namespace Chimera::Modules::Memory
     void initialize( std::array<uint8_t, S>& staticData )
     {
       rawData = staticData.data();
-      deviceDescriptor.startAddress = static_cast<uint32_t>( rawData );
+      deviceDescriptor.startAddress = reinterpret_cast<uint32_t>( rawData );
       deviceDescriptor.endAddress   = deviceDescriptor.startAddress + static_cast<uint32_t>( S );
 
       initialized = true;
