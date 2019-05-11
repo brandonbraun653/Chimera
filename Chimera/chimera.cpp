@@ -18,6 +18,11 @@
 /* Boost Includes */
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
+
+void cSystemInit()
+{
+  
+}
 #endif
 
 void ChimeraInit()
