@@ -21,18 +21,6 @@ https://clang.llvm.org/docs/LanguageExtensions.html
 #endif
 
 /*------------------------------------------------
-Test Environment
-------------------------------------------------*/
-#if defined( _WIN32 ) || defined( _WIN64 )
-#define MOD_TEST
-#define SIM
-#endif
-
-#if defined( MOD_TEST ) && !defined( NOMINMAX )
-#error Please define NOMINMAX so that the Windows port of FreeRTOS does not try and overwrite the C++ STL
-#endif
-
-/*------------------------------------------------
 Target CPU
 ------------------------------------------------*/
 #if !defined( CHIMERA_LITTLE_ENDIAN ) && !defined( CHIMERA_BIG_ENDIAN )
@@ -53,6 +41,19 @@ Boost
 ------------------------------------------------*/
 #if __has_include( "boost/shared_ptr.hpp" )
 #define USING_BOOST
+#endif
+
+
+/*------------------------------------------------
+Test Environment
+------------------------------------------------*/
+#if defined( _WIN32 ) || defined( _WIN64 )
+#define MOD_TEST
+#define SIM
+#endif
+
+#if defined( MOD_TEST ) && defined( USING_FREERTOS) && !defined( NOMINMAX )
+#error Please define NOMINMAX so that the Windows port of FreeRTOS does not try and overwrite the C++ STL
 #endif
 
 #endif /* !CHIMERA_PREPROCESSOR_HPP */

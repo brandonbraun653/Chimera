@@ -50,11 +50,17 @@ namespace Chimera::Modules::Memory
     std::vector<uint32_t> sectors;
   };
 
-  struct DeviceDescriptor
+  struct Descriptor
   {
-    uint32_t pageSize;   /**< Page size of the device in bytes */
-    uint32_t blockSize;  /**< Block size of the device in bytes */
-    uint32_t sectorSize; /**< Sector size of the device in bytes */
+    Descriptor() : pageSize( 0 ), blockSize( 0 ), sectorSize( 0 ), startAddress( 0 ), endAddress( 0 )
+    {
+    }
+
+    uint32_t pageSize;     /**< Page size of the device in bytes */
+    uint32_t blockSize;    /**< Block size of the device in bytes */
+    uint32_t sectorSize;   /**< Sector size of the device in bytes */
+    uint32_t startAddress; /**< Starting address of the device region in memory */
+    uint32_t endAddress;   /**< Ending address of the device region in memory */
   };
 
   /**
@@ -252,13 +258,13 @@ namespace Chimera::Modules::Memory
    *  information is left up to the inheriting driver. All the user cares about is that
    *  data can be written, read, and erased.
    */
-  class GenericInterface
+  class Device
   {
   public:
     /**
      *	Virtual destructor necessary for GMock as well as inheritors
      */
-    virtual ~GenericInterface() = default;
+    virtual ~Device() = default;
 
     /**
      *	Writes data into flash memory.
@@ -372,6 +378,8 @@ namespace Chimera::Modules::Memory
     virtual bool isInitialized() = 0;
   };
 
+  using Device_sPtr = std::shared_ptr<Device>;
+  using Device_uPtr = std::unique_ptr<Device>;
 
   /**
    *  Contains useful helper functions for interacting with a memory device that can be
@@ -380,7 +388,7 @@ namespace Chimera::Modules::Memory
   class Utilities
   {
   public:
-    Utilities( const DeviceDescriptor &dev );
+    Utilities( const Descriptor &dev );
     ~Utilities() = default;
 
     /**
@@ -389,7 +397,7 @@ namespace Chimera::Modules::Memory
      *	@param[in]	dev         The device information
      *	@return void
      */
-    void updateDeviceInfo( const DeviceDescriptor &dev );
+    void updateDeviceInfo( const Descriptor &dev );
 
     /**
      *	Returns the section number of the address
@@ -431,12 +439,55 @@ namespace Chimera::Modules::Memory
     SectionList getCompositeSections( const uint32_t address, const uint32_t len );
 
   private:
-    DeviceDescriptor device;
+    Descriptor device;
 
     uint32_t pagesPerBlock;
     uint32_t pagesPerSector;
     uint32_t blocksPerSector;
   };
+
+
+  class VirtualMemoryDevice : public Chimera::Modules::Memory::Device
+  {
+  public:
+    template<std::size_t S>
+    void initialize( std::array<uint8_t, S>& staticData )
+    {
+      rawData = staticData.data();
+      deviceDescriptor.startAddress = static_cast<uint32_t>( rawData );
+      deviceDescriptor.endAddress   = deviceDescriptor.startAddress + static_cast<uint32_t>( S );
+
+      initialized = true;
+    }
+
+    const Chimera::Modules::Memory::Descriptor &getSpecs()
+    {
+      return deviceDescriptor;
+    }
+
+    virtual Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) override;
+
+    virtual Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) override;
+
+    virtual Chimera::Status_t erase( const uint32_t address, const uint32_t length ) override;
+
+    virtual Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) override;
+
+    virtual Chimera::Status_t readCompleteCallback( const Chimera::Function::void_func_uint32_t func ) override;
+
+    virtual Chimera::Status_t eraseCompleteCallback( const Chimera::Function::void_func_uint32_t func ) override;
+
+    virtual bool isInitialized() override;
+
+  protected:
+    uint8_t *rawData = nullptr;
+    Chimera::Modules::Memory::Descriptor deviceDescriptor;
+    bool initialized = false;
+  };
+
+  using VMD_sPtr = std::shared_ptr<VirtualMemoryDevice>;
+  using VMD_uPtr = std::unique_ptr<VirtualMemoryDevice>;
+
 }  // namespace Chimera::Modules::Memory
 
 #endif /* !CHIMERA_MOD_MEMORY_DEVICE_HPP */
