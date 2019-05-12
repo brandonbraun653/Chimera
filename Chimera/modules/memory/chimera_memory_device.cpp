@@ -345,16 +345,16 @@ namespace Chimera::Modules::Memory
   Chimera::Status_t VirtualMemoryDevice::write( const uint32_t address, const uint8_t *const data, const uint32_t length )
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
-    auto offset              = rawData + address;
-    auto endAddr             = reinterpret_cast<uintptr_t>( offset ) + length;
+    auto writeAddr           = rawData + address;
+    auto endAddr             = reinterpret_cast<uintptr_t>( writeAddr ) + length;
 
-    if ( !data || ( endAddr > deviceDescriptor.endAddress ) )
+    if ( !data || ( endAddr > deviceDescriptor.endAddress ) || ( address > regionSize )  )
     {
       result = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
     else
     {
-      memcpy( offset, data, length );
+      memcpy( writeAddr, data, length );
     }
 
     return result;
@@ -363,16 +363,16 @@ namespace Chimera::Modules::Memory
   Chimera::Status_t VirtualMemoryDevice::read( const uint32_t address, uint8_t *const data, const uint32_t length )
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
-    auto offset              = rawData + address;
-    auto endAddr             = reinterpret_cast<uintptr_t>( offset ) + length;
+    auto writeAddr           = rawData + address;
+    auto endAddr             = reinterpret_cast<uintptr_t>( writeAddr ) + length;
 
-    if ( !data || ( endAddr > deviceDescriptor.endAddress ) )
+    if ( !data || ( endAddr > deviceDescriptor.endAddress ) || ( address > regionSize) )
     {
       result = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
     else
     {
-      memcpy( data, offset, length );
+      memcpy( data, writeAddr, length );
     }
 
     return result;
@@ -381,16 +381,16 @@ namespace Chimera::Modules::Memory
   Chimera::Status_t VirtualMemoryDevice::erase( const uint32_t address, const uint32_t length )
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
-    auto offset              = rawData + address;
-    auto endAddr             = reinterpret_cast<uintptr_t>( offset ) + length;
+    auto writeAddr           = rawData + address;
+    auto endAddr             = reinterpret_cast<uintptr_t>( writeAddr ) + length;
 
-    if ( endAddr > deviceDescriptor.endAddress )
+    if ( ( endAddr > deviceDescriptor.endAddress ) || ( address > regionSize ) )
     {
       result = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
     else
     {
-      memset( offset, 0x00, length );
+      memset( writeAddr, 0x00, length );
     }
 
     return result;

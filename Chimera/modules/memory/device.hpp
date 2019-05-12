@@ -456,6 +456,7 @@ namespace Chimera::Modules::Memory
       rawData = staticData.data();
       deviceDescriptor.startAddress = reinterpret_cast<uint32_t>( rawData );
       deviceDescriptor.endAddress   = deviceDescriptor.startAddress + static_cast<uint32_t>( S );
+      regionSize                    = S;
 
       initialized = true;
     }
@@ -465,22 +466,23 @@ namespace Chimera::Modules::Memory
       return deviceDescriptor;
     }
 
-    virtual Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) override;
+    Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) final override;
 
-    virtual Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) override;
+    Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) final override;
 
-    virtual Chimera::Status_t erase( const uint32_t address, const uint32_t length ) override;
+    Chimera::Status_t erase( const uint32_t address, const uint32_t length ) final override;
 
-    virtual Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) override;
+    Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override;
 
-    virtual Chimera::Status_t readCompleteCallback( const Chimera::Function::void_func_uint32_t func ) override;
+    Chimera::Status_t readCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override;
 
-    virtual Chimera::Status_t eraseCompleteCallback( const Chimera::Function::void_func_uint32_t func ) override;
+    Chimera::Status_t eraseCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override;
 
-    virtual bool isInitialized() override;
+    bool isInitialized() final override;
 
   protected:
     uint8_t *rawData = nullptr;
+    size_t regionSize = 0;
     Chimera::Modules::Memory::Descriptor deviceDescriptor;
     bool initialized = false;
   };
