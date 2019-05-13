@@ -45,9 +45,9 @@ namespace Chimera::Modules::Memory
 
   struct SectionList
   {
-    std::vector<uint32_t> pages;
-    std::vector<uint32_t> blocks;
-    std::vector<uint32_t> sectors;
+    std::vector<size_t> pages;
+    std::vector<size_t> blocks;
+    std::vector<size_t> sectors;
   };
 
   struct Descriptor
@@ -56,11 +56,11 @@ namespace Chimera::Modules::Memory
     {
     }
 
-    uint32_t pageSize;     /**< Page size of the device in bytes */
-    uint32_t blockSize;    /**< Block size of the device in bytes */
-    uint32_t sectorSize;   /**< Sector size of the device in bytes */
-    uint32_t startAddress; /**< Starting address of the device region in memory */
-    uint32_t endAddress;   /**< Ending address of the device region in memory */
+    size_t pageSize;     /**< Page size of the device in bytes */
+    size_t blockSize;    /**< Block size of the device in bytes */
+    size_t sectorSize;   /**< Sector size of the device in bytes */
+    size_t startAddress; /**< Starting address of the device region in memory */
+    size_t endAddress;   /**< Ending address of the device region in memory */
   };
 
   /**
@@ -77,7 +77,7 @@ namespace Chimera::Modules::Memory
      *	@param[in]	endAddress      Absolute address greater than startAddress to end at
      *	@param[in]	blockSize       The block size in bytes
      */
-    BlockRange( const uint32_t startAddress, const uint32_t endAddress, const uint32_t blockSize );
+    BlockRange( const size_t startAddress, const size_t endAddress, const size_t blockSize );
 
     /**
      *	Copy constructor to generate a new class from an existing one
@@ -109,7 +109,7 @@ namespace Chimera::Modules::Memory
      *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
      *  |                     All other values | The calculated data                                                 |
      */
-    uint32_t startBlock();
+    size_t startBlock();
 
     /**
      *  Starting from the beginning of startblock(), calculates the number
@@ -134,7 +134,7 @@ namespace Chimera::Modules::Memory
      *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
      *  |                     All other values | The calculated data                                                 |
      */
-    uint32_t startOffset();
+    size_t startOffset();
 
     /**
      *  Starting from startAddress, calculates the number of bytes until the next block
@@ -159,7 +159,7 @@ namespace Chimera::Modules::Memory
      *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
      *  |                     All other values | The calculated data                                                 |
      */
-    uint32_t startBytes();
+    size_t startBytes();
 
     /**
      *  Calculates the block of the endAddress
@@ -182,7 +182,7 @@ namespace Chimera::Modules::Memory
      *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
      *  |                     All other values | The calculated data                                                 |
      */
-    uint32_t endBlock();
+    size_t endBlock();
 
     /**
      *  Starting from the beginning of endblock(), calculates the number
@@ -207,7 +207,7 @@ namespace Chimera::Modules::Memory
      *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
      *  |                     All other values | The calculated data                                                 |
      */
-    uint32_t endOffset();
+    size_t endOffset();
 
     /**
      *  Starting from endAddress, calculates the number of bytes until the next block
@@ -232,24 +232,22 @@ namespace Chimera::Modules::Memory
      *  | std::numeric_limits<uint32_t>::max() | The class was not initialized with valid address range / block size |
      *  |                     All other values | The calculated data                                                 |
      */
-    uint32_t endBytes();
+    size_t endBytes();
 
   protected:
-    static constexpr uint32_t U32MAX = std::numeric_limits<uint32_t>::max();
+    static constexpr size_t SIZE_T_MAX = std::numeric_limits<size_t>::max();
 
     bool initialized = false;
 
-    uint32_t _blockSize = U32MAX;
-
-    uint32_t _startBlock   = U32MAX;
-    uint32_t _startAddress = U32MAX;
-    uint32_t _startOffset  = U32MAX;
-    uint32_t _startBytes   = U32MAX;
-
-    uint32_t _endBlock   = U32MAX;
-    uint32_t _endAddress = U32MAX;
-    uint32_t _endOffset  = U32MAX;
-    uint32_t _endBytes   = U32MAX;
+    size_t _blockSize    = SIZE_T_MAX;
+    size_t _startBlock   = SIZE_T_MAX;
+    size_t _startAddress = SIZE_T_MAX;
+    size_t _startOffset  = SIZE_T_MAX;
+    size_t _startBytes   = SIZE_T_MAX;
+    size_t _endBlock     = SIZE_T_MAX;
+    size_t _endAddress   = SIZE_T_MAX;
+    size_t _endOffset    = SIZE_T_MAX;
+    size_t _endBytes     = SIZE_T_MAX;
   };
 
   /**
@@ -284,7 +282,7 @@ namespace Chimera::Modules::Memory
      *  |          BUSY | Flash is doing something at the moment. Try again later.           |
      *  | OUT_OF_MEMORY | Zero or more bytes were written, but not the full amount requested |
      */
-    virtual Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) = 0;
+    virtual Chimera::Status_t write( const size_t address, const uint8_t *const data, const size_t length ) = 0;
 
     /**
      *  Reads data in a contiguous block, starting from the given address. Should *not* be able to
@@ -302,7 +300,7 @@ namespace Chimera::Modules::Memory
      *  |         BUSY | Flash is doing something at the moment. Try again later.    |
      *  |      OVERRUN | A boundary was reached and the read halted.                 |
      */
-    virtual Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) = 0;
+    virtual Chimera::Status_t read( const size_t address, uint8_t *const data, const size_t length ) = 0;
 
     /**
      *  Erase a region of memory. The given address range will need to be page, block, or
@@ -321,7 +319,7 @@ namespace Chimera::Modules::Memory
      *  |         BUSY | Flash is doing something at the moment. Try again later.    |
      *  |    UNALIGNED | The range wasn't aligned with the device's erasable regions |
      */
-    virtual Chimera::Status_t erase( const uint32_t address, const uint32_t length ) = 0;
+    virtual Chimera::Status_t erase( const size_t address, const size_t length ) = 0;
 
     /**
      *	Register a callback to be executed when the write has been completed. The input parameter
@@ -406,7 +404,7 @@ namespace Chimera::Modules::Memory
      *	@param[in]	address     The address to be investigated
      *	@return uint32_t
      */
-    uint32_t getSectionNumber( const Section_t section, const uint32_t address );
+    size_t getSectionNumber( const Section_t section, const size_t address );
 
     /**
      *	Converts a section number into that section's start address
@@ -415,7 +413,7 @@ namespace Chimera::Modules::Memory
      *	@param[in]	number      The specific section number to convert
      *	@return uint32_t
      */
-    uint32_t getSectionStartAddress( const Section_t section, const uint32_t number );
+    size_t getSectionStartAddress( const Section_t section, const size_t number );
 
     /**
      *	An algorithm for re-structuring an address range into the largest memory groupings possible
@@ -436,14 +434,14 @@ namespace Chimera::Modules::Memory
      *	@param[in]	len         The page aligned range of bytes to be composed
      *	@return Chimera::Modules::Memory::SectionList
      */
-    SectionList getCompositeSections( const uint32_t address, const uint32_t len );
+    SectionList getCompositeSections( const size_t address, const size_t len );
 
   private:
     Descriptor device;
 
-    uint32_t pagesPerBlock;
-    uint32_t pagesPerSector;
-    uint32_t blocksPerSector;
+    size_t pagesPerBlock;
+    size_t pagesPerSector;
+    size_t blocksPerSector;
   };
 
 
@@ -454,8 +452,8 @@ namespace Chimera::Modules::Memory
     void initialize( std::array<uint8_t, S>& staticData )
     {
       rawData = staticData.data();
-      deviceDescriptor.startAddress = reinterpret_cast<uint32_t>( rawData );
-      deviceDescriptor.endAddress   = deviceDescriptor.startAddress + static_cast<uint32_t>( S );
+      deviceDescriptor.startAddress = reinterpret_cast<size_t>( rawData );
+      deviceDescriptor.endAddress   = deviceDescriptor.startAddress + S;
       regionSize                    = S;
 
       initialized = true;
@@ -466,11 +464,11 @@ namespace Chimera::Modules::Memory
       return deviceDescriptor;
     }
 
-    Chimera::Status_t write( const uint32_t address, const uint8_t *const data, const uint32_t length ) final override;
+    Chimera::Status_t write( const size_t address, const uint8_t *const data, const size_t length ) final override;
 
-    Chimera::Status_t read( const uint32_t address, uint8_t *const data, const uint32_t length ) final override;
+    Chimera::Status_t read( const size_t address, uint8_t *const data, const size_t length ) final override;
 
-    Chimera::Status_t erase( const uint32_t address, const uint32_t length ) final override;
+    Chimera::Status_t erase( const size_t address, const size_t length ) final override;
 
     Chimera::Status_t writeCompleteCallback( const Chimera::Function::void_func_uint32_t func ) final override;
 

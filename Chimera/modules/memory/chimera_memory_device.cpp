@@ -17,7 +17,7 @@
 
 namespace Chimera::Modules::Memory
 {
-  BlockRange::BlockRange( const uint32_t startAddress, const uint32_t endAddress, const uint32_t blockSize )
+  BlockRange::BlockRange( const size_t startAddress, const size_t endAddress, const size_t blockSize )
   {
     if ( ( startAddress < endAddress ) && ( blockSize > 0 ) )
     {
@@ -43,13 +43,13 @@ namespace Chimera::Modules::Memory
     this->initialized = cls.initialized;
   }
 
-  uint32_t BlockRange::startBlock()
+  size_t BlockRange::startBlock()
   {
-    uint32_t retVal = U32MAX;
+    size_t retVal = SIZE_T_MAX;
 
     if ( initialized )
     {
-      if ( _startBlock == U32MAX )
+      if ( _startBlock == SIZE_T_MAX )
       {
         _startBlock = _startAddress / _blockSize;
       }
@@ -60,15 +60,15 @@ namespace Chimera::Modules::Memory
     return retVal;
   }
 
-  uint32_t BlockRange::startOffset()
+  size_t BlockRange::startOffset()
   {
-    uint32_t retVal = U32MAX;
+    size_t retVal = SIZE_T_MAX;
 
     if ( initialized )
     {
-      if ( _startOffset == U32MAX )
+      if ( _startOffset == SIZE_T_MAX )
       {
-        uint32_t startBlockBeginAddress = startBlock() * _blockSize;
+        size_t startBlockBeginAddress = startBlock() * _blockSize;
         _startOffset                    = _startAddress - startBlockBeginAddress;
       }
 
@@ -78,16 +78,16 @@ namespace Chimera::Modules::Memory
     return retVal;
   }
 
-  uint32_t BlockRange::startBytes()
+  size_t BlockRange::startBytes()
   {
-    uint32_t retVal = U32MAX;
+    size_t retVal = SIZE_T_MAX;
 
     if ( initialized )
     {
-      if ( _startBytes == U32MAX )
+      if ( _startBytes == SIZE_T_MAX )
       {
-        uint32_t memoryRange           = _endAddress - _startAddress;
-        uint32_t nextBlockBeginAddress = ( startBlock() + 1 ) * _blockSize;
+        size_t memoryRange           = _endAddress - _startAddress;
+        size_t nextBlockBeginAddress = ( startBlock() + 1 ) * _blockSize;
 
         /*------------------------------------------------
         If the total number of bytes in the range doesn't exceed the next block
@@ -110,13 +110,13 @@ namespace Chimera::Modules::Memory
     return retVal;
   }
 
-  uint32_t BlockRange::endBlock()
+  size_t BlockRange::endBlock()
   {
-    uint32_t retVal = U32MAX;
+    size_t retVal = SIZE_T_MAX;
 
     if ( initialized )
     {
-      if ( _endBlock == U32MAX )
+      if ( _endBlock == SIZE_T_MAX )
       {
         _endBlock = _endAddress / _blockSize;
       }
@@ -127,13 +127,13 @@ namespace Chimera::Modules::Memory
     return retVal;
   }
 
-  uint32_t BlockRange::endOffset()
+  size_t BlockRange::endOffset()
   {
-    uint32_t retVal = U32MAX;
+    size_t retVal = SIZE_T_MAX;
 
     if ( initialized )
     {
-      if ( _endOffset == U32MAX )
+      if ( _endOffset == SIZE_T_MAX )
       {
         if ( endBlock() == startBlock() )
         {
@@ -151,15 +151,15 @@ namespace Chimera::Modules::Memory
     return retVal;
   }
 
-  uint32_t BlockRange::endBytes()
+  size_t BlockRange::endBytes()
   {
-    uint32_t retVal = U32MAX;
+    size_t retVal = SIZE_T_MAX;
 
     if ( initialized )
     {
-      if ( _endBytes == U32MAX )
+      if ( _endBytes == SIZE_T_MAX )
       {
-        uint32_t nextBlockBeginAddress = ( endBlock() + 1 ) * _blockSize;
+        size_t nextBlockBeginAddress = ( endBlock() + 1 ) * _blockSize;
         _endBytes                      = nextBlockBeginAddress - _endAddress;
       }
 
@@ -192,9 +192,9 @@ namespace Chimera::Modules::Memory
     blocksPerSector = device.sectorSize / device.blockSize;
   }
 
-  uint32_t Utilities::getSectionNumber( const Section_t section, const uint32_t address )
+  size_t Utilities::getSectionNumber( const Section_t section, const size_t address )
   {
-    uint32_t sectionNumber = std::numeric_limits<uint32_t>::max();
+    size_t sectionNumber = std::numeric_limits<size_t>::max();
 
     switch ( section )
     {
@@ -220,9 +220,9 @@ namespace Chimera::Modules::Memory
     return sectionNumber;
   }
 
-  uint32_t Utilities::getSectionStartAddress( const Section_t section, const uint32_t number )
+  size_t Utilities::getSectionStartAddress( const Section_t section, const size_t number )
   {
-    uint32_t address = std::numeric_limits<uint32_t>::max();
+    size_t address = std::numeric_limits<size_t>::max();
 
     switch ( section )
     {
@@ -245,7 +245,7 @@ namespace Chimera::Modules::Memory
     return address;
   }
 
-  SectionList Utilities::getCompositeSections( const uint32_t address, const uint32_t len )
+  SectionList Utilities::getCompositeSections( const size_t address, const size_t len )
   {
     SectionList section;
     BlockRange pageRange( address, address + len, device.pageSize );
@@ -254,17 +254,17 @@ namespace Chimera::Modules::Memory
     Initialize the algorithm, performing the first
     iteration manually.
     ------------------------------------------------*/
-    uint32_t numPages = pageRange.endBlock() - pageRange.startBlock();
+    size_t numPages = pageRange.endBlock() - pageRange.startBlock();
 
-    uint32_t currentBlock      = getSectionNumber( Section_t::BLOCK, address );
-    uint32_t lastBlock         = currentBlock;
-    uint32_t consecutiveBlocks = 1;
+    size_t currentBlock      = getSectionNumber( Section_t::BLOCK, address );
+    size_t lastBlock         = currentBlock;
+    size_t consecutiveBlocks = 1;
 
-    uint32_t currentSector      = getSectionNumber( Section_t::SECTOR, address );
-    uint32_t lastSector         = currentSector;
-    uint32_t consecutiveSectors = 1;
+    size_t currentSector      = getSectionNumber( Section_t::SECTOR, address );
+    size_t lastSector         = currentSector;
+    size_t consecutiveSectors = 1;
 
-    uint32_t currentPage = pageRange.startBlock() + 1;
+    size_t currentPage = pageRange.startBlock() + 1;
     section.pages.push_back( pageRange.startBlock() );
 
     /*------------------------------------------------
@@ -272,9 +272,9 @@ namespace Chimera::Modules::Memory
     blocks and sectors as they pass the threshold for their
     respective memory boundaries.
     ------------------------------------------------*/
-    for ( uint32_t x = 1; x < numPages; x++ )
+    for ( size_t x = 1; x < numPages; x++ )
     {
-      uint32_t currentAddress = currentPage * device.pageSize;
+      size_t currentAddress = currentPage * device.pageSize;
       currentBlock            = getSectionNumber( Section_t::BLOCK, currentAddress );
       currentSector           = getSectionNumber( Section_t::SECTOR, currentAddress );
 
@@ -342,7 +342,7 @@ namespace Chimera::Modules::Memory
   }
 
 
-  Chimera::Status_t VirtualMemoryDevice::write( const uint32_t address, const uint8_t *const data, const uint32_t length )
+  Chimera::Status_t VirtualMemoryDevice::write( const size_t address, const uint8_t *const data, const size_t length )
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
     auto writeAddr           = rawData + address;
@@ -360,7 +360,7 @@ namespace Chimera::Modules::Memory
     return result;
   }
 
-  Chimera::Status_t VirtualMemoryDevice::read( const uint32_t address, uint8_t *const data, const uint32_t length )
+  Chimera::Status_t VirtualMemoryDevice::read( const size_t address, uint8_t *const data, const size_t length )
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
     auto writeAddr           = rawData + address;
@@ -378,7 +378,7 @@ namespace Chimera::Modules::Memory
     return result;
   }
 
-  Chimera::Status_t VirtualMemoryDevice::erase( const uint32_t address, const uint32_t length )
+  Chimera::Status_t VirtualMemoryDevice::erase( const size_t address, const size_t length )
   {
     Chimera::Status_t result = Chimera::CommonStatusCodes::OK;
     auto writeAddr           = rawData + address;

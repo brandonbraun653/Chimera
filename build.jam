@@ -108,4 +108,4 @@ lib CORE
 
 explicit CORE ;
 
-explicit_alias CHIMERA_CORE : CORE : : <Chimera>disabled ;
+explicit_alias CHIMERA_CORE : CORE ;

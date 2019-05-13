@@ -49,7 +49,10 @@ Test Environment
 ------------------------------------------------*/
 #if defined( _WIN32 ) || defined( _WIN64 )
 #define MOD_TEST
+
+#if !defined(SIM)
 #define SIM
+#endif
 #endif
 
 #if defined( MOD_TEST ) && defined( USING_FREERTOS) && !defined( NOMINMAX )
