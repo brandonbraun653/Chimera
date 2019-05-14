@@ -52,15 +52,11 @@ namespace Chimera::Modules::Memory
 
   struct Descriptor
   {
-    Descriptor() : pageSize( 0 ), blockSize( 0 ), sectorSize( 0 ), startAddress( 0 ), endAddress( 0 )
-    {
-    }
-
-    size_t pageSize;     /**< Page size of the device in bytes */
-    size_t blockSize;    /**< Block size of the device in bytes */
-    size_t sectorSize;   /**< Sector size of the device in bytes */
-    size_t startAddress; /**< Starting address of the device region in memory */
-    size_t endAddress;   /**< Ending address of the device region in memory */
+    size_t pageSize     = 0; /**< Page size of the device in bytes */
+    size_t blockSize    = 0; /**< Block size of the device in bytes */
+    size_t sectorSize   = 0; /**< Sector size of the device in bytes */
+    size_t startAddress = 0; /**< Starting address of the device region in memory */
+    size_t endAddress   = 0; /**< Ending address of the device region in memory */
   };
 
   /**
