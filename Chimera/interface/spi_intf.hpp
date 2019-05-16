@@ -280,8 +280,11 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t attachSPI( const SPIClass_sPtr &spi ) = 0;
-    
+    virtual Chimera::Status_t attachSPI( const SPIClass_sPtr &spi )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+
     /**
      *  Attaches an SPI instance to the inheriting class. It is intended that the 
      *  user std::move() the object so that the function takes ownership.
@@ -295,7 +298,10 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t attachSPI( SPIClass_uPtr spi ) = 0;
+    virtual Chimera::Status_t attachSPI( SPIClass_uPtr spi )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
   };
 }  // namespace Chimera::SPI
 
