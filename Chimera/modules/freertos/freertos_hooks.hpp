@@ -1,6 +1,6 @@
 /********************************************************************************
  *  File Name:
- *    freertos_hooks.hpp
+ *    freertos_hooks_prj.hpp
  *
  *  Description:
  *    Allows the user to register various functions as callbacks into common
@@ -9,14 +9,13 @@
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 #pragma once
-#ifndef CHIMERA_FREERTOS_HOOKS_HPP
-#define CHIMERA_FREERTOS_HOOKS_HPP
+#ifndef CHIMERA_FREERTOS_HOOKS_PRJ_HPP
+#define CHIMERA_FREERTOS_HOOKS_PRJ_HPP
 
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"
 #include "task.h"
 
-/* These functions should be defined some where in the backend driver */
 namespace Chimera::Modules::FreeRTOS
 {
   extern void ApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName);
