@@ -26,6 +26,11 @@ extern "C"
   void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
   {
     // TODO: Add the callback redirection
+#if defined( DEBUG )
+    while ( 1 )
+    {
+    }
+#endif
   }
 
   void vApplicationTickHook()
@@ -48,7 +53,12 @@ extern "C"
 
   void vApplicationMallocFailedHook()
   {
-    // TODO: Add the callback redirection
+// TODO: Add the callback redirection
+#if defined( DEBUG )
+    while ( 1 )
+    {
+    }
+#endif
   }
 
   void vApplicationIdleHook()

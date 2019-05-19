@@ -484,6 +484,22 @@ namespace Chimera::Modules::Memory
   using VMD_sPtr = std::shared_ptr<VirtualMemoryDevice>;
   using VMD_uPtr = std::unique_ptr<VirtualMemoryDevice>;
 
+  class AccessProtected
+  {
+  public:
+    ~AccessProtected() = default;
+
+    Chimera::Status_t writeProtect( const bool state )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+
+    Chimera::Status_t readProtect( const bool state )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  };
+
 }  // namespace Chimera::Modules::Memory
 
 #endif /* !CHIMERA_MOD_MEMORY_DEVICE_HPP */
