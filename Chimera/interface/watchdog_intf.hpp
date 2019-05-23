@@ -85,6 +85,35 @@ namespace Chimera
     class WatchdogUnsupported : public Interface
     {
     public:
+      virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      virtual Status_t start() override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      virtual Status_t stop() override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      virtual Status_t kick() override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      virtual Status_t getTimeout( uint32_t &timeout ) override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
+
+      virtual Status_t pauseOnDebugHalt( const bool enable ) override
+      {
+        return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      }
     };
 
   }  // namespace Watchdog

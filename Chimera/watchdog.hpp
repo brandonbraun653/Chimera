@@ -36,14 +36,7 @@ namespace Chimera
       ~WatchdogClass() = default;
     };
 
-
     static_assert( std::is_base_of<Interface, WatchdogClass>::value, "Class implements wrong interface" );
-
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<WatchdogUnsupported, WatchdogClass>::value ),
-                    "No power interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
     
   }  // namespace Watchdog
 }  // namespace Chimera

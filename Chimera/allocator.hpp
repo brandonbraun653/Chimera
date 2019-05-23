@@ -21,19 +21,18 @@ will break loose.
 ------------------------------------------------*/
 #if defined( USING_FREERTOS )
 
+#if !defined( SIM )
 void* malloc (size_t size);
 
 void free (void* ptr);
+#endif /* !SIM */
 
-#if defined( __cplusplus )
 #include "new"
 void *operator new( size_t size );
 
 void *operator new[]( size_t size );
 
 void operator delete( void *p ) noexcept;
-#endif /* __cplusplus */
-
 #endif /* USING_FREERTOS */
 
 #endif /* THOR_ALLOCATOR_HPP*/

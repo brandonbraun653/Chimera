@@ -19,6 +19,7 @@
 #include "FreeRTOS.h"
 #include "portable.h"
 
+#if !defined( SIM )
 void *malloc( size_t size )
 {
   return pvPortMalloc( size );
@@ -28,8 +29,9 @@ void free( void *ptr )
 {
   vPortFree( ptr );
 }
+#endif /* !SIM */
 
-#if defined( __cplusplus )
+
 void *operator new( size_t size )
 {
   void *p = pvPortMalloc( size );
@@ -56,6 +58,5 @@ void operator delete( void *p ) noexcept
 {
   vPortFree( p );
 }
-#endif /* __cplusplus */
 
 #endif /* USING_FREERTOS */

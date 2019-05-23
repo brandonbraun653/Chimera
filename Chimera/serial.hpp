@@ -38,12 +38,6 @@ namespace Chimera
     
     static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
     
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<SerialUnsupported, SerialClass>::value ),
-                    "No Serial interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
-    
   }  // namespace Serial
 }  // namespace Chimera
 

@@ -37,12 +37,6 @@ namespace Chimera
     };
 
     static_assert( std::is_base_of<Chimera::AlgCRC::Interface, HW>::value, "Class implements wrong interface" );
-
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<HWInterfaceUnsupported, HW>::value ),
-                    "No hardware CRC interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
     
     
     class SW : public Chimera::AlgCRC::Interface
