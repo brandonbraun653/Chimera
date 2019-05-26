@@ -10,21 +10,19 @@
 #ifndef CHIMERA_MOCK_DELAY_HPP
 #define CHIMERA_MOCK_DELAY_HPP
 
+/* C++ Includes */
 #include <cstdint>
 
-namespace Chimera
+namespace Chimera::Mock
 {
-  namespace Mock
-  {
-    void SystemTickCallback();
+  void SystemTickCallback();
 
+  uint32_t millis();
 
-    uint32_t millis();
+  void delayMilliseconds( uint32_t ms );
 
-    void delayMilliseconds( uint32_t ms );
+  void delayMicroseconds( uint32_t us );
 
-    void delayMicroseconds( uint32_t us );
-  }  // namespace Mock
-}  // namespace Chimera
+}  // namespace Chimera::Mock
 
 #endif

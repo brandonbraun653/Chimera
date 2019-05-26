@@ -8,7 +8,8 @@
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#include <Chimera/mock/delay.hpp>
+/* Chimera Includes */
+#include <mock/Chimera/delay.hpp>
 #include <Chimera/threading.hpp>
 
 /* Boost Includes */
