@@ -46,6 +46,13 @@ namespace Chimera::SPI
     virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
 
     /**
+     *  Gets the parameters used to initialize the SPI object
+     *  
+     *  @return Chimera::SPI::Setup
+     */
+    virtual Chimera::SPI::Setup getInit() = 0;
+
+    /**
      *	Destroys all previous hardware setup (virtually or physically), which requires
      *	re-initialization of the object in order to be used again.
      *

@@ -93,6 +93,7 @@ namespace Chimera::SPI
     BitOrder bitOrder       = BitOrder::MSB_FIRST; /**< Sets LSB or MSB ordering */
     ClockMode clockMode     = ClockMode::MODE0;    /**< Sets the clock phase and polarity options */
     uint32_t clockFrequency = 1000000;             /**< The desired approximate clock frequency */
+    Chimera::Hardware::SubPeripheralMode transferMode = Chimera::Hardware::SubPeripheralMode::DMA;
   };
 
   enum class Event : uint8_t
