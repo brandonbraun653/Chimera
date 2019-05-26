@@ -9,7 +9,7 @@
  ********************************************************************************/
 
 /* Chimera Includes */
-#include <mock/Chimera/delay.hpp>
+#include <Chimera/mock/delay.hpp>
 #include <Chimera/threading.hpp>
 
 /* Boost Includes */

@@ -22,7 +22,7 @@
 #include <Chimera/interface/watchdog_intf.hpp>
 
 
-namespace Chimera::Mock::Watchdog
+namespace Chimera::Mock
 {
   class WatchdogMock : public Chimera::Watchdog::Interface
   {
@@ -71,6 +71,6 @@ namespace Chimera::Mock::Watchdog
   };
 #endif /* !USING_FREERTOS */
 
-}  // namespace Chimera::Mock::Watchdog
+}  // namespace Chimera::Mock
 
 #endif /* !CHIMERA_MOCK_WATCHDOG_HPP */

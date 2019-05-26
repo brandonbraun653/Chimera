@@ -20,10 +20,8 @@
 #include <Chimera/interface/spi_intf.hpp>
 #include "chimeraPort.hpp"
 
-namespace Chimera
+namespace Chimera::SPI
 {
-  namespace SPI
-  {
 #if !defined( CHIMERA_INHERITED_SPI )
     using CHIMERA_INHERITED_SPI = SPIUnsupported;
 #endif
@@ -46,16 +44,8 @@ namespace Chimera
       ~SPIClass() = default;
     };
 
-
     static_assert( std::is_base_of<Interface, SPIClass>::value, "Base class implements the wrong interface" );
-    
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<SPIUnsupported, SPIClass>::value ),
-                    "No SPI interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
 
-  }  // namespace SPI
 }  // namespace Chimera
 
 #endif

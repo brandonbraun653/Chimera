@@ -15,9 +15,9 @@
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 #include <Chimera/threading.hpp>
-#include <mock/Chimera/watchdog.hpp>
+#include <Chimera/mock/watchdog.hpp>
 
-namespace Chimera::Mock::Watchdog
+namespace Chimera::Mock
 {
 #if defined( USING_FREERTOS )
   static void simWatchdogThread( void *arguments )

@@ -12,9 +12,6 @@
 #ifndef CHIMERA_SPI_MOCK_HPP
 #define CHIMERA_SPI_MOCK_HPP
 
-/* C++ Includes */
-#include <memory>
-
 /* Test Framework Includes */
 #include <gmock/gmock.h>
 
@@ -23,7 +20,7 @@
 
 namespace Chimera::Mock
 {
-  class SPIMock : public Chimera::SPI::Interface
+  class SPIClass : public Chimera::SPI::Interface
   {
   public:
     MOCK_METHOD1( init, Chimera::Status_t( const Chimera::SPI::Setup & ) );
@@ -40,9 +37,6 @@ namespace Chimera::Mock
     MOCK_METHOD1( reserve, Chimera::Status_t( const uint32_t ) );
     MOCK_METHOD1( release, Chimera::Status_t( const uint32_t ) );
   };
-
-  using SPIMock_sPtr = std::shared_ptr<SPIMock>;
-  using SPIMock_uPtr = std::unique_ptr<SPIMock>;
 }  // namespace Chimera::Mock
 
 #endif /* !CHIMERA_SPI_MOCK_HPP */
