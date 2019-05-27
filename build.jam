@@ -1,19 +1,24 @@
-import feature ;
+import lib/CommonTools/boost-build/features/chimera ;
 
-feature.feature Chimera : disabled enabled : optional propagated ;
-feature.feature ChimeraBackend : none Thor Sim : optional propagated ;
 
-rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
+# ====================================================
+# Local Rules 
+# ====================================================
+local rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
     {
     alias $(name) : $(sources) : $(requirements) : $(default-build) : $(usage-requirements) ;
     explicit $(name) ;
     }
 
+# ====================================================
+# Local Resources 
+# ====================================================
 # ------------------------------------------
 # Source/Include Directories 
 # ------------------------------------------
 local chimera_inc_dir = . ; # Expects the user to reference headers like <Chimera/some_file.hpp>
 local chimera_mock_inc_dir = ./../ ;
+local chimera_port_sim_inc_dir = Chimera/modules/sim ;
 local chimera_src_dir = Chimera ;
 
 # ------------------------------------------
@@ -28,82 +33,107 @@ local chimera_src =
     $(chimera_src_modules_freertos)
     ;
 
-
+# ====================================================
+# Project Definition
+# ====================================================
 project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
 
+# ====================================================
+# Public Targets
+# ====================================================
 # ------------------------------------------
-# Consumable Targets
-# ------------------------------------------
-
-# Pulls in the Chimera headers
+# Includes all common Chimera headers
+# -----------------------------------------
 explicit_alias PUB : : : : <include>$(chimera_inc_dir) ;
 explicit_alias PUB_MOCK : : : : <include>$(chimera_mock_inc_dir) ;
 
-# Pulls in necessary FreeRTOS headers
-explicit_alias RTOS : : : 
+# ------------------------------------------
+# Includes all common FreeRTOS headers
+# -----------------------------------------
+explicit_alias _RTOS : : : 
     :   <define>USING_FREERTOS
         <use>/FreeRTOS//PUB
         <use>/PRJ//FreeRTOS_CFG
     ;
 
 # ------------------------------------------
-# Chimera library that automatically links to the correct back end drivers
+# Thor Backend Driver without FreeRTOS
 # ------------------------------------------
-lib CORE : UnconfiguredChimera.c : <Chimera>disabled ;
-
 lib CORE
     :   $(chimera_src)
         /THOR//CORE
 
-    :   <Chimera>enabled
-        <ChimeraBackend>Thor
+    :   <Chimera>enabled-Thor
+        <FreeRTOS>disabled
         <link>static
-        <toolset>gcc
         <include>$(chimera_inc_dir)
 
-        <use>/THOR//PUB
-        <use>/THOR//CORE_PUB
-        <use>/PRJ//CHIMERA_PORT         # chimeraPort.hpp
-    :   
-    :   
+        <use>/THOR//PUB                         # Thor Headers
+        <use>/THOR//CORE_PUB                    # Thor Target Headers
+        <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
     ;
 
-# Core Chimera functionality WITHOUT FreeRTOS 
+# ------------------------------------------
+# Thor Backend Driver with FreeRTOS
+# ------------------------------------------
+lib CORE
+    :   $(chimera_src_root)
+        $(chimera_src_modules_memory)
+        $(chimera_src_modules_freertos)
+        /THOR//CORE
+        /FREERTOS//CORE
+
+    :   <Chimera>enabled-Thor
+        <FreeRTOS>enabled
+        <link>static
+        <include>$(chimera_inc_dir)
+
+        <use>_RTOS                              # Pull in FreeRTOS from the alias up above
+        <use>/THOR//PUB                         # Thor Headers    
+        <use>/THOR//CORE_PUB                    # Thor Target Headers
+        <use>/PRJ//BOOST                        # All things boost
+        <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
+        <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
+    ;
+
+# ------------------------------------------
+# Simulator Backend Driver without FreeRTOS
+# ------------------------------------------
 lib CORE
     :   $(chimera_src_root)
         $(chimera_src_modules_memory)
 
-    :   <Chimera>enabled
-        <ChimeraBackend>Sim
+    :   <Chimera>enabled-Sim
         <FreeRTOS>disabled
         <link>static
         <include>$(chimera_inc_dir)
+        <include>$(chimera_port_sim_inc_dir)    # chimeraPort.hpp
         <define>NOMINMAX
         <define>SIM
 
-        <use>/PRJ//BOOST                # All things boost
-        <use>/PRJ//CHIMERA_PORT         # chimeraPort.hpp
-        <use>/PRJ//CHIMERA_DEFS         # Missing #defines normally included in the backend driver
+        <use>/PRJ//BOOST                        # All things boost
+        <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
     ;
 
-# Core Chimera functionality WITH FreeRTOS 
+# ------------------------------------------
+# Simulator Backend Driver with FreeRTOS
+# ------------------------------------------
 lib CORE
     :   $(chimera_src_root)
         $(chimera_src_modules_memory)
         $(chimera_src_modules_freertos)
 
-    :   <Chimera>enabled
-        <ChimeraBackend>Sim
+    :   <Chimera>enabled-Sim
         <FreeRTOS>enabled
         <link>static
         <include>$(chimera_inc_dir)
+        <include>$(chimera_port_sim_inc_dir)    # chimeraPort.hpp
         <define>NOMINMAX
         <define>SIM
 
-        <use>RTOS                       # Pull in FreeRTOS from the alias up above
-        <use>/PRJ//BOOST                # All things boost
-        <use>/PRJ//CHIMERA_PORT         # chimeraPort.hpp
-        <use>/PRJ//CHIMERA_DEFS         # Missing #defines normally included in the backend driver
+        <use>_RTOS                              # Pull in FreeRTOS from the alias up above
+        <use>/PRJ//BOOST                        # All things boost
+        <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
     ;
 
 explicit CORE ;

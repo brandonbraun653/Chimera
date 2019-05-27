@@ -12,8 +12,5 @@
 #ifndef CHIMERA_PORT_SIM_HPP
 #define CHIMERA_PORT_SIM_HPP
 
-#include <Chimera/mock/spi.hpp>
-#include <Chimera/mock/watchdog.hpp>
-
 
 #endif /* !CHIMERA_PORT_MOCK_HPP */

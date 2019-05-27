@@ -1,0 +1,3 @@
+[submodule "lib/CommonTools"]
+	path = lib/CommonTools
+	url = https://github.com/brandonbraun653/CommonTools.git
