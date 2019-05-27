@@ -20,13 +20,16 @@ local chimera_inc_dir = . ; # Expects the user to reference headers like <Chimer
 local chimera_mock_inc_dir = ./../ ;
 local chimera_port_sim_inc_dir = Chimera/modules/sim ;
 local chimera_src_dir = Chimera ;
+local chimera_src_sim_dir = Chimera/modules/sim ;
 
 # ------------------------------------------
 # Source Files
 # ------------------------------------------
 local chimera_src_root = [ glob Chimera/*.cpp ] ;
+local chimera_src_sim = [ glob $(chimera_src_sim_dir)/*.cpp ] ;
 local chimera_src_modules_memory = Chimera/modules/memory/chimera_memory_device.cpp ;
 local chimera_src_modules_freertos = [ glob Chimera/modules/freertos/*.cpp ] ;
+
 
 local chimera_src = 
     $(chimera_src_root)
@@ -121,6 +124,7 @@ lib CORE
 # ------------------------------------------
 lib CORE
     :   $(chimera_src_root)
+        $(chimera_src_sim)
         $(chimera_src_modules_memory)
         $(chimera_src_modules_freertos)
 
