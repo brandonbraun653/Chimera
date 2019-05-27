@@ -11,6 +11,7 @@
 /* C++ Includes */
 #include <stdexcept>
 #include <string>
+#include <cstring>
 
 /* Chimera Includes */
 #include <Chimera/modules/freertos/freertos_hooks.hpp>
