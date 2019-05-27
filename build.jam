@@ -46,6 +46,7 @@ project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
 # -----------------------------------------
 explicit_alias PUB : : : : <include>$(chimera_inc_dir) ;
 explicit_alias PUB_MOCK : : : : <include>$(chimera_mock_inc_dir) ;
+explicit_alias PUB_SIM : : : : <include>$(chimera_port_sim_inc_dir) ;
 
 # ------------------------------------------
 # Includes all common FreeRTOS headers
