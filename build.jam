@@ -56,8 +56,8 @@ explicit_alias PUB_SIM : : : : <include>$(chimera_port_sim_inc_dir) ;
 # -----------------------------------------
 explicit_alias _RTOS : : : 
     :   <define>USING_FREERTOS
-        <use>/FreeRTOS//PUB
-        <use>/PRJ//FreeRTOS_CFG
+        <use>/FREERTOS//PUB
+        <use>/PRJ//FREERTOS_CFG
     ;
 
 # ------------------------------------------
