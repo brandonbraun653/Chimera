@@ -30,7 +30,6 @@ local chimera_src_sim = [ glob $(chimera_src_sim_dir)/*.cpp ] ;
 local chimera_src_modules_memory = Chimera/modules/memory/chimera_memory_device.cpp ;
 local chimera_src_modules_freertos = [ glob Chimera/modules/freertos/*.cpp ] ;
 
-
 local chimera_src = 
     $(chimera_src_root)
     $(chimera_src_modules_freertos)
@@ -87,8 +86,10 @@ lib CORE
         /THOR//CORE
         /FREERTOS//CORE
 
-    :   <Chimera>enabled-Thor
+    :   <Chimera>enabled
+        <Chimera-backend>Thor
         <FreeRTOS>enabled
+        <Thor>enabled
         <link>static
         <include>$(chimera_inc_dir)
 
