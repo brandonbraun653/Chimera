@@ -8,9 +8,9 @@
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#pragma once 
-#ifndef CHIMERA_SPI_INTERFACE_HPP
-#define CHIMERA_SPI_INTERFACE_HPP
+#pragma once
+#ifndef CHIMERA_SPI_EXTENSIONS_HPP
+#define CHIMERA_SPI_EXTENSIONS_HPP
 
 /* C++ Includes */
 #include <cstdint>
@@ -22,7 +22,7 @@
 namespace Chimera::SPI
 {
   /**
-   *  Additional model that enforces a specific interface on classes that 
+   *  Additional model that enforces a specific interface on classes that
    *  want to accept objects that adhere to the Chimera::SPI::Interface spec.
    */
   class SPIAcceptor
@@ -50,7 +50,26 @@ namespace Chimera::SPI
     }
 
     /**
-     *  Attaches an SPI instance to the inheriting class. It is intended that the 
+     *  Attaches an SPI instance to the inheriting class. Setup information is intentionally
+     *  non-const to allow the underlying driver to make modifications specific to the system.
+     *
+     *  @param[in]  spi     SPI object to be shared with the inheriting class
+     *  @param[in]  setup   SPI setup configuration object
+     *  @return Chimera::Status_t
+     *
+     *  |   Return Value   |                        Explanation                        |
+     *  |:----------------:|:---------------------------------------------------------:|
+     *  |               OK | The operation completed successfully                      |
+     *  |             FAIL | The operation failed                                      |
+     *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
+     */
+    virtual Chimera::Status_t attachSPI( const SPIClass_sPtr &spi, Setup &setup )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+
+    /**
+     *  Attaches an SPI instance to the inheriting class. It is intended that the
      *  user std::move() the object so that the function takes ownership.
      *
      *  @param[in]  spi     SPI object to be moved into the inheriting class
@@ -69,4 +88,4 @@ namespace Chimera::SPI
   };
 }  // namespace Chimera::SPI
 
-#endif /* !CHIMERA_SPI_INTERFACE_HPP */
+#endif /* !CHIMERA_SPI_EXTENSIONS_HPP */

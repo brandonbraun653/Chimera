@@ -16,35 +16,35 @@
 #include <cstdint>
 #include <limits>
 
+/* Eigen Includes */
+#include <Eigen/Core>
+
+/* Chimera Includes */
+#include <Chimera/constants/physics.hpp>
+
 namespace Chimera::Modules::IMU
 {
-  template<typename T>
-  struct Vector3DOF
-  {
-    T x = std::numeric_limits<T>::min();
-    T y = std::numeric_limits<T>::min();
-    T z = std::numeric_limits<T>::min();
-  };
 
+  
   template<typename T>
   struct Measurement9DOF
   {
-    Vector3DOF<T> sensor0;
-    Vector3DOF<T> sensor1;
-    Vector3DOF<T> sensor2;
+    Eigen::Matrix<T, 3, 1> sensor0;
+    Eigen::Matrix<T, 3, 1> sensor1;
+    Eigen::Matrix<T, 3, 1> sensor2;
   };
   
   template<typename T>
   struct Measurement6DOF
   {
-    Vector3DOF<T> sensor0;
-    Vector3DOF<T> sensor1;
+    Eigen::Matrix<T, 3, 1> sensor0;
+    Eigen::Matrix<T, 3, 1> sensor1;
   };
   
   template<typename T>
   struct Measurement3DOF
   {
-    Vector3DOF<T> sensor0;
+    Eigen::Matrix<T, 3, 1> sensor0;
   };
 
   enum class Sensor_t : uint8_t

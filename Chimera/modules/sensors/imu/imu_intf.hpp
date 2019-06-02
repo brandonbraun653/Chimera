@@ -30,7 +30,7 @@ namespace Chimera::Modules::IMU
     virtual Chimera::Status_t calibrate( const Sensor_t sensor ) = 0;
 
     virtual Chimera::Status_t reset() = 0;
-    
+
     virtual Chimera::Status_t measure( const Sensor_t sensor, void *const measurement, const size_t size ) = 0;
   };
 
@@ -41,8 +41,6 @@ namespace Chimera::Modules::IMU
 
     virtual Chimera::Status_t assignDOF( const Sensor_t sensor0 = Sensor_t::ACCEL, const Sensor_t sensor1 = Sensor_t::GYRO,
                                          const Sensor_t sensor2 = Sensor_t::MAG ) = 0;
-
-    
   };
 }  // namespace Chimera::Modules::IMU
 
