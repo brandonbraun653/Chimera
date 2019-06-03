@@ -24,8 +24,13 @@
 
 namespace Chimera::Modules::IMU
 {
+  /*------------------------------------------------
+  Orthogonal 3DOF measurement accessors
+  ------------------------------------------------*/
+  static constexpr uint8_t X_Axis = 0;
+  static constexpr uint8_t Y_Axis = 1;
+  static constexpr uint8_t Z_Axis = 2;
 
-  
   template<typename T>
   struct Measurement9DOF
   {

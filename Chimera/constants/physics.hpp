@@ -19,7 +19,8 @@
 
 namespace Chimera::Physics
 {
-  static constexpr float GRAVITY = 9.80665f;  /**< Average gravity in m/s2 felt at sea level */
+  static constexpr float GRAVITY = -9.80665f;  /**< Average gravity in m/s2 felt at sea level (signed) */
+  static constexpr float GRAVITY_ABS = std::abs( GRAVITY );
 }
 
 
