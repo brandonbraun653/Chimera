@@ -64,16 +64,18 @@ explicit_alias _RTOS : : :
 # ------------------------------------------
 lib CORE
     :   $(chimera_src)
-        /THOR//CORE
 
     :   <Chimera>enabled-Thor
         <FreeRTOS>disabled
         <link>static
         <include>$(chimera_inc_dir)
+        
+        <library>/THOR//CORE
 
         <use>/THOR//PUB                         # Thor Headers
-        <use>/THOR//CORE_PUB                    # Thor Target Headers
+        <use>/THOR//TARGET_PROPAGATED_OPTIONS                    # Thor Target Headers
         <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
+        <use>/PRJ//EIGEN
     ;
 
 # ------------------------------------------
@@ -83,8 +85,6 @@ lib CORE
     :   $(chimera_src_root)
         $(chimera_src_modules_memory)
         $(chimera_src_modules_freertos)
-        /THOR//CORE
-        /FREERTOS//CORE
 
     :   <Chimera>enabled
         <Chimera-backend>Thor
@@ -93,12 +93,16 @@ lib CORE
         <link>static
         <include>$(chimera_inc_dir)
 
+        <library>/THOR//CORE
+        <library>/FREERTOS//CORE
+
         <use>_RTOS                              # Pull in FreeRTOS from the alias up above
         <use>/THOR//PUB                         # Thor Headers    
-        <use>/THOR//CORE_PUB                    # Thor Target Headers
+        <use>/THOR//TARGET_PROPAGATED_OPTIONS                    # Thor Target Headers
         <use>/PRJ//BOOST                        # All things boost
         <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
         <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
+        <use>/PRJ//EIGEN
     ;
 
 # ------------------------------------------
@@ -118,6 +122,7 @@ lib CORE
 
         <use>/PRJ//BOOST                        # All things boost
         <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
+        <use>/PRJ//EIGEN
     ;
 
 # ------------------------------------------
@@ -140,6 +145,7 @@ lib CORE
         <use>_RTOS                              # Pull in FreeRTOS from the alias up above
         <use>/PRJ//BOOST                        # All things boost
         <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
+        <use>/PRJ//EIGEN
     ;
 
 explicit CORE ;
