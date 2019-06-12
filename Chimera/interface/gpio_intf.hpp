@@ -50,6 +50,21 @@ namespace Chimera
       virtual Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) = 0;
 
       /**
+       *  Initialize the GPIO object using the fully descriptive initialization struct
+       *
+       *	@param[in]	pinInit     Initialization struct 
+       *	@return Chimera::Status_t
+       *
+       *
+       *  |   Return Value   |             Explanation            |
+       *  |:----------------:|:----------------------------------:|
+       *  |               OK | The GPIO was initialized correctly |
+       *  |             FAIL | The GPIO failed initialization     |
+       *  | INVAL_FUNC_PARAM | User passed in an invalid value    |
+       */
+      virtual Chimera::Status_t init( const Chimera::GPIO::PinInit &pinInit ) = 0;
+
+      /**
        *  Change the GPIO pin electrical input/output behavior mode
        *
        *	@param[in]	drive       The new drive mode to be set

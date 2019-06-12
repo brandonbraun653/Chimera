@@ -21,10 +21,8 @@
 #include <Chimera/interface/watchdog_intf.hpp>
 #include "chimeraPort.hpp"
 
-namespace Chimera
+namespace Chimera::Watchdog
 {
-  namespace Watchdog
-  {
 #if !defined( CHIMERA_INHERITED_WATCHDOG )
     using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
 #endif
@@ -37,8 +35,16 @@ namespace Chimera
     };
 
     static_assert( std::is_base_of<Interface, WatchdogClass>::value, "Class implements wrong interface" );
-    
-  }  // namespace Watchdog
+
+    /**
+     *  Intentionally halts the CPU so that the watchdog timer will reset the
+     *  system. This function will never return and the next system event will
+     *  be a hard reset.
+     *
+     *  @return void 
+     */
+    void invokeTimeout();
+
 }  // namespace Chimera
 
 #endif /* !CHIMERA_WATCHDOG_HPP */
