@@ -56,7 +56,7 @@ namespace Chimera::Event
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t attachNotifier( const Chimera::Event::Trigger_t event, volatile uint8_t *const notifier )
+    virtual Chimera::Status_t attachNotifier( const Chimera::Event::Trigger event, volatile uint8_t *const notifier )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
@@ -76,7 +76,7 @@ namespace Chimera::Event
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t detachNotifier( const Chimera::Event::Trigger_t event, volatile uint8_t *const notifier )
+    virtual Chimera::Status_t detachNotifier( const Chimera::Event::Trigger event, volatile uint8_t *const notifier )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
@@ -84,7 +84,9 @@ namespace Chimera::Event
 #if defined( USING_FREERTOS )
     /**
      *  Attach a signal to get notified when an event occurs. All thread safety 
-     *  shall performed by FreeRTOS semaphore function calls.
+     *  shall performed by FreeRTOS semaphore function calls. If the event has 
+     *  already happened by the time this function is called, the semaphore shall
+     *  be immediately given to and the event cleared.
      *
      *  @note Queuing multiple notifiers for an event is optional
      *
@@ -99,7 +101,7 @@ namespace Chimera::Event
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t attachNotifier( const Chimera::Event::Trigger_t event, SemaphoreHandle_t *const semphr )
+    virtual Chimera::Status_t attachNotifier( const Chimera::Event::Trigger event, SemaphoreHandle_t *const semphr )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
@@ -119,7 +121,7 @@ namespace Chimera::Event
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t detachNotifier( const Chimera::Event::Trigger_t event, SemaphoreHandle_t *const semphr )
+    virtual Chimera::Status_t detachNotifier( const Chimera::Event::Trigger event, SemaphoreHandle_t *const semphr )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
@@ -152,7 +154,7 @@ namespace Chimera::Event
      *  |          FAIL | The callback could not be attached           |
      *  | NOT_SUPPORTED | This behavior is not supported on the driver |
      */
-    virtual Chimera::Status_t attachCallback( const Chimera::Event::Trigger_t trigger, const Chimera::Function::void_func_void func )
+    virtual Chimera::Status_t attachCallback( const Chimera::Event::Trigger trigger, const Chimera::Function::void_func_void func )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
@@ -169,7 +171,7 @@ namespace Chimera::Event
      *  |          FAIL | The operation failed                         |
      *  | NOT_SUPPORTED | This behavior is not supported on the driver |
      */
-    virtual Chimera::Status_t detachCallback( const Chimera::Event::Trigger_t trigger )
+    virtual Chimera::Status_t detachCallback( const Chimera::Event::Trigger trigger )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }

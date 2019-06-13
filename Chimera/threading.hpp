@@ -17,6 +17,8 @@
 
 /* Chimera Includes */
 #include <Chimera/types/common_types.hpp>
+#include <Chimera/types/event_types.hpp>
+#include <Chimera/interface/threading_intf.hpp>
 
 #ifdef USING_FREERTOS
 

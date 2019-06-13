@@ -15,10 +15,8 @@
 #include <Chimera/chimera.hpp>
 #include <Chimera/threading.hpp>
 
-namespace Chimera
+namespace Chimera::Threading 
 {
-  namespace Threading
-  {
     Lockable::Lockable()
     {
 #if defined( USING_FREERTOS )
@@ -269,5 +267,4 @@ namespace Chimera
 
 #endif /* USING_FREERTOS */
 
-  }  // namespace Threading
 }  // namespace Chimera

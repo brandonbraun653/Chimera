@@ -19,6 +19,7 @@
 /* Chimera Includes */
 #include <Chimera/interface/macro.hpp>
 #include <Chimera/interface/serial_intf.hpp>
+#include <Chimera/interface/threading_intf.hpp>
 #include "chimeraPort.hpp"
 
 namespace Chimera
@@ -37,6 +38,7 @@ namespace Chimera
     };
     
     static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
+    //static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, SerialClass>::value, "");
     
   }  // namespace Serial
 }  // namespace Chimera

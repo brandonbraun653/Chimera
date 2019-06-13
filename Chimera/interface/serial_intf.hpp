@@ -18,6 +18,7 @@
 /* Chimera Includes */
 #include <Chimera/interface/buffer_intf.hpp>
 #include <Chimera/interface/event_intf.hpp>
+#include <Chimera/interface/threading_intf.hpp>
 #include <Chimera/preprocessor.hpp>
 #include <Chimera/threading.hpp>
 #include <Chimera/types/common_types.hpp>
@@ -26,7 +27,9 @@
 
 namespace Chimera::Serial
 {
-  class Interface : public Chimera::Threading::Lockable, public Chimera::Event::Notifier
+  class Interface : public Chimera::Threading::Lockable,
+                    public Chimera::Event::Notifier,
+                    public Chimera::Threading::AsyncIOBaseInterface
   {
   public:
     virtual ~Interface() = default;
@@ -348,6 +351,14 @@ namespace Chimera::Serial
     }
 
     void postISRProcessing() final override
+    {
+    }
+
+    void await( const Chimera::Event::Trigger event ) final override
+    {
+    }
+
+    void await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier ) final override
     {
     }
   };

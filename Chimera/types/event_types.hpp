@@ -16,6 +16,15 @@
 #include <cstdint>
 #include <memory>
 
+/* FreeRTOS Includes */
+#ifdef __cplusplus
+extern "C"
+{
+#include "FreeRTOS.h"
+#include "event_groups.h"
+}
+#endif /* __cplusplus */
+
 namespace Chimera::Event
 {
   class Notifier;
@@ -23,12 +32,26 @@ namespace Chimera::Event
   using Notifier_uPtr = std::unique_ptr<Notifier>;
   
 
-  enum class Trigger_t : uint8_t
+  enum class Trigger : uint8_t
   {
     READ_COMPLETE = 0,
     WRITE_COMPLETE
   };
 
-}  // namespace Chimera::Serial
+  /**
+   *  FreeRTOS specific event flags used by hardware drivers
+   *  to signal that a particular event has occured.
+   */
+  enum Flags : EventBits_t
+  {
+    BIT_READ_COMPLETE  = ( 1u << 0 ),
+    BIT_WRITE_COMPLETE = ( 1u << 1 ),
+
+#if configUSE_16_BIT_TICKS == 0
+
+#endif
+  };
+
+}  // namespace Chimera::Event
 
 #endif /* !CHIMERA_EVENT_TYPES_HPP */

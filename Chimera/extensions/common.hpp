@@ -20,9 +20,9 @@
 
 namespace Chimera::Hardware
 {
-  class StateUpdator
+  class StateDescriptor
   {
-    virtual ~StateUpdator() = default;
+    virtual ~StateDescriptor() = default;
 
     /**
      *  Gets the current execution state of the hardware. No realtime
