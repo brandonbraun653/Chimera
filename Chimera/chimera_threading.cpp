@@ -26,7 +26,7 @@ namespace Chimera::Threading
 #endif
     }
 
-    Chimera::Status_t Lockable::reserve( const uint32_t timeout_mS )
+    Chimera::Status_t Lockable::lock( const uint32_t timeout_mS )
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
@@ -42,7 +42,7 @@ namespace Chimera::Threading
       return error;
     }
 
-    Chimera::Status_t Lockable::release()
+    Chimera::Status_t Lockable::unlock()
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 

@@ -74,7 +74,7 @@ namespace Chimera::Buffer
       }
       else
       {
-        if ( reserve( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
+        if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
         {
           size_t bytesWritten = 0;
 
@@ -89,7 +89,7 @@ namespace Chimera::Buffer
             error = Chimera::CommonStatusCodes::FULL;
           }
 
-          release();
+          unlock();
         }
         else
         {
@@ -127,7 +127,7 @@ namespace Chimera::Buffer
       }
       else
       {
-        if ( reserve( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
+        if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
         {
           size_t bytesRead = 0;
 
@@ -146,7 +146,7 @@ namespace Chimera::Buffer
             error = Chimera::CommonStatusCodes::EMPTY;
           }
 
-          release();
+          unlock();
         }
         else
         {
@@ -174,12 +174,12 @@ namespace Chimera::Buffer
     Chimera::Status_t assign( boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
                               const uint32_t hwBuffersize )
     {
-      if ( reserve( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
+      if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
       {
         internal     = hwBuffer;
         internalSize = hwBuffersize;
         external     = userBuffer;
-        release();
+        unlock();
       }
 
       return Chimera::CommonStatusCodes::OK;
@@ -199,7 +199,7 @@ namespace Chimera::Buffer
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
-      if ( reserve( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
+      if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
       {
         if ( internal )
         {

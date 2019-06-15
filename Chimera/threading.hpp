@@ -61,14 +61,14 @@ namespace Chimera::Threading
      *  |           OK | The object was reserved before the timeout expired |
      *  |         FAIL | The object was not reserved                        |
      */
-    Chimera::Status_t reserve( const uint32_t timeout_mS );
+    Chimera::Status_t lock( const uint32_t timeout_mS );
 
     /**
      *  Attempts to release the inheriting object
      *
      *  @note If not using FreeRTOS, this function will release the lock regardless of who holds it.
      *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
-
+     *
      *  @return Chimera::Status_t
      *
      *  | Return Value |         Explanation          |
@@ -76,7 +76,7 @@ namespace Chimera::Threading
      *  |           OK | The object was released      |
      *  |         FAIL | The object was not released  |
      */
-    Chimera::Status_t release();
+    Chimera::Status_t unlock();
 
     Lockable();
     ~Lockable() = default;
