@@ -97,7 +97,7 @@ namespace Chimera::Threading
   struct Thread_t
   {
     TaskFunction_t func;  /**< Function pointer to the thread */
-    TaskHandle_t handle;  /**< FreeRTOS generated handle for reference elsewhere */
+    TaskHandle_t *handle; /**< FreeRTOS generated handle for reference elsewhere */
     UBaseType_t priority; /**< FreeRTOS priority number, ranging from 0 to (configMAX_PRIORITIES - 1) lowest to highest */
     void *funcParams;     /**< Thread parameters to be passed in upon creation */
     uint32_t stackDepth;  /**< Size of the thread stack, in multiples of **WORDS** (x4 bytes), ie stack of 150 == 600 bytes */
@@ -153,7 +153,7 @@ namespace Chimera::Threading
    *	@return BaseType_t
    */
   BaseType_t addThread( TaskFunction_t func, const char *name, const uint16_t stackDepth, void *const funcParams,
-                        UBaseType_t priority, TaskHandle_t handle );
+                        UBaseType_t priority, TaskHandle_t *const handle );
 
   /**
    *  Performs the same operation as the more verbose overload
@@ -173,6 +173,15 @@ namespace Chimera::Threading
    *	@return BaseType_t
    */
   BaseType_t signalSetupComplete();
+
+  /**
+   *  Blocks the current thread of execution until a particular message 
+   *  is received. Will automatically clear the task message queue upon exit.
+   *
+   *  @param[in]  taskMsg   The particular message to wait on
+   *  @return void
+   */
+  void awaitTaskMessage( const size_t taskMsg );
 
 #endif /* !USING_FREERTOS */
 

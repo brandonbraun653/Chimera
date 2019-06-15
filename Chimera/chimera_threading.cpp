@@ -14,30 +14,23 @@
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 #include <Chimera/threading.hpp>
+#include <Chimera/watchdog.hpp>
 
 namespace Chimera::Threading 
 {
     Lockable::Lockable()
     {
-#if defined( USING_FREERTOS )
       recursive_mutex = xSemaphoreCreateRecursiveMutex();
-#else
-      // Handle standard std::recursive_mutex
-#endif
     }
 
     Chimera::Status_t Lockable::lock( const uint32_t timeout_mS )
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
-#if defined( USING_FREERTOS )
       if ( xSemaphoreTake( recursive_mutex, pdMS_TO_TICKS( timeout_mS ) ) != pdPASS )
       {
         error = Chimera::CommonStatusCodes::FAIL;
       }
-#else
-      // Handle standard std::recursive_mutex
-#endif
 
       return error;
     }
@@ -46,19 +39,14 @@ namespace Chimera::Threading
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
-#if defined( USING_FREERTOS )
       if ( xSemaphoreGive( recursive_mutex ) != pdPASS )
       {
         error = Chimera::CommonStatusCodes::FAIL;
       }
-#else
-      // Handle standard std::recursive_mutex
-#endif
 
       return error;
     }
 
-#ifdef USING_FREERTOS
     /*------------------------------------------------
     These bytes were generated from atmospheric noise, so they
     are pretty random I guess. https://www.random.org/bytes/
@@ -66,9 +54,9 @@ namespace Chimera::Threading
     static constexpr uint32_t MSG_SETUP_COMPLETE = 0xbf931c86;
     static constexpr uint32_t MSG_SETUP_RESUME   = 0x2e526078;
 
-    static std::vector<Thread_t *> systemThreads;
-    static TaskHandle_t INIT_THREAD;
-    static bool setupCallbacksEnabled = false;
+    static std::vector<Thread_t *> s_systemThreads;
+    static TaskHandle_t s_init_thread;
+    static bool s_setupCallbacksEnabled = false;
 
     /**
      *  Implements a simple timeout while waiting for a newly created thread to
@@ -83,7 +71,7 @@ namespace Chimera::Threading
       /*------------------------------------------------
       Immediately return pdPASS if we aren't using setup callbacks
       ------------------------------------------------*/
-      if ( setupCallbacksEnabled )
+      if ( s_setupCallbacksEnabled )
       {
         static constexpr uint32_t checkDelay_mS  = 10;
         static constexpr uint32_t initTimeout_mS = 10000;
@@ -122,26 +110,22 @@ namespace Chimera::Threading
       Thread_t *thread;
 
       /*------------------------------------------------
-      Initialize all threads registered in the system
+      Initialize all threads internally registered in the system
       ------------------------------------------------*/
-      for ( size_t i = 0; i < systemThreads.size(); i++ )
+      for ( size_t i = 0; i < s_systemThreads.size(); i++ )
       {
-        thread = systemThreads[ i ];
+        thread = s_systemThreads[ i ];
         error  = xTaskCreate( thread->func, thread->name, thread->stackDepth, thread->funcParams, thread->priority,
-                             &thread->handle );
+                              thread->handle );
 
         /*------------------------------------------------
         If you get stuck here, the current thread tried to allocate
-        more memory than what is left in the heap.
+        more memory than what is left in the FreeRTOS heap.
         ------------------------------------------------*/
         if ( error == errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY )
         {
-          /* Uncomment this to figure out how much stack size is remaining */
           // volatile size_t bytesRemaining __attribute( ( unused ) ) = xPortGetFreeHeapSize();
-          while ( 1 )
-          {
-            /* Kill time while we wait for the watchdog to reset us */
-          }
+          Chimera::Watchdog::invokeTimeout();
         }
 
         /*------------------------------------------------
@@ -151,46 +135,37 @@ namespace Chimera::Threading
         if ( threadInitTimeout() != pdPASS )
         {
           vTaskSuspendAll();
-          while ( 1 )
-          {
-            /* Kill time while we wait for the watchdog to reset us */
-          }
+          Chimera::Watchdog::invokeTimeout();
         }
       }
 
       /*------------------------------------------------
-      Resume all threads registered in the system
+      Resume all registered threads
       ------------------------------------------------*/
-      if ( setupCallbacksEnabled )
+      if ( s_setupCallbacksEnabled )
       {
-        for ( size_t i = 0; i < systemThreads.size(); i++ )
+        for ( size_t i = 0; i < s_systemThreads.size(); i++ )
         {
-          if ( systemThreads[ i ]->handle )
+          if ( s_systemThreads[ i ]->handle )
           {
-            xTaskNotify( systemThreads[ i ]->handle, MSG_SETUP_RESUME, eSetValueWithOverwrite );
-          }
-          else
-          {
-            while ( 1 )
-            {
-              /* Chill out while the watchdog resets us...this really shouldn't be happening at this point */
-            }
+            xTaskNotify( *s_systemThreads[ i ]->handle, MSG_SETUP_RESUME, eSetValueWithOverwrite );
           }
         }
       }
 
       /*------------------------------------------------
-      Cleanly exit this initialization thread
+      Cleanly exit this initialization thread. It's not 
+      needed any more.
       ------------------------------------------------*/
-      INIT_THREAD           = nullptr;
-      setupCallbacksEnabled = false;
+      s_init_thread           = nullptr;
+      s_setupCallbacksEnabled = false;
       vTaskDelete( NULL );
     }
 
     void startScheduler( const bool useSetupCallbacks )
     {
-      setupCallbacksEnabled = useSetupCallbacks;
-      xTaskCreate( initThread, "threading_init", 500, NULL, 1, &INIT_THREAD );
+      s_setupCallbacksEnabled = useSetupCallbacks;
+      xTaskCreate( initThread, "threading_init", 500, NULL, 1, &s_init_thread );
       vTaskStartScheduler();
     }
 
@@ -198,17 +173,24 @@ namespace Chimera::Threading
     {
       for ( uint8_t x = 0; x < numThreads; x++ )
       {
-        systemThreads.push_back( &threadArray[ x ] );
+        s_systemThreads.push_back( &threadArray[ x ] );
       }
 
       return pdPASS;
     }
 
     BaseType_t addThread( TaskFunction_t threadFunc, const char *threadName, const uint16_t stackDepth,
-                          void *const threadFuncParams, UBaseType_t threadPriority, TaskHandle_t threadHandle )
+                          void *const threadFuncParams, UBaseType_t threadPriority, TaskHandle_t *const threadHandle )
     {
+      /*------------------------------------------------
+      Default to pass so the thread registration will take place later
+      if the scheduler isn't running yet.
+      ------------------------------------------------*/
       BaseType_t error = pdPASS;
 
+      /*------------------------------------------------
+      Allocate enough space for the internally managed thread handle 
+      ------------------------------------------------*/
       Thread_t *newThread   = new Thread_t;
       newThread->func       = threadFunc;
       newThread->stackDepth = stackDepth;
@@ -223,16 +205,15 @@ namespace Chimera::Threading
       if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
       {
         error = xTaskCreate( newThread->func, newThread->name, newThread->stackDepth, newThread->funcParams,
-                             newThread->priority, &newThread->handle );
+                             newThread->priority, threadHandle );
       }
 
       /*------------------------------------------------
-      Regardless of if the scheduler is running or not, it we have
-      success, then register the thread with the system.
+      Register the newly created thread so we can manage it.
       ------------------------------------------------*/
       if ( error == pdPASS )
       {
-        systemThreads.push_back( newThread );
+        s_systemThreads.push_back( newThread );
       }
 
       return error;
@@ -245,17 +226,28 @@ namespace Chimera::Threading
 
     BaseType_t signalSetupComplete()
     {
-      if ( setupCallbacksEnabled && INIT_THREAD )
+      if ( s_setupCallbacksEnabled && s_init_thread )
       {
         uint32_t tmp = ~MSG_SETUP_RESUME;
         while ( tmp != MSG_SETUP_RESUME )
         {
-          xTaskNotify( INIT_THREAD, MSG_SETUP_COMPLETE, eSetValueWithOverwrite );
+          xTaskNotify( s_init_thread, MSG_SETUP_COMPLETE, eSetValueWithOverwrite );
           xTaskNotifyWait( 0u, 0u, &tmp, portMAX_DELAY );
         }
       }
 
       return pdPASS;
+    }
+
+    void awaitTaskMessage( const size_t taskMsg )
+    {
+      while ( 1 )
+      {
+        if ( ulTaskNotifyTake( pdTRUE, portMAX_DELAY ) == taskMsg )
+        {
+          break;
+        }
+      }
     }
 
 #ifdef SIM
@@ -264,7 +256,5 @@ namespace Chimera::Threading
       vTaskEndScheduler();
     }
 #endif
-
-#endif /* USING_FREERTOS */
 
 }  // namespace Chimera
