@@ -19,18 +19,15 @@
 /* Chimera Includes */
 #include <Chimera/types/common_types.hpp>
 
-namespace Chimera
+namespace Chimera::Memory
 {
-  namespace Memory
-  {
-    class SystemFlash;
-    using SystemFlash_sPtr = std::shared_ptr<SystemFlash>;
-    using SystemFlash_uPtr = std::unique_ptr<SystemFlash>;
+  class SystemFlash;
+  using SystemFlash_sPtr = std::shared_ptr<SystemFlash>;
+  using SystemFlash_uPtr = std::unique_ptr<SystemFlash>;
 
-    class SystemSRAM;
-    using SystemSRAM_sPtr = std::shared_ptr<SystemSRAM>;
-    using SystemSRAM_uPtr = std::unique_ptr<SystemSRAM>;
-  }
-}  // namespace Chimera
+  class SystemSRAM;
+  using SystemSRAM_sPtr = std::shared_ptr<SystemSRAM>;
+  using SystemSRAM_uPtr = std::unique_ptr<SystemSRAM>;
+}  // namespace Chimera::Memory
 
 #endif /* !CHIMERA_DMA_TYPES_HPP */
