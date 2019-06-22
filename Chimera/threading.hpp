@@ -16,9 +16,10 @@
 #include <mutex>
 
 /* Chimera Includes */
+#include <Chimera/interface/threading_intf.hpp>
 #include <Chimera/types/common_types.hpp>
 #include <Chimera/types/event_types.hpp>
-#include <Chimera/interface/threading_intf.hpp>
+#include <Chimera/types/threading_types.hpp>
 
 #ifdef USING_FREERTOS
 
@@ -88,6 +89,8 @@ namespace Chimera::Threading
     // std::recursive_mutex recursive_mutex;
 #endif
   };
+
+  inline RecursiveMutex_t createRecursiveMutex();
 
 #ifdef USING_FREERTOS
 
