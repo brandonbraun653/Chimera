@@ -48,12 +48,6 @@ namespace Chimera::Threading
     }
 
 
-    inline RecursiveMutex_t createRecursiveMutex()
-    {
-      return xSemaphoreCreateMutex();
-    }
-
-
     /*------------------------------------------------
     These bytes were generated from atmospheric noise, so they
     are pretty random I guess. https://www.random.org/bytes/

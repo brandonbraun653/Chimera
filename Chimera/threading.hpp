@@ -90,7 +90,10 @@ namespace Chimera::Threading
 #endif
   };
 
-  inline RecursiveMutex_t createRecursiveMutex();
+  inline RecursiveMutex_t createRecursiveMutex()
+  {
+    return xSemaphoreCreateMutex();
+  }
 
 #ifdef USING_FREERTOS
 
@@ -178,7 +181,7 @@ namespace Chimera::Threading
   BaseType_t signalSetupComplete();
 
   /**
-   *  Blocks the current thread of execution until a particular message 
+   *  Blocks the current thread of execution until a particular message
    *  is received. Will automatically clear the task message queue upon exit.
    *
    *  @param[in]  taskMsg   The particular message to wait on
