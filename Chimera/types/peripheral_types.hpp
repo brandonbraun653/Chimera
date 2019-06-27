@@ -42,6 +42,8 @@ namespace Chimera::Peripheral
     USART,  /**< Universal Synchronous/Asynchronous Receiver Transmitter */
     VIC,    /**< Vector Interrupt Controller */
     WDG,    /**< Watchdog */
+    
+    NUM_SUPPORTED_TYPES
   };
 }
 
