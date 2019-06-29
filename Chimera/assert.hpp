@@ -18,7 +18,7 @@ namespace Chimera::Assert
 #if defined( DEBUG) && ( DEBUG == 1 )
   #define DBG_ASSERT(x) if(!(x)){ asm("bkpt 255"); }
 #else 
-  #define DBG_ASSERT(x) (void(0))
+  #define DBG_ASSERT(x)
   #endif
 }  // namespace Chimera::Assert
 
