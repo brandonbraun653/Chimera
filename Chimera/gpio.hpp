@@ -21,37 +21,35 @@
 #include <Chimera/interface/gpio_intf.hpp>
 #include "chimeraPort.hpp"
 
-namespace Chimera
+namespace Chimera::GPIO
 {
-  namespace GPIO
-  {
 #if !defined( CHIMERA_INHERITED_GPIO )
-    using CHIMERA_INHERITED_GPIO = GPIOUnsupported;
+  using CHIMERA_INHERITED_GPIO = GPIOUnsupported;
 #endif
-    
-    /**
-     *  A simple wrapper to provide a common GPIO class type for programs built
-     *  with Chimera. The runtime behavior of this class is defined by the user
-     *  provided class type CHIMERA_INHERITED_GPIO in chimeraPort.hpp.
-     *
-     *  If no user class is provided, a default disabled behavior version will be
-     *  substituted in its place.
-     */
-    class GPIOClass : public CHIMERA_INHERITED_GPIO
-    {
-    public:
-      GPIOClass() : CHIMERA_INHERITED_GPIO(){};
-      ~GPIOClass() = default;
-    };
 
-    static_assert( std::is_base_of<Interface, GPIOClass>::value, "Base class implements the wrong interface" );
-    
+  /**
+   *  A simple wrapper to provide a common GPIO class type for programs built
+   *  with Chimera. The runtime behavior of this class is defined by the user
+   *  provided class type CHIMERA_INHERITED_GPIO in chimeraPort.hpp.
+   *
+   *  If no user class is provided, a default disabled behavior version will be
+   *  substituted in its place.
+   */
+  class GPIOClass : public CHIMERA_INHERITED_GPIO
+  {
+  public:
+    GPIOClass() : CHIMERA_INHERITED_GPIO(){};
+    ~GPIOClass() = default;
+  };
+
+  static_assert( std::is_base_of<Interface, GPIOClass>::value, "Base class implements the wrong interface" );
+
 #if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<GPIOUnsupported, Interface>::value ),
-                    "No GPIO interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
+  STATIC_WARNING( !( std::is_base_of<GPIOUnsupported, Interface>::value ),
+                  "No GPIO interface defined in backend driver. You can disable these warnings by defining "
+                  "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
 #endif
-  }  // namespace GPIO
-}  // namespace Chimera
+
+}  // namespace Chimera::GPIO
 
 #endif

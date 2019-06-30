@@ -80,6 +80,18 @@ namespace Chimera
       NUM_SUBPERIPH_MODES,
       UNKNOWN_MODE
     };
+    
+    /**
+     *  
+     */
+    enum class AccessMode : uint8_t
+    {
+      BARE_METAL,
+      THREADED,
+      ATOMIC,
+      
+      NUM_ACCESS_MODES
+    };
 
     /**
      *  Hardware oriented status flags so that the user is able to 
