@@ -16,6 +16,18 @@
 #include <Chimera/threading.hpp>
 #include <Chimera/watchdog.hpp>
 
+
+/*------------------------------------------------
+These bytes were generated from atmospheric noise, so they
+are pretty random I guess. https://www.random.org/bytes/
+------------------------------------------------*/
+static constexpr uint32_t sMsgSetupComplete = 0xbf931c86;
+static constexpr uint32_t sMsgSetupResume   = 0x2e526078;
+
+static std::vector<Chimera::Threading::Thread_t *> sSystemThreadRegistry;
+static TaskHandle_t sInitThreadHandle;
+static bool sSetupCallbacksEnabled = false;
+
 namespace Chimera::Threading 
 {
     Lockable::Lockable()
@@ -47,18 +59,6 @@ namespace Chimera::Threading
       return error;
     }
 
-
-    /*------------------------------------------------
-    These bytes were generated from atmospheric noise, so they
-    are pretty random I guess. https://www.random.org/bytes/
-    ------------------------------------------------*/
-    static constexpr uint32_t MSG_SETUP_COMPLETE = 0xbf931c86;
-    static constexpr uint32_t MSG_SETUP_RESUME   = 0x2e526078;
-
-    static std::vector<Thread_t *> s_systemThreads;
-    static TaskHandle_t s_init_thread;
-    static bool s_setupCallbacksEnabled = false;
-
     /**
      *  Implements a simple timeout while waiting for a newly created thread to
      *  complete its initialization sequence.
@@ -69,10 +69,7 @@ namespace Chimera::Threading
     {
       BaseType_t error = pdPASS;
 
-      /*------------------------------------------------
-      Immediately return pdPASS if we aren't using setup callbacks
-      ------------------------------------------------*/
-      if ( s_setupCallbacksEnabled )
+      if ( sSetupCallbacksEnabled )
       {
         static constexpr uint32_t checkDelay_mS  = 10;
         static constexpr uint32_t initTimeout_mS = 10000;
@@ -100,8 +97,8 @@ namespace Chimera::Threading
     }
 
     /**
-     *  Private thread that performs the startup sequence on all threads registered
-     *  before startScheduler() was called
+     *  Thread that performs the startup sequence on all threads registered
+     *  before startScheduler() was called.
      *
      *  @return void
      */
@@ -113,9 +110,9 @@ namespace Chimera::Threading
       /*------------------------------------------------
       Initialize all threads internally registered in the system
       ------------------------------------------------*/
-      for ( size_t i = 0; i < s_systemThreads.size(); i++ )
+      for ( size_t i = 0; i < sSystemThreadRegistry.size(); i++ )
       {
-        thread = s_systemThreads[ i ];
+        thread = sSystemThreadRegistry[ i ];
         error  = xTaskCreate( thread->func, thread->name, thread->stackDepth, thread->funcParams, thread->priority,
                               thread->handle );
 
@@ -143,13 +140,13 @@ namespace Chimera::Threading
       /*------------------------------------------------
       Resume all registered threads
       ------------------------------------------------*/
-      if ( s_setupCallbacksEnabled )
+      if ( sSetupCallbacksEnabled )
       {
-        for ( size_t i = 0; i < s_systemThreads.size(); i++ )
+        for ( size_t i = 0; i < sSystemThreadRegistry.size(); i++ )
         {
-          if ( s_systemThreads[ i ]->handle )
+          if ( sSystemThreadRegistry[ i ]->handle )
           {
-            xTaskNotify( *s_systemThreads[ i ]->handle, MSG_SETUP_RESUME, eSetValueWithOverwrite );
+            xTaskNotify( *sSystemThreadRegistry[ i ]->handle, sMsgSetupResume, eSetValueWithOverwrite );
           }
         }
       }
@@ -158,15 +155,15 @@ namespace Chimera::Threading
       Cleanly exit this initialization thread. It's not 
       needed any more.
       ------------------------------------------------*/
-      s_init_thread           = nullptr;
-      s_setupCallbacksEnabled = false;
+      sInitThreadHandle           = nullptr;
+      sSetupCallbacksEnabled = false;
       vTaskDelete( NULL );
     }
 
     void startScheduler( const bool useSetupCallbacks )
     {
-      s_setupCallbacksEnabled = useSetupCallbacks;
-      xTaskCreate( initThread, "threading_init", 500, NULL, 1, &s_init_thread );
+      sSetupCallbacksEnabled = useSetupCallbacks;
+      xTaskCreate( initThread, "threading_init", 500, NULL, 1, &sInitThreadHandle );
       vTaskStartScheduler();
     }
 
@@ -174,7 +171,7 @@ namespace Chimera::Threading
     {
       for ( uint8_t x = 0; x < numThreads; x++ )
       {
-        s_systemThreads.push_back( &threadArray[ x ] );
+        sSystemThreadRegistry.push_back( &threadArray[ x ] );
       }
 
       return pdPASS;
@@ -184,8 +181,8 @@ namespace Chimera::Threading
                           void *const threadFuncParams, UBaseType_t threadPriority, TaskHandle_t *const threadHandle )
     {
       /*------------------------------------------------
-      Default to pass so the thread registration will take place later
-      if the scheduler isn't running yet.
+      Default to pass so the thread registration will take 
+      place later if the scheduler isn't running yet.
       ------------------------------------------------*/
       BaseType_t error = pdPASS;
 
@@ -198,7 +195,18 @@ namespace Chimera::Threading
       newThread->funcParams = threadFuncParams;
       newThread->priority   = threadPriority;
       newThread->handle     = threadHandle;
+
       memcpy( &newThread->name[ 0 ], threadName, sizeof( Thread_t::name ) );
+
+      /*------------------------------------------------
+      The user may not care to have a handle, but the
+      internal thread library processing needs the handle 
+      to implement various behaviors. Create one in this case.
+      ------------------------------------------------*/
+      if ( !newThread->handle )
+      {
+        newThread->handle = new TaskHandle_t;
+      }
 
       /*------------------------------------------------
       Immediately create the new thread if the scheduler is already running
@@ -206,7 +214,7 @@ namespace Chimera::Threading
       if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
       {
         error = xTaskCreate( newThread->func, newThread->name, newThread->stackDepth, newThread->funcParams,
-                             newThread->priority, threadHandle );
+                             newThread->priority, newThread->handle );
       }
 
       /*------------------------------------------------
@@ -214,7 +222,7 @@ namespace Chimera::Threading
       ------------------------------------------------*/
       if ( error == pdPASS )
       {
-        s_systemThreads.push_back( newThread );
+        sSystemThreadRegistry.push_back( newThread );
       }
 
       return error;
@@ -227,12 +235,16 @@ namespace Chimera::Threading
 
     BaseType_t signalSetupComplete()
     {
-      if ( s_setupCallbacksEnabled && s_init_thread )
+      /*------------------------------------------------
+      Make sure the initialization thread actually exists
+      before we go trying to use it.
+      ------------------------------------------------*/
+      if ( sSetupCallbacksEnabled && sInitThreadHandle )
       {
-        uint32_t tmp = ~MSG_SETUP_RESUME;
-        while ( tmp != MSG_SETUP_RESUME )
+        uint32_t tmp = ~sMsgSetupResume;
+        while ( tmp != sMsgSetupResume )
         {
-          xTaskNotify( s_init_thread, MSG_SETUP_COMPLETE, eSetValueWithOverwrite );
+          xTaskNotify( sInitThreadHandle, sMsgSetupComplete, eSetValueWithOverwrite );
           xTaskNotifyWait( 0u, 0u, &tmp, portMAX_DELAY );
         }
       }

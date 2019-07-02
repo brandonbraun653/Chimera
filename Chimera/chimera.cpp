@@ -43,28 +43,16 @@ namespace Chimera
 {
   uint32_t millis()
   {
-#ifdef BACKEND_NAMESPACE
     return BACKEND_NAMESPACE::millis();
-#else
-    return 0u;
-#endif
   }
 
   void delayMilliseconds( uint32_t ms )
   {
-#ifdef BACKEND_NAMESPACE
     BACKEND_NAMESPACE::delayMilliseconds( ms );
-#else
-    boost::this_thread::sleep_for( boost::chrono::milliseconds( ms ) );
-#endif
   }
 
   void delayMicroseconds( uint32_t us )
   {
-#ifdef BACKEND_NAMESPACE
     BACKEND_NAMESPACE::delayMicroseconds( us );
-#else
-    boost::this_thread::sleep_for( boost::chrono::microseconds( us ) );
-#endif
   }
 }  // namespace Chimera
