@@ -69,9 +69,18 @@ namespace Chimera
       UNKNOWN_PULL
     };
 
+    /**
+     *  GPIO register banks are typically grouped into ports, but there is no commonly accepted
+     *  naming convention amongst all MCU manufacturers. As such, the 'PortX' nomenclature is 
+     *  used to describe all GPIO IO banks with 'PortA' being the first bank and 'PortX' being
+     *  the last bank.
+     *
+     *  @warning  The enum values are allowed to be used as array accessor indices, so do not start 
+     *            assigning random values to the enum literals otherwise low level code could break.
+     */
     enum class Port : uint8_t
     {
-      PORTA,
+      PORTA = 0u,
       PORTB,
       PORTC,
       PORTD,
