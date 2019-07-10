@@ -22,25 +22,24 @@
 #include <Chimera/interface/threading_intf.hpp>
 #include "chimeraPort.hpp"
 
-namespace Chimera
+namespace Chimera::Serial
 {
-  namespace Serial
-  {
 #if !defined( CHIMERA_INHERITED_SERIAL )
-    using CHIMERA_INHERITED_SERIAL = SerialUnsupported;
+  using CHIMERA_INHERITED_SERIAL = SerialUnsupported;
 #endif
-    
-    class SerialClass : public CHIMERA_INHERITED_SERIAL
+
+  class SerialClass : public CHIMERA_INHERITED_SERIAL
+  {
+  public:
+    SerialClass() : CHIMERA_INHERITED_SERIAL()
     {
-    public:
-      SerialClass() : CHIMERA_INHERITED_SERIAL(){}
-      ~SerialClass() = default;
-    };
-    
-    static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
-    //static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, SerialClass>::value, "");
-    
-  }  // namespace Serial
-}  // namespace Chimera
+    }
+    ~SerialClass() = default;
+  };
+
+  static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
+  // static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, SerialClass>::value, "");
+
+}  // namespace Chimera::Serial
 
 #endif

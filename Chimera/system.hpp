@@ -22,52 +22,47 @@
 #include <Chimera/interface/system_intf.hpp>
 #include "chimeraPort.hpp"
 
-
-namespace Chimera
+namespace Chimera::System
 {
-  namespace System
-  {
+  /**
+   *  Performs core system initialization functionality for both Chimera
+   *  and the attached backend driver. Once this function exits, it is 
+   *  assumed that the MCU is completely initialized and ready to execute
+   *  user code.
+   *
+   *  @warning Must be the first call upon entry into user code (typically main())
+   *
+   *  @return Chimera::Status_t
+   */
+  Chimera::Status_t initialize();
+
 #if !defined( CHIMERA_INHERITED_SYSCTL )
-    using CHIMERA_INHERITED_SYSCTL = ControlUnsupported;
+  using CHIMERA_INHERITED_SYSCTL = ControlUnsupported;
 #endif
-    
-    class SystemControl : public CHIMERA_INHERITED_SYSCTL
-    {
-    public:
-      SystemControl()  = default;
-      ~SystemControl() = default;
 
-    private:
-    };
-    
-    static_assert( std::is_base_of<ControlInterface, SystemControl>::value, "Class implements incorrect interface" );
+  class SystemControl : public CHIMERA_INHERITED_SYSCTL
+  {
+  public:
+    SystemControl()  = default;
+    ~SystemControl() = default;
 
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<ControlUnsupported, SystemControl>::value ),
-                    "No system control interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
-    
+  private:
+  };
 
-    
+  static_assert( std::is_base_of<ControlInterface, SystemControl>::value, "Class implements incorrect interface" );
+
+
 #if !defined( CHIMERA_INHERITED_SYSTEM_IDENTIFIER )
-    using CHIMERA_INHERITED_SYSTEM_IDENTIFIER = IdentifierUnsupported;
+  using CHIMERA_INHERITED_SYSTEM_IDENTIFIER = IdentifierUnsupported;
 #endif
-    
-    class Identifier : public CHIMERA_INHERITED_SYSTEM_IDENTIFIER
-    {
-    public:
-      Identifier()  = default;
-      ~Identifier() = default;
-    };
 
-    static_assert( std::is_base_of<IdentifierInterface, Identifier>::value, "Class implements incorrect interface" );
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<IdentifierUnsupported, SystemControl>::value ),
-                    "No system identifier interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
-  }  // namespace System
-}  // namespace Chimera
+  class Identifier : public CHIMERA_INHERITED_SYSTEM_IDENTIFIER
+  {
+  public:
+    Identifier()  = default;
+    ~Identifier() = default;
+  };
+  static_assert( std::is_base_of<IdentifierInterface, Identifier>::value, "Class implements incorrect interface" );
+}  // namespace Chimera::System
 
 #endif /* !CHIMERA_SYSTEM_HPP */
