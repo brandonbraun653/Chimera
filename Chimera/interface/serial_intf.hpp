@@ -81,11 +81,7 @@ namespace Chimera::Serial
     /**
      *  Configures the serial port with the desired properties
      *
-     *  @param[in]  baud          The serial baud rate
-     *  @param[in]  width         The number of bits per transfer
-     *  @param[in]  parity        Parity options
-     *  @param[in]  stop          Selects 1, 1.5, or 2 stop bits
-     *  @param[in]  flow          Selects whether or not to use flow control
+     *  @param[in]  config        The configuration parameters 
      *  @return Chimera::Status_t
      *
      *  |   Return Value   |                     Explanation                    |
@@ -95,8 +91,7 @@ namespace Chimera::Serial
      *  |  NOT_INITIALIZED | The serial hardware is not ready for configuration |
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function      |
      */
-    virtual Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
-                                         const FlowControl flow ) = 0;
+    virtual Chimera::Status_t configure( const COMConfig &config ) = 0;
 
     /**
      *  Change the baud rate of the peripheral at run time
@@ -327,8 +322,7 @@ namespace Chimera::Serial
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    Chimera::Status_t configure( const uint32_t baud, const CharWid width, const Parity parity, const StopBits stop,
-                                 const FlowControl flow ) final override
+    Chimera::Status_t configure( const COMConfig &config ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }

@@ -48,7 +48,7 @@ namespace Chimera::Serial
     static constexpr Status_t FAILED_CONFIGURE            = codeOffset + 15;
   };
 
-  enum class BaudRate : uint32_t
+  enum class BaudRate : size_t
   {
     SERIAL_BAUD_110    = 100u,
     SERIAL_BAUD_150    = 150u,
@@ -103,6 +103,15 @@ namespace Chimera::Serial
   {
     GPIO::PinInit rx;
     GPIO::PinInit tx;
+  };
+
+  struct COMConfig
+  {
+    size_t baud;
+    CharWid width;
+    Parity parity;
+    StopBits stopBits;
+    FlowControl flow;
   };
 
 }  // namespace Chimera::Serial
