@@ -32,10 +32,11 @@ namespace Chimera::Event
   using Notifier_uPtr = std::unique_ptr<Notifier>;
   
 
-  enum class Trigger : uint8_t
+  enum class Trigger : size_t
   {
-    READ_COMPLETE = 0,
-    WRITE_COMPLETE
+    READ_COMPLETE = 0,  /**< A read was completed */
+    WRITE_COMPLETE,     /**< A write was completed */
+    ERROR,              /**< Catch all error case */
   };
 
   /**
