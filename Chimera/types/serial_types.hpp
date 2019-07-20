@@ -35,7 +35,8 @@ namespace Chimera::Serial
   public:
     static constexpr Status_t codeOffset = 300;
 
-    static constexpr Status_t TX_IN_PROGRESS              = codeOffset + 3;
+    static constexpr Status_t RX_ABORTED                  = codeOffset + 2;
+    static constexpr Status_t RX_READY                    = codeOffset + 3;
     static constexpr Status_t RX_IN_PROGRESS              = codeOffset + 4;
     static constexpr Status_t RX_COMPLETE                 = codeOffset + 5;
     static constexpr Status_t NOT_READY                   = codeOffset + 6;
@@ -46,6 +47,10 @@ namespace Chimera::Serial
     static constexpr Status_t FAILED_OPEN                 = codeOffset + 13;
     static constexpr Status_t FAILED_CLOSE                = codeOffset + 14;
     static constexpr Status_t FAILED_CONFIGURE            = codeOffset + 15;
+    static constexpr Status_t TX_READY                    = codeOffset + 16;
+    static constexpr Status_t TX_IN_PROGRESS              = codeOffset + 17;
+    static constexpr Status_t TX_COMPLETE                 = codeOffset + 18;
+    static constexpr Status_t TX_ABORTED                  = codeOffset + 19;
   };
 
   enum class BaudRate : size_t
