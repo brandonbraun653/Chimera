@@ -19,14 +19,33 @@
 /* Chimera Includes */
 #include <Chimera/types/common_types.hpp>
 
-namespace Chimera
+namespace Chimera::DMA
 {
-  namespace AlgCRC
+  enum class TransferDirection : uint8_t
   {
-    class DMAClass;
-    using DMAClass_sPtr = std::shared_ptr<DMAClass>;
-    using DMAClass_uPtr = std::unique_ptr<DMAClass>;
-  }
-}  // namespace Chimera
+    PERIPH_TO_MEMORY = 0,
+    MEMORY_TO_PERIPH,
+    MEMORY_TO_MEMORY,
+    PERIPH_TO_PERIPH,
+
+    NUM_TRANSFER_DIRECTIONS
+  };
+
+  enum class TransferType : uint8_t
+  {
+    DIRECT = 0,
+    CIRCULAR, 
+
+    NUM_TRANSFER_TYPES
+  };
+
+
+  struct TCB
+  {
+    TransferDirection direction;
+
+  };
+
+}  // namespace Chimera::DMA
 
 #endif /* !CHIMERA_DMA_TYPES_HPP */

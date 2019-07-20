@@ -3,36 +3,39 @@
  *    dma_intf.hpp
  *
  *   Description:
- *    Models the Chimera DMA interface 
+ *    Models the Chimera DMA interface
  *
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#pragma once 
+#pragma once
 #ifndef CHIMERA_DMA_INTERFACE_HPP
 #define CHIMERA_DMA_INTERFACE_HPP
 
+/* C++ Includes */
+#include <cstdint>
+
 /* Chimera Includes */
-#include <Chimera/threading.hpp>
+#include <Chimera/types/dma_types.hpp>
 
-namespace Chimera
+namespace Chimera::DMA
 {
-  namespace DMA
+  class Interface
   {
-    class Interface : public Threading::Lockable
-    {
-    public:
-    };
+  public:
+    virtual ~Interface() = default;
 
-    class DMAUnsupported : public Interface
-    {
-    public:
-      DMAUnsupported() = default;
-    };
+    virtual Chimera::Status_t startTransfer( )
+  };
 
-    using CHIMERA_INHERITED_DMA = DMAUnsupported;
-    
-  }  // namespace DMA
-}  // namespace Chimera
+  class DMAUnsupported : public Interface
+  {
+  public:
+    DMAUnsupported() = default;
+  };
+
+  using CHIMERA_INHERITED_DMA = DMAUnsupported;
+
+}  // namespace Chimera::DMA
 
 #endif /* !CHIMERA_DMA_INTERFACE_HPP */
