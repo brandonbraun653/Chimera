@@ -17,6 +17,7 @@
 
 /* Chimera Includes */
 #include <Chimera/interface/buffer_intf.hpp>
+#include <Chimera/interface/callback_intf.hpp>
 #include <Chimera/interface/event_intf.hpp>
 #include <Chimera/interface/threading_intf.hpp>
 #include <Chimera/preprocessor.hpp>
@@ -297,6 +298,10 @@ namespace Chimera::Serial
     {
       return false;
     }
+
+    virtual Chimera::Status_t attachCallback( const Chimera::Event::Trigger event, Chimera::Callback::ISRCallback &handle ) = 0;
+
+    virtual Chimera::Status_t detachCallback( const Chimera::Event::Trigger event, Chimera::Callback::ISRCallback &handle ) = 0;
   };
 
   class SerialUnsupported : public Interface
@@ -363,6 +368,16 @@ namespace Chimera::Serial
 
     void await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier ) final override
     {
+    }
+
+    Chimera::Status_t attachCallback( const Chimera::Event::Trigger event, Chimera::Callback::ISRCallback &handle ) final override
+    {
+      return Chimera::CommonStatusCodes::FAIL;
+    }
+
+    Chimera::Status_t detachCallback( const Chimera::Event::Trigger event, Chimera::Callback::ISRCallback &handle ) final override
+    {
+      return Chimera::CommonStatusCodes::FAIL;
     }
   };
 

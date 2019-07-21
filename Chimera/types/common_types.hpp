@@ -18,6 +18,18 @@
 namespace Chimera
 {
   using Status_t = uint16_t;
+  namespace Status
+  {
+    namespace Internal
+    {
+      static constexpr Status_t gpioOffset     = 100;
+      static constexpr Status_t crcOffset      = 200;
+      static constexpr Status_t dmaOffset      = 300;
+      static constexpr Status_t serialOffset   = 400;
+      static constexpr Status_t spiOffset      = 500;
+      static constexpr Status_t watchdogOffset = 600;
+    }
+  }
 
   class CommonStatusCodes
   {
@@ -81,9 +93,6 @@ namespace Chimera
       UNKNOWN_MODE
     };
     
-    /**
-     *  
-     */
     enum class AccessMode : uint8_t
     {
       BARE_METAL,
@@ -91,39 +100,6 @@ namespace Chimera
       ATOMIC,
       
       NUM_ACCESS_MODES
-    };
-
-    /**
-     *  Hardware oriented status flags so that the user is able to 
-     *  query the operational state of a generic hardware peripheral.
-     * 
-     *  The data type is intentionally only a single byte wide as byte
-     *  access on most systems is atomic. This should allow the programmer
-     *  the most freedom when determining how to safely access variables
-     *  of this data type.
-     */
-    enum class Status : uint8_t
-    {
-      PERIPHERAL_FREE,          /**< The peripheral is not busy, but may or may not be locked by another process */
-      PERIPHERAL_UNAVAILABLE,   /**< The peripheral is not able to be used by any software. Effectively un-initialized. */
-      BLOCK_TX_IN_PROGRESS,     /**< A blocking transmission operation is in progress */
-      BLOCK_TX_COMPLETE,        /**< A blocking transmission operation is finished */
-      BLOCK_RX_IN_PROGRESS,     /**< A blocking reception is in progress */
-      BLOCK_RX_COMPLETE,        /**< A blocking reception is complete */
-      ASYNC_IT_TX_IN_PROGRESS,  /**< An asynchronous interrupt transmission is in progress */
-      ASYNC_IT_TX_COMPLETE,     /**< An asynchronous interrupt transmission is complete */
-      ASYNC_IT_RX_IN_PROGRESS,  /**< An asyncrhonous interrupt reception is in progress */
-      ASYNC_IT_RX_COMPLETE,     /**< An asynchronous interrupt reception is complete */
-      ASYNC_DMA_TX_IN_PROGRESS, /**< An asynchronous DMA transmission is in progress */
-      ASYNC_DMA_TX_COMPLETE,    /**< An asynchronous DMA transmission is complete */
-      ASYNC_DMA_RX_IN_PROGRESS, /**< An asynchronous DMA reception is in progress */
-      ASYNC_DMA_RX_COMPLETE,    /**< An asynchronous DMA reception is complete */
-      ASYNC_OP_IN_PROGRESS,     /**< A generic asynchronous operation is in progress */
-      ASYNC_OP_COMPLETE,        /**< A generic asynchronous operation is complete */
-      BLOCK_OP_IN_PROGRESS,     /**< A generic blocking operation is in progress */
-      BLOCK_OP_COMPLETE,        /**< A generic blocking operation is complete */
-
-      NUM_AVAILABLE_STATES
     };
   }
 }  // namespace Chimera

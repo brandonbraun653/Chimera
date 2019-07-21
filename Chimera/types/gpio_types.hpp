@@ -30,7 +30,7 @@ namespace Chimera
     class Status : public CommonStatusCodes
     {
     public:
-      static constexpr Status_t codeOffset = 100;
+      static constexpr Status_t codeOffset = Chimera::Status::Internal::gpioOffset;
 
       // Add status codes as needed. Currently all CommonStatusCodes suffice.
     };

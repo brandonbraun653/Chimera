@@ -33,7 +33,7 @@ namespace Chimera::Serial
   class Status : public CommonStatusCodes
   {
   public:
-    static constexpr Status_t codeOffset = 300;
+    static constexpr Status_t codeOffset = Chimera::Status::Internal::serialOffset;
 
     static constexpr Status_t RX_ABORTED                  = codeOffset + 2;
     static constexpr Status_t RX_READY                    = codeOffset + 3;

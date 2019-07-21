@@ -29,7 +29,7 @@ namespace Chimera::SPI
   class Status : public CommonStatusCodes
   {
   public:
-    static constexpr Status_t codeOffset = 200;
+    static constexpr Status_t codeOffset = Chimera::Status::Internal::spiOffset;
 
     static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 1;
     static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;

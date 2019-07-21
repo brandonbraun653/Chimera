@@ -27,15 +27,6 @@ namespace Chimera
     using WatchdogClass_sPtr = std::shared_ptr<WatchdogClass>;
     using WatchdogClass_uPtr = std::unique_ptr<WatchdogClass>;
     
-    enum class Status : uint8_t
-    {
-      OK,
-      FAIL,
-
-      NOT_SUPPORTED,
-      UNKOWN_STATUS,
-      MAX_STATUS
-    };
   }
 }  // namespace Chimera
 
