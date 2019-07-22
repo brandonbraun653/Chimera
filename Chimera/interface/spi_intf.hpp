@@ -25,8 +25,7 @@
 namespace Chimera::SPI
 {
   class Interface : public Chimera::Threading::Lockable,
-                    public Chimera::Event::Notifier,
-                    public Chimera::Event::Callback
+                    public Chimera::Event::Listener
   {
   public:
     virtual ~Interface() = default;

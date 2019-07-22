@@ -14,43 +14,61 @@
 
 /* C++ Includes */
 #include <cstdint>
+#include <limits>
 #include <memory>
+#include <variant>
 
 /* FreeRTOS Includes */
 #ifdef __cplusplus
 extern "C"
 {
 #include "FreeRTOS.h"
-#include "event_groups.h"
+#include "semphr.h"
 }
 #endif /* __cplusplus */
 
+
+/* Chimera Includes */
+#include <Chimera/types/callback_types.hpp>
+
 namespace Chimera::Event
 {
-  class Notifier;
-  using Notifier_sPtr = std::shared_ptr<Notifier>;
-  using Notifier_uPtr = std::unique_ptr<Notifier>;
+  class Listener;
+  using Listener_sPtr = std::shared_ptr<Listener>;
+  using Listener_uPtr = std::unique_ptr<Listener>;
   
-
   enum class Trigger : size_t
   {
-    READ_COMPLETE = 0,  /**< A read was completed */
+    INVALID,            /**< Special case used for initialization */
+    READ_COMPLETE,      /**< A read was completed */
     WRITE_COMPLETE,     /**< A write was completed */
     ERROR,              /**< Catch all error case */
   };
 
-  /**
-   *  FreeRTOS specific event flags used by hardware drivers
-   *  to signal that a particular event has occured.
-   */
-  enum Flags : EventBits_t
+  enum class ElementType : uint8_t
   {
-    BIT_READ_COMPLETE  = ( 1u << 0 ),
-    BIT_WRITE_COMPLETE = ( 1u << 1 ),
+    INVALID,
+    ATOMIC_NOTIFIER,
+    THREAD_NOTIFIER,
+    CALLBACK
+  };
 
-#if configUSE_16_BIT_TICKS == 0
+  struct Actionable
+  {
+    Trigger trigger;  /**< Which kind of event triggers this Actionable */
+    ElementType type; /**< What kind of Actionable is stored in the handle */
+    size_t id;        /**< Uniquely identifies this Actionable */
 
-#endif
+    /**
+     *  Stores the user defined element that an external 
+     *  processing function will act upon. 
+     */
+    std::variant<uint32_t *, SemaphoreHandle_t, Chimera::Callback::ISRCallbackFunction> element;
+
+    Actionable() :
+        trigger( Trigger::INVALID ), type( ElementType::INVALID ), id( std::numeric_limits<size_t>::max() )
+    {
+    }
   };
 
 }  // namespace Chimera::Event

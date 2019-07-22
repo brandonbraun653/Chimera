@@ -49,6 +49,7 @@ namespace Chimera
     static constexpr Status_t EMPTY            = 16; /**< The result of the operation had no data available */
     static constexpr Status_t FULL             = 17; /**< The result of the operation had no data left */
     static constexpr Status_t MEMORY           = 18; /**< There was a generic issue with memory of some kind */
+    static constexpr Status_t NOT_FOUND        = 19; /**< Something wasn't found. Perhaps it was Carmen Sandiego. */
 
     static constexpr Status_t FAIL           = 30; /**< Generic error to signify a non-explicit failure type */
     static constexpr Status_t FAILED_INIT    = 31; /**< Somehow failed an initialization sequence */

@@ -17,26 +17,9 @@
 /* C++ Includes */
 #include <cstdint>
 #include <functional>
-#include <unordered_map>
-#include <vector>
-
-/* Boost Includes */
-#include <boost/function.hpp>
-
-/* Chimera Includes */
-#include <Chimera/types/event_types.hpp>
 
 namespace Chimera::Callback
 {
-  using CB1 = boost::function<void( void )>;
-  using CB1Map = std::unordered_map<Chimera::Event::Trigger, std::vector<CB1>>;
-
-  template<typename Functor>
-  struct Callback
-  {
-    Functor func;
-    size_t id;
-  };
 
   /**
    *  A generic callback type that can be used across a wide variety of
@@ -49,8 +32,7 @@ namespace Chimera::Callback
    *  @param[in]  size      The size of the handle structure in bytes
    *  @return void
    */
-  using ISRCallbackFunction = std::function<void( void *handle, size_t size )>;
-  using ISRCallback = Callback<ISRCallbackFunction>;
+  using ISRCallbackFunction = std::function<void( void *const handle, const size_t size )>;
 
 }  // namespace Chimera::Callback
 
