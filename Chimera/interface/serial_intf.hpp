@@ -358,11 +358,12 @@ namespace Chimera::Serial
     {
     }
 
-    void await( const Chimera::Event::Trigger event ) final override
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout ) final override
     {
     }
 
-    void await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier ) final override
+    Chimera::Status_t await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier,
+                             const size_t timeout ) final override
     {
     }
   };

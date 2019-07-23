@@ -73,7 +73,8 @@ namespace Chimera::Serial
 
   enum class CharWid : uint8_t
   {
-    CW_8BIT = 8
+    CW_8BIT = 8,
+    CW_9BIT
   };
 
   enum class Parity : uint8_t
