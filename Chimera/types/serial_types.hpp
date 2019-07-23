@@ -110,7 +110,7 @@ namespace Chimera::Serial
     GPIO::PinInit tx;
   };
 
-  struct COMConfig
+  struct Config
   {
     size_t baud;
     CharWid width;

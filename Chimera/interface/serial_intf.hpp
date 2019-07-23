@@ -92,7 +92,7 @@ namespace Chimera::Serial
      *  |  NOT_INITIALIZED | The serial hardware is not ready for configuration |
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function      |
      */
-    virtual Chimera::Status_t configure( const COMConfig &config ) = 0;
+    virtual Chimera::Status_t configure( const Config &config ) = 0;
 
     /**
      *  Change the baud rate of the peripheral at run time
@@ -323,7 +323,7 @@ namespace Chimera::Serial
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    Chimera::Status_t configure( const COMConfig &config ) final override
+    Chimera::Status_t configure( const Config &config ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
