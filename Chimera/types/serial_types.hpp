@@ -15,6 +15,7 @@
 /* C++ Includes */
 #include <cstdint>
 #include <memory>
+#include <type_traits>
 
 /* Chimera Includes */
 #include <Chimera/types/common_types.hpp>

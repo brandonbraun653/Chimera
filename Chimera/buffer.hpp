@@ -74,7 +74,7 @@ namespace Chimera::Buffer
       }
       else
       {
-        if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
+        if ( lock( 10 ) == Chimera::CommonStatusCodes::OK )
         {
           size_t bytesWritten = 0;
 
@@ -179,6 +179,7 @@ namespace Chimera::Buffer
         internal     = hwBuffer;
         internalSize = hwBuffersize;
         external     = userBuffer;
+
         unlock();
       }
 
@@ -218,6 +219,8 @@ namespace Chimera::Buffer
         {
           error = Chimera::CommonStatusCodes::FAIL;
         }
+
+        unlock();
       }
       else
       {
@@ -245,6 +248,46 @@ namespace Chimera::Buffer
     bool initialized()
     {
       return ( internal && external );
+    }
+
+
+    /**
+     *  Transfers bytes from the circular buffer into the hardware buffer
+     *
+     *  @param[in]  bytes   The number of bytes to try and copy
+     *  @return size_t      The number of bytes actually copied
+     */
+    size_t copyToHWBuffer( const size_t bytes )
+    {
+      size_t bytesToCopy = 0;
+
+      if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
+      {
+        bytesToCopy = external->size();
+
+        if ( bytesToCopy > internalSize )
+        {
+          bytesToCopy = internalSize;
+        }
+
+        if ( bytesToCopy > bytes )
+        {
+          bytesToCopy = bytes;
+        }
+
+        size_t copied = 0;
+
+        while ( copied < bytesToCopy )
+        {
+          internal[ copied ] = external->front();
+          external->pop_front();
+          copied++;
+        }
+
+        unlock();
+      }
+
+      return bytesToCopy;
     }
 
   protected:
