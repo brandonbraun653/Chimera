@@ -1,0 +1,5 @@
+
+lib CORE
+  : standalone_main.cpp
+  : <use>/GTEST//TEST_PUB
+  ;

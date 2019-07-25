@@ -42,7 +42,7 @@ namespace Chimera::Event
     INVALID,            /**< Special case used for initialization */
     READ_COMPLETE,      /**< A read was completed */
     WRITE_COMPLETE,     /**< A write was completed */
-    ERROR,              /**< Catch all error case */
+    SYSTEM_ERROR,       /**< Catch all error case */
   };
 
   enum class ElementType : uint8_t

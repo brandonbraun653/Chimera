@@ -14,9 +14,10 @@
 
 /* C++ Includes */
 #include <cstring>
+#include <memory>
 
 /* Boost Includes */
-#include <boost/circular_buffer.hpp>
+#include <boost/circular_buffer_fwd.hpp>
 
 /* Chimera Includes */
 #include <Chimera/interface/buffer_intf.hpp>
@@ -33,25 +34,36 @@ namespace Chimera::Buffer
    *  The goal here is to guarantee non-modifiable data for transactions in Interrupt or
    *  DMA mode but still allow the user to queue up more data if needed.
    */
-  template<class Hardware>
   class DoubleBuffer : public Chimera::Threading::Lockable
   {
   public:
-    friend Hardware;
-
-    DoubleBuffer()
-    {
-      external     = nullptr;
-      internal     = nullptr;
-      internalSize = 0;
-    }
-    ~DoubleBuffer() = default;
+    DoubleBuffer();
+    ~DoubleBuffer();
 
     /**
-     *  Push data into the circular buffer
+     *  Dynamically allocates the memory for the 
      *
-     *  @param[in]  buffer        Array to store the data into
-     *  @param[in]  len           The number of bytes to read from the RX buffer
+     *  @param[in]  circularSize    Number of bytes for the circular buffer        
+     *  @param[in]  linearSize      Number of bytes for the linear buffer
+     *  @return Chimera::Status_t
+     *
+     *  |   Return Value   |                       Explanation                      |
+     *  |:----------------:|:------------------------------------------------------:|
+     *  |               OK | Everything worked as expected                          |
+     *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
+     *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
+     */
+    Chimera::Status_t assign( const size_t circularSize, const size_t linearSize );
+
+    Chimera::Status_t assignStatic( boost::circular_buffer<uint8_t> *const circularBuffer, 
+                                    uint8_t *const linearBuffer,
+                                    const size_t linearSize );
+
+    /**
+     *  Push data from an array into the circular buffer
+     *
+     *  @param[in]  buffer        Array to push data from
+     *  @param[in]  len           The number of bytes to push
      *  @return Chimera::Status_t
      *
      *  |   Return Value   |                   Explanation                  |
@@ -62,46 +74,10 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      *  |    NOT_SUPPORTED | This functionality isn't supported             |
      */
-    Chimera::Status_t push( const uint8_t *const buffer, const size_t len )
-    {
-      using namespace Chimera::Hardware;
-
-      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
-
-      if ( !buffer )
-      {
-        error = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
-      }
-      else
-      {
-        if ( lock( 10 ) == Chimera::CommonStatusCodes::OK )
-        {
-          size_t bytesWritten = 0;
-
-          while ( !external->full() && ( bytesWritten < len ) )
-          {
-            external->push_back( buffer[ bytesWritten ] );
-            bytesWritten++;
-          }
-
-          if ( bytesWritten != len )
-          {
-            error = Chimera::CommonStatusCodes::FULL;
-          }
-
-          unlock();
-        }
-        else
-        {
-          error = Chimera::CommonStatusCodes::LOCKED;
-        }
-      }
-
-      return error;
-    }
+    Chimera::Status_t push( const uint8_t *const buffer, const size_t len );
 
     /**
-     *  Read data from the circular buffer
+     *  Pop data from the circular buffer into an array
      *
      *  @param[in]  buffer        Array to store the data into
      *  @param[in]  len           The number of bytes to read from the RX buffer
@@ -115,76 +91,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      *  |    NOT_SUPPORTED | This functionality isn't supported             |
      */
-    Chimera::Status_t pop( uint8_t *const buffer, const size_t len )
-    {
-      using namespace Chimera::Hardware;
-
-      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
-
-      if ( !buffer )
-      {
-        error = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
-      }
-      else
-      {
-        if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
-        {
-          size_t bytesRead = 0;
-
-          if ( external )
-          {
-            while ( !external->empty() && ( bytesRead < len ) )
-            {
-              buffer[ bytesRead ] = external->front();
-              external->pop_front();
-              bytesRead++;
-            }
-          }
-
-          if ( bytesRead != len )
-          {
-            error = Chimera::CommonStatusCodes::EMPTY;
-          }
-
-          unlock();
-        }
-        else
-        {
-          error = Chimera::CommonStatusCodes::LOCKED;
-        }
-      }
-
-      return error;
-    }
-
-    /**
-     *  Assigns the buffers to be used
-     *
-     *  @param[in]  periph        The sub peripheral to assign the external buffer to
-     *  @param[in]  buffer        The buffer that will be used for internal purposes
-     *  @param[in]  size          The buffer's size
-     *  @return Chimera::Status_t
-     *
-     *  |   Return Value   |                       Explanation                      |
-     *  |:----------------:|:------------------------------------------------------:|
-     *  |               OK | Everything worked as expected                          |
-     *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
-     *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
-     */
-    Chimera::Status_t assign( boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
-                              const uint32_t hwBuffersize )
-    {
-      if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
-      {
-        internal     = hwBuffer;
-        internalSize = hwBuffersize;
-        external     = userBuffer;
-
-        unlock();
-      }
-
-      return Chimera::CommonStatusCodes::OK;
-    }
+    Chimera::Status_t pop( uint8_t *const buffer, const size_t len );
 
     /**
      *  Flushes both of the buffers
@@ -196,39 +103,7 @@ namespace Chimera::Buffer
      *  |               OK | Everything worked as expected                          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    Chimera::Status_t flush()
-    {
-      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
-
-      if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
-      {
-        if ( internal )
-        {
-          memset( internal, 0, internalSize );
-        }
-        else
-        {
-          error = Chimera::CommonStatusCodes::FAIL;
-        }
-
-        if ( external )
-        {
-          external->clear();
-        }
-        else
-        {
-          error = Chimera::CommonStatusCodes::FAIL;
-        }
-
-        unlock();
-      }
-      else
-      {
-        error = Chimera::CommonStatusCodes::LOCKED;
-      }
-
-      return error;
-    }
+    Chimera::Status_t flush();
 
     /**
      *  Gets a pointer to the circular buffer
@@ -240,16 +115,9 @@ namespace Chimera::Buffer
      *  |               OK | Everything worked as expected                          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    boost::circular_buffer<uint8_t> *const get()
-    {
-      return external;
-    }
+    boost::circular_buffer<uint8_t> *const circularBuffer();
 
-    bool initialized()
-    {
-      return ( internal && external );
-    }
-
+    bool initialized();
 
     /**
      *  Transfers bytes from the circular buffer into the hardware buffer
@@ -257,48 +125,15 @@ namespace Chimera::Buffer
      *  @param[in]  bytes   The number of bytes to try and copy
      *  @return size_t      The number of bytes actually copied
      */
-    size_t copyToHWBuffer( const size_t bytes )
-    {
-      size_t bytesToCopy = 0;
+    size_t transferInto( const size_t bytes );
 
-      if ( lock( Chimera::Threading::TIMEOUT_DONT_WAIT ) == Chimera::CommonStatusCodes::OK )
-      {
-        bytesToCopy = external->size();
+  private:
+    bool dynamicData;
+    uint8_t *pLinearBuffer;
+    size_t linearLength;
+    boost::circular_buffer<uint8_t> *pCircularBuffer;
 
-        if ( bytesToCopy > internalSize )
-        {
-          bytesToCopy = internalSize;
-        }
-
-        if ( bytesToCopy > bytes )
-        {
-          bytesToCopy = bytes;
-        }
-
-        size_t copied = 0;
-
-        while ( copied < bytesToCopy )
-        {
-          internal[ copied ] = external->front();
-          external->pop_front();
-          copied++;
-        }
-
-        unlock();
-      }
-
-      return bytesToCopy;
-    }
-
-  protected:
-    uint8_t *getHWBuffer()
-    {
-      return internal;
-    }
-
-    boost::circular_buffer<uint8_t> *external;
-    uint8_t *internal;
-    uint32_t internalSize;
+    void freeDynamicData();
   };
 
 }  // namespace Chimera::Buffer

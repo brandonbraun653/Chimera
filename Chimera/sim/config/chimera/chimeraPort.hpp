@@ -12,5 +12,8 @@
 #ifndef CHIMERA_PORT_SIM_HPP
 #define CHIMERA_PORT_SIM_HPP
 
+namespace Chimera{}
+
+#define BACKEND_NAMESPACE Chimera
 
 #endif /* !CHIMERA_PORT_MOCK_HPP */

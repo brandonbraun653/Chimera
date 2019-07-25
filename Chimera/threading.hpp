@@ -21,8 +21,6 @@
 #include <Chimera/types/event_types.hpp>
 #include <Chimera/types/threading_types.hpp>
 
-#ifdef USING_FREERTOS
-
 /* FreeRTOS Includes */
 #ifdef __cplusplus
 extern "C"
@@ -33,7 +31,6 @@ extern "C"
 #include "semphr.h"
 }
 #endif /* __cplusplus */
-#endif /* USING_FREERTOS */
 
 namespace Chimera::Threading
 {
@@ -83,19 +80,22 @@ namespace Chimera::Threading
     ~Lockable() = default;
 
   private:
-#if defined( USING_FREERTOS )
     SemaphoreHandle_t recursive_mutex;
-#else
-    // std::recursive_mutex recursive_mutex;
-#endif
   };
 
-  inline RecursiveMutex_t createRecursiveMutex()
+  class LockGuard
   {
-    return xSemaphoreCreateMutex();
-  }
+  public:
+    LockGuard( Lockable &obj );
+    ~LockGuard();
 
-#ifdef USING_FREERTOS
+    bool lock();
+
+    bool lock( const size_t timeout );
+
+  private:
+    Lockable &lockable;
+  };
 
   /*------------------------------------------------
   Fully describes thread creation parameters as used in overloaded addThread
@@ -189,7 +189,6 @@ namespace Chimera::Threading
    */
   void awaitTaskMessage( const size_t taskMsg );
 
-#endif /* !USING_FREERTOS */
 
 }  // namespace Chimera::Threading
 

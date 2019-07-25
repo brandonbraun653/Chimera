@@ -15,13 +15,15 @@
 
 namespace Chimera::Mock
 {
-  void SystemTickCallback();
+  // TODO: Use google mock
+  
+  // void SystemTickCallback();
 
-  uint32_t millis();
+  // uint32_t millis();
 
-  void delayMilliseconds( uint32_t ms );
+  // void delayMilliseconds( uint32_t ms );
 
-  void delayMicroseconds( uint32_t us );
+  // void delayMicroseconds( uint32_t us );
 
 }  // namespace Chimera::Mock
 

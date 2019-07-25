@@ -30,6 +30,9 @@ static bool sSetupCallbacksEnabled = false;
 
 namespace Chimera::Threading 
 {
+    /*-------------------------------------------------
+    Lockable Class Implementation
+    -------------------------------------------------*/
     Lockable::Lockable()
     {
       recursive_mutex = xSemaphoreCreateRecursiveMutex();
@@ -57,6 +60,28 @@ namespace Chimera::Threading
       }
 
       return error;
+    }
+
+    /*-------------------------------------------------
+    Timed Lock Guard Implementation
+    -------------------------------------------------*/
+    LockGuard::LockGuard( Lockable &obj ) : lockable( obj )
+    {
+    }
+
+    LockGuard::~LockGuard()
+    {
+      lockable.unlock();
+    }
+
+    bool LockGuard::lock()
+    {
+      return lock( TIMEOUT_DONT_WAIT );
+    }
+
+    bool LockGuard::lock( const size_t timeout )
+    {
+      return ( lockable.lock( timeout ) == Chimera::CommonStatusCodes::OK );
     }
 
     /**

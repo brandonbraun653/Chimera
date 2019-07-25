@@ -25,11 +25,13 @@ namespace Chimera::System
     ------------------------------------------------*/
     if ( prjSystemStartup() != Chimera::CommonStatusCodes::OK )
     {
-      
+      return Chimera::CommonStatusCodes::FAIL;
     }
 
     /*------------------------------------------------
     Perform other initialization steps...when needed...
     ------------------------------------------------*/
+
+    return Chimera::CommonStatusCodes::OK;
   }
 }

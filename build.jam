@@ -20,7 +20,7 @@ local chimera_inc_dir = . ; # Expects the user to reference headers like <Chimer
 local chimera_mock_inc_dir = ./../ ;
 local chimera_port_sim_inc_dir = Chimera/modules/sim ;
 local chimera_src_dir = Chimera ;
-local chimera_src_sim_dir = Chimera/modules/sim ;
+local chimera_src_sim_dir = Chimera/sim ;
 
 # ------------------------------------------
 # Source Files
@@ -73,7 +73,7 @@ lib CORE
         <library>/THOR//CORE
 
         <use>/THOR//PUB                         # Thor Headers
-        <use>/THOR//TARGET_PROPAGATED_OPTIONS                    # Thor Target Headers
+        <use>/THOR//TARGET_PROPAGATED_OPTIONS   # Thor Target Headers
         <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
         <use>/PRJ//EIGEN
     ;
@@ -142,9 +142,12 @@ lib CORE
         <define>NOMINMAX
         <define>SIM
 
+        <library>/FREERTOS//CORE
+
         <use>_RTOS                              # Pull in FreeRTOS from the alias up above
         <use>/PRJ//BOOST                        # All things boost
         <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
+        <use>/PRJ//CHIMERA_PORT
         <use>/PRJ//EIGEN
     ;
 
