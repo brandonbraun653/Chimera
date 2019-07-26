@@ -19,37 +19,48 @@
 
 namespace Chimera::Buffer
 {
-  DoubleBuffer::DoubleBuffer() : dynamicData( false ), pLinearBuffer( nullptr ), linearLength( 0 ), pCircularBuffer( nullptr )
+  PeripheralBuffer::PeripheralBuffer() :
+      dynamicData( false ), pLinearBuffer( nullptr ), linearLength( 0 ), pCircularBuffer( nullptr )
   {
   }
 
-  DoubleBuffer::~DoubleBuffer()
+  PeripheralBuffer::~PeripheralBuffer()
   {
     freeDynamicData();
   }
 
-  Chimera::Status_t DoubleBuffer::assign( const size_t circularSize, const size_t linearSize )
+  bool PeripheralBuffer::initialized()
   {
-    if( !circularSize || !linearSize )
+    return ( pLinearBuffer && pCircularBuffer );
+  }
+
+  Chimera::Status_t PeripheralBuffer::assign( const size_t circularSize, const size_t linearSize )
+  {
+    if ( !circularSize || !linearSize )
     {
       return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
 
+    /*-------------------------------------------------
+    Assume we will succeed. Other functions will reset
+    this to false if we fail to allocate the memory.
+    -------------------------------------------------*/
     dynamicData = true;
 
     /*-------------------------------------------------
     Allocate the memory for the arrays
     -------------------------------------------------*/
     pLinearBuffer = new uint8_t( linearSize );
-    linearLength = linearSize;
+    linearLength  = linearSize;
 
     pCircularBuffer = new boost::circular_buffer<uint8_t>();
-    pCircularBuffer->resize( circularSize, 0);
+    pCircularBuffer->resize( circularSize, 0 );
 
     /*-------------------------------------------------
-    
+    Something went wrong in the allocation, so for safety
+    just free everything.
     -------------------------------------------------*/
-    if( !pLinearBuffer || !pCircularBuffer || ( pCircularBuffer->size() != circularSize ))
+    if ( !pLinearBuffer || !pCircularBuffer || ( pCircularBuffer->size() != circularSize ) )
     {
       freeDynamicData();
       return Chimera::CommonStatusCodes::MEMORY;
@@ -58,45 +69,62 @@ namespace Chimera::Buffer
     return Chimera::CommonStatusCodes::OK;
   }
 
-  Chimera::Status_t DoubleBuffer::assignStatic( boost::circular_buffer<uint8_t> *const circularBuffer, uint8_t *const linearBuffer,
-                                          const size_t linearSize )
+  Chimera::Status_t PeripheralBuffer::assign( boost::circular_buffer<uint8_t> *const circularBuffer,
+                                              uint8_t *const linearBuffer, const size_t linearSize )
   {
     using namespace Chimera::Threading;
 
-    if ( LockGuard(*this).lock() )
+    if ( LockGuard( *this ).lock() )
     {
-      if( dynamicData )
+      /*-------------------------------------------------
+      Clear out the old assignment's memory so we don't leak.
+      -------------------------------------------------*/
+      if ( dynamicData )
       {
         freeDynamicData();
       }
 
+      /*-------------------------------------------------
+      The external memory may be dynamically allocated, but we
+      don't manage it so set the 'dynamic' flag to false.
+      -------------------------------------------------*/
       pLinearBuffer   = linearBuffer;
       linearLength    = linearSize;
       pCircularBuffer = circularBuffer;
 
-      
       dynamicData = false;
     }
 
     return Chimera::CommonStatusCodes::OK;
   }
 
-  Chimera::Status_t DoubleBuffer::push( const uint8_t *const buffer, const size_t len )
+  Chimera::Status_t PeripheralBuffer::push( const uint8_t *const buffer, const size_t len, size_t &actual )
   {
     using namespace Chimera::Hardware;
     using namespace Chimera::Threading;
 
-    auto error = Chimera::CommonStatusCodes::LOCKED;
+    auto error          = Chimera::CommonStatusCodes::LOCKED;
+    size_t bytesWritten = 0;
+    actual              = 0;
 
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
     if ( !buffer )
     {
       return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
+    else if ( !pCircularBuffer )
+    {
+      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+    }
 
-    if ( LockGuard(*this).lock() )
+    /*-------------------------------------------------
+    Make sure we can safely access the data
+    -------------------------------------------------*/
+    if ( LockGuard( *this ).lock() )
     {
       error = Chimera::CommonStatusCodes::OK;
-      size_t bytesWritten = 0;
 
       while ( !pCircularBuffer->full() && ( bytesWritten < len ) )
       {
@@ -104,6 +132,7 @@ namespace Chimera::Buffer
         bytesWritten++;
       }
 
+      actual = bytesWritten;
       if ( bytesWritten != len )
       {
         error = Chimera::CommonStatusCodes::FULL;
@@ -113,33 +142,42 @@ namespace Chimera::Buffer
     return error;
   }
 
-  Chimera::Status_t DoubleBuffer::pop( uint8_t *const buffer, const size_t len )
+  Chimera::Status_t PeripheralBuffer::pop( uint8_t *const buffer, const size_t len, size_t &actual )
   {
     using namespace Chimera::Hardware;
     using namespace Chimera::Threading;
 
-    auto error = Chimera::CommonStatusCodes::LOCKED;
+    auto error       = Chimera::CommonStatusCodes::LOCKED;
+    size_t bytesRead = 0;
+    actual           = 0;
 
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
     if ( !buffer )
     {
       return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
-    
+    else if ( !pCircularBuffer )
+    {
+      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+    }
+
+    /*-------------------------------------------------
+    Make sure we can safely access the data
+    -------------------------------------------------*/
     if ( LockGuard( *this ).lock() )
     {
       error = Chimera::CommonStatusCodes::OK;
-      size_t bytesRead = 0;
 
-      if ( pCircularBuffer )
+      while ( !pCircularBuffer->empty() && ( bytesRead < len ) )
       {
-        while ( !pCircularBuffer->empty() && ( bytesRead < len ) )
-        {
-          buffer[ bytesRead ] = pCircularBuffer->front();
-          pCircularBuffer->pop_front();
-          bytesRead++;
-        }
+        buffer[ bytesRead ] = pCircularBuffer->front();
+        pCircularBuffer->pop_front();
+        bytesRead++;
       }
 
+      actual = bytesRead;
       if ( bytesRead != len )
       {
         error = Chimera::CommonStatusCodes::EMPTY;
@@ -149,94 +187,164 @@ namespace Chimera::Buffer
     return error;
   }
 
-  Chimera::Status_t DoubleBuffer::flush()
+  Chimera::Status_t PeripheralBuffer::flush()
   {
     using namespace Chimera::Threading;
     auto error = Chimera::CommonStatusCodes::LOCKED;
 
-    if ( LockGuard(*this).lock() )
+    if ( !pLinearBuffer || !pCircularBuffer )
+    {
+      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+    }
+
+    if ( LockGuard( *this ).lock() )
     {
       error = Chimera::CommonStatusCodes::OK;
-
-      if ( pLinearBuffer )
-      {
-        memset( pLinearBuffer, 0, linearLength );
-      }
-      else
-      {
-        error = Chimera::CommonStatusCodes::FAIL;
-      }
-
-      if ( pCircularBuffer )
-      {
-        pCircularBuffer->clear();
-      }
-      else
-      {
-        error = Chimera::CommonStatusCodes::FAIL;
-      }
+      memset( pLinearBuffer, 0, linearLength );
+      pCircularBuffer->clear();
     }
 
     return error;
   }
 
-  boost::circular_buffer<uint8_t> *const DoubleBuffer::circularBuffer()
-  {
-    return pCircularBuffer;
-  }
-
-  bool DoubleBuffer::initialized()
-  {
-    return ( pLinearBuffer && pCircularBuffer );
-  }
-
-  size_t DoubleBuffer::transferInto( const size_t bytes )
+  Chimera::Status_t PeripheralBuffer::transferInto( const size_t bytes, size_t &actual )
   {
     using namespace Chimera::Threading;
 
+    auto result = Chimera::CommonStatusCodes::LOCKED;
     size_t bytesToCopy = 0;
+    size_t bytesCopied = 0;
+    actual = 0;
 
-    if ( LockGuard(*this).lock() )
+    if( !initialized() )
     {
+      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+    }
+
+    if ( LockGuard( *this ).lock() )
+    {
+      result = Chimera::CommonStatusCodes::OK;
+
+      /*-------------------------------------------------
+      Assume we are going to copy everything
+      -------------------------------------------------*/
       bytesToCopy = pCircularBuffer->size();
 
+      /*-------------------------------------------------
+      Force linear array overrun protection
+      -------------------------------------------------*/
       if ( bytesToCopy > linearLength )
       {
         bytesToCopy = linearLength;
       }
 
+      /*-------------------------------------------------
+      Truncate the number of bytes we try and copy from 
+      the circular buffer
+      -------------------------------------------------*/
       if ( bytesToCopy > bytes )
       {
         bytesToCopy = bytes;
       }
 
-      size_t copied = 0;
-
-      while ( copied < bytesToCopy )
+      /*-------------------------------------------------
+      Perform the copy operation
+      -------------------------------------------------*/
+      while ( bytesCopied < bytesToCopy )
       {
-        pLinearBuffer[ copied ] = pCircularBuffer->front();
+        pLinearBuffer[ bytesCopied ] = pCircularBuffer->front();
         pCircularBuffer->pop_front();
-        copied++;
+        bytesCopied++;
       }
+
+      actual = bytesCopied;
     }
 
-    return bytesToCopy;
+    return result;
   }
 
-  void DoubleBuffer::freeDynamicData()
+  Chimera::Status_t PeripheralBuffer::transferOutOf( const size_t bytes, size_t &actual )
   {
-    if( !dynamicData )
+    using namespace Chimera::Threading;
+
+    auto result = Chimera::CommonStatusCodes::LOCKED;
+    size_t bytesToCopy = 0;
+    size_t bytesbytesCopied = 0;
+    size_t remainingSpace = 0;
+    actual = 0;
+
+    if( !initialized() )
+    {
+      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+    }
+
+    if ( LockGuard( *this ).lock() )
+    {
+      result = Chimera::CommonStatusCodes::OK;
+
+      bytesToCopy = bytes;
+      remainingSpace = pCircularBuffer->capacity() - pCircularBuffer->size();
+
+      /*-------------------------------------------------
+      Force linear array overrun protection
+      -------------------------------------------------*/
+      if( bytesToCopy > linearLength )
+      {
+        bytesToCopy = linearLength;
+      }
+
+      /*-------------------------------------------------
+      Make sure we don't try and push too many bytes
+      -------------------------------------------------*/
+      if( bytesToCopy > remainingSpace )
+      {
+        bytesToCopy = remainingSpace;
+      }
+
+      /*-------------------------------------------------
+      Perform the transfer
+      -------------------------------------------------*/
+      while( bytesToCopy > 0 )
+      {
+        pCircularBuffer->push_back( pLinearBuffer[ bytesbytesCopied ] );
+        bytesbytesCopied++;
+        bytesToCopy--;
+      }
+
+      actual = bytesbytesCopied;
+    }
+
+    return result;
+  }
+
+  boost::circular_buffer<uint8_t> *const PeripheralBuffer::circularBuffer()
+  {
+    return pCircularBuffer;
+  }
+
+  uint8_t *const PeripheralBuffer::linearBuffer()
+  {
+    return pLinearBuffer;
+  }
+
+  void PeripheralBuffer::freeDynamicData()
+  {
+    if ( !dynamicData )
     {
       return;
     }
 
-    if( pLinearBuffer )
+    if ( pLinearBuffer )
     {
       delete[] pLinearBuffer;
     }
 
-    if( pCircularBuffer )
+    if ( pCircularBuffer )
     {
+      /*-------------------------------------------------
+      The circular buffer is non-trivial. The destructor
+      must be manually called since all we have is a ptr.
+      -------------------------------------------------*/
       pCircularBuffer->~circular_buffer();
       delete pCircularBuffer;
     }
