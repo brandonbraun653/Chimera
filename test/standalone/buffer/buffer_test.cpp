@@ -1,12 +1,12 @@
 /********************************************************************************
-*   File Name:
-*       buffer_test.cpp
-*
-*   Description:
-*       Tests the Chimera buffer file
-*
-*   2019 | Brandon Braun | brandonbraun653@gmail.com
-********************************************************************************/
+ *   File Name:
+ *       buffer_test.cpp
+ *
+ *   Description:
+ *       Tests the Chimera buffer file
+ *
+ *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
 
 #include <iostream>
 
@@ -17,9 +17,26 @@
 
 using namespace Chimera::Buffer;
 
-TEST( BoundaryChecks, NullInput )
+namespace BufferTests
 {
-  PeripheralBuffer buffer;
+  TEST( BoundaryChecks, NotInitialized )
+  {
+    PeripheralBuffer buffer;
+    ASSERT_EQ( buffer.initialized(), false );
+  }
 
-  ASSERT_EQ( buffer.initialized(), false );
+  TEST( BoundaryChecks, NullInputDynamic )
+  {
+    PeripheralBuffer buffer;
+
+    auto result      = buffer.assign( 0, 10 );
+    auto initialized = buffer.initialized();
+    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( initialized, false );
+
+    result      = buffer.assign( 10, 0 );
+    initialized = buffer.initialized();
+    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( initialized, false );
+  }
 }

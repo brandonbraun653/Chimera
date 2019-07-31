@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Chimera/modules/memory/flash.hpp>
+#include <Chimera/modules/memory/device.hpp>
 
 using namespace Chimera::Modules::Memory;
 
@@ -23,8 +23,8 @@ TEST( FlashUtil_CompositeSections, AlignedMultiBlock_1 )
   static constexpr uint32_t blockSize = 2048u;
   static constexpr uint32_t sectorSize = 65536u;
 
-  DeviceDescriptor dev_binary{ pageSize, blockSize, sectorSize };
-  FlashUtilities util( dev_binary );
+  Descriptor dev_binary{ pageSize, blockSize, sectorSize };
+  Utilities util( dev_binary );
 
   static constexpr uint32_t page         = 8;
   static constexpr uint32_t len          = 2 * blockSize;
@@ -55,8 +55,8 @@ TEST( FlashUtil_CompositeSections, AlignedMultiBlock_2 )
   static constexpr uint32_t blockSize  = 2048u;
   static constexpr uint32_t sectorSize = 65536u;
 
-  DeviceDescriptor dev_binary{ pageSize, blockSize, sectorSize };
-  FlashUtilities util( dev_binary );
+  Descriptor dev_binary{ pageSize, blockSize, sectorSize };
+  Utilities util( dev_binary );
 
   static constexpr uint32_t page         = 8;
   static constexpr uint32_t len          = 135 * blockSize;
@@ -99,8 +99,8 @@ TEST( FlashUtil_CompositeSections, UnAlignedMultiBlock_1 )
   static constexpr uint32_t blockSize  = 2048u;
   static constexpr uint32_t sectorSize = 65536u;
 
-  DeviceDescriptor dev_binary{ pageSize, blockSize, sectorSize };
-  FlashUtilities util( dev_binary );
+  Descriptor dev_binary{ pageSize, blockSize, sectorSize };
+  Utilities util( dev_binary );
 
   static constexpr uint32_t page         = 12;
   static constexpr uint32_t len          = ( 3 * blockSize ) + ( 5 * pageSize );
@@ -134,8 +134,8 @@ TEST( FlashUtil_CompositeSections, UnAlignedMultiPageBlockSector )
   static constexpr uint32_t blockSize  = 2048u;
   static constexpr uint32_t sectorSize = 65536u;
 
-  DeviceDescriptor dev_binary{ pageSize, blockSize, sectorSize };
-  FlashUtilities util( dev_binary );
+  Descriptor dev_binary{ pageSize, blockSize, sectorSize };
+  Utilities util( dev_binary );
 
   static constexpr uint32_t page         = 12;
   static constexpr uint32_t len          = ( 2 * sectorSize ) + ( 3 * blockSize ) + ( 5 * pageSize );

@@ -14,6 +14,7 @@
 #include <cstring>
 
 /* Chimera Includes */
+#include <Chimera/threading.hpp>
 #include <Chimera/modules/freertos/freertos_hooks.hpp>
 
 namespace Chimera::Modules::FreeRTOS

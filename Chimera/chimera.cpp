@@ -19,10 +19,8 @@
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 
-void cSystemInit()
-{
-  
-}
+#include <Chimera/sim/sim_chimera.hpp>
+
 #endif
 
 void ChimeraInit()

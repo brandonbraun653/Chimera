@@ -151,6 +151,8 @@ lib CORE
         <use>/PRJ//EIGEN
 
         <cov>enabled:<use>/COVERAGE//FLAGS
+    :
+    :   <toolset>msvc:<define>NOMINMAX
     ;
 
 explicit CORE ;

@@ -48,9 +48,9 @@ namespace Chimera::Event
   enum class ElementType : uint8_t
   {
     INVALID,
-    ATOMIC_NOTIFIER,
-    THREAD_NOTIFIER,
-    CALLBACK
+    ATOMIC_NOTIFIER_T,
+    THREAD_NOTIFIER_T,
+    CALLBACK_T
   };
 
   struct Actionable

@@ -21,15 +21,12 @@ exe ChimeraBufferTests
   ;
 explicit ChimeraBufferTests ;
 
-alias COVERAGE
+alias TEST
   : ChimeraBufferTests
-  :
   : <Chimera>enabled
     <Chimera-backend>Sim
     <FreeRTOS>enabled
     <FreeRTOS-port>Windows
     <FreeRTOS-heap>heap4
-    
-    <toolset>gcc
   ;
-explicit COVERAGE ;
+explicit TEST ;
