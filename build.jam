@@ -149,6 +149,8 @@ lib CORE
         <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
         <use>/PRJ//CHIMERA_PORT
         <use>/PRJ//EIGEN
+
+        <cov>enabled:<use>/COVERAGE//FLAGS
     ;
 
 explicit CORE ;

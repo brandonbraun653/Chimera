@@ -1,4 +1,5 @@
 
+local path-constant build_directory = $(COVERAGE_BUILD_DIR)/buffer ;
 
 exe ChimeraBufferTests
   : buffer_test.cpp
@@ -15,10 +16,12 @@ exe ChimeraBufferTests
     <library>/CHIMERA//CORE
     <library>/CHIMERA/TEST/STANDALONE//CORE
     <library>/GTEST//gtest
+
+    <location>$(build_directory)
   ;
 explicit ChimeraBufferTests ;
 
-alias all
+alias COVERAGE
   : ChimeraBufferTests
   :
   : <Chimera>enabled
@@ -26,4 +29,7 @@ alias all
     <FreeRTOS>enabled
     <FreeRTOS-port>Windows
     <FreeRTOS-heap>heap4
+    
+    <toolset>gcc
   ;
+explicit COVERAGE ;

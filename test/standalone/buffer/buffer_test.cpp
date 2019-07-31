@@ -15,7 +15,11 @@
 
 #include <gtest/gtest.h>
 
+using namespace Chimera::Buffer;
+
 TEST( BoundaryChecks, NullInput )
 {
-  
+  PeripheralBuffer buffer;
+
+  ASSERT_EQ( buffer.initialized(), false );
 }
