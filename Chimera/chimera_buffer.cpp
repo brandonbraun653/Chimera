@@ -50,17 +50,19 @@ namespace Chimera::Buffer
     /*-------------------------------------------------
     Allocate the memory for the arrays
     -------------------------------------------------*/
-    pLinearBuffer = new uint8_t( linearSize );
+    pLinearBuffer = new uint8_t[ linearSize ];
     linearLength  = linearSize;
+    memset( pLinearBuffer, 0, linearLength );
 
     pCircularBuffer = new boost::circular_buffer<uint8_t>();
     pCircularBuffer->resize( circularSize, 0 );
+    pCircularBuffer->clear();
 
     /*-------------------------------------------------
     Something went wrong in the allocation, so for safety
     just free everything.
     -------------------------------------------------*/
-    if ( !pLinearBuffer || !pCircularBuffer || ( pCircularBuffer->size() != circularSize ) )
+    if ( !pLinearBuffer || !pCircularBuffer )
     {
       freeDynamicData();
       return Chimera::CommonStatusCodes::MEMORY;
@@ -73,6 +75,11 @@ namespace Chimera::Buffer
                                               uint8_t *const linearBuffer, const size_t linearSize )
   {
     using namespace Chimera::Threading;
+
+    if ( !circularBuffer || !linearBuffer || !linearSize )
+    {
+      return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+    }
 
     if ( LockGuard( *this ).lock() )
     {
@@ -110,7 +117,7 @@ namespace Chimera::Buffer
     /*-------------------------------------------------
     Input protection
     -------------------------------------------------*/
-    if ( !buffer )
+    if ( !buffer || !len )
     {
       return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
@@ -126,7 +133,7 @@ namespace Chimera::Buffer
     {
       error = Chimera::CommonStatusCodes::OK;
 
-      while ( !pCircularBuffer->full() && ( bytesWritten < len ) )
+      while ( pCircularBuffer->reserve() && ( bytesWritten < len ) )
       {
         pCircularBuffer->push_back( buffer[ bytesWritten ] );
         bytesWritten++;
@@ -154,7 +161,7 @@ namespace Chimera::Buffer
     /*-------------------------------------------------
     Input protection
     -------------------------------------------------*/
-    if ( !buffer )
+    if ( !buffer || !len )
     {
       return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
@@ -236,6 +243,7 @@ namespace Chimera::Buffer
       if ( bytesToCopy > linearLength )
       {
         bytesToCopy = linearLength;
+        result      = Chimera::CommonStatusCodes::FULL;
       }
 
       /*-------------------------------------------------
@@ -283,7 +291,7 @@ namespace Chimera::Buffer
       result = Chimera::CommonStatusCodes::OK;
 
       bytesToCopy = bytes;
-      remainingSpace = pCircularBuffer->capacity() - pCircularBuffer->size();
+      remainingSpace = pCircularBuffer->reserve();
 
       /*-------------------------------------------------
       Force linear array overrun protection
@@ -299,6 +307,7 @@ namespace Chimera::Buffer
       if( bytesToCopy > remainingSpace )
       {
         bytesToCopy = remainingSpace;
+        result = Chimera::CommonStatusCodes::FULL;
       }
 
       /*-------------------------------------------------
@@ -341,11 +350,6 @@ namespace Chimera::Buffer
 
     if ( pCircularBuffer )
     {
-      /*-------------------------------------------------
-      The circular buffer is non-trivial. The destructor
-      must be manually called since all we have is a ptr.
-      -------------------------------------------------*/
-      pCircularBuffer->~circular_buffer();
       delete pCircularBuffer;
     }
 
