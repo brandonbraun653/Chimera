@@ -336,6 +336,11 @@ namespace Chimera::Buffer
     return pLinearBuffer;
   }
 
+  size_t PeripheralBuffer::linearSize()
+  {
+    return linearLength;
+  }
+
   void PeripheralBuffer::freeDynamicData()
   {
     if ( !dynamicData )

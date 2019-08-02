@@ -177,6 +177,13 @@ namespace Chimera::Buffer
      */
     uint8_t *const linearBuffer();
 
+    /**
+     *  Gets the length of the linear buffer
+     *
+     *  @return size_t 
+     */
+    size_t linearSize();
+
   private:
     bool dynamicData;
     uint8_t *pLinearBuffer;
