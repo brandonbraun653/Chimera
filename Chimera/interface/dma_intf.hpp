@@ -16,39 +16,38 @@
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/interface/callback_intf.hpp>
+#include <Chimera/interface/event_intf.hpp>
 #include <Chimera/types/dma_types.hpp>
 
 namespace Chimera::DMA
 {
-  class Interface
+  class Interface : public Chimera::Event::Listener
   {
   public:
     virtual ~Interface() = default;
 
     /**
-     *  Prepares the low level hardware for a new transfer
+     *  Initializes the low level hardware. Must be called before any 
+     *  transfers are started.
      *
-     *  @param[in]  config    Config information for how the DMA should behave
-     *  @param[in]  timeout   How long to wait in mS for the DMA hardware to become free
-     *  @param[out] handle    If configuration is successful, will contain a handle to the transfer instance
      *  @return Chimera::Status_t
      *
      *  |  Return Value |                Explanation                |
      *  |:-------------:|:-----------------------------------------:|
      *  |            OK | The transfer was successfully initialized |
-     *  |          FAIL | The transfer could not initialize         |
      *  |       TIMEOUT | The DMA hardware could not be acquired    |
-     *  | NOT_SUPPORTED | Some transfer settings were not allowed   |
      */
-    virtual Chimera::Status_t init( const Init &config, const size_t timeout, TransferHandle_t handle) = 0;
+    virtual Chimera::Status_t init() = 0;
+
+    virtual Chimera::Status_t reset() = 0;
 
     /**
      *  Starts a new transfer
      *
-     *  @param[in]  handle    The handle returned from the init() function
+     *  @param[in]  config    Description of how the transfer should execute
      *  @param[in]  transfer  The transfer memory/data details
      *  @param[in]  timeout   How long to wait in mS for the DMA hardware to become free
+     *  @param[out] handle    If transfer has started, it will contain a handle to the transfer instance
      *  @return Chimera::Status_t
      *
      *  | Return Value |               Explanation              |
@@ -57,12 +56,12 @@ namespace Chimera::DMA
      *  |         FAIL | The transfer could not start           |
      *  |      TIMEOUT | The DMA hardware could not be acquired |
      */
-    virtual Chimera::Status_t start( TransferHandle_t handle, const TCB &transfer, const size_t timeout ) = 0;
+    virtual Chimera::Status_t start( const Init &config, const TCB &transfer, const size_t timeout, TransferHandle_t *const handle ) = 0;
 
     /**
      *  Kills an ongoing transfer
      *
-     *  @param[in]  handle    The handle returned from the init() function
+     *  @param[in]  handle    The handle returned when the transfer started
      *  @param[in]  timeout   How long to wait in mS for the DMA hardware to become free
      *
      *  | Return Value |                  Explanation                 |
@@ -76,7 +75,7 @@ namespace Chimera::DMA
     /**
      *  Gets the status of the current transfer
      *
-     *  @param[in] handle     The handle of the transfer to be queried
+     *  @param[in]  handle    The handle of the transfer to be queried
      *  @param[in]  timeout   How long to wait in mS for the DMA hardware to become free
      *  @return Chimera::Status_t
      */

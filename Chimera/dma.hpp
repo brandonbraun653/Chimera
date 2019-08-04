@@ -37,7 +37,7 @@ namespace Chimera::DMA
   class DMAClass : public CHIMERA_INHERITED_DMA
   {
   public:
-    DMAClass() : CHIMERA_INHERITED_DMA(){};
+    DMAClass();
     ~DMAClass() = default;
   };
 

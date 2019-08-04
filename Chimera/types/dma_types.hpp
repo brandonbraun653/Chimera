@@ -23,6 +23,7 @@ namespace Chimera::DMA
 {
   using TransferHandle_t = void *;
 
+
   /**
    *  Options for the memory transfer direction
    */
@@ -41,13 +42,14 @@ namespace Chimera::DMA
    */
   enum class Mode : uint8_t
   {
-    NORMAL,
-    CIRCULAR,
-    PERIPH_CONTROL
+    NORMAL,           /**< DMA is the flow controller */
+    CIRCULAR,         /**< Circular buffering behavior */
+    PERIPH_CONTROL    /**< Peripheral is the flow controller */
   };
 
   /**
-   *  Options for which channel to use on the DMA transfer
+   *  Options for which channel to use on the DMA transfer. Usually
+   *  these are called streams.
    */
   enum class Channel : uint8_t
   {
@@ -111,7 +113,7 @@ namespace Chimera::DMA
   /**
    * Selects the alignment for peripheral to memory transfers
    */
-  enum class PeriphMemoryAlignment : uint8_t
+  enum class PeripheralAlignment : uint8_t
   {
     ALIGN_BYTE,
     ALIGN_HALF_WORD,
@@ -132,17 +134,21 @@ namespace Chimera::DMA
 
   struct Init
   {
-    Channel channel;                /**< Which hardware channel should be used for the transfer */
-    Mode mode;
     TransferDirection direction;    /**< What direction the transfer will be occuring */
-
+    Mode mode;                      /**< The style of memory transfer */
+    Channel channel;                /**< Which hardware channel should be used for the transfer */
+    PeripheralIncrement pInc;       /**< Should the peripheral address auto-increment? */
+    PeripheralAlignment pAlign;     /**< Byte alignment of the peripheral transfer */
+    MemoryIncrement mInc;           /**< Should the memory address auto-increment? */
+    MemoryAlignment mAlign;         /**< Byte alignment of the memory transfer */
+    Priority priority;              /**< Priority level of the transfer */
   };
 
   struct TCB
   {
-    uint32_t source;
-    uint32_t sink;
-    uint32_t size;
+    uint32_t srcAddress;    /**< Location where data will be copied from */
+    uint32_t dstAddress;    /**< Location where data will be copied into */
+    uint32_t transferSize;  /**< How many bytes to transfer */
   };
 
 }  // namespace Chimera::DMA
