@@ -50,6 +50,18 @@ namespace Chimera::Threading
       return error;
     }
 
+    Chimera::Status_t Lockable::lockFromISR( const uint32_t timeout_mS )
+    {
+      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
+
+      if ( xSemaphoreTakeFromISR( recursive_mutex, nullptr ) != pdPASS )
+      {
+        error = Chimera::CommonStatusCodes::FAIL;
+      }
+
+      return error;
+    }
+
     Chimera::Status_t Lockable::unlock()
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
@@ -60,6 +72,18 @@ namespace Chimera::Threading
       }
 
       return error;
+    }
+
+    Chimera::Status_t Lockable::unlockFromISR()
+    {
+      Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
+
+      if ( xSemaphoreGiveFromISR( recursive_mutex, nullptr ) != pdPASS )
+      {
+        error = Chimera::CommonStatusCodes::FAIL;
+      }
+
+      return error; 
     }
 
     /*-------------------------------------------------

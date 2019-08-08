@@ -44,9 +44,8 @@ namespace Chimera
       ALTERNATE_OPEN_DRAIN,
       ANALOG,
       HIZ,
-
-      NUM_DRIVES,
-      UNKNOWN_DRIVE
+      UNKNOWN_DRIVE,
+      NUM_OPTIONS
     };
 
     enum class State : bool
@@ -64,9 +63,8 @@ namespace Chimera
       NO_PULL,
       PULL_UP,
       PULL_DN,
-
-      NUM_PULL_OPTIONS,
-      UNKNOWN_PULL
+      UNKNOWN_PULL,
+      NUM_OPTIONS
     };
 
     /**
@@ -92,9 +90,9 @@ namespace Chimera
       PORTJ,
       PORTK,
       PORTL,
-
-      NUM_PORTS,
-      UNKNOWN_PORT
+      
+      UNKNOWN_PORT,
+      NUM_OPTIONS
     };
 
     struct PinInit

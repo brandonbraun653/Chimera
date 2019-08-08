@@ -41,8 +41,10 @@ namespace Chimera::DMA
 
     virtual Chimera::Status_t reset() = 0;
 
+    virtual Chimera::Status_t start() = 0;
+
     /**
-     *  Starts a new transfer
+     *  Configures a new transfer
      *
      *  @param[in]  config    Description of how the transfer should execute
      *  @param[in]  transfer  The transfer memory/data details
@@ -56,7 +58,7 @@ namespace Chimera::DMA
      *  |         FAIL | The transfer could not start           |
      *  |      TIMEOUT | The DMA hardware could not be acquired |
      */
-    virtual Chimera::Status_t start( const Init &config, const TCB &transfer, const size_t timeout, TransferHandle_t *const handle ) = 0;
+    virtual Chimera::Status_t configure( const Init &config, const TCB &transfer, const size_t timeout, TransferHandle_t *const handle ) = 0;
 
     /**
      *  Kills an ongoing transfer

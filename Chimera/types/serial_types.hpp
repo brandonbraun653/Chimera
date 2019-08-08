@@ -54,6 +54,11 @@ namespace Chimera::Serial
     static constexpr Status_t TX_ABORTED                  = codeOffset + 19;
   };
 
+  /**
+   *  Options for selecting a baud rate. These are intended 
+   *  to be converted by the backend driver into the appropriate
+   *  register values for the internal clock generation.
+   */
   enum class BaudRate : size_t
   {
     SERIAL_BAUD_110    = 100u,
@@ -72,31 +77,63 @@ namespace Chimera::Serial
     SERIAL_BAUD_921600 = 921600u
   };
 
+  /**
+   *  Number of bits that can be sent in one transfer cycle
+   *
+   *  @warning  Do not change the numbering of the enumerations. 
+   *            They are used to index arrays.
+   */
   enum class CharWid : uint8_t
   {
     CW_8BIT = 8,
-    CW_9BIT
+    CW_9BIT,
+
+    NUM_OPTIONS
   };
 
+  /**
+   *  Parity options
+   *
+   *  @warning  Do not change the numbering of the enumerations. 
+   *            They are used to index arrays.
+   */
   enum class Parity : uint8_t
   {
     PAR_NONE = 0,
     PAR_ODD,
-    PAR_EVEN
+    PAR_EVEN,
+
+    NUM_OPTIONS
   };
 
+  /**
+   *  Stop bit options
+   *
+   *  @warning  Do not change the numbering of the enumerations. 
+   *            They are used to index arrays.
+   */
   enum class StopBits : uint8_t
   {
     SBITS_ONE = 0,
     SBITS_ONE_POINT_FIVE,
-    SBITS_TWO
+    SBITS_TWO,
+
+    NUM_OPTIONS
   };
 
+  /** 
+   *  Flow control options
+   *
+   *  @warning  Do not change the numbering of the enumerations. 
+   *            They are used to index arrays.
+   */
   enum class FlowControl : uint8_t
   {
-    FCTRL_NONE,
+    FCTRL_NONE = 0,
     FCTRL_SW,
-    FCTRL_HW
+    FCTRL_HW,
+
+    NUM_OPTIONS
   };
 
   typedef struct
