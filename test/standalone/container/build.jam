@@ -1,8 +1,8 @@
 
 local path-constant build_directory = $(COVERAGE_BUILD_DIR)/buffer ;
 
-exe BufferTests
-  : test_buffer.cpp
+exe ContainerTests
+  : test_container.cpp
   :
     <use>/CHIMERA//PUB
     <use>/FREERTOS//PUB
@@ -19,10 +19,10 @@ exe BufferTests
 
     <location>$(build_directory)
   ;
-explicit BufferTests ;
+explicit ContainerTests ;
 
 alias TEST
-  : BufferTests
+  : ContainerTests
   : <Chimera>enabled
     <Chimera-backend>Sim
     <FreeRTOS>enabled
