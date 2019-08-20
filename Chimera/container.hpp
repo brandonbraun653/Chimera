@@ -13,9 +13,9 @@
 #define CHIMERA_CONTAINER_HPP
 
 /* C++ Includes */
-#include <array>
 #include <algorithm>
 #include <cstring>
+#include <vector>
 
 namespace Chimera::Container
 {
@@ -37,13 +37,13 @@ namespace Chimera::Container
    *  will likely be faster than hashing. This depends on the comparison function
    *  however.
    */
-  template<typename T1, typename T2, std::size_t N>
+  template<typename T1, typename T2>
   class LightFlatMap
   {
   public:
     LightFlatMap( std::initializer_list<std::pair<T1, T2>> list )
     {
-      std::copy( list.begin(), list.end(), map.begin() );
+      std::copy( list.begin(), list.end(), std::back_inserter(map) );
     }
 
     /**
@@ -75,7 +75,7 @@ namespace Chimera::Container
      *  @param[in]  key   The key to search for
      *  @return std::pair<T1,T2>
      */
-    const std::pair<T1, T2> * find( const T1 key )
+    const std::pair<T1, T2> * find( const T1 key ) const 
     {
       /*------------------------------------------------
       For now use a naive O(n) implementation as this class
@@ -99,11 +99,11 @@ namespace Chimera::Container
      */
     constexpr size_t size() const
     {
-      return N;
+      return map.size();
     }
 
   private:
-    std::array<std::pair<T1, T2>, N> map;
+    std::vector<std::pair<T1, T2>> map;
   };
 }  // namespace Chimera::Container
 
