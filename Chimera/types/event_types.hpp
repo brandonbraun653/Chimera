@@ -42,6 +42,7 @@ namespace Chimera::Event
     INVALID,            /**< Special case used for initialization */
     READ_COMPLETE,      /**< A read was completed */
     WRITE_COMPLETE,     /**< A write was completed */
+    TRANSFER_COMPLETE,  /**< A transfer of some sort completed (bi-directional) */
     SYSTEM_ERROR,       /**< Catch all error case */
   };
 

@@ -21,7 +21,7 @@
 
 namespace Chimera::DMA
 {
-  class Interface : public Chimera::Event::Listener
+  class Interface
   {
   public:
     virtual ~Interface() = default;
