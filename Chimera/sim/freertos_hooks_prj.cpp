@@ -27,7 +27,7 @@ namespace Chimera::Modules::FreeRTOS
     memset( strBuff, 0, bufferSize );
     snprintf( strBuff, bufferSize, "Task [%s]: stack overflow occurred\r\n", pcTaskName );
 
-    throw std::overflow_error( strBuff );
+    //throw std::overflow_error( strBuff );
   }
 
   void ApplicationTickHook()
@@ -36,7 +36,7 @@ namespace Chimera::Modules::FreeRTOS
 
   void ApplicationMallocFailedHook()
   {
-    throw std::bad_alloc();
+    //throw std::bad_alloc();
   }
 
   void ApplicationIdleHook()

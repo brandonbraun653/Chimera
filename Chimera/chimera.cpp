@@ -23,20 +23,6 @@
 
 #endif
 
-void ChimeraInit()
-{
-#ifdef MOD_TEST
-
-#else
-  // Backend namespace has class that inherits from chimera::System::interface or something
-  // and then has static member functions that perform initialization. Do the same for the
-  // timer and delay functionality.
-  cSystemInit();
-#endif
-
-  Chimera::Exception::initialize();
-}
-
 namespace Chimera
 {
   uint32_t millis()
