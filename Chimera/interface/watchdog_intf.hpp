@@ -35,7 +35,10 @@ namespace Chimera::Watchdog
      *  @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked
      *  @return Status::OK if the initialization was a success, Status::FAIL if not
      */
-    virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) = 0;
+    virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
 
     /**
      *   Starts the watchdog timer. If successful, Interface::kick() must
@@ -43,21 +46,30 @@ namespace Chimera::Watchdog
      *
      *   @return Peripheral status
      */
-    virtual Status_t start() = 0;
+    virtual Status_t start()
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
 
     /**
      *   Stops the watchdog timer.
      *
      *   @return Peripheral status
      */
-    virtual Status_t stop() = 0;
+    virtual Status_t stop()
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
 
     /**
      *   Kicks the watchdog timer, starting a new countdown cycle.
      *
      *   @return Peripheral status
      */
-    virtual Status_t kick() = 0;
+    virtual Status_t kick()
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
 
     /**
      *   Gets the actual timeout value achieved by the hardware
@@ -65,7 +77,10 @@ namespace Chimera::Watchdog
      *   @param[out] timeout     Timeout value in milliseconds
      *   @return Peripheral status
      */
-    virtual Status_t getTimeout( uint32_t &timeout ) = 0;
+    virtual Status_t getTimeout( uint32_t &timeout )
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
 
     /**
      *   Configures the watchdog to stop on connection to a debugger
@@ -73,38 +88,7 @@ namespace Chimera::Watchdog
      *   @param[in]  enable      If true, allows the watchdog to stop. Otherwise, it continues running
      *   @return Peripheral status
      */
-    virtual Status_t pauseOnDebugHalt( const bool enable ) = 0;
-  };
-
-  class WatchdogUnsupported : public Interface
-  {
-  public:
-    virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) override
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    virtual Status_t start() override
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    virtual Status_t stop() override
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    virtual Status_t kick() override
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    virtual Status_t getTimeout( uint32_t &timeout ) override
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    virtual Status_t pauseOnDebugHalt( const bool enable ) override
+    virtual Status_t pauseOnDebugHalt( const bool enable )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }

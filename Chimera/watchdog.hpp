@@ -24,7 +24,7 @@
 namespace Chimera::Watchdog
 {
 #if !defined( CHIMERA_INHERITED_WATCHDOG )
-    using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
+    using CHIMERA_INHERITED_WATCHDOG = Interface;
 #endif
     
     class WatchdogClass : public CHIMERA_INHERITED_WATCHDOG
