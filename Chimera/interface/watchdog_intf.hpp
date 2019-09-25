@@ -14,6 +14,8 @@
 
 /* C++ Includes */
 #include <cstdint>
+#include <cstdlib>
+#include <limits>
 
 /* Chimera Includes */
 #include <Chimera/types/common_types.hpp>
@@ -44,7 +46,7 @@ namespace Chimera::Watchdog
      *   Starts the watchdog timer. If successful, Interface::kick() must
      *   be called at regular intervals to prevent the watchdog from firing.
      *
-     *   @return Peripheral status
+     *   @return Chimera::Status_t
      */
     virtual Status_t start()
     {
@@ -54,7 +56,7 @@ namespace Chimera::Watchdog
     /**
      *   Stops the watchdog timer.
      *
-     *   @return Peripheral status
+     *   @return Chimera::Status_t
      */
     virtual Status_t stop()
     {
@@ -64,20 +66,9 @@ namespace Chimera::Watchdog
     /**
      *   Kicks the watchdog timer, starting a new countdown cycle.
      *
-     *   @return Peripheral status
+     *   @return Chimera::Status_t
      */
     virtual Status_t kick()
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    /**
-     *   Gets the actual timeout value achieved by the hardware
-     *
-     *   @param[out] timeout     Timeout value in milliseconds
-     *   @return Peripheral status
-     */
-    virtual Status_t getTimeout( uint32_t &timeout )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
@@ -86,11 +77,42 @@ namespace Chimera::Watchdog
      *   Configures the watchdog to stop on connection to a debugger
      *
      *   @param[in]  enable      If true, allows the watchdog to stop. Otherwise, it continues running
-     *   @return Peripheral status
+     *   @return Chimera::Status_t
      */
     virtual Status_t pauseOnDebugHalt( const bool enable )
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+
+    /**
+     *   Gets the actual timeout value achieved by the hardware
+     *
+     *   @param[out] timeout     Timeout value in milliseconds
+     *   @return Chimera::Status_t
+     */
+    virtual size_t getTimeout()
+    {
+      return 0;
+    }
+
+    /**
+     *  Returns the max supported timeout by the hardware in milliseconds
+     *
+     *  @return size_t
+     */
+    virtual size_t maxTimeout()
+    {
+      return std::numeric_limits<size_t>::max();
+    }
+
+    /**
+     *  Returns the min supported timeout by the hardware in milliseconds
+     *
+     *  @return size_t
+     */
+    virtual size_t minTimeout()
+    {
+      return std::numeric_limits<size_t>::min();
     }
   };
 }  // namespace Chimera::Watchdog

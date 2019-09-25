@@ -26,25 +26,26 @@ namespace Chimera::Peripheral
    */
   enum class Type : uint8_t
   {
-    PERIPH_ADC = 0,    /**< Analog to Digital Converter */
-    PERIPH_CRC,    /**< Cyclic Redundancy Check */
-    PERIPH_DAC,    /**< Digital to Analog Converter */
-    PERIPH_DMA,    /**< Direct Memory Access */
-    PERIPH_FMC,    /**< Flexible Memory Controller */
-    PERIPH_GPIO,   /**< General Purpose Input Output */
-    PERIPH_I2C,    /**< Inter-Integrated Circuit */
-    PERIPH_I2S,    /**< Inter-IC Sound */
-    PERIPH_NVIC,   /**< Nested Vector Interrupt Controller */
-    PERIPH_PWR,    /**< Power Controller */
-    PERIPH_RCC,    /**< Reset and Clock Controller */
-    PERIPH_RTC,    /**< Real Time Clock */
-    PERIPH_SDIO,   /**< Secure Digital Input Output */
-    PERIPH_SPI,    /**< Serial Peripheral Interface */
-    PERIPH_TIM,    /**< Timer */
-    PERIPH_UART,   /**< Universal Asynchronous Receiver Transmitter */
-    PERIPH_USART,  /**< Universal Synchronous/Asynchronous Receiver Transmitter */
-    PERIPH_VIC,    /**< Vector Interrupt Controller */
-    PERIPH_WDG,    /**< Watchdog */
+    PERIPH_ADC = 0,     /**< Analog to Digital Converter */
+    PERIPH_CRC,         /**< Cyclic Redundancy Check */
+    PERIPH_DAC,         /**< Digital to Analog Converter */
+    PERIPH_DMA,         /**< Direct Memory Access */
+    PERIPH_FMC,         /**< Flexible Memory Controller */
+    PERIPH_GPIO,        /**< General Purpose Input Output */
+    PERIPH_I2C,         /**< Inter-Integrated Circuit */
+    PERIPH_I2S,         /**< Inter-IC Sound */
+    PERIPH_IWDG,        /**< Independent Watchdog */
+    PERIPH_NVIC,        /**< Nested Vector Interrupt Controller */
+    PERIPH_PWR,         /**< Power Controller */
+    PERIPH_RCC,         /**< Reset and Clock Controller */
+    PERIPH_RTC,         /**< Real Time Clock */
+    PERIPH_SDIO,        /**< Secure Digital Input Output */
+    PERIPH_SPI,         /**< Serial Peripheral Interface */
+    PERIPH_TIM,         /**< Timer */
+    PERIPH_UART,        /**< Universal Asynchronous Receiver Transmitter */
+    PERIPH_USART,       /**< Universal Synchronous/Asynchronous Receiver Transmitter */
+    PERIPH_VIC,         /**< Vector Interrupt Controller */
+    PERIPH_WWDG,        /**< Window Watchdog */
     
     NUM_SUPPORTED_TYPES
   };

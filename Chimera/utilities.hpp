@@ -4,6 +4,7 @@
 
 /* C++ Includes */
 #include <array>
+#include <algorithm>
 #include <atomic>
 #include <iterator>
 #include <memory>
@@ -44,6 +45,27 @@ namespace Chimera::Utilities
     /* clang-format on */
   }
 
+  template<typename T>
+  std::pair<bool, int> findInVector( const std::vector<T> &vecOfElements, const T &element )
+  {
+    std::pair<bool, int> result;
+
+    // Find given element in vector
+    auto it = std::find( vecOfElements.begin(), vecOfElements.end(), element );
+
+    if ( it != vecOfElements.end() )
+    {
+      result.second = distance( vecOfElements.begin(), it );
+      result.first  = true;
+    }
+    else
+    {
+      result.first  = false;
+      result.second = -1;
+    }
+
+    return result;
+  }
 
 #if defined( USING_BOOST )
   // Conversion functions courtesy of:
