@@ -140,27 +140,32 @@ namespace Chimera
       GPIOUnsupported()  = default;
       ~GPIOUnsupported() = default;
 
-      Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin, const size_t timeout ) final override
+      Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin, const size_t timeout = 0 ) final override
       {
         return Chimera::GPIO::Status::FAIL;
       }
 
-      Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const Chimera::GPIO::Pull pull, const size_t timeout ) final override
+      Chimera::Status_t init( const Chimera::GPIO::PinInit &pinInit, const size_t timeout = 0 ) final override
+      {
+        return Chimera::GPIO::Status::FAIL;
+      }
+
+      Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const Chimera::GPIO::Pull pull, const size_t timeout = 0 ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
 
-      Chimera::Status_t setState( const Chimera::GPIO::State state, const size_t timeout ) final override
+      Chimera::Status_t setState( const Chimera::GPIO::State state, const size_t timeout = 0 ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
 
-      Chimera::Status_t getState( Chimera::GPIO::State &state, const size_t timeout ) final override
+      Chimera::Status_t getState( Chimera::GPIO::State &state, const size_t timeout = 0 ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
 
-      Chimera::Status_t toggle( const size_t timeout ) final override
+      Chimera::Status_t toggle( const size_t timeout = 0 ) final override
       {
         return Chimera::GPIO::Status::NOT_INITIALIZED;
       }
