@@ -22,10 +22,12 @@
 #include <Chimera/types/spi_types.hpp>
 #include <Chimera/threading.hpp>
 
+#include <Chimera/interface/threading_intf.hpp>
+
 namespace Chimera::SPI
 {
-  class Interface : public Chimera::Threading::Lockable,
-                    public Chimera::Event::Listener
+  class Interface : public Chimera::Threading::LockableInterface,
+                    public Chimera::Event::ListenerInterface
   {
   public:
     virtual ~Interface() = default;
@@ -42,14 +44,14 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
+    virtual Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct ) = 0;
 
     /**
      *  Gets the parameters used to initialize the SPI object
-     *  
-     *  @return Chimera::SPI::Setup
+     *
+     *  @return Chimera::SPI::DriverConfig
      */
-    virtual Chimera::SPI::Setup getInit() = 0;
+    virtual Chimera::SPI::DriverConfig getInit() = 0;
 
     /**
      *	Destroys all previous hardware setup (virtually or physically), which requires
@@ -90,7 +92,7 @@ namespace Chimera::SPI
      *  |              OK | The operation completed successfully         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode mode ) = 0;
+    virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::CSMode mode ) = 0;
 
     /**
      *  Writes data onto the SPI bus. The number of bytes actually written will be returned
@@ -210,7 +212,7 @@ namespace Chimera::SPI
     SPIUnsupported()  = default;
     ~SPIUnsupported() = default;
 
-    Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) final override
+    Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct ) final override
     {
       return Chimera::SPI::Status::FAIL;
     }
@@ -225,7 +227,7 @@ namespace Chimera::SPI
       return Chimera::SPI::Status::NOT_SUPPORTED;
     }
 
-    Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode mode ) final override
+    Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::CSMode mode ) final override
     {
       return Chimera::SPI::Status::NOT_INITIALIZED;
     }

@@ -26,6 +26,10 @@ namespace Chimera::SPI
   using SPIClass_sPtr = std::shared_ptr<SPIClass>;
   using SPIClass_uPtr = std::unique_ptr<SPIClass>;
 
+  using ClockFreq    = size_t;
+  using Channel      = uint8_t;
+  using TransferMode = Chimera::Hardware::SubPeripheralMode;
+
   class Status : public CommonStatusCodes
   {
   public:
@@ -40,18 +44,19 @@ namespace Chimera::SPI
     static constexpr Status_t CLOCK_SET_EQ                = OK;
   };
 
-  enum class Mode : uint8_t
-  {
-    MASTER,
-    SLAVE
-  };
-
+  /**
+   *  Controls the endianness of the transfers.
+   */
   enum class BitOrder : uint8_t
   {
-    MSB_FIRST,
-    LSB_FIRST
+    MSB_FIRST,  /**< The most significant bit will be transmitted first */
+    LSB_FIRST   /**< The least significant bit will be transmitted first */
   };
 
+  /**
+   *  Controls the clock phase and polarity using common industry mode types
+   *  @see https://en.wikipedia.org/wiki/Serial_Peripheral_Interface
+   */
   enum class ClockMode : uint8_t
   {
     MODE0, /**< CPOL=0, CPHA=0 */
@@ -60,6 +65,20 @@ namespace Chimera::SPI
     MODE3  /**< CPOL=1, CPHA=1 */
   };
 
+  /**
+   *  Overarching control scheme for the peripheral. Are we going 
+   *  to be acting as a Master or Slave device?
+   */
+  enum class ControlMode : uint8_t
+  {
+    MASTER, /**< This device starts/stops transfers */
+    SLAVE   /**< This device responds to another master on the bus */
+  };
+
+  /**
+   *  Controls how many bits wide each transfer will be. Most chips 
+   *  support anywhere from 8-16 bits.
+   */
   enum class DataSize : uint8_t
   {
     SZ_8BIT,
@@ -73,29 +92,22 @@ namespace Chimera::SPI
     SZ_16BIT,
   };
 
-  enum class ChipSelectMode : uint8_t
+  /**
+   *  A higher level configuration option that defines the behavior of the 
+   *  chip select line between transfers. This functionality could be implemented
+   *  in either software or hardware, so the performance of this could vary from
+   *  chip to chip.
+   */
+  enum class CSMode : uint8_t
   {
-    MANUAL,                /**< Manually control the state of the chip select line */
+    MANUAL,                /**< SW must manually control the state of the chip select line */
     AUTO_BETWEEN_TRANSFER, /**< Twiddle the chip select between transfers, disabling on completion */
     AUTO_AFTER_TRANSFER    /**< Disable the chip select only after all transfers complete */
   };
 
-  struct Setup
-  {
-    GPIO::PinInit SCK;  /**< The GPIO pin settings used for SCK */
-    GPIO::PinInit MOSI; /**< The GPIO pin settings used for MOSI */
-    GPIO::PinInit MISO; /**< The GPIO pin settings used for MISO */
-    GPIO::PinInit CS;   /**< The GPIO pin settings used for CS */
-
-    uint8_t channel         = 0;
-    Mode mode               = Mode::MASTER;        /**< The primary control method for the peripheral */
-    DataSize dataSize       = DataSize::SZ_8BIT;   /**< How wide each transfer should minimally be */
-    BitOrder bitOrder       = BitOrder::MSB_FIRST; /**< Sets LSB or MSB ordering */
-    ClockMode clockMode     = ClockMode::MODE0;    /**< Sets the clock phase and polarity options */
-    uint32_t clockFrequency = 1000000;             /**< The desired approximate clock frequency */
-    Chimera::Hardware::SubPeripheralMode transferMode = Chimera::Hardware::SubPeripheralMode::DMA;
-  };
-
+  /**
+   *  Possible events that can occur within the driver
+   */
   enum class Event : uint8_t
   {
     RX_COMPLETE,           /**< Receive complete */
@@ -107,7 +119,40 @@ namespace Chimera::SPI
     SLAVE_RX_BYTE,         /**< Slave receive buffer got a byte */
     SLAVE_RX_HALF,         /**< Slave receive buffer half full */
     SLAVE_RX_FULL,         /**< Slave receive buffer full */
+
+    NUM_OPTIONS
   };
+
+  /**
+   *  Low level hardware configuration options that define the physical
+   *  layer behavior common to all SPI peripherals.
+   */
+  struct HardwareInit
+  {
+    BitOrder bitOrder       = BitOrder::MSB_FIRST;    /**< Sets LSB or MSB ordering of the transfers */
+    ControlMode controlMode = ControlMode::MASTER;    /**< The primary arbitration method for the peripheral */
+    ClockFreq clockFreq     = 1000000;                /**< The desired approximate clock frequency */
+    ClockMode clockMode     = ClockMode::MODE0;       /**< Sets the clock phase and polarity options */
+    CSMode csMode           = CSMode::MANUAL;         /**< Chip select control mode */
+    DataSize dataSize       = DataSize::SZ_8BIT;      /**< How wide each transfer should minimally be */
+    Channel hwChannel       = 0;                      /**< Hardware channel to be configured */
+    TransferMode txfrMode   = TransferMode::BLOCKING; /**< Transfer controller mode */
+  };
+
+  /**
+   *  Configuration struct that fully defines all the necessary information to 
+   *  initialize an SPI peripheral 
+   */
+  struct DriverConfig
+  {
+    GPIO::PinInit SCKInit;  /**< The GPIO pin settings used for SCK */
+    GPIO::PinInit MOSIInit; /**< The GPIO pin settings used for MOSI */
+    GPIO::PinInit MISOInit; /**< The GPIO pin settings used for MISO */
+    GPIO::PinInit CSInit;   /**< The GPIO pin settings used for CS */
+    HardwareInit HWInit;    /**< Hardware driver configuration options */
+  };
+
+
 }  // namespace Chimera::SPI
 
 #endif /* !CHIMERA_SPI_TYPES_HPP */

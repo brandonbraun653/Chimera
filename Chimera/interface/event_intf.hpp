@@ -28,10 +28,10 @@ namespace Chimera::Event
    *  of code that some kind of event has occured. Most of the thread safety is left
    *  up to the back end driver, should it be needed. 
    */
-  class Listener
+  class ListenerInterface
   {
   public:
-    virtual ~Listener() = default;
+    virtual ~ListenerInterface() = default;
     
     /**
      *  Attach a listener to get notified when an event occurs.
@@ -49,10 +49,7 @@ namespace Chimera::Event
      *  |          TIMEOUT | The system timed out while accessing resources         |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t registerListener( Actionable &listener, const size_t timeout, size_t &registrationID )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t registerListener( Actionable &listener, const size_t timeout, size_t &registrationID ) = 0;
 
     /**
      *   Remove an event listener
@@ -68,10 +65,7 @@ namespace Chimera::Event
      *  |          TIMEOUT | The system timed out while accessing resources         |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout ) = 0;
   };
 
 }  // namespace Chimera::Event

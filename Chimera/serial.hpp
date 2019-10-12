@@ -17,9 +17,15 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
+#include <Chimera/constants/common.hpp>
+#include <Chimera/interface/event_intf.hpp>
 #include <Chimera/interface/serial_intf.hpp>
 #include <Chimera/interface/threading_intf.hpp>
+
+#include <Chimera/base/serial_base.hpp>
+
+#include <Chimera/event.hpp>
+
 #include "chimeraPort.hpp"
 
 namespace Chimera::Serial
@@ -37,8 +43,14 @@ namespace Chimera::Serial
     ~SerialClass() = default;
   };
 
-  static_assert( std::is_base_of<Interface, SerialClass>::value, "Base class implements the wrong interface" );
-  // static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, SerialClass>::value, "");
+  /*------------------------------------------------
+  Make sure the inherited driver implements the expected interfaces
+  ------------------------------------------------*/
+  static_assert( ( ( std::is_base_of<Interface, SerialClass>::value )
+                   && ( std::is_base_of<Chimera::Event::ListenerInterface, SerialClass>::value )
+                   && ( std::is_base_of<Chimera::Threading::AsyncIOBaseInterface, SerialClass>::value )
+                   && ( std::is_base_of<Chimera::Threading::LockableInterface, SerialClass>::value ) ),
+                 "Base class implements the wrong interface" );
 
 }  // namespace Chimera::Serial
 

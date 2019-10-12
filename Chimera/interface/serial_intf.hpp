@@ -16,11 +16,6 @@
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/interface/buffer_intf.hpp>
-#include <Chimera/interface/event_intf.hpp>
-#include <Chimera/interface/threading_intf.hpp>
-#include <Chimera/preprocessor.hpp>
-#include <Chimera/threading.hpp>
 #include <Chimera/types/callback_types.hpp>
 #include <Chimera/types/common_types.hpp>
 #include <Chimera/types/serial_types.hpp>
@@ -28,9 +23,7 @@
 
 namespace Chimera::Serial
 {
-  class Interface : public Chimera::Event::Listener,
-                    public Chimera::Threading::Lockable,
-                    public Chimera::Threading::AsyncIOBaseInterface
+  class Interface
   {
   public:
     virtual ~Interface() = default;
@@ -234,10 +227,7 @@ namespace Chimera::Serial
      *  |            EMPTY | There were not enough queued bytes to read out |
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      */
-    virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len )
-    {
-      return Status::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len ) = 0;
 
     /**
      *  Turns on buffering for asynchronous modes (Interrupt, DMA)
@@ -259,10 +249,7 @@ namespace Chimera::Serial
      */
     virtual Chimera::Status_t enableBuffering( const Chimera::Hardware::SubPeripheral periph,
                                                boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
-                                               const uint32_t hwBufferSize )
-    {
-      return Status::NOT_SUPPORTED;
-    }
+                                               const uint32_t hwBufferSize ) = 0;
 
     /**
      *  Turns off the buffering feature
@@ -278,10 +265,7 @@ namespace Chimera::Serial
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph )
-    {
-      return Status::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph ) = 0;
 
     /**
      *  Check if data is available to be read. Only works when configured in Interrupt or DMA mode.
@@ -294,80 +278,7 @@ namespace Chimera::Serial
      *  |         true | Data is available    |
      *  |        false | No data is available |
      */
-    virtual bool available( size_t *const bytes = nullptr )
-    {
-      return false;
-    }
-  };
-
-  class SerialUnsupported : public Interface
-  {
-  public:
-    SerialUnsupported()
-    {
-    }
-
-    Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t begin( const Chimera::Hardware::SubPeripheralMode txMode,
-                             const Chimera::Hardware::SubPeripheralMode rxMode ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t end() final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t configure( const Config &config ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t setBaud( const uint32_t baud ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph,
-                               const Chimera::Hardware::SubPeripheralMode mode ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    void postISRProcessing() final override
-    {
-    }
-
-    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
-
-    Chimera::Status_t await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier,
-                             const size_t timeout ) final override
-    {
-      return Chimera::CommonStatusCodes::FAIL;
-    }
+    virtual bool available( size_t *const bytes = nullptr ) = 0;
   };
 
 }  // namespace Chimera::Serial
