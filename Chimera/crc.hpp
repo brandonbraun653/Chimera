@@ -17,7 +17,7 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
+#include <Chimera/base/crc_base.hpp>
 #include <Chimera/interface/crc_intf.hpp>
 #include "chimeraPort.hpp"
 
@@ -36,10 +36,10 @@ namespace Chimera
       ~HW() = default;
     };
 
-    static_assert( std::is_base_of<Chimera::AlgCRC::Interface, HW>::value, "Class implements wrong interface" );
+    static_assert( std::is_base_of<Chimera::AlgCRC::HWInterface, HW>::value, "Class implements wrong interface" );
     
     
-    class SW : public Chimera::AlgCRC::Interface
+    class SW : public Chimera::AlgCRC::HWInterface
     {
     public:
       SW();
@@ -59,7 +59,7 @@ namespace Chimera
       uint32_t previous;
     };
     
-    static_assert( std::is_base_of<Chimera::AlgCRC::Interface, SW>::value, "Base class implements the wrong interface" );
+    static_assert( std::is_base_of<Chimera::AlgCRC::HWInterface, SW>::value, "Base class implements the wrong interface" );
 
   }  // namespace AlgCRC
 }  // namespace Chimera

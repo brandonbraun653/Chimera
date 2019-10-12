@@ -17,14 +17,14 @@
 #include <type_traits>
 
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
+#include <Chimera/base/watchdog_base.hpp>
 #include <Chimera/interface/watchdog_intf.hpp>
 #include "chimeraPort.hpp"
 
 namespace Chimera::Watchdog
 {
 #if !defined( CHIMERA_INHERITED_WATCHDOG )
-    using CHIMERA_INHERITED_WATCHDOG = Interface;
+    using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
 #endif
     
     class WatchdogClass : public CHIMERA_INHERITED_WATCHDOG
@@ -34,7 +34,7 @@ namespace Chimera::Watchdog
       ~WatchdogClass() = default;
     };
 
-    static_assert( std::is_base_of<Interface, WatchdogClass>::value, "Class implements wrong interface" );
+    static_assert( std::is_base_of<HWInterface, WatchdogClass>::value, "Class implements wrong interface" );
 
     /**
      *  Intentionally halts the CPU so that the watchdog timer will reset the

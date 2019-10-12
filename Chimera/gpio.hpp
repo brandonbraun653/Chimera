@@ -17,7 +17,7 @@
 #include <stdint.h>
 
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
+#include <Chimera/base/gpio_base.hpp>
 #include <Chimera/interface/gpio_intf.hpp>
 #include "chimeraPort.hpp"
 
@@ -42,13 +42,7 @@ namespace Chimera::GPIO
     ~GPIOClass() = default;
   };
 
-  static_assert( std::is_base_of<Interface, GPIOClass>::value, "Base class implements the wrong interface" );
-
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-  STATIC_WARNING( !( std::is_base_of<GPIOUnsupported, Interface>::value ),
-                  "No GPIO interface defined in backend driver. You can disable these warnings by defining "
-                  "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
+  static_assert( std::is_base_of<HWInterface, GPIOClass>::value, "Base class implements the wrong interface" );
 
 }  // namespace Chimera::GPIO
 
