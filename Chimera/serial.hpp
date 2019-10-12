@@ -46,7 +46,7 @@ namespace Chimera::Serial
   /*------------------------------------------------
   Make sure the inherited driver implements the expected interfaces
   ------------------------------------------------*/
-  static_assert( ( ( std::is_base_of<Interface, SerialClass>::value )
+  static_assert( ( ( std::is_base_of<HWInterface, SerialClass>::value )
                    && ( std::is_base_of<Chimera::Event::ListenerInterface, SerialClass>::value )
                    && ( std::is_base_of<Chimera::Threading::AsyncIOBaseInterface, SerialClass>::value )
                    && ( std::is_base_of<Chimera::Threading::LockableInterface, SerialClass>::value ) ),

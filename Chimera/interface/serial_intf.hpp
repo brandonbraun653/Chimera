@@ -15,6 +15,9 @@
 /* C++ Includes */
 #include <cstdint>
 
+/* Boost Includes */
+#include <boost/circular_buffer_fwd.hpp>
+
 /* Chimera Includes */
 #include <Chimera/types/callback_types.hpp>
 #include <Chimera/types/common_types.hpp>
@@ -23,10 +26,10 @@
 
 namespace Chimera::Serial
 {
-  class Interface
+  class HWInterface
   {
   public:
-    virtual ~Interface() = default;
+    virtual ~HWInterface() = default;
 
     /**
      *  Attaches and configures the physical hardware channel and GPIO pin setup
