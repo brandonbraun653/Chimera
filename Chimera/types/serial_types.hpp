@@ -23,9 +23,9 @@
 
 namespace Chimera::Serial
 {
-  class Interface;
-  using Interface_sPtr = std::shared_ptr<Interface>;
-  using Interface_uPtr = std::unique_ptr<Interface>;
+  class HWInterface;
+  using Interface_sPtr = std::shared_ptr<HWInterface>;
+  using Interface_uPtr = std::unique_ptr<HWInterface>;
 
   class SerialClass;
   using SerialClass_sPtr = std::shared_ptr<SerialClass>;

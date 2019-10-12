@@ -18,7 +18,6 @@
 #include <type_traits>
 
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
 #include <Chimera/interface/system_intf.hpp>
 #include "chimeraPort.hpp"
 

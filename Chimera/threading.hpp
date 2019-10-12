@@ -42,66 +42,16 @@ namespace Chimera::Threading
    *  rudimentary (not guaranteed thread safe) lock using std::atomic. The actual atomicity
    *  of the non-FreeRTOS implementation is going to be processor specific.
    */
-  class Lockable
+  class Lockable : public LockableInterface
   {
   public:
-    /**
-     *  Attempts to reserve the inheriting object
-     *
-     *  @note If not using FreeRTOS, this function will ignore the timeout
-     *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
-     *
-     *  @param[in]  timeout_mS    If using FreeRTOS, how long to wait for the object to be reserved
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |                     Explanation                    |
-     *  |:------------:|:--------------------------------------------------:|
-     *  |           OK | The object was reserved before the timeout expired |
-     *  |         FAIL | The object was not reserved                        |
-     */
-    Chimera::Status_t lock( const uint32_t timeout_mS );
+    Chimera::Status_t lock( const uint32_t timeout_mS ) final override;
 
-    /**
-     *  Attempts to reserve the inheriting object, but from an ISR safe execution context.
-     *
-     *  @param[in]  timeout_mS    If using FreeRTOS, how long to wait for the object to be reserved
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |                     Explanation                    |
-     *  |:------------:|:--------------------------------------------------:|
-     *  |           OK | The object was reserved before the timeout expired |
-     *  |         FAIL | The object was not reserved                        |
-     */
-    Chimera::Status_t lockFromISR( const uint32_t timeout_mS );
+    Chimera::Status_t lockFromISR( const uint32_t timeout_mS ) final override;
 
-    /**
-     *  Attempts to release the inheriting object
-     *
-     *  @note If not using FreeRTOS, this function will release the lock regardless of who holds it.
-     *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
-     *
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |         Explanation          |
-     *  |:------------:|:----------------------------:|
-     *  |           OK | The object was released      |
-     *  |         FAIL | The object was not released  |
-     */
-    Chimera::Status_t unlock();
+    Chimera::Status_t unlock() final override;
 
-    /**
-     *  Attempts to release the inheriting object, but from an ISR safe execution context
-     *
-     *  @note If not using FreeRTOS, this function will release the lock regardless of who holds it.
-     *
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |         Explanation          |
-     *  |:------------:|:----------------------------:|
-     *  |           OK | The object was released      |
-     *  |         FAIL | The object was not released  |
-     */
-    Chimera::Status_t unlockFromISR();
+    Chimera::Status_t unlockFromISR() final override;
 
     Lockable();
     ~Lockable() = default;

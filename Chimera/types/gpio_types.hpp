@@ -27,6 +27,8 @@ namespace Chimera
     using GPIOClass_sPtr = std::shared_ptr<Chimera::GPIO::GPIOClass>;
     using GPIOClass_uPtr = std::unique_ptr<Chimera::GPIO::GPIOClass>;
 
+    using Pin = uint8_t;
+
     class Status : public CommonStatusCodes
     {
     public:
@@ -101,7 +103,7 @@ namespace Chimera
       Port port                                = Port::UNKNOWN_PORT; /**< Pin IO port */
       Drive drive                              = Drive::INPUT;       /**< Pin IO drive type */
       State state                              = State::LOW;         /**< Default logical pin state on init */
-      uint8_t pin                              = 0u;                 /**< Pin number on the given port */
+      Pin pin                                  = 0u;                 /**< Pin number on the given port */
       uint32_t alternate                       = 0u;                 /**< Project specific indicator of pin AF config */
       Chimera::Hardware::AccessMode accessMode = Chimera::Hardware::AccessMode::BARE_METAL;
     };

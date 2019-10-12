@@ -18,6 +18,7 @@
 
 /* Chimera Includes */
 #include "chimeraPort.hpp"
+#include <Chimera/base/dma_base.hpp>
 #include <Chimera/interface/dma_intf.hpp>
 
 namespace Chimera::DMA
@@ -41,7 +42,7 @@ namespace Chimera::DMA
     ~DMAClass() = default;
   };
 
-  static_assert( std::is_base_of<Interface, DMAClass>::value, "Base class implements the wrong interface" );
+  static_assert( std::is_base_of<HWInterface, DMAClass>::value, "Base class implements the wrong interface" );
 
 }  // namespace Chimera::DMA
 

@@ -16,7 +16,7 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
+#include <Chimera/base/spi_base.hpp>
 #include <Chimera/interface/spi_intf.hpp>
 #include "chimeraPort.hpp"
 
@@ -44,7 +44,7 @@ namespace Chimera::SPI
       ~SPIClass() = default;
     };
 
-    static_assert( std::is_base_of<Interface, SPIClass>::value, "Base class implements the wrong interface" );
+    static_assert( std::is_base_of<HWInterface, SPIClass>::value, "Base class implements the wrong interface" );
 
 }  // namespace Chimera
 

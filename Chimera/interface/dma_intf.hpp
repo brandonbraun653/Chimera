@@ -21,13 +21,13 @@
 
 namespace Chimera::DMA
 {
-  class Interface
+  class HWInterface
   {
   public:
-    virtual ~Interface() = default;
+    virtual ~HWInterface() = default;
 
     /**
-     *  Initializes the low level hardware. Must be called before any 
+     *  Initializes the low level hardware. Must be called before any
      *  transfers are started.
      *
      *  @return Chimera::Status_t
@@ -58,7 +58,8 @@ namespace Chimera::DMA
      *  |         FAIL | The transfer could not start           |
      *  |      TIMEOUT | The DMA hardware could not be acquired |
      */
-    virtual Chimera::Status_t configure( const Init &config, const TCB &transfer, const size_t timeout, TransferHandle_t *const handle ) = 0;
+    virtual Chimera::Status_t configure( const Init &config, const TCB &transfer, const size_t timeout,
+                                         TransferHandle_t *const handle ) = 0;
 
     /**
      *  Kills an ongoing transfer
@@ -83,36 +84,6 @@ namespace Chimera::DMA
      */
     virtual Chimera::Status_t status( TransferHandle_t handle, const size_t timeout ) = 0;
   };
-
-  class DMAUnsupported : public Interface
-  {
-  public:
-    DMAUnsupported() = default;
-    ~DMAUnsupported() = default;
-
-    Chimera::Status_t init( const Init &config, const size_t timeout, TransferHandle_t handle )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    Chimera::Status_t start( TransferHandle_t handle, const TCB &transfer, const size_t timeout )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    Chimera::Status_t abort( TransferHandle_t handle )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-
-    Chimera::Status_t status( TransferHandle_t handle )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-  };
-
-  using CHIMERA_INHERITED_DMA = DMAUnsupported;
-
 }  // namespace Chimera::DMA
 
 #endif /* !CHIMERA_DMA_INTERFACE_HPP */

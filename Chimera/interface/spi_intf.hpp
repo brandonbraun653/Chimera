@@ -3,12 +3,12 @@
  *    spi_intf.hpp
  *
  *   Description:
- *    Models the Chimera SPI interface 
+ *    Models the Chimera SPI interface
  *
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#pragma once 
+#pragma once
 #ifndef CHIMERA_SPI_INTERFACE_HPP
 #define CHIMERA_SPI_INTERFACE_HPP
 
@@ -22,13 +22,14 @@
 #include <Chimera/types/spi_types.hpp>
 #include <Chimera/threading.hpp>
 
+#include <Chimera/interface/threading_intf.hpp>
+
 namespace Chimera::SPI
 {
-  class Interface : public Chimera::Threading::Lockable,
-                    public Chimera::Event::Listener
+  class HWInterface
   {
   public:
-    virtual ~Interface() = default;
+    virtual ~HWInterface() = default;
 
     /**
      *  Initializes the SPI hardware according to the setup struct
@@ -42,14 +43,14 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) = 0;
+    virtual Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct ) = 0;
 
     /**
      *  Gets the parameters used to initialize the SPI object
-     *  
-     *  @return Chimera::SPI::Setup
+     *
+     *  @return Chimera::SPI::DriverConfig
      */
-    virtual Chimera::SPI::Setup getInit() = 0;
+    virtual Chimera::SPI::DriverConfig getInit() = 0;
 
     /**
      *	Destroys all previous hardware setup (virtually or physically), which requires
@@ -90,7 +91,7 @@ namespace Chimera::SPI
      *  |              OK | The operation completed successfully         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode mode ) = 0;
+    virtual Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::CSMode mode ) = 0;
 
     /**
      *  Writes data onto the SPI bus. The number of bytes actually written will be returned
@@ -203,66 +204,6 @@ namespace Chimera::SPI
      */
     virtual Chimera::Status_t getClockFrequency( uint32_t &freq ) = 0;
   };
-
-  class SPIUnsupported : public Interface
-  {
-  public:
-    SPIUnsupported()  = default;
-    ~SPIUnsupported() = default;
-
-    Chimera::Status_t init( const Chimera::SPI::Setup &setupStruct ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t deInit() final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t setChipSelect( const Chimera::GPIO::State value ) final override
-    {
-      return Chimera::SPI::Status::NOT_SUPPORTED;
-    }
-
-    Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::ChipSelectMode mode ) final override
-    {
-      return Chimera::SPI::Status::NOT_INITIALIZED;
-    }
-
-    Chimera::Status_t writeBytes( const uint8_t *const txBuffer, size_t length, uint32_t timeoutMS ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t readBytes( uint8_t *const rxBuffer, size_t length, uint32_t timeoutMS ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
-                                      uint32_t timeoutMS ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t setPeripheralMode( const Chimera::Hardware::SubPeripheral periph,
-                                         const Chimera::Hardware::SubPeripheralMode mode ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-
-    Chimera::Status_t getClockFrequency( uint32_t &freq ) final override
-    {
-      return Chimera::SPI::Status::FAIL;
-    }
-  };
-
 }  // namespace Chimera::SPI
 
 #endif /* !CHIMERA_SPI_INTERFACE_HPP */

@@ -24,10 +24,10 @@ namespace Chimera::Buffer
    * A higher level class that allows public access to multiple internal double buffer objects. 
    * Meant to be used in conjunction with Chimera::Buffer::DoubleBuffer.
    */
-  class DoubleBufferable
+  class DoubleBufferableInterface
   {
   public:
-    virtual ~DoubleBufferable() = default;
+    virtual ~DoubleBufferableInterface() = default;
 
     /**
      *  Push data into the TX buffer
@@ -44,10 +44,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      *  |    NOT_SUPPORTED | This functionality isn't supported             |
      */
-    virtual Chimera::Status_t bufferPush(const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const size_t len )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferPush(const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const size_t len ) = 0;
 
     /**
      *  Read queued data from the RX buffer. This buffer can only be filled if the
@@ -65,10 +62,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      *  |    NOT_SUPPORTED | This functionality isn't supported             |
      */
-    virtual Chimera::Status_t bufferPop(const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const size_t len )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferPop(const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const size_t len ) = 0;
 
     /**
      *  Turns on buffering for asynchronous modes (Interrupt, DMA). It will not transition
@@ -86,10 +80,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t bufferEnable( const Chimera::Hardware::SubPeripheral periph )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferEnable( const Chimera::Hardware::SubPeripheral periph ) = 0;
 
     /**
      *  Turns off the buffering feature
@@ -105,10 +96,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t bufferDisable( const Chimera::Hardware::SubPeripheral periph )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferDisable( const Chimera::Hardware::SubPeripheral periph ) = 0;
     
     /**
      *  Assigns the internal buffer used for actually transfering data on the wire. This 
@@ -127,10 +115,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t bufferAssignInternal( const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const uint16_t size )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferAssignInternal( const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const uint16_t size ) = 0;
     
     /**
      *  Assigns the external buffer the user will interact with to push/pop data. This 
@@ -148,15 +133,9 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph, boost::circular_buffer<uint8_t> *const buffer )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph, boost::circular_buffer<uint8_t> *const buffer ) = 0;
 
-    virtual Chimera::Status_t bufferFlush( const Chimera::Hardware::SubPeripheral periph )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Chimera::Status_t bufferFlush( const Chimera::Hardware::SubPeripheral periph ) = 0;
   };
 }  // namespace Chimera::Cache
 

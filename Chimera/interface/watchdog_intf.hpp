@@ -22,10 +22,10 @@
 
 namespace Chimera::Watchdog
 {
-  class Interface
+  class HWInterface
   {
   public:
-    virtual ~Interface() = default;
+    virtual ~HWInterface() = default;
 
     /**
      *  Initializes the low level hardware needed to configure the watchdog
@@ -37,10 +37,7 @@ namespace Chimera::Watchdog
      *  @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked
      *  @return Status::OK if the initialization was a success, Status::FAIL if not
      */
-    virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) = 0;
 
     /**
      *   Starts the watchdog timer. If successful, Interface::kick() must
@@ -48,30 +45,21 @@ namespace Chimera::Watchdog
      *
      *   @return Chimera::Status_t
      */
-    virtual Status_t start()
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Status_t start() = 0;
 
     /**
      *   Stops the watchdog timer.
      *
      *   @return Chimera::Status_t
      */
-    virtual Status_t stop()
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Status_t stop() = 0;
 
     /**
      *   Kicks the watchdog timer, starting a new countdown cycle.
      *
      *   @return Chimera::Status_t
      */
-    virtual Status_t kick()
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Status_t kick() = 0;
 
     /**
      *   Configures the watchdog to stop on connection to a debugger
@@ -79,10 +67,7 @@ namespace Chimera::Watchdog
      *   @param[in]  enable      If true, allows the watchdog to stop. Otherwise, it continues running
      *   @return Chimera::Status_t
      */
-    virtual Status_t pauseOnDebugHalt( const bool enable )
-    {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
+    virtual Status_t pauseOnDebugHalt( const bool enable ) = 0;
 
     /**
      *   Gets the actual timeout value achieved by the hardware
@@ -90,30 +75,21 @@ namespace Chimera::Watchdog
      *   @param[out] timeout     Timeout value in milliseconds
      *   @return Chimera::Status_t
      */
-    virtual size_t getTimeout()
-    {
-      return 0;
-    }
+    virtual size_t getTimeout() = 0;
 
     /**
      *  Returns the max supported timeout by the hardware in milliseconds
      *
      *  @return size_t
      */
-    virtual size_t maxTimeout()
-    {
-      return std::numeric_limits<size_t>::max();
-    }
+    virtual size_t maxTimeout() = 0;
 
     /**
      *  Returns the min supported timeout by the hardware in milliseconds
      *
      *  @return size_t
      */
-    virtual size_t minTimeout()
-    {
-      return std::numeric_limits<size_t>::min();
-    }
+    virtual size_t minTimeout() = 0;
   };
 }  // namespace Chimera::Watchdog
 
