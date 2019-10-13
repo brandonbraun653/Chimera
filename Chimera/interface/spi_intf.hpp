@@ -108,7 +108,7 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t writeBytes( const uint8_t *const txBuffer, const size_t length, const uint32_t timeoutMS ) = 0;
+    virtual Chimera::Status_t writeBytes( const void *const txBuffer, const size_t length, const size_t timeoutMS ) = 0;
 
     /**
      *  Reads data from the SPI bus. The number of bytes actually read will be returned
@@ -125,7 +125,7 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t readBytes( uint8_t *const rxBuffer, const size_t length, const uint32_t timeoutMS ) = 0;
+    virtual Chimera::Status_t readBytes( void *const rxBuffer, const size_t length, const size_t timeoutMS ) = 0;
 
     /**
      *  Transmits and receives data on the SPI bus in a single operation. Returns the actual
@@ -143,13 +143,12 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, const size_t length,
-                                              const uint32_t timeoutMS ) = 0;
+    virtual Chimera::Status_t readWriteBytes( const void *const txBuffer, void *const rxBuffer, const size_t length,
+                                              const size_t timeoutMS ) = 0;
 
     /**
      *  Set the hardware operational mode in either Blocking, Interrupt, or DMA.
      *
-     *  @param[in]  periph          The peripheral to set the behavior on
      *  @param[in]  mode            Desired operational mode of the peripheral
      *  @return Chimera::Status_t
      *
@@ -159,8 +158,7 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t setPeripheralMode( const Chimera::Hardware::SubPeripheral periph,
-                                                 const Chimera::Hardware::SubPeripheralMode mode ) = 0;
+    virtual Chimera::Status_t setPeripheralMode( const Chimera::Hardware::PeripheralMode mode ) = 0;
 
     /**
      *  Change the frequency of the SPI output clock
@@ -186,23 +184,14 @@ namespace Chimera::SPI
      *  |    CLOCK_SET_EQ | The desired clock value was achieved exactly or within tolerance     |
      *  |    CLOCK_SET_LT | The actual clock value achieved was less than the user desired value |
      */
-    virtual Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) = 0;
+    virtual Chimera::Status_t setClockFrequency( const size_t freq, const size_t tolerance ) = 0;
 
     /**
-     *  Get the current SPI clock frequency.
+     *  Get the current SPI clock frequency in Hz
      *
-     *  If the class has not been initialized, the output variable should not be modified.
-     *
-     *  @param[out] freq            Reported SPI clock
-     *  @return Chimera::Status_t
-     *
-     *  |   Return Value  |                Explanation                |
-     *  |:---------------:|:-----------------------------------------:|
-     *  |              OK | The operation completed successfully      |
-     *  |            FAIL | The operation failed                      |
-     *  | NOT_INITIALIZED | The class object has not been initialized |
+     *  @return size_t
      */
-    virtual Chimera::Status_t getClockFrequency( uint32_t &freq ) = 0;
+    virtual size_t getClockFrequency() = 0;
   };
 }  // namespace Chimera::SPI
 

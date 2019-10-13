@@ -12,15 +12,17 @@
 #ifndef CHIMERA_SPI_ABSTRACT_BASE_HPP
 #define CHIMERA_SPI_ABSTRACT_BASE_HPP
 
-/* C++ Includes */
-#include <cstdint>
-
 /* Chimera Includes*/
 #include <Chimera/interface/spi_intf.hpp>
+#include <Chimera/base/event_base.hpp>
+#include <Chimera/base/threading_base.hpp>
 
 namespace Chimera::SPI
 {
-  class SPIUnsupported : public HWInterface
+  class SPIUnsupported : public HWInterface,
+                         public Chimera::Event::ListenerUnsupported,
+                         public Chimera::Threading::AsyncIOUnsupported,
+                         public Chimera::Threading::LockableUnsupported
   {
   public:
     SPIUnsupported()  = default;
@@ -46,36 +48,35 @@ namespace Chimera::SPI
       return Chimera::SPI::Status::NOT_INITIALIZED;
     }
 
-    Chimera::Status_t writeBytes( const uint8_t *const txBuffer, size_t length, uint32_t timeoutMS ) final override
+    Chimera::Status_t writeBytes( const void *const txBuffer, size_t length, size_t timeoutMS ) final override
     {
       return Chimera::SPI::Status::FAIL;
     }
 
-    Chimera::Status_t readBytes( uint8_t *const rxBuffer, size_t length, uint32_t timeoutMS ) final override
+    Chimera::Status_t readBytes( void *const rxBuffer, size_t length, size_t timeoutMS ) final override
     {
       return Chimera::SPI::Status::FAIL;
     }
 
-    Chimera::Status_t readWriteBytes( const uint8_t *const txBuffer, uint8_t *const rxBuffer, size_t length,
-                                      uint32_t timeoutMS ) final override
+    Chimera::Status_t readWriteBytes( const void *const txBuffer, void *const rxBuffer, size_t length,
+                                      size_t timeoutMS ) final override
     {
       return Chimera::SPI::Status::FAIL;
     }
 
-    Chimera::Status_t setPeripheralMode( const Chimera::Hardware::SubPeripheral periph,
-                                         const Chimera::Hardware::SubPeripheralMode mode ) final override
+    Chimera::Status_t setPeripheralMode( const Chimera::Hardware::PeripheralMode mode ) final override
     {
       return Chimera::SPI::Status::FAIL;
     }
 
-    Chimera::Status_t setClockFrequency( const uint32_t freq, const uint32_t tolerance ) final override
+    Chimera::Status_t setClockFrequency( const size_t freq, const size_t tolerance ) final override
     {
       return Chimera::SPI::Status::FAIL;
     }
 
-    Chimera::Status_t getClockFrequency( uint32_t &freq ) final override
+    size_t getClockFrequency() final override
     {
-      return Chimera::SPI::Status::FAIL;
+      return std::numeric_limits<size_t>::min();
     }
   };
 }  // namespace Chimera::SPI

@@ -3,7 +3,7 @@
  *    event_intf.hpp
  *
  *   Description:
- *    Models the Chimera Event interface 
+ *    Models the Chimera Event interface
  *
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -26,13 +26,13 @@ namespace Chimera::Event
   /**
    *  Interface describing a methodology for asynchronously notifying other sections
    *  of code that some kind of event has occured. Most of the thread safety is left
-   *  up to the back end driver, should it be needed. 
+   *  up to the back end driver, should it be needed.
    */
   class ListenerInterface
   {
   public:
     virtual ~ListenerInterface() = default;
-    
+
     /**
      *  Attach a listener to get notified when an event occurs.
      *
@@ -49,7 +49,8 @@ namespace Chimera::Event
      *  |          TIMEOUT | The system timed out while accessing resources         |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t registerListener( Actionable &listener, const size_t timeout, size_t &registrationID ) = 0;
+    virtual Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout,
+                                                size_t &registrationID ) = 0;
 
     /**
      *   Remove an event listener
@@ -71,4 +72,4 @@ namespace Chimera::Event
 }  // namespace Chimera::Event
 
 
-#endif  /* !CHIMERA_EVENT_INTERFACE_HPP */
+#endif /* !CHIMERA_EVENT_INTERFACE_HPP */

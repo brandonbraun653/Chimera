@@ -44,11 +44,11 @@ namespace Chimera::Threading
     }
   };
 
-  class AsyncIOBaseUnsupported : public AsyncIOBaseInterface
+  class AsyncIOUnsupported : public AsyncIOInterface
   {
   public:
-    AsyncIOBaseUnsupported()  = default;
-    ~AsyncIOBaseUnsupported() = default;
+    AsyncIOUnsupported()  = default;
+    ~AsyncIOUnsupported() = default;
 
     Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout ) final override
     {

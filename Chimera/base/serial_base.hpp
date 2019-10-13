@@ -20,7 +20,7 @@ namespace Chimera::Serial
 {
   class SerialUnsupported : public Chimera::Serial::HWInterface,
                             public Chimera::Event::ListenerUnsupported,
-                            public Chimera::Threading::AsyncIOBaseUnsupported,
+                            public Chimera::Threading::AsyncIOUnsupported,
                             public Chimera::Threading::LockableUnsupported
   {
   public:
@@ -32,8 +32,8 @@ namespace Chimera::Serial
       return Chimera::CommonStatusCodes::FAIL;
     }
 
-    Chimera::Status_t begin( const Chimera::Hardware::SubPeripheralMode txMode,
-                             const Chimera::Hardware::SubPeripheralMode rxMode ) final override
+    Chimera::Status_t begin( const Chimera::Hardware::PeripheralMode txMode,
+                             const Chimera::Hardware::PeripheralMode rxMode ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }
@@ -54,7 +54,7 @@ namespace Chimera::Serial
     }
 
     Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph,
-                               const Chimera::Hardware::SubPeripheralMode mode ) final override
+                               const Chimera::Hardware::PeripheralMode mode ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }

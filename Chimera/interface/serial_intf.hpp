@@ -60,8 +60,8 @@ namespace Chimera::Serial
      *  |  NOT_INITIALIZED | The serial hardware has not been configured properly |
      *  | INVAL_FUNC_PARAM | An invalid parameter was passed in |
      */
-    virtual Chimera::Status_t begin( const Chimera::Hardware::SubPeripheralMode txMode,
-                                     const Chimera::Hardware::SubPeripheralMode rxMode ) = 0;
+    virtual Chimera::Status_t begin( const Chimera::Hardware::PeripheralMode txMode,
+                                     const Chimera::Hardware::PeripheralMode rxMode ) = 0;
 
     /**
      *  De-initializes the serial port
@@ -122,7 +122,7 @@ namespace Chimera::Serial
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function      |
      */
     virtual Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph,
-                                       const Chimera::Hardware::SubPeripheralMode mode ) = 0;
+                                       const Chimera::Hardware::PeripheralMode mode ) = 0;
 
     /**
      *  Writes data onto the wire

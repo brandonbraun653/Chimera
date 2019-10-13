@@ -30,10 +30,10 @@ extern "C"
 
 namespace Chimera::Threading
 {
-  class AsyncIOBaseInterface
+  class AsyncIOInterface
   {
   public:
-    virtual ~AsyncIOBaseInterface() = default;
+    virtual ~AsyncIOInterface() = default;
 
     /**
      *  Asynchronously waits for the given event to occur before the function
@@ -62,7 +62,8 @@ namespace Chimera::Threading
      *  @param[in]  timeout     How long to wait for the event to occur
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier, const size_t timeout ) = 0;
+    virtual Chimera::Status_t await( const Chimera::Event::Trigger event, SemaphoreHandle_t notifier,
+                                     const size_t timeout ) = 0;
   };
 
   /**
@@ -130,7 +131,6 @@ namespace Chimera::Threading
      *  |         FAIL | The object was not released  |
      */
     virtual Chimera::Status_t unlockFromISR() = 0;
-
   };
 }  // namespace Chimera::Threading
 

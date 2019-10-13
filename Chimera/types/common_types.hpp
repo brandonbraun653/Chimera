@@ -84,7 +84,7 @@ namespace Chimera
       UNKNOWN_SUBPERIPH
     };
 
-    enum class SubPeripheralMode : uint8_t
+    enum class PeripheralMode : uint8_t
     {
       BLOCKING = 0,
       INTERRUPT,

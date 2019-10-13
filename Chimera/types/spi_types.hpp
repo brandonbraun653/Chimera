@@ -28,7 +28,7 @@ namespace Chimera::SPI
 
   using ClockFreq    = size_t;
   using Channel      = uint8_t;
-  using TransferMode = Chimera::Hardware::SubPeripheralMode;
+  using TransferMode = Chimera::Hardware::PeripheralMode;
 
   class Status : public CommonStatusCodes
   {

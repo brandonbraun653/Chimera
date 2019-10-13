@@ -48,7 +48,7 @@ namespace Chimera::Serial
   ------------------------------------------------*/
   static_assert( ( ( std::is_base_of<HWInterface, SerialClass>::value )
                    && ( std::is_base_of<Chimera::Event::ListenerInterface, SerialClass>::value )
-                   && ( std::is_base_of<Chimera::Threading::AsyncIOBaseInterface, SerialClass>::value )
+                   && ( std::is_base_of<Chimera::Threading::AsyncIOInterface, SerialClass>::value )
                    && ( std::is_base_of<Chimera::Threading::LockableInterface, SerialClass>::value ) ),
                  "Base class implements the wrong interface" );
 
