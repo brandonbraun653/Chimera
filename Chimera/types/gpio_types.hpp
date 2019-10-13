@@ -99,13 +99,24 @@ namespace Chimera
 
     struct PinInit
     {
-      Pull pull                                = Pull::UNKNOWN_PULL; /**< Pull-up/down configuration */
-      Port port                                = Port::UNKNOWN_PORT; /**< Pin IO port */
-      Drive drive                              = Drive::INPUT;       /**< Pin IO drive type */
-      State state                              = State::LOW;         /**< Default logical pin state on init */
-      Pin pin                                  = 0u;                 /**< Pin number on the given port */
-      uint32_t alternate                       = 0u;                 /**< Project specific indicator of pin AF config */
-      Chimera::Hardware::AccessMode accessMode = Chimera::Hardware::AccessMode::BARE_METAL;
+      Pull pull;          /**< Pull-up/down configuration */
+      Port port;          /**< Pin IO port */
+      Drive drive;        /**< Pin IO drive type */
+      State state;        /**< Default logical pin state on init */
+      Pin pin;            /**< Pin number on the given port */
+      uint32_t alternate; /**< Project specific indicator of pin AF config */
+      Chimera::Hardware::AccessMode accessMode;
+
+      void clear()
+      {
+        pull       = Pull::UNKNOWN_PULL;
+        port       = Port::UNKNOWN_PORT;
+        drive      = Drive::INPUT;      
+        state      = State::LOW;        
+        pin        = 0u;                
+        alternate  = 0u;                
+        accessMode = Chimera::Hardware::AccessMode::BARE_METAL;
+      }
     };
 
   }  // namespace GPIO
