@@ -25,17 +25,17 @@
 
 namespace Chimera
 {
-  uint32_t millis()
+  size_t millis()
   {
     return BACKEND_NAMESPACE::millis();
   }
 
-  void delayMilliseconds( uint32_t ms )
+  void delayMilliseconds( size_t ms )
   {
     BACKEND_NAMESPACE::delayMilliseconds( ms );
   }
 
-  void delayMicroseconds( uint32_t us )
+  void delayMicroseconds( size_t us )
   {
     BACKEND_NAMESPACE::delayMicroseconds( us );
   }

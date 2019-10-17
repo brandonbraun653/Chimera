@@ -46,9 +46,9 @@ namespace Chimera::Utilities
   }
 
   template<typename T>
-  std::pair<bool, int> findInVector( const std::vector<T> &vecOfElements, const T &element )
+  std::pair<bool, size_t> findInVector( const std::vector<T> &vecOfElements, const T &element )
   {
-    std::pair<bool, int> result;
+    std::pair<bool, size_t> result;
 
     // Find given element in vector
     auto it = std::find( vecOfElements.begin(), vecOfElements.end(), element );
@@ -61,7 +61,7 @@ namespace Chimera::Utilities
     else
     {
       result.first  = false;
-      result.second = -1;
+      result.second = 0;
     }
 
     return result;

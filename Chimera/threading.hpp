@@ -45,9 +45,9 @@ namespace Chimera::Threading
   class Lockable : public LockableInterface
   {
   public:
-    Chimera::Status_t lock( const uint32_t timeout_mS ) final override;
+    Chimera::Status_t lock( const size_t timeout_mS ) override;
 
-    Chimera::Status_t lockFromISR( const uint32_t timeout_mS ) final override;
+    Chimera::Status_t lockFromISR( const size_t timeout_mS ) override;
 
     Chimera::Status_t unlock() final override;
 

@@ -88,7 +88,7 @@ namespace Chimera::Threading
      *  |           OK | The object was reserved before the timeout expired |
      *  |         FAIL | The object was not reserved                        |
      */
-    virtual Chimera::Status_t lock( const uint32_t timeout_mS ) = 0;
+    virtual Chimera::Status_t lock( const size_t timeout_mS ) = 0;
 
     /**
      *  Attempts to reserve the inheriting object, but from an ISR safe execution context.
@@ -101,7 +101,7 @@ namespace Chimera::Threading
      *  |           OK | The object was reserved before the timeout expired |
      *  |         FAIL | The object was not reserved                        |
      */
-    virtual Chimera::Status_t lockFromISR( const uint32_t timeout_mS ) = 0;
+    virtual Chimera::Status_t lockFromISR( const size_t timeout_mS ) = 0;
 
     /**
      *  Attempts to release the inheriting object

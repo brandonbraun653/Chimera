@@ -22,7 +22,7 @@ namespace Chimera::Compiler
 
 #elif defined( WIN32 ) || defined( WIN64 )
 
-#define WEAKDECL #pragma weak
+#define WEAKDECL
 
 #else 
 

@@ -38,7 +38,7 @@ namespace Chimera::Threading
       recursive_mutex = xSemaphoreCreateRecursiveMutex();
     }
 
-    Chimera::Status_t Lockable::lock( const uint32_t timeout_mS )
+    Chimera::Status_t Lockable::lock( const size_t timeout_mS )
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
@@ -50,7 +50,7 @@ namespace Chimera::Threading
       return error;
     }
 
-    Chimera::Status_t Lockable::lockFromISR( const uint32_t timeout_mS )
+    Chimera::Status_t Lockable::lockFromISR( const size_t timeout_mS )
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
