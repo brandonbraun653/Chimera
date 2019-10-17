@@ -15,9 +15,12 @@
 
 /* C++ Includes */
 #include <cstdlib>
+#include <cstdint>
 
 namespace Chimera
 {
+  static constexpr size_t DRIVER_INITIALIZED_KEY = static_cast<size_t>( 0x560bf751 );
+
   namespace Threading
   {
     static constexpr size_t DEFAULT_LOCK_TIMEOUT_MS = 500;

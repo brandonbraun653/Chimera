@@ -26,6 +26,15 @@
 
 namespace Chimera::SPI
 {
+  /**
+   *  Initialize the driver memory and other resources for SPI
+   *
+   *  @attention This must be implemented in the project side SPI driver
+   *
+   *  @return Chimera::Status_t
+   */
+  extern Chimera::Status_t initialize();
+
   class HWInterface
   {
   public:
