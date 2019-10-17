@@ -31,6 +31,26 @@
 namespace Chimera::Clock
 {
   /**
+   *  Initialize the Clock driver resources. Must be called before 
+   *  any other functionality is used.
+   *
+   *  @return Chimera::Status_t
+   */
+  extern Chimera::Status_t initializeDriver();
+
+  /**
+   *  Checks if the clock resources have been initialized and is ready
+   *  for use. This does not mean the clock subsystem is fully configured
+   *  and ready per user configuration.
+   *
+   *  @see initialize()
+   *
+   *  @return bool
+   */
+  extern bool isDriverInitialized();
+
+
+  /**
    *  Turns on the clock to the given peripheral. The actual clock
    *  source must be configured before this function is called.
    * 

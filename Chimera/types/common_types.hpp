@@ -15,6 +15,14 @@
 /* C++ Includes */
 #include <cstdint>
 
+/*------------------------------------------------
+Register Level Access Types
+------------------------------------------------*/
+using Reg64_t = uint64_t;
+using Reg32_t = uint32_t;
+using Reg16_t = uint16_t;
+using Reg8_t  = uint8_t;
+
 namespace Chimera
 {
   using Status_t = uint16_t;
@@ -103,6 +111,8 @@ namespace Chimera
       NUM_ACCESS_MODES
     };
   }
+
+
 }  // namespace Chimera
 
 #endif /* !CHIMERA_COMMON_TYPES_HPP */
