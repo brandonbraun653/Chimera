@@ -41,6 +41,10 @@ namespace Chimera::Container
   class LightFlatMap
   {
   public:
+    LightFlatMap()
+    {
+    }
+
     LightFlatMap( std::initializer_list<std::pair<T1, T2>> list )
     {
       std::copy( list.begin(), list.end(), std::back_inserter(map) );
@@ -90,6 +94,11 @@ namespace Chimera::Container
       }
 
       return nullptr;
+    }
+
+    void append( const T1 key, const T2 value )
+    {
+      map.push_back( { key, value } );
     }
 
     /**
