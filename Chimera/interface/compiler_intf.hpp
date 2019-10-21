@@ -16,6 +16,9 @@
 namespace Chimera::Compiler
 {
 
+/*------------------------------------------------
+Weak function declarations 
+------------------------------------------------*/
 #if defined( __GNUC__ )
 
 #define WEAKDECL __attribute__((weak))
@@ -27,6 +30,22 @@ namespace Chimera::Compiler
 #else 
 
 #define WEAKDECL
+
+#endif /* */
+
+/*------------------------------------------------
+Inserting breakpoints
+------------------------------------------------*/
+#if defined( __GNUC__ )
+
+#elif defined( WIN32 ) || defined( WIN64 )
+
+
+#define INSERT_BREAKPOINT (  )
+
+#else
+
+#define INSERT_BREAKPOINT
 
 #endif /* */
 
