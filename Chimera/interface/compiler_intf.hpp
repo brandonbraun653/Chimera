@@ -15,13 +15,50 @@
 
 namespace Chimera::Compiler
 {
+/*------------------------------------------------
+GCC 
+------------------------------------------------*/
+#if defined( __GNUC__ )
+
+#define WEAKDECL __attribute__((weak))
+#define CHIMERA_INSERT_BREAKPOINT ( __asm( "BKPT #0\n" ) )
+#endif /* __GNUC__ */
+
+/*------------------------------------------------
+WIN32
+------------------------------------------------*/
+#if defined( WIN32 )
+#define WIN32_LEAN_AND_MEAN
+#define _X32_
+#include "debugapi.h"
+
+
+#define WEAKDECL
+#define CHIMERA_INSERT_BREAKPOINT DebugBreak()
+
+#endif /* WIN32 */
+
+/*------------------------------------------------
+WIN64
+------------------------------------------------*/
+#if defined( WIN64 )
+#define WIN32_LEAN_AND_MEAN
+#define _X64_
+#include "debugapi.h"
+
+
+#define WEAKDECL
+#define CHIMERA_INSERT_BREAKPOINT DebugBreak()
+
+#endif /* WIN64 */
+
 
 /*------------------------------------------------
 Weak function declarations 
 ------------------------------------------------*/
 #if defined( __GNUC__ )
 
-#define WEAKDECL __attribute__((weak))
+
 
 #elif defined( WIN32 ) || defined( WIN64 )
 
@@ -30,22 +67,6 @@ Weak function declarations
 #else 
 
 #define WEAKDECL
-
-#endif /* */
-
-/*------------------------------------------------
-Inserting breakpoints
-------------------------------------------------*/
-#if defined( __GNUC__ )
-
-#elif defined( WIN32 ) || defined( WIN64 )
-
-
-#define INSERT_BREAKPOINT (  )
-
-#else
-
-#define INSERT_BREAKPOINT
 
 #endif /* */
 
