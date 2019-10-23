@@ -21,7 +21,7 @@ GCC
 #if defined( __GNUC__ )
 
 #define WEAKDECL __attribute__((weak))
-#define CHIMERA_INSERT_BREAKPOINT ( __asm( "BKPT #0\n" ) )
+#define CHIMERA_INSERT_BREAKPOINT __asm( "BKPT #0\n" )
 #endif /* __GNUC__ */
 
 /*------------------------------------------------
