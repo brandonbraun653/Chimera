@@ -49,8 +49,10 @@ namespace Chimera::SPI
    */
   enum class BitOrder : uint8_t
   {
-    MSB_FIRST,  /**< The most significant bit will be transmitted first */
-    LSB_FIRST   /**< The least significant bit will be transmitted first */
+    MSB_FIRST = 0, /**< The most significant bit will be transmitted first */
+    LSB_FIRST,     /**< The least significant bit will be transmitted first */
+
+    NUM_OPTIONS
   };
 
   /**
@@ -59,10 +61,12 @@ namespace Chimera::SPI
    */
   enum class ClockMode : uint8_t
   {
-    MODE0, /**< CPOL=0, CPHA=0 */
-    MODE1, /**< CPOL=0, CPHA=1 */
-    MODE2, /**< CPOL=1, CPHA=0 */
-    MODE3  /**< CPOL=1, CPHA=1 */
+    MODE0 = 0, /**< CPOL=0, CPHA=0 */
+    MODE1,     /**< CPOL=0, CPHA=1 */
+    MODE2,     /**< CPOL=1, CPHA=0 */
+    MODE3,     /**< CPOL=1, CPHA=1 */
+
+    NUM_OPTIONS
   };
 
   /**
@@ -71,8 +75,10 @@ namespace Chimera::SPI
    */
   enum class ControlMode : uint8_t
   {
-    MASTER, /**< This device starts/stops transfers */
-    SLAVE   /**< This device responds to another master on the bus */
+    MASTER = 0, /**< This device starts/stops transfers */
+    SLAVE,      /**< This device responds to another master on the bus */
+
+    NUM_OPTIONS
   };
 
   /**
@@ -81,7 +87,7 @@ namespace Chimera::SPI
    */
   enum class DataSize : uint8_t
   {
-    SZ_8BIT,
+    SZ_8BIT = 0,
     SZ_9BIT,
     SZ_10BIT,
     SZ_11BIT,
@@ -90,6 +96,8 @@ namespace Chimera::SPI
     SZ_14BIT,
     SZ_15BIT,
     SZ_16BIT,
+
+    NUM_OPTIONS
   };
 
   /**
@@ -100,9 +108,11 @@ namespace Chimera::SPI
    */
   enum class CSMode : uint8_t
   {
-    MANUAL,                /**< SW must manually control the state of the chip select line */
+    MANUAL = 0,            /**< SW must manually control the state of the chip select line */
     AUTO_BETWEEN_TRANSFER, /**< Twiddle the chip select between transfers, disabling on completion */
-    AUTO_AFTER_TRANSFER    /**< Disable the chip select only after all transfers complete */
+    AUTO_AFTER_TRANSFER,   /**< Disable the chip select only after all transfers complete */
+
+    NUM_OPTIONS
   };
 
   /**
@@ -150,6 +160,7 @@ namespace Chimera::SPI
     GPIO::PinInit MISOInit; /**< The GPIO pin settings used for MISO */
     GPIO::PinInit CSInit;   /**< The GPIO pin settings used for CS */
     HardwareInit HWInit;    /**< Hardware driver configuration options */
+    bool validity;          /**< Defines if the configuration is valid */
   };
 
 

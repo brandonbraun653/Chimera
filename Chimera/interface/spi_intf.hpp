@@ -33,7 +33,7 @@ namespace Chimera::SPI
    *
    *  @return Chimera::Status_t
    */
-  extern Chimera::Status_t initialize();
+  Chimera::Status_t initialize();
 
   class HWInterface
   {
