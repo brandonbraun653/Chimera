@@ -31,9 +31,7 @@ namespace Chimera::SPI
     virtual ~SPIAcceptor() = default;
 
     /**
-     *  Attaches an SPI instance to the inheriting class. Passing by const-reference
-     *  ensures the internal instance counter isn't incremented and forces the user
-     *  to copy without modification into their own internal shared_ptr.
+     *  Attaches an SPI instance to the inheriting class.
      *
      *  @param[in]  spi     SPI object to be shared with the inheriting class
      *  @return Chimera::Status_t
@@ -49,6 +47,8 @@ namespace Chimera::SPI
     /**
      *  Attaches an SPI instance to the inheriting class. Setup information is intentionally
      *  non-const to allow the underlying driver to make modifications specific to the system.
+     *
+     *  @note Assume the implementing function could initialize the hardware in this call.
      *
      *  @param[in]  spi     SPI object to be shared with the inheriting class
      *  @param[in]  setup   SPI setup configuration object
