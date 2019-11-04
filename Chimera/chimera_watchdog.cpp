@@ -9,12 +9,17 @@
  ********************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/threading.hpp>
 #include <Chimera/watchdog.hpp>
 
 namespace Chimera::Watchdog
 {
   void invokeTimeout()
   {
+#if defined( USING_FREERTOS )
+    vTaskSuspendAll();
+#endif
+
     while ( 1 )
     {
     }
