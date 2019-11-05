@@ -150,6 +150,7 @@ namespace Chimera::SPI
     DataSize dataSize       = DataSize::SZ_8BIT;      /**< How wide each transfer should minimally be */
     Channel hwChannel       = 0;                      /**< Hardware channel to be configured */
     TransferMode txfrMode   = TransferMode::BLOCKING; /**< Transfer controller mode */
+    bool validity           = false;                  /**< Structure validity */
   };
 
   /**
@@ -158,12 +159,13 @@ namespace Chimera::SPI
    */
   struct DriverConfig
   {
-    GPIO::PinInit SCKInit;  /**< The GPIO pin settings used for SCK */
-    GPIO::PinInit MOSIInit; /**< The GPIO pin settings used for MOSI */
-    GPIO::PinInit MISOInit; /**< The GPIO pin settings used for MISO */
-    GPIO::PinInit CSInit;   /**< The GPIO pin settings used for CS */
-    HardwareInit HWInit;    /**< Hardware driver configuration options */
-    bool validity;          /**< Defines if the configuration is valid */
+    GPIO::PinInit SCKInit;   /**< The GPIO pin settings used for SCK */
+    GPIO::PinInit MOSIInit;  /**< The GPIO pin settings used for MOSI */
+    GPIO::PinInit MISOInit;  /**< The GPIO pin settings used for MISO */
+    GPIO::PinInit CSInit;    /**< The GPIO pin settings used for CS */
+    HardwareInit HWInit;     /**< Hardware driver configuration options */
+    bool externalCS;         /**< Indicates if an external chip select is used */
+    bool validity;           /**< Defines if the configuration is valid */
   };
 
 

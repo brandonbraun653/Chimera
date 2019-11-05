@@ -76,6 +76,12 @@ namespace Chimera::SPI
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
     virtual Chimera::Status_t attachSPI( Chimera::SPI::SPIClass_uPtr spi ) = 0;
+
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::PinInit &CSConfig ) = 0;
+
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIOClass_sPtr &CSPin ) = 0;
+
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIOClass_uPtr CSPin ) = 0;
   };
 }  // namespace Chimera::SPI
 

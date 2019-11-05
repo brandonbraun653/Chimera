@@ -106,6 +106,7 @@ namespace Chimera
       Pin pin;            /**< Pin number on the given port */
       uint32_t alternate; /**< Project specific indicator of pin AF config */
       Chimera::Hardware::AccessMode accessMode;
+      bool validity;       /**< Indicates if the config should be initialized */
 
       void clear()
       {
@@ -116,6 +117,7 @@ namespace Chimera
         pin        = 0u;                
         alternate  = 0u;                
         accessMode = Chimera::Hardware::AccessMode::BARE_METAL;
+        validity    = false;
       }
     };
 
