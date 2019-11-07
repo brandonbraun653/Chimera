@@ -42,7 +42,7 @@ namespace Chimera::Threading
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
-      if ( xSemaphoreTake( recursive_mutex, pdMS_TO_TICKS( timeout_mS ) ) != pdPASS )
+      if ( xSemaphoreTakeRecursive( recursive_mutex, pdMS_TO_TICKS( timeout_mS ) ) != pdPASS )
       {
         error = Chimera::CommonStatusCodes::FAIL;
       }
@@ -66,7 +66,7 @@ namespace Chimera::Threading
     {
       Chimera::Status_t error = Chimera::CommonStatusCodes::OK;
 
-      if ( xSemaphoreGive( recursive_mutex ) != pdPASS )
+      if ( xSemaphoreGiveRecursive( recursive_mutex ) != pdPASS )
       {
         error = Chimera::CommonStatusCodes::FAIL;
       }
