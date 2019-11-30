@@ -32,18 +32,21 @@ add your own configuration in the given header file below.
 
 namespace Chimera::Modules::uLog
 {
-  /**
-   *  
-   */
-  static constexpr size_t SerialChannel = 1u;
-
-  static constexpr Chimera::Serial::BaudRate SerialBaud = Chimera::Serial::BaudRate::SERIAL_BAUD_115200;
-
-  static constexpr Chimera::Serial::CharWid SerialCharWid = Chimera::Serial::CharWid::CW_8BIT;
-
+  /*------------------------------------------------
+  Configuration options for the default serial sink
+  ------------------------------------------------*/
+  static constexpr size_t SerialChannel                        = 1u;
+  static constexpr Chimera::Serial::BaudRate SerialBaud        = Chimera::Serial::BaudRate::SERIAL_BAUD_115200;
+  static constexpr Chimera::Serial::CharWid SerialCharWid      = Chimera::Serial::CharWid::CW_8BIT;
   static constexpr Chimera::Serial::FlowControl SerialFlowCtrl = Chimera::Serial::FlowControl::FCTRL_NONE;
+  static constexpr Chimera::Serial::Parity SerialParity        = Chimera::Serial::Parity::PAR_NONE;
+  static constexpr Chimera::Serial::StopBits SerialStopBits    = Chimera::Serial::StopBits::SBITS_ONE;
 
-  static constexpr Chimera::Serial::Parity SerialParity = Chimera::Serial::Parity::PAR_NONE;
+  /*------------------------------------------------
+  This must be defined project side because it's so
+  hardware specific. There is no generalized pin config.
+  ------------------------------------------------*/
+  extern Chimera::Serial::IOPins SerialPins;
 }
 
 #endif
