@@ -16,10 +16,13 @@
 #include <mutex>
 
 /* Chimera Includes */
+#include "chimeraConfig.hpp"
 #include <Chimera/interface/threading_intf.hpp>
 #include <Chimera/types/common_types.hpp>
 #include <Chimera/types/event_types.hpp>
 #include <Chimera/types/threading_types.hpp>
+
+#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
 
 /* FreeRTOS Includes */
 #ifdef __cplusplus
@@ -169,4 +172,5 @@ namespace Chimera::Threading
 
 }  // namespace Chimera::Threading
 
-#endif
+#endif /* CHIMERA_CFG_FREERTOS */
+#endif /* CHIMERA_THREADING_HPP */

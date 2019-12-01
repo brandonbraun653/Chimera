@@ -12,7 +12,10 @@
 #ifndef CHIMERA_FREERTOS_HOOKS_PRJ_HPP
 #define CHIMERA_FREERTOS_HOOKS_PRJ_HPP
 
-#if defined( USING_FREERTOS )
+/* Chimera Includes */
+#include "chimeraConfig.hpp"
+#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -28,6 +31,6 @@ namespace Chimera::Modules::FreeRTOS
   extern void ApplicationIdleHook();
 
 }  // namespace Chimera::Modules::FreeRTOS
-#endif /* USING_FREERTOS */
+#endif /* CHIMERA_CFG_FREERTOS */
 
 #endif /* !CHIMERA_FREERTOS_HOOKS_PRJ_HPP */

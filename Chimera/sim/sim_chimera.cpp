@@ -14,17 +14,17 @@
 namespace ChimeraSim
 {
 
-  uint32_t millis()
+  size_t millis()
   {
     return 0u;
   }
 
-  void delayMilliseconds(uint32_t val )
+  void delayMilliseconds( size_t val )
   {
 
   }
 
-  void delayMicroseconds(uint32_t val )
+  void delayMicroseconds( size_t val )
   {
 
   }
