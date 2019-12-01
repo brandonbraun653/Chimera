@@ -14,11 +14,18 @@
 
 /* C++ Includes */
 #include <cstdint>
+#include <cstdlib>
 #include <limits>
 #include <memory>
 #include <variant>
 
+/* Chimera Includes */
+#include "chimeraConfig.hpp"
+#include <Chimera/types/callback_types.hpp>
+
 /* FreeRTOS Includes */
+#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -27,9 +34,8 @@ extern "C"
 }
 #endif /* __cplusplus */
 
+#endif /* CHIMERA_CFG_FREERTOS */
 
-/* Chimera Includes */
-#include <Chimera/types/callback_types.hpp>
 
 namespace Chimera::Event
 {
@@ -64,7 +70,11 @@ namespace Chimera::Event
      *  Stores the user defined element that an external 
      *  processing function will act upon. 
      */
+    #if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
     std::variant<uint32_t *, SemaphoreHandle_t, Chimera::Callback::ISRCallbackFunction> element;
+    #else
+    std::variant<uint32_t *, void*, Chimera::Callback::ISRCallbackFunction> element;
+    #endif 
 
     Actionable() :
         trigger( Trigger::INVALID ), type( ElementType::INVALID ), id( std::numeric_limits<size_t>::max() )
@@ -73,5 +83,6 @@ namespace Chimera::Event
   };
 
 }  // namespace Chimera::Event
+
 
 #endif /* !CHIMERA_EVENT_TYPES_HPP */

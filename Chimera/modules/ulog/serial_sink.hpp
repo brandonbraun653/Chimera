@@ -15,17 +15,16 @@
 #ifndef CHIMERA_MODULES_MICRO_LOGGER_SINK_HPP
 #define CHIMERA_MODULES_MICRO_LOGGER_SINK_HPP
 
-/* C++ Incldues */
+/* C++ Includes */
 #include <cstdlib>
 
 /* uLog Includes */
-#if __has_include(<uLog/uLog.hpp>)
+#if __has_include( <uLog/uLog.hpp>)
 #include <uLog/ulog.hpp>
 #include <uLog/types.hpp>
 #include <uLog/sinks/sink_intf.hpp>
 
 #define CHIMERA_MODULES_ULOG_SUPPORT 1
-#endif 
 
 namespace Chimera::Modules::uLog
 {
@@ -35,27 +34,31 @@ namespace Chimera::Modules::uLog
     SerialSink();
     ~SerialSink();
 
-    ::uLog::ResultType open() final override;
+    ::uLog::Result open() final override;
 
-    ::uLog::ResultType close() final override;
+    ::uLog::Result close() final override;
 
-    ::uLog::ResultType flush() final override;
+    ::uLog::Result flush() final override;
 
-    ::uLog::ResultType enable() final override;
+    ::uLog::Result enable() final override;
 
-    ::uLog::ResultType disable() final override;
+    ::uLog::Result disable() final override;
 
-    ::uLog::ResultType setLogLevel( const ::uLog::LogLevelType level ) final override;
+    ::uLog::Result setLogLevel( const ::uLog::Level level ) final override;
 
-    ::uLog::LogLevelType getLogLevel() final override;
+    ::uLog::Level getLogLevel() final override;
 
-    ::uLog::ResultType log( const ::uLog::LogLevelType level, const void *const message, const size_t length ) final override;
+    ::uLog::Result log( const ::uLog::Level level, const void *const message, const size_t length ) final override;
 
   private:
     bool enabled;
-    ::uLog::LogLevelType logLevel;
+    ::uLog::Level logLevel;
   };
 
-}  // namespace Chimera::Modules
+
+}  // namespace Chimera::Modules::uLog
+
+
+#endif /* __has_include( <uLog/uLog.hpp> )*/
 
 #endif /* !CHIMERA_MODULES_MICRO_LOGGER_SINK_HPP */

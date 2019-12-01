@@ -22,7 +22,6 @@
 /* Boost Includes */
 #include <boost/circular_buffer.hpp>
 
-
 #if defined( CHIMERA_MODULES_ULOG_SUPPORT ) && ( CHIMERA_MODULES_ULOG_SUPPORT == 1 )
 
 static Chimera::Serial::SerialClass sink;
@@ -34,17 +33,17 @@ namespace Chimera::Modules::uLog
   SerialSink::SerialSink()
   {
     enabled = false;
-    logLevel = ::uLog::LogLevelType::LOG_LEVEL_MIN;
+    logLevel = ::uLog::Level::LVL_MIN;
   }
 
   SerialSink::~SerialSink()
   {
   }
 
-  ::uLog::ResultType SerialSink::open()
+  ::uLog::Result SerialSink::open()
   {
     Chimera::Status_t hwResult = Chimera::CommonStatusCodes::OK;
-    ::uLog::ResultType sinkResult = ::uLog::ResultType::RESULT_SUCCESS;
+    ::uLog::Result sinkResult = ::uLog::Result::RESULT_SUCCESS;
 
     buffer.clear();
     buffer.linearize();
@@ -77,67 +76,67 @@ namespace Chimera::Modules::uLog
     ------------------------------------------------*/
     if ( hwResult != Chimera::CommonStatusCodes::OK )
     {
-      sinkResult = ::uLog::ResultType::RESULT_FAIL;
+      sinkResult = ::uLog::Result::RESULT_FAIL;
     }
 
     return sinkResult;
   }
 
-  ::uLog::ResultType SerialSink::close()
+  ::uLog::Result SerialSink::close()
   {
-    ::uLog::ResultType sinkResult = ::uLog::ResultType::RESULT_SUCCESS;
+    ::uLog::Result sinkResult = ::uLog::Result::RESULT_SUCCESS;
 
     if ( sink.end() != Chimera::CommonStatusCodes::OK )
     {
-      sinkResult = ::uLog::ResultType::RESULT_FAIL;
+      sinkResult = ::uLog::Result::RESULT_FAIL;
     }
 
     return sinkResult;
   }
 
-  ::uLog::ResultType SerialSink::flush()
+  ::uLog::Result SerialSink::flush()
   {
-    ::uLog::ResultType sinkResult = ::uLog::ResultType::RESULT_SUCCESS;
+    ::uLog::Result sinkResult = ::uLog::Result::RESULT_SUCCESS;
 
     if ( sink.flush( Chimera::Hardware::SubPeripheral::TXRX ) != Chimera::CommonStatusCodes::OK )
     {
-      sinkResult = ::uLog::ResultType::RESULT_FAIL;
+      sinkResult = ::uLog::Result::RESULT_FAIL;
     }
 
     return sinkResult;
   }
 
-  ::uLog::ResultType SerialSink::enable()
+  ::uLog::Result SerialSink::enable()
   {
     enabled = true;
-    return ::uLog::ResultType::RESULT_SUCCESS;
+    return ::uLog::Result::RESULT_SUCCESS;
   }
 
-  ::uLog::ResultType SerialSink::disable()
+  ::uLog::Result SerialSink::disable()
   {
     enabled = false;
-    return ::uLog::ResultType::RESULT_SUCCESS;
+    return ::uLog::Result::RESULT_SUCCESS;
   }
 
-  ::uLog::ResultType SerialSink::setLogLevel( const ::uLog::LogLevelType level )
+  ::uLog::Result SerialSink::setLogLevel( const ::uLog::Level level )
   {
     logLevel = level;
-    return ::uLog::ResultType::RESULT_SUCCESS;
+    return ::uLog::Result::RESULT_SUCCESS;
   }
 
-  ::uLog::LogLevelType SerialSink::getLogLevel()
+  ::uLog::Level SerialSink::getLogLevel()
   {
     return logLevel;
   }
 
-  ::uLog::ResultType SerialSink::log( const ::uLog::LogLevelType level, const void *const message, const size_t length )
+  ::uLog::Result SerialSink::log( const ::uLog::Level level, const void *const message, const size_t length )
   {
     /*------------------------------------------------
     Make sure we can actually log the data
     ------------------------------------------------*/
     if ( level < logLevel )
     {
-      return ::uLog::ResultType::RESULT_INVALID_LEVEL;
+      return ::uLog::Result::RESULT_INVALID_LEVEL;
     }
 
     /*------------------------------------------------
@@ -145,14 +144,14 @@ namespace Chimera::Modules::uLog
     until the transfer is complete.
     ------------------------------------------------*/
     auto hwResult = Chimera::CommonStatusCodes::OK;
-    auto ulResult = ::uLog::ResultType::RESULT_SUCCESS;
+    auto ulResult = ::uLog::Result::RESULT_SUCCESS;
 
     hwResult |= sink.write( reinterpret_cast<const uint8_t *const>( message ), length, 100 );
     hwResult |= sink.await( Chimera::Event::Trigger::WRITE_COMPLETE, 100 );
 
     if ( hwResult != Chimera::CommonStatusCodes::OK )
     {
-      ulResult = ::uLog::ResultType::RESULT_FAIL;
+      ulResult = ::uLog::Result::RESULT_FAIL;
     }
 
     return ulResult;

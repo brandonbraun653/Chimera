@@ -8,10 +8,12 @@
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#include "chimeraConfig.hpp"
 #include <Chimera/chimera.hpp>
 #include <Chimera/modules/freertos/freertos_hooks.hpp>
 
-#if defined( USING_FREERTOS )
+#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -40,4 +42,5 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif /* USING_FREERTOS */
+
+#endif /* CHIMERA_CFG_FREERTOS */

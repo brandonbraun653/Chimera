@@ -14,7 +14,7 @@
 /* Chimera Includes */
 #include <Chimera/allocator.hpp>
 
-#if defined( USING_FREERTOS )
+#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
 
 #include "FreeRTOS.h"
 #include "portable.h"
@@ -59,4 +59,4 @@ void operator delete( void *p ) noexcept
   vPortFree( p );
 }
 
-#endif /* USING_FREERTOS */
+#endif /* CHIMERA_CFG_FREERTOS */
