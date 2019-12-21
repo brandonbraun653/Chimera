@@ -40,22 +40,10 @@ namespace Chimera::Modules::uLog
 
     ::uLog::Result flush() final override;
 
-    ::uLog::Result enable() final override;
-
-    ::uLog::Result disable() final override;
-
-    ::uLog::Result setLogLevel( const ::uLog::Level level ) final override;
-
-    ::uLog::Level getLogLevel() final override;
+    ::uLog::IOType getIOType() final override;
 
     ::uLog::Result log( const ::uLog::Level level, const void *const message, const size_t length ) final override;
-
-  private:
-    bool enabled;
-    ::uLog::Level logLevel;
   };
-
-
 }  // namespace Chimera::Modules::uLog
 
 

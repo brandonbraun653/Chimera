@@ -91,7 +91,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx86);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -109,7 +109,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx64)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -129,7 +129,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx86);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -151,7 +151,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx64)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -265,6 +265,8 @@
     <ClCompile Include="..\..\..\Chimera\chimera_watchdog.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\freertos\freertos_hooks.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\memory\chimera_memory_device.cpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_freertos.cpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\ulog\serial_sink.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\freertos_hooks_prj.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp" />

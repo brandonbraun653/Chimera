@@ -13,26 +13,24 @@
 #define CHIMERA_THREADING_TYPES_HPP
 
 /* C++ Includes */
-#include <cstdint>
-#include <memory>
-
-/* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-
-/* FreeRTOS Includes */
-#ifdef USING_FREERTOS
-#ifdef __cplusplus
-extern "C"
-{
+#if defined( WIN32 ) || defined( WIN64 )
+#include <mutex>
+#elif defined( USING_FREERTOS )
+#include "FreeRTOS.h"
 #include "semphr.h"
-}
-#endif /* __cplusplus */
-#endif /* USING_FREERTOS */
+#endif
 
 namespace Chimera::Threading
 {
-  using RecursiveMutex_t = SemaphoreHandle_t;
+#if defined( WIN32 ) || defined( WIN64 )
+  using RecursiveMutex = ::std::recursive_mutex*;
+  using RecursiveTimedMutex = ::std::recursive_timed_mutex*;
 
+#elif defined( USING_FREERTOS )
+
+  using RecursiveMutex = SemaphoreHandle_t;
+  using RecursiveTimedMutex = SemaphoreHandle_t;
+#endif
 }  // namespace Chimera
 
-#endif /* !CHIMERA_WATCHDOG_TYPES_HPP */
+#endif /* !CHIMERA_THREADING_TYPES_HPP */

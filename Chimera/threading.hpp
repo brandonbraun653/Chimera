@@ -13,13 +13,15 @@
 #define CHIMERA_THREADING_HPP
 
 /* C++ Includes */
-#include <mutex>
+#include <cstdint>
+#include <cstdlib>
 
 /* Chimera Includes */
 #include "chimeraConfig.hpp"
 #include <Chimera/interface/threading_intf.hpp>
 #include <Chimera/types/common_types.hpp>
 #include <Chimera/types/event_types.hpp>
+
 #include <Chimera/types/threading_types.hpp>
 
 #if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
@@ -35,16 +37,42 @@ extern "C"
 }
 #endif /* __cplusplus */
 
+#endif /* FreeRTOS */
+
+
 namespace Chimera::Threading
 {
-  static constexpr uint32_t TIMEOUT_DONT_WAIT = 0u;
-
+  
   /**
-   *  Implements generic lock functionality that can simply be inherited into other classes.
-   *  This is primarily intended for use with FreeRTOS, but also implements an extremely
-   *  rudimentary (not guaranteed thread safe) lock using std::atomic. The actual atomicity
-   *  of the non-FreeRTOS implementation is going to be processor specific.
+   *	Allows the currently executing thread to give up the remainder of its
+   *  time slice, letting the scheduler run again.
+   *
+   *	@return void
    */
+  extern void yield();
+
+  template<typename SyncType>
+  extern SyncType createSyncObject();
+
+  template<typename SyncType>
+  extern void destroySyncObject( SyncType obj );
+
+  template<typename SyncType>
+  extern bool lock( SyncType obj );
+
+  template<typename SyncType>
+  extern bool lock( SyncType obj, const size_t timeout_mS );
+
+  template<typename SyncType>
+  extern bool lockFromISR( SyncType obj );
+
+  template<typename SyncType>
+  extern bool unlock( SyncType obj );
+
+  template<typename SyncType>
+  extern bool unlockFromISR( SyncType obj );
+
+
   class Lockable : public LockableInterface
   {
   public:
@@ -57,10 +85,10 @@ namespace Chimera::Threading
     Chimera::Status_t unlockFromISR() final override;
 
     Lockable();
-    ~Lockable() = default;
+    ~Lockable();
 
   private:
-    SemaphoreHandle_t recursive_mutex;
+    RecursiveTimedMutex mutex;
   };
 
   class LockGuard
@@ -77,9 +105,10 @@ namespace Chimera::Threading
     Lockable &lockable;
   };
 
-  /*------------------------------------------------
-  Fully describes thread creation parameters as used in overloaded addThread
-  ------------------------------------------------*/
+#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+
+  static constexpr uint32_t TIMEOUT_DONT_WAIT = 0u;
+
   struct Thread_t
   {
     TaskFunction_t func;  /**< Function pointer to the thread */
@@ -94,7 +123,7 @@ namespace Chimera::Threading
    *  Starts the FreeRTOS scheduler and initializes all registered threads.
    *
    *  This implementation extends the basic FreeRTOS vTaskStartScheduler() function
-   *  by allowing the user to control the initialzation timing. If callbacks are used, then
+   *  by allowing the user to control the initialization timing. If callbacks are used, then
    *  each thread will initialize in the order registered and the next thread cannot start
    *  until the current has signaled its setup sequence is complete.
    *

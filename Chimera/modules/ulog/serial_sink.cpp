@@ -32,8 +32,6 @@ namespace Chimera::Modules::uLog
 {
   SerialSink::SerialSink()
   {
-    enabled = false;
-    logLevel = ::uLog::Level::LVL_MIN;
   }
 
   SerialSink::~SerialSink()
@@ -106,27 +104,9 @@ namespace Chimera::Modules::uLog
     return sinkResult;
   }
 
-  ::uLog::Result SerialSink::enable()
+  ::uLog::IOType SerialSink::getIOType()
   {
-    enabled = true;
-    return ::uLog::Result::RESULT_SUCCESS;
-  }
-
-  ::uLog::Result SerialSink::disable()
-  {
-    enabled = false;
-    return ::uLog::Result::RESULT_SUCCESS;
-  }
-
-  ::uLog::Result SerialSink::setLogLevel( const ::uLog::Level level )
-  {
-    logLevel = level;
-    return ::uLog::Result::RESULT_SUCCESS;
-  }
-
-  ::uLog::Level SerialSink::getLogLevel()
-  {
-    return logLevel;
+    return IOType::SERIAL_SINK;
   }
 
   ::uLog::Result SerialSink::log( const ::uLog::Level level, const void *const message, const size_t length )

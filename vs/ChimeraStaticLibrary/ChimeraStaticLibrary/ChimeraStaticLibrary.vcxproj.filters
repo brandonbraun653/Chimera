@@ -61,6 +61,9 @@
     <Filter Include="Chimera\mock\modules\memory">
       <UniqueIdentifier>{a1cf3bf7-2f87-4613-b29f-0fae0bd92d07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Chimera\modules\threading">
+      <UniqueIdentifier>{e3c8d57f-5b43-4ff2-b856-2d2729eb6b4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chimera\algorithm\register_optimizer.hpp">
@@ -364,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\chimera_watchdog.cpp">
       <Filter>Chimera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_freertos.cpp">
+      <Filter>Chimera\modules\threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp">
+      <Filter>Chimera\modules\threading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
