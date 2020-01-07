@@ -11,9 +11,13 @@
 /* C++ Includes */
 #include <cstdint>
 
-namespace ChimeraSim
+void ChimeraInit()
 {
 
+}
+
+namespace ChimeraSim
+{
   size_t millis()
   {
     return 0u;
