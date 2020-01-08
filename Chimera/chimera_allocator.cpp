@@ -13,6 +13,7 @@
 
 /* Chimera Includes */
 #include <Chimera/allocator.hpp>
+#include <Chimera/threading.hpp>
 
 #if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
 
@@ -31,32 +32,26 @@ void free( void *ptr )
 }
 #endif /* !SIM */
 
-
+/*------------------------------------------------
+Only overload these operators if we aren't using the MSVC runtime.
+I was unsuccessful in figuring out a thread safe way to mix and match
+FreeRTOS threads and std::threads without corrupting memory.
+------------------------------------------------*/
+#if !defined( WIN32 ) && !defined( WIN64 )
 void *operator new( size_t size )
 {
-  void *p = pvPortMalloc( size );
-
-#ifdef __EXCEPTIONS
-  if ( p == 0 )                // did pvPortMalloc succeed?
-    throw std::bad_alloc();    // ANSI/ISO compliant behavior
-#endif
-  return p;
+  return pvPortMalloc( size );
 }
 
 void *operator new[]( size_t size )
 {
-  void *p = pvPortMalloc( size );
-
-#ifdef __EXCEPTIONS
-  if ( p == 0 )                // did pvPortMalloc succeed?
-    throw std::bad_alloc();    // ANSI/ISO compliant behavior
-#endif
-  return p;
+  return pvPortMalloc( size );
 }
 
 void operator delete( void *p ) noexcept
 {
   vPortFree( p );
 }
+#endif /* !WIN32 && !WIN64 */
 
 #endif /* CHIMERA_CFG_FREERTOS */
