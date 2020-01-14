@@ -5,9 +5,10 @@
  *   Description:
  *      Implements common Chimera functions
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+/* Chimera Includes */
 #include "chimeraPort.hpp"
 #include <Chimera/chimera.hpp>
 #include <Chimera/exception.hpp>
@@ -15,12 +16,7 @@
 #include <Chimera/threading.hpp>
 
 #if defined( SIM )
-/* Boost Includes */
-#include <boost/thread.hpp>
-#include <boost/chrono.hpp>
-
 #include <Chimera/sim/sim_chimera.hpp>
-
 #endif
 
 namespace Chimera
@@ -30,13 +26,13 @@ namespace Chimera
     return BACKEND_NAMESPACE::millis();
   }
 
-  void delayMilliseconds( size_t ms )
+  void delayMilliseconds( const size_t val )
   {
-    BACKEND_NAMESPACE::delayMilliseconds( ms );
+    BACKEND_NAMESPACE::delayMilliseconds( val );
   }
 
-  void delayMicroseconds( size_t us )
+  void delayMicroseconds( const size_t val )
   {
-    BACKEND_NAMESPACE::delayMicroseconds( us );
+    BACKEND_NAMESPACE::delayMicroseconds( val );
   }
 }  // namespace Chimera
