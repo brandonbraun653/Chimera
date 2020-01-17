@@ -21,10 +21,11 @@
 
 /* Chimera Includes */
 #include "chimeraConfig.hpp"
+#include <Chimera/chimera.hpp>
 #include <Chimera/types/callback_types.hpp>
 
 /* FreeRTOS Includes */
-#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
 
 #ifdef __cplusplus
 extern "C"
@@ -70,7 +71,7 @@ namespace Chimera::Event
      *  Stores the user defined element that an external 
      *  processing function will act upon. 
      */
-    #if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+    #if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
     std::variant<uint32_t *, SemaphoreHandle_t, Chimera::Callback::ISRCallbackFunction> element;
     #else
     std::variant<uint32_t *, void*, Chimera::Callback::ISRCallbackFunction> element;

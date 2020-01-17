@@ -7,20 +7,35 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChimeraStaticLibrary", "Chi
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|GenericEmbedded32 = Debug|GenericEmbedded32
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|GenericEmbedded32 = Release|GenericEmbedded32
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Standalone|GenericEmbedded32 = Standalone|GenericEmbedded32
+		Standalone|x64 = Standalone|x64
+		Standalone|x86 = Standalone|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|GenericEmbedded32.ActiveCfg = Debug|GenericEmbedded32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|GenericEmbedded32.Build.0 = Debug|GenericEmbedded32
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x64.ActiveCfg = Debug|x64
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x64.Build.0 = Debug|x64
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x86.ActiveCfg = Debug|Win32
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x86.Build.0 = Debug|Win32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|GenericEmbedded32.ActiveCfg = Release|GenericEmbedded32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|GenericEmbedded32.Build.0 = Release|GenericEmbedded32
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x64.ActiveCfg = Release|x64
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x64.Build.0 = Release|x64
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x86.ActiveCfg = Release|Win32
 		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x86.Build.0 = Release|Win32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|GenericEmbedded32.ActiveCfg = Standalone|GenericEmbedded32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|GenericEmbedded32.Build.0 = Standalone|GenericEmbedded32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x64.ActiveCfg = Standalone|x64
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x64.Build.0 = Standalone|x64
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x86.ActiveCfg = Standalone|Win32
+		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x86.Build.0 = Standalone|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

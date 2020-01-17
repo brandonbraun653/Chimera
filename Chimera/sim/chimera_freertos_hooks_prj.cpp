@@ -8,6 +8,8 @@
  *  2019 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#if defined( WIN32 ) || defined( WIN64 )
+
 /* C++ Includes */
 #include <stdexcept>
 #include <string>
@@ -44,3 +46,5 @@ namespace Chimera::Modules::FreeRTOS
   }
 
 }  // namespace Chimera::Modules::FreeRTOS
+
+#endif /* _WIN32 || _WIN64 */

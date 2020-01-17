@@ -40,6 +40,13 @@ namespace Chimera
       UNKNOWN_RESET,
       MAX_RESET_TYPE
     };
+
+    struct InterruptMask
+    {
+      bool interrupted;
+      uint32_t mask;
+    };
+
   }  // namespace System
 }  // namespace Chimera
 

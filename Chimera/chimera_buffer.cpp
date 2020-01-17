@@ -81,7 +81,7 @@ namespace Chimera::Buffer
       return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
     }
 
-    if ( LockGuard( *this ).lock() )
+    if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
       /*-------------------------------------------------
       Clear out the old assignment's memory so we don't leak.
@@ -129,7 +129,7 @@ namespace Chimera::Buffer
     /*-------------------------------------------------
     Make sure we can safely access the data
     -------------------------------------------------*/
-    if ( LockGuard( *this ).lock() )
+    if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
       error = Chimera::CommonStatusCodes::OK;
 
@@ -173,7 +173,7 @@ namespace Chimera::Buffer
     /*-------------------------------------------------
     Make sure we can safely access the data
     -------------------------------------------------*/
-    if ( LockGuard( *this ).lock() )
+    if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
       error = Chimera::CommonStatusCodes::OK;
 
@@ -204,7 +204,7 @@ namespace Chimera::Buffer
       return Chimera::CommonStatusCodes::NOT_INITIALIZED;
     }
 
-    if ( LockGuard( *this ).lock() )
+    if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
       error = Chimera::CommonStatusCodes::OK;
       memset( pLinearBuffer, 0, linearLength );
@@ -228,7 +228,7 @@ namespace Chimera::Buffer
       return Chimera::CommonStatusCodes::NOT_INITIALIZED;
     }
 
-    if ( LockGuard( *this ).lock() )
+    if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
       result = Chimera::CommonStatusCodes::OK;
 
@@ -286,7 +286,7 @@ namespace Chimera::Buffer
       return Chimera::CommonStatusCodes::NOT_INITIALIZED;
     }
 
-    if ( LockGuard( *this ).lock() )
+    if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
       result = Chimera::CommonStatusCodes::OK;
 

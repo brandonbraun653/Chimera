@@ -106,7 +106,7 @@ namespace Chimera::Modules::uLog
 
   ::uLog::IOType SerialSink::getIOType()
   {
-    return IOType::SERIAL_SINK;
+    return ::uLog::IOType::SERIAL_SINK;
   }
 
   ::uLog::Result SerialSink::log( const ::uLog::Level level, const void *const message, const size_t length )
@@ -114,7 +114,7 @@ namespace Chimera::Modules::uLog
     /*------------------------------------------------
     Make sure we can actually log the data
     ------------------------------------------------*/
-    if ( level < logLevel )
+    if ( level < getLogLevel() )
     {
       return ::uLog::Result::RESULT_INVALID_LEVEL;
     }

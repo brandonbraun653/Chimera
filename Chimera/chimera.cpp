@@ -13,11 +13,8 @@
 #include <Chimera/chimera.hpp>
 #include <Chimera/exception.hpp>
 #include <Chimera/preprocessor.hpp>
-#include <Chimera/threading.hpp>
-
-#if defined( SIM )
 #include <Chimera/sim/sim_chimera.hpp>
-#endif
+#include <Chimera/threading.hpp>
 
 namespace Chimera
 {

@@ -8,6 +8,8 @@
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#if defined( CHIMERA_SIMULATOR )
+
 /* C++ Includes */
 #include <atomic>
 #include <cstdint>
@@ -81,3 +83,14 @@ static void SimSystemTick()
     std::this_thread::sleep_for( std::chrono::microseconds( 1000 ) );
   }
 }
+
+
+#if defined( CHIMERA_STANDALONE )
+int main()
+{
+  // Provide an entry point for the VS project standalone compilation target
+  return 0;
+}
+#endif
+
+#endif /* _WIN32 || _WIN64 */

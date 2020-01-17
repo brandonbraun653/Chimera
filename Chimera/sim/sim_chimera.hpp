@@ -12,8 +12,10 @@
 #ifndef SIM_CHIMERA_HPP
 #define SIM_CHIMERA_HPP
 
+#if defined( CHIMERA_SIMULATOR )
+
 /* C++ Includes */
-#include <cstdint>
+#include <cstdlib>
 
 namespace ChimeraSim
 {
@@ -50,4 +52,5 @@ namespace ChimeraSim
 
 }  // namespace ChimeraSim
 
+#endif /* _WIN32 || _WIN64 */
 #endif /* SIM_CHIMERA_HPP */

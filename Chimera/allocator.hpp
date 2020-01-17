@@ -22,7 +22,7 @@ will break loose.
 ------------------------------------------------*/
 #if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
 
-#if !defined( SIM )
+#if !defined( CHIMERA_SIMULATOR )
 void* malloc (size_t size);
 
 void free (void* ptr);

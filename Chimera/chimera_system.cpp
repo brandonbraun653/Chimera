@@ -17,8 +17,12 @@
 
 namespace Chimera::System
 {
+  static InterruptMask s_SystemInterruptState;
+
   Chimera::Status_t initialize()
   {
+    memset( &s_SystemInterruptState, 0, sizeof( s_SystemInterruptState ) );
+
     /*------------------------------------------------
     Execute the user's initialization code first so that Chimera
     has a clean base to work from.
@@ -33,5 +37,23 @@ namespace Chimera::System
     ------------------------------------------------*/
 
     return Chimera::CommonStatusCodes::OK;
+  }
+
+  void disableInterrupts()
+  {
+    s_SystemInterruptState = prjDisableInterrupts();
+  }
+
+  void enableInterrupts()
+  {
+    if ( s_SystemInterruptState.interrupted )
+    {
+      prjEnableInterrupts( s_SystemInterruptState );
+    }
+  }
+
+  int maxConcurrentThreads()
+  {
+    return prjMaxConcurrentThreads();
   }
 }

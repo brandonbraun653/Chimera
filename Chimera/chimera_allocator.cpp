@@ -15,7 +15,7 @@
 #include <Chimera/allocator.hpp>
 #include <Chimera/threading.hpp>
 
-#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
 
 #include "FreeRTOS.h"
 #include "portable.h"

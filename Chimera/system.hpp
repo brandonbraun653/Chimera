@@ -35,33 +35,26 @@ namespace Chimera::System
    */
   Chimera::Status_t initialize();
 
-#if !defined( CHIMERA_INHERITED_SYSCTL )
-  using CHIMERA_INHERITED_SYSCTL = ControlUnsupported;
-#endif
+  /**
+   *  Disables the current system interrupts
+   *	@return void
+   */
+  void disableInterrupts();
 
-  class SystemControl : public CHIMERA_INHERITED_SYSCTL
-  {
-  public:
-    SystemControl()  = default;
-    ~SystemControl() = default;
+  /**
+   *  Restores previously disabled interrupts
+   *	@return void
+   */
+  void enableInterrupts();
 
-  private:
-  };
+  /**
+   *	Returns the maximum number of concurrent hardware threads that
+   *  can be executing at any given time on the CPU.
+   *	
+   *	@return int
+   */
+  int maxConcurrentThreads();
 
-  static_assert( std::is_base_of<ControlInterface, SystemControl>::value, "Class implements incorrect interface" );
-
-
-#if !defined( CHIMERA_INHERITED_SYSTEM_IDENTIFIER )
-  using CHIMERA_INHERITED_SYSTEM_IDENTIFIER = IdentifierUnsupported;
-#endif
-
-  class Identifier : public CHIMERA_INHERITED_SYSTEM_IDENTIFIER
-  {
-  public:
-    Identifier()  = default;
-    ~Identifier() = default;
-  };
-  static_assert( std::is_base_of<IdentifierInterface, Identifier>::value, "Class implements incorrect interface" );
 }  // namespace Chimera::System
 
 #endif /* !CHIMERA_SYSTEM_HPP */

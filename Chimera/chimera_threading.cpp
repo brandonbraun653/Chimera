@@ -15,10 +15,11 @@
 /* Chimera Includes */
 #include <Chimera/chimera.hpp>
 #include <Chimera/threading.hpp>
+#include <Chimera/threading/types.hpp>
 #include <Chimera/types/common_types.hpp>
-#include <Chimera/types/threading_types.hpp>
 #include <Chimera/watchdog.hpp>
 
+#if defined( WIN32 ) || defined( WIN64 ) || defined( USING_FREERTOS )
 
 namespace Chimera::Threading
 {
@@ -308,3 +309,5 @@ namespace Chimera::Threading
 #endif
 
 }  // namespace Chimera::Threading
+
+#endif 

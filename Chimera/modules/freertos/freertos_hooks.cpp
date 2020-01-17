@@ -12,7 +12,7 @@
 #include <Chimera/chimera.hpp>
 #include <Chimera/modules/freertos/freertos_hooks.hpp>
 
-#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
 
 #ifdef __cplusplus
 extern "C"

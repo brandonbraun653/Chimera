@@ -47,16 +47,28 @@ Boost
 /*------------------------------------------------
 Test Environment
 ------------------------------------------------*/
-#if defined( _WIN32 ) || defined( _WIN64 )
+#if defined( WIN32 ) || defined( WIN64 )
+#define USING_WINDOWS
 #define MOD_TEST
 
-#if !defined(SIM)
-#define SIM
+#if !defined( CHIMERA_SIMULATOR )
+#define CHIMERA_SIMULATOR
 #endif
 #endif
 
 #if defined( MOD_TEST ) && defined( USING_FREERTOS) && !defined( NOMINMAX )
 #error Please define NOMINMAX so that the Windows port of FreeRTOS does not try and overwrite the C++ STL
 #endif
+
+
+/*------------------------------------------------
+Composite System Configuration
+------------------------------------------------*/
+#if defined( USING_WINDOWS ) || ( USING_LINUX )
+/* Indicates to the code it can use the full C++ STL without the memory concerns of embedded systems */
+#define FULL_CPP_STL_AVAILABLE 
+#else
+#define USING_GENERIC_SYSTEM
+#endif 
 
 #endif /* !CHIMERA_PREPROCESSOR_HPP */

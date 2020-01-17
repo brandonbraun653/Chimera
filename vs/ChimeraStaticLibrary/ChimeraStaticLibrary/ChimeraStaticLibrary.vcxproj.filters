@@ -64,6 +64,18 @@
     <Filter Include="Chimera\modules\threading">
       <UniqueIdentifier>{e3c8d57f-5b43-4ff2-b856-2d2729eb6b4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Chimera\threading">
+      <UniqueIdentifier>{5e04c655-aa20-49bd-bc63-ccb7618f505f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\atomic">
+      <UniqueIdentifier>{dac1365a-25e4-4363-ade5-4b13b9903c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\threading\freertos">
+      <UniqueIdentifier>{a0fd69c4-88cf-4aeb-a9fe-a3327109e3c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\threading\stl">
+      <UniqueIdentifier>{219bee1e-3fb7-41e3-a5ad-0d01d4a3096e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chimera\algorithm\register_optimizer.hpp">
@@ -109,9 +121,6 @@
       <Filter>Chimera\types</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\types\system_types.hpp">
-      <Filter>Chimera\types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\types\threading_types.hpp">
       <Filter>Chimera\types</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\types\watchdog_types.hpp">
@@ -315,13 +324,46 @@
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp">
       <Filter>Chimera\sim\config\chimera</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\mutex.hpp">
+      <Filter>Chimera\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\semaphore.hpp">
+      <Filter>Chimera\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\thread.hpp">
+      <Filter>Chimera\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\extensions.hpp">
+      <Filter>Chimera\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\atomic.hpp">
+      <Filter>Chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\atomic\atomic_freertos.hpp">
+      <Filter>Chimera\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\atomic\atomic_32bit.hpp">
+      <Filter>Chimera\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\atomic\atomic_stl.hpp">
+      <Filter>Chimera\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\internal_types.hpp">
+      <Filter>Chimera\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp">
+      <Filter>Chimera\threading\freertos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\stl\stl_sync_primitives.hpp">
+      <Filter>Chimera\threading\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\threading\types.hpp">
+      <Filter>Chimera\threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\algorithm\register_optimizer.cpp">
       <Filter>Chimera\algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Chimera\sim\freertos_hooks_prj.cpp">
-      <Filter>Chimera\sim</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp">
       <Filter>Chimera\sim</Filter>
@@ -373,6 +415,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp">
       <Filter>Chimera\modules\threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\chimera_freertos_hooks_prj.cpp">
+      <Filter>Chimera\sim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp">
+      <Filter>Chimera\threading\stl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

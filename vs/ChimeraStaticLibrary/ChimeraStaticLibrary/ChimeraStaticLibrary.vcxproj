@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|GenericEmbedded32">
+      <Configuration>Debug</Configuration>
+      <Platform>GenericEmbedded32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|GenericEmbedded32">
+      <Configuration>Release</Configuration>
+      <Platform>GenericEmbedded32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -15,6 +23,18 @@
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Standalone|GenericEmbedded32">
+      <Configuration>Standalone</Configuration>
+      <Platform>GenericEmbedded32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Standalone|Win32">
+      <Configuration>Standalone</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Standalone|x64">
+      <Configuration>Standalone</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -51,6 +71,21 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -166,10 +201,45 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT)/boost_1_70_0;$(ProjectDir)../../../Chimera/sim/config/chimera;$(ProjectDir)../../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>;CHIMERA_LITTLE_ENDIAN;USING_STL_THREADS;CHIMERA_SIMULATOR;CHIMERA_STANDALONE</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT)/boost_1_70_0;$(ProjectDir)../../../Chimera/sim/config/chimera;$(ProjectDir)../../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32;CHIMERA_LITTLE_ENDIAN;USING_STL_THREADS;CHIMERA_SIMULATOR;CHIMERA_STANDALONE</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT)/boost_1_70_0;$(ProjectDir)../../../Chimera/sim/config/chimera;$(ProjectDir)../../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN64;CHIMERA_LITTLE_ENDIAN;USING_STL_THREADS;CHIMERA_SIMULATOR;CHIMERA_STANDALONE</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chimera\algorithm\register_optimizer.hpp" />
     <ClInclude Include="..\..\..\Chimera\allocator.hpp" />
     <ClInclude Include="..\..\..\Chimera\assert.hpp" />
+    <ClInclude Include="..\..\..\Chimera\atomic.hpp" />
+    <ClInclude Include="..\..\..\Chimera\atomic\atomic_32bit.hpp" />
+    <ClInclude Include="..\..\..\Chimera\atomic\atomic_freertos.hpp" />
+    <ClInclude Include="..\..\..\Chimera\atomic\atomic_stl.hpp" />
     <ClInclude Include="..\..\..\Chimera\base\buffer_base.hpp" />
     <ClInclude Include="..\..\..\Chimera\base\crc_base.hpp" />
     <ClInclude Include="..\..\..\Chimera\base\dma_base.hpp" />
@@ -210,11 +280,61 @@
     <ClInclude Include="..\..\..\Chimera\interface\watchdog_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\logging.hpp" />
     <ClInclude Include="..\..\..\Chimera\memory.hpp" />
-    <ClInclude Include="..\..\..\Chimera\mock\delay.hpp" />
-    <ClInclude Include="..\..\..\Chimera\mock\gpio.hpp" />
-    <ClInclude Include="..\..\..\Chimera\mock\modules\memory\flash.hpp" />
-    <ClInclude Include="..\..\..\Chimera\mock\spi.hpp" />
-    <ClInclude Include="..\..\..\Chimera\mock\watchdog.hpp" />
+    <ClInclude Include="..\..\..\Chimera\mock\delay.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\mock\gpio.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\mock\modules\memory\flash.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\mock\spi.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\mock\watchdog.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\modules\freertos\freertos_hooks.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\memory\blockDevice.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\memory\device.hpp" />
@@ -232,6 +352,14 @@
     <ClInclude Include="..\..\..\Chimera\spi.hpp" />
     <ClInclude Include="..\..\..\Chimera\system.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\internal_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\extensions.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\mutex.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\semaphore.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\stl\stl_sync_primitives.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\thread.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\callback_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\clock_types_fwd.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\common_types.hpp" />
@@ -246,7 +374,6 @@
     <ClInclude Include="..\..\..\Chimera\types\serial_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\spi_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\system_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\threading_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\watchdog_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\utilities.hpp" />
     <ClInclude Include="..\..\..\Chimera\watchdog.hpp" />
@@ -268,9 +395,10 @@
     <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_freertos.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\ulog\serial_sink.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\freertos_hooks_prj.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\chimera_freertos_hooks_prj.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
+    <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Configuration.md" />

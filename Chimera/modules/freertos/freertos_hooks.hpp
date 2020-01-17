@@ -14,7 +14,8 @@
 
 /* Chimera Includes */
 #include "chimeraConfig.hpp"
-#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+#include <Chimera/chimera.hpp>
+#if defined( USING_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
 
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"

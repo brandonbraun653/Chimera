@@ -23,7 +23,7 @@ namespace Chimera::System
 {
   /**
    *  Low level driver specific system initialization function used for operations
-   *  like clock configuration, periphal startup, etc. 
+   *  like clock configuration, peripheral startup, etc. 
    *
    *  @note     Intended to allow the backend driver to initialize itself before Chimera
    *            code begins execution.
@@ -35,50 +35,30 @@ namespace Chimera::System
    */
   extern Chimera::Status_t prjSystemStartup();
 
-  class ControlInterface
-  {
-  public:
-    virtual Status_t reasonForReset( ResetType &reason ) = 0;
+  /**
+   *  Disables system level interrupts, thereby preventing any kind of interrupt from
+   *  executing on the CPU.
+   *
+   *	@return size_t      Mask indicating which interrupts were disabled
+   */
+  extern InterruptMask prjDisableInterrupts();
 
-  private:
-  };
+  /**
+   *  Enables system level interrupts from the mask that was returned when 
+   *  interrupts were last disabled.
+   *
+   *	@return void
+   */
+  extern void prjEnableInterrupts( InterruptMask &interruptMask );
 
-  class ControlUnsupported : public ControlInterface
-  {
-  public:
-    Status_t reasonForReset( ResetType &reason ) final override
-    {
-      reason = ResetType::UNKNOWN_RESET;
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
-    }
-  };
+  /**
+   *	Returns the maximum number of concurrent hardware threads that
+   *  can be executing at any given time on the CPU.
+   *	
+   *	@return int
+   */
+  extern int prjMaxConcurrentThreads();
 
-
-  class IdentifierInterface
-  {
-  public:
-    virtual ~IdentifierInterface() = default;
-
-    virtual uint32_t deviceID() = 0;
-
-    virtual uint32_t uniqueID() = 0;
-  };
-
-  class IdentifierUnsupported : public IdentifierInterface
-  {
-  public:
-    IdentifierUnsupported() = default;
-
-    uint32_t deviceID() final override
-    {
-      return 0u;
-    }
-
-    uint32_t uniqueID() final override
-    {
-      return 0u;
-    }
-  };
 
 }  // namespace Chimera::System
 

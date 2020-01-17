@@ -1,205 +1,29 @@
 /********************************************************************************
- *   File Name:
- *     threading.hpp
+ *  File Name:
+ *    threading.hpp
  *
- *   Description:
- *     Implements the threading features for Chimera
+ *  Description:
+ *    Includes all the necessary headers for implementing a thread based system
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREADING_HPP
 #define CHIMERA_THREADING_HPP
 
-/* C++ Includes */
-#include <cstdint>
-#include <cstdlib>
-
 /* Chimera Includes */
-#include "chimeraConfig.hpp"
-#include <Chimera/interface/threading_intf.hpp>
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/event_types.hpp>
-
-#include <Chimera/types/threading_types.hpp>
-
-#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
-
-/* FreeRTOS Includes */
-#ifdef __cplusplus
-extern "C"
-{
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "semphr.h"
-}
-#endif /* __cplusplus */
-
-#endif /* FreeRTOS */
-
+#include <Chimera/threading/extensions.hpp>
+#include <Chimera/threading/mutex.hpp>
+#include <Chimera/threading/semaphore.hpp>
+#include <Chimera/threading/thread.hpp>
 
 namespace Chimera::Threading
 {
-  
-  /**
-   *	Allows the currently executing thread to give up the remainder of its
-   *  time slice, letting the scheduler run again.
-   *
-   *	@return void
-   */
-  extern void yield();
+  void startScheduler();
 
-  template<typename SyncType>
-  extern SyncType createSyncObject();
-
-  template<typename SyncType>
-  extern void destroySyncObject( SyncType obj );
-
-  template<typename SyncType>
-  extern bool lock( SyncType obj );
-
-  template<typename SyncType>
-  extern bool lock( SyncType obj, const size_t timeout_mS );
-
-  template<typename SyncType>
-  extern bool lockFromISR( SyncType obj );
-
-  template<typename SyncType>
-  extern bool unlock( SyncType obj );
-
-  template<typename SyncType>
-  extern bool unlockFromISR( SyncType obj );
-
-
-  class Lockable : public LockableInterface
-  {
-  public:
-    Chimera::Status_t lock( const size_t timeout_mS ) override;
-
-    Chimera::Status_t lockFromISR( const size_t timeout_mS ) override;
-
-    Chimera::Status_t unlock() final override;
-
-    Chimera::Status_t unlockFromISR() final override;
-
-    Lockable();
-    ~Lockable();
-
-  private:
-    RecursiveTimedMutex mutex;
-  };
-
-  class LockGuard
-  {
-  public:
-    LockGuard( Lockable &obj );
-    ~LockGuard();
-
-    bool lock();
-
-    bool lock( const size_t timeout );
-
-  private:
-    Lockable &lockable;
-  };
-
-#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
-
-  static constexpr uint32_t TIMEOUT_DONT_WAIT = 0u;
-
-  struct Thread_t
-  {
-    TaskFunction_t func;  /**< Function pointer to the thread */
-    TaskHandle_t *handle; /**< FreeRTOS generated handle for reference elsewhere */
-    UBaseType_t priority; /**< FreeRTOS priority number, ranging from 0 to (configMAX_PRIORITIES - 1) lowest to highest */
-    void *funcParams;     /**< Thread parameters to be passed in upon creation */
-    uint32_t stackDepth;  /**< Size of the thread stack, in multiples of **WORDS** (x4 bytes), ie stack of 150 == 600 bytes */
-    char name[ configMAX_TASK_NAME_LEN ];
-  };
-
-  /**
-   *  Starts the FreeRTOS scheduler and initializes all registered threads.
-   *
-   *  This implementation extends the basic FreeRTOS vTaskStartScheduler() function
-   *  by allowing the user to control the initialization timing. If callbacks are used, then
-   *  each thread will initialize in the order registered and the next thread cannot start
-   *  until the current has signaled its setup sequence is complete.
-   *
-   *  @see signalSetupComplete();
-   *
-   *	@param[in] useSetupCallbacks	Enables or disables the use of setup callbacks for proper thread initialization.
-   *	@return void
-   */
-  void startScheduler( const bool useSetupCallbacks = true );
-
-#ifdef SIM
-  /**
-   *  Kills the underlying RTOS execution.
-   *
-   *  @return void
-   */
-  void endScheduler();
-#endif
-
-  /**
-   *	Registers an array of thread initialization structs with the FreeRTOS scheduler. This is
-   *  intended to register a large number of threads that initialize the whole embedded system.
-   *
-   *  @note The scheduler must not be running otherwise the registration will fail.
-   *
-   *	@param[in]	threads     Array of threads that will be registered
-   *	@return BaseType_t
-   */
-  BaseType_t addThread( Thread_t *const threadArray, const uint8_t numThreads );
-
-  /**
-   *  Adds a new thread to the FreeRTOS kernel. If the scheduler has been started already, the
-   *	correct initialization sequence will be followed. Otherwise, the thread will be suspended
-   *	until startScheduler() has been called.
-   *
-   *	@param[in]	 func			    Function pointer to the thread to be executed
-   *	@param[in]   name			    User friendly name for the thread
-   *	@param[in]   stackDepth		Size of the thread stack, in multiples of **WORDS** (x4 bytes), ie stack of 150 == 600 bytes
-   *	@param[in]   funcParams		Thread parameters to be passed in upon creation
-   *	@param[in]   priority		  FreeRTOS priority number, ranging from 0 to (configMAX_PRIORITIES - 1) lowest to highest
-   *	@param[out]  handle			  FreeRTOS generated handle for reference elsewhere
-   *	@return BaseType_t
-   */
-  BaseType_t addThread( TaskFunction_t func, const char *name, const uint16_t stackDepth, void *const funcParams,
-                        UBaseType_t priority, TaskHandle_t *const handle );
-
-  /**
-   *  Performs the same operation as the more verbose overload
-   *
-   *	@param[in]	thread	      Thread initializer data
-   *	@return BaseType_t
-   */
-  BaseType_t addThread( const Thread_t &thread );
-
-  /**
-   *  Signal back to startScheduler() that initialization has completed and the next
-   *  thread (if it exists) can be started.
-   *
-   *  @note This only has an effect if startScheduler() was called with initialization callbacks turned on
-   *  @see startScheduler()
-   *
-   *	@return BaseType_t
-   */
-  BaseType_t signalSetupComplete();
-
-  /**
-   *  Blocks the current thread of execution until a particular message
-   *  is received. Will automatically clear the task message queue upon exit.
-   *
-   *  @param[in]  taskMsg   The particular message to wait on
-   *  @return void
-   */
-  void awaitTaskMessage( const size_t taskMsg );
-
+  void stopScheduler();
 
 }  // namespace Chimera::Threading
 
-#endif /* CHIMERA_CFG_FREERTOS */
 #endif /* CHIMERA_THREADING_HPP */

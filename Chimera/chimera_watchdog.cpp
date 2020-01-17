@@ -10,13 +10,14 @@
 
 /* Chimera Includes */
 #include <Chimera/threading.hpp>
+#include <Chimera/threading.hpp>
 #include <Chimera/watchdog.hpp>
 
 namespace Chimera::Watchdog
 {
   void invokeTimeout()
   {
-#if defined( CHIMERA_CFG_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
     vTaskSuspendAll();
 #endif
 
