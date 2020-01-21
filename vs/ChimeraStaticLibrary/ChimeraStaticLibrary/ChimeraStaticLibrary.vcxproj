@@ -1,33 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|GenericEmbedded32">
+    <ProjectConfiguration Include="Debug|STM32F446RE">
       <Configuration>Debug</Configuration>
-      <Platform>GenericEmbedded32</Platform>
+      <Platform>STM32F446RE</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|VisualGDB">
+      <Configuration>Debug</Configuration>
+      <Platform>VisualGDB</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|GenericEmbedded32">
-      <Configuration>Release</Configuration>
-      <Platform>GenericEmbedded32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|STM32F446RE">
+      <Configuration>Release</Configuration>
+      <Platform>STM32F446RE</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|VisualGDB">
+      <Configuration>Release</Configuration>
+      <Platform>VisualGDB</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Standalone|GenericEmbedded32">
+    <ProjectConfiguration Include="Standalone|STM32F446RE">
       <Configuration>Standalone</Configuration>
-      <Platform>GenericEmbedded32</Platform>
+      <Platform>STM32F446RE</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Standalone|VisualGDB">
+      <Configuration>Standalone</Configuration>
+      <Platform>VisualGDB</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Standalone|Win32">
       <Configuration>Standalone</Configuration>
@@ -40,45 +52,34 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ChimeraStaticLibrary</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{BE922011-485D-4BE4-A907-336C69F155E4}</ProjectGuid>
+    <BSP_ID>com.sysprogs.arm.stm32</BSP_ID>
+    <BSP_VERSION>2019.12</BSP_VERSION>
+    <InPlaceBSPSubdir />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32F446RE'" Label="Configuration">
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'" Label="Configuration">
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">
@@ -87,156 +88,121 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32F446RE'">
+    <PlatformToolset />
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Standalone|VisualGDB'">
+    <PlatformToolset />
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|STM32F446RE'">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="CommonProperties.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="CommonProperties.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="CommonProperties.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="CommonProperties.props" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <GNUConfigurationType>Debug</GNUConfigurationType>
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32F446RE'">
+    <GNUConfigurationType>Debug</GNUConfigurationType>
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx86);</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExceptionHandling>Sync</ExceptionHandling>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx64)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExceptionHandling>Sync</ExceptionHandling>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx86);</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExceptionHandling>Sync</ExceptionHandling>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);$(ChimeraCompilerDefines);$(FreeRTOSCompilerDefines);$(BoostCompilerDefines);$(CommonCompilerDefinesx64)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ChimeraPortDir);$(ChimeraCfgDir);$(FreeRTOSIncDir);$(FreeRTOSCfgDir);$(FreeRTOSPortDir);$(ProjectDir)../../../../Chimera;$(BOOST_ROOT)/boost_1_70_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExceptionHandling>Sync</ExceptionHandling>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT)/boost_1_70_0;$(ProjectDir)../../../Chimera/sim/config/chimera;$(ProjectDir)../../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>;CHIMERA_LITTLE_ENDIAN;USING_STL_THREADS;CHIMERA_SIMULATOR;CHIMERA_STANDALONE</PreprocessorDefinitions>
+      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32F446RE'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT)/boost_1_70_0;$(ProjectDir)../../../Chimera/sim/config/chimera;$(ProjectDir)../../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32;CHIMERA_LITTLE_ENDIAN;USING_STL_THREADS;CHIMERA_SIMULATOR;CHIMERA_STANDALONE</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
+      <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT)/boost_1_70_0;$(ProjectDir)../../../Chimera/sim/config/chimera;$(ProjectDir)../../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN64;CHIMERA_LITTLE_ENDIAN;USING_STL_THREADS;CHIMERA_SIMULATOR;CHIMERA_STANDALONE</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">
     <ClCompile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">
-    <ClCompile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
+      <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Chimera\algorithm\register_optimizer.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ItemGroup>
+    <None Include="stm32.props" />
+    <None Include="ChimeraStaticLibrary-Debug.vgdbsettings" />
+    <None Include="ChimeraStaticLibrary-Release.vgdbsettings" />
+    <None Include="stm32.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Chimera\chimera.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_allocator.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_buffer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_container.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_crc.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_exception.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_logging.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_system.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_threading.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_watchdog.cpp" />
     <ClInclude Include="..\..\..\Chimera\allocator.hpp" />
     <ClInclude Include="..\..\..\Chimera\assert.hpp" />
     <ClInclude Include="..\..\..\Chimera\atomic.hpp" />
+    <ClInclude Include="..\..\..\Chimera\buffer.hpp" />
+    <ClInclude Include="..\..\..\Chimera\chimera.hpp" />
+    <ClInclude Include="..\..\..\Chimera\container.hpp" />
+    <ClInclude Include="..\..\..\Chimera\crc.hpp" />
+    <ClInclude Include="..\..\..\Chimera\dma.hpp" />
+    <ClInclude Include="..\..\..\Chimera\event.hpp" />
+    <ClInclude Include="..\..\..\Chimera\exception.hpp" />
+    <ClInclude Include="..\..\..\Chimera\gpio.hpp" />
+    <ClInclude Include="..\..\..\Chimera\logging.hpp" />
+    <ClInclude Include="..\..\..\Chimera\memory.hpp" />
+    <ClInclude Include="..\..\..\Chimera\power.hpp" />
+    <ClInclude Include="..\..\..\Chimera\preprocessor.hpp" />
+    <ClInclude Include="..\..\..\Chimera\serial.hpp" />
+    <ClInclude Include="..\..\..\Chimera\spi.hpp" />
+    <ClInclude Include="..\..\..\Chimera\system.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading.hpp" />
+    <ClInclude Include="..\..\..\Chimera\utilities.hpp" />
+    <ClInclude Include="..\..\..\Chimera\watchdog.hpp" />
+    <ClCompile Include="..\..\..\Chimera\algorithm\register_optimizer.cpp" />
+    <ClInclude Include="..\..\..\Chimera\algorithm\register_optimizer.hpp" />
     <ClInclude Include="..\..\..\Chimera\atomic\atomic_32bit.hpp" />
     <ClInclude Include="..\..\..\Chimera\atomic\atomic_freertos.hpp" />
     <ClInclude Include="..\..\..\Chimera\atomic\atomic_stl.hpp" />
@@ -249,19 +215,11 @@
     <ClInclude Include="..\..\..\Chimera\base\spi_base.hpp" />
     <ClInclude Include="..\..\..\Chimera\base\threading_base.hpp" />
     <ClInclude Include="..\..\..\Chimera\base\watchdog_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\buffer.hpp" />
-    <ClInclude Include="..\..\..\Chimera\chimera.hpp" />
     <ClInclude Include="..\..\..\Chimera\constants\common.hpp" />
     <ClInclude Include="..\..\..\Chimera\constants\physics.hpp" />
     <ClInclude Include="..\..\..\Chimera\constants\units.hpp" />
-    <ClInclude Include="..\..\..\Chimera\container.hpp" />
-    <ClInclude Include="..\..\..\Chimera\crc.hpp" />
-    <ClInclude Include="..\..\..\Chimera\dma.hpp" />
-    <ClInclude Include="..\..\..\Chimera\event.hpp" />
-    <ClInclude Include="..\..\..\Chimera\exception.hpp" />
     <ClInclude Include="..\..\..\Chimera\extensions\common.hpp" />
     <ClInclude Include="..\..\..\Chimera\extensions\spi_ext.hpp" />
-    <ClInclude Include="..\..\..\Chimera\gpio.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\buffer_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\callback_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\clock_intf.hpp" />
@@ -273,93 +231,41 @@
     <ClInclude Include="..\..\..\Chimera\interface\gpio_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\memory_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\power_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\interface\pwm_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\serial_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\spi_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\system_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\threading_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\interface\watchdog_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\logging.hpp" />
-    <ClInclude Include="..\..\..\Chimera\memory.hpp" />
-    <ClInclude Include="..\..\..\Chimera\mock\delay.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\mock\gpio.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\mock\modules\memory\flash.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\mock\spi.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\mock\watchdog.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|GenericEmbedded32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Standalone|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClCompile Include="..\..\..\Chimera\modules\freertos\freertos_hooks.cpp" />
     <ClInclude Include="..\..\..\Chimera\modules\freertos\freertos_hooks.hpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\memory\chimera_memory_device.cpp" />
     <ClInclude Include="..\..\..\Chimera\modules\memory\blockDevice.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\memory\device.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\sensors\imu\imu_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\sensors\imu\imu_types.hpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_freertos.cpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\ulog\serial_sink.cpp" />
     <ClInclude Include="..\..\..\Chimera\modules\ulog\serial_sink.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\ulog\serial_sink_config.hpp" />
-    <ClInclude Include="..\..\..\Chimera\power.hpp" />
-    <ClInclude Include="..\..\..\Chimera\preprocessor.hpp" />
-    <ClInclude Include="..\..\..\Chimera\serial.hpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\chimera_freertos_hooks_prj.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
+    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraPort.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h" />
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera.hpp" />
-    <ClInclude Include="..\..\..\Chimera\spi.hpp" />
-    <ClInclude Include="..\..\..\Chimera\system.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading\internal_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\extensions.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\internal_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\mutex.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\semaphore.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading\stl\stl_sync_primitives.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\thread.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\generic\generic_sync_primitives.hpp" />
+    <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\stl\stl_sync_primitives.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\callback_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\clock_types_fwd.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\common_types.hpp" />
@@ -371,39 +277,10 @@
     <ClInclude Include="..\..\..\Chimera\types\peripheral_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\power_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\power_types_fwd.hpp" />
+    <ClInclude Include="..\..\..\Chimera\types\pwm_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\serial_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\spi_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\system_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\watchdog_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\utilities.hpp" />
-    <ClInclude Include="..\..\..\Chimera\watchdog.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Chimera\algorithm\register_optimizer.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_allocator.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_buffer.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_container.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_crc.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_exception.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_logging.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_system.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_threading.cpp" />
-    <ClCompile Include="..\..\..\Chimera\chimera_watchdog.cpp" />
-    <ClCompile Include="..\..\..\Chimera\modules\freertos\freertos_hooks.cpp" />
-    <ClCompile Include="..\..\..\Chimera\modules\memory\chimera_memory_device.cpp" />
-    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_freertos.cpp" />
-    <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp" />
-    <ClCompile Include="..\..\..\Chimera\modules\ulog\serial_sink.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\chimera_freertos_hooks_prj.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
-    <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Configuration.md" />
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
 </Project>

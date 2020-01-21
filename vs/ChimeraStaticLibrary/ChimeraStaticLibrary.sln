@@ -1,46 +1,64 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.161
+VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChimeraStaticLibrary", "ChimeraStaticLibrary\ChimeraStaticLibrary.vcxproj", "{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChimeraStaticLibrary", "ChimeraStaticLibrary\ChimeraStaticLibrary.vcxproj", "{BE922011-485D-4BE4-A907-336C69F155E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|GenericEmbedded32 = Debug|GenericEmbedded32
+		Debug|STM32F446RE = Debug|STM32F446RE
+		Debug|VisualGDB = Debug|VisualGDB
+		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|GenericEmbedded32 = Release|GenericEmbedded32
+		Release|STM32F446RE = Release|STM32F446RE
+		Release|VisualGDB = Release|VisualGDB
+		Release|Win32 = Release|Win32
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-		Standalone|GenericEmbedded32 = Standalone|GenericEmbedded32
+		Standalone|STM32F446RE = Standalone|STM32F446RE
+		Standalone|VisualGDB = Standalone|VisualGDB
+		Standalone|Win32 = Standalone|Win32
 		Standalone|x64 = Standalone|x64
 		Standalone|x86 = Standalone|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|GenericEmbedded32.ActiveCfg = Debug|GenericEmbedded32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|GenericEmbedded32.Build.0 = Debug|GenericEmbedded32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x64.ActiveCfg = Debug|x64
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x64.Build.0 = Debug|x64
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x86.ActiveCfg = Debug|Win32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Debug|x86.Build.0 = Debug|Win32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|GenericEmbedded32.ActiveCfg = Release|GenericEmbedded32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|GenericEmbedded32.Build.0 = Release|GenericEmbedded32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x64.ActiveCfg = Release|x64
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x64.Build.0 = Release|x64
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x86.ActiveCfg = Release|Win32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Release|x86.Build.0 = Release|Win32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|GenericEmbedded32.ActiveCfg = Standalone|GenericEmbedded32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|GenericEmbedded32.Build.0 = Standalone|GenericEmbedded32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x64.ActiveCfg = Standalone|x64
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x64.Build.0 = Standalone|x64
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x86.ActiveCfg = Standalone|Win32
-		{67D62E15-ADD2-46FB-98AA-F39CE34D9E1A}.Standalone|x86.Build.0 = Standalone|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|STM32F446RE.ActiveCfg = Debug|STM32F446RE
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|STM32F446RE.Build.0 = Debug|STM32F446RE
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|Win32.Build.0 = Debug|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|x64.ActiveCfg = Debug|x64
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|x64.Build.0 = Debug|x64
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|x86.ActiveCfg = Debug|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Debug|x86.Build.0 = Debug|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|STM32F446RE.ActiveCfg = Release|STM32F446RE
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|STM32F446RE.Build.0 = Release|STM32F446RE
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|VisualGDB.Build.0 = Release|VisualGDB
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|Win32.ActiveCfg = Release|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|Win32.Build.0 = Release|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|x64.ActiveCfg = Release|x64
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|x64.Build.0 = Release|x64
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|x86.ActiveCfg = Release|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Release|x86.Build.0 = Release|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|STM32F446RE.ActiveCfg = Standalone|STM32F446RE
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|STM32F446RE.Build.0 = Standalone|STM32F446RE
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|VisualGDB.ActiveCfg = Standalone|VisualGDB
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|VisualGDB.Build.0 = Standalone|VisualGDB
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|Win32.ActiveCfg = Standalone|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|Win32.Build.0 = Standalone|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|x64.ActiveCfg = Standalone|x64
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|x64.Build.0 = Standalone|x64
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|x86.ActiveCfg = Standalone|Win32
+		{BE922011-485D-4BE4-A907-336C69F155E4}.Standalone|x86.Build.0 = Standalone|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BDFB0A0E-CEC2-45FB-B7AE-9A454C69FB4B}
+		SolutionGuid = {5F04B839-1DA3-40A9-8419-E861AC3590B6}
 	EndGlobalSection
 EndGlobal
