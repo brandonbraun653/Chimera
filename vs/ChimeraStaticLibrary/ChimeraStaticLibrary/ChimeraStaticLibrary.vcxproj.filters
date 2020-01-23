@@ -73,6 +73,9 @@
     <Filter Include="Chimera\types">
       <UniqueIdentifier>{5082e48c-9795-401e-8483-a27c903b2da7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Device-specific files">
+      <UniqueIdentifier>{6cb3f7f9-9b5a-4197-8ec4-0e54e5024848}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ChimeraStaticLibrary-Debug.vgdbsettings">
@@ -423,5 +426,10 @@
     <ClInclude Include="..\..\..\Chimera\types\watchdog_types.hpp">
       <Filter>Chimera\types</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_threading_implementation.cpp">
+      <Filter>Chimera\threading\freertos</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

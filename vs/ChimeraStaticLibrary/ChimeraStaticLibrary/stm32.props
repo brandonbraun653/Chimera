@@ -16,7 +16,7 @@
 	<ItemDefinitionGroup>
 		<Link>
 			<LinkerScript Condition="'%(Link.LinkerScript)' == ''">$(BSP_ROOT)/STM32F4xxxx/LinkerScripts/STM32F446RE_flash.lds</LinkerScript>
-			<AdditionalOptions>--specs=nano.specs -u _printf_float --specs=nosys.specs %(Link.AdditionalOptions)</AdditionalOptions>
+			<AdditionalOptions>--specs=nano.specs --specs=nosys.specs %(Link.AdditionalOptions)</AdditionalOptions>
 		</Link>
 	</ItemDefinitionGroup>
 	<PropertyGroup>

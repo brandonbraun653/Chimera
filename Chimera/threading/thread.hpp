@@ -43,11 +43,12 @@ namespace Chimera::Threading
   public:
     Thread();
     Thread( Thread &&other );
-    Thread( ThreadFunctPtr func, ThreadArg arg );
     Thread( const Thread & ) = delete;
     ~Thread();
 
-    void start( const Priority priority, const size_t stackDepth, const std::string_view name );
+    void initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth, const std::string_view name );
+
+    void start();
 
     void join();
 
@@ -61,8 +62,10 @@ namespace Chimera::Threading
   
   private:
     detail::native_thread mThread;
-    const ThreadFunctPtr mFunc;
-    const ThreadArg mFuncArg;
+    ThreadFunctPtr mFunc;
+    ThreadArg mFuncArg;
+    Priority mPriority;
+    size_t mStackDepth;
     std::array<char, MAX_NAME_LEN + 1> mThreadName;
   };
 

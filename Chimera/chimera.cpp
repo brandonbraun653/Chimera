@@ -14,7 +14,15 @@
 #include <Chimera/exception.hpp>
 #include <Chimera/preprocessor.hpp>
 #include <Chimera/sim/sim_chimera.hpp>
+#include <Chimera/system.hpp>
 #include <Chimera/threading.hpp>
+
+
+void ChimeraInit()
+{
+  Chimera::System::prjSystemStartup();
+}
+
 
 namespace Chimera
 {

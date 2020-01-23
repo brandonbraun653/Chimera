@@ -20,8 +20,8 @@ namespace Chimera::Threading
   class Mutex
   {
   public:
-    Mutex() = default;
-    ~Mutex() = default;
+    Mutex();
+    ~Mutex();
 
     void lock();
     bool try_lock();
@@ -37,8 +37,8 @@ namespace Chimera::Threading
   class RecursiveMutex
   {
   public:
-    RecursiveMutex() = default;
-    ~RecursiveMutex() = default;
+    RecursiveMutex();
+    ~RecursiveMutex();
 
     void lock();
     bool try_lock();
@@ -54,8 +54,8 @@ namespace Chimera::Threading
   class TimedMutex
   {
   public:
-    TimedMutex() = default;
-    ~TimedMutex() = default;
+    TimedMutex();
+    ~TimedMutex();
 
     void lock();
     bool try_lock();
@@ -73,8 +73,8 @@ namespace Chimera::Threading
   class RecursiveTimedMutex
   {
   public:
-    RecursiveTimedMutex()  = default;
-    ~RecursiveTimedMutex() = default;
+    RecursiveTimedMutex() ;
+    ~RecursiveTimedMutex();
 
     void lock();
     bool try_lock();
