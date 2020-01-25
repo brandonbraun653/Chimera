@@ -204,10 +204,13 @@
     <ClInclude Include="..\..\..\Chimera\gpio.hpp" />
     <ClInclude Include="..\..\..\Chimera\logging.hpp" />
     <ClInclude Include="..\..\..\Chimera\memory.hpp" />
+    <ClInclude Include="..\..\..\Chimera\modules\memory\heap\heap.hpp" />
     <ClInclude Include="..\..\..\Chimera\power.hpp" />
     <ClInclude Include="..\..\..\Chimera\preprocessor.hpp" />
     <ClInclude Include="..\..\..\Chimera\serial.hpp" />
     <ClInclude Include="..\..\..\Chimera\spi.hpp" />
+    <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraConfig.hpp" />
+    <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraPort.hpp" />
     <ClInclude Include="..\..\..\Chimera\system.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading.hpp" />
     <ClInclude Include="..\..\..\Chimera\utilities.hpp" />
@@ -255,6 +258,7 @@
     <ClInclude Include="..\..\..\Chimera\modules\memory\device.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\sensors\imu\imu_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\modules\sensors\imu\imu_types.hpp" />
+    <ClCompile Include="..\..\..\Chimera\modules\memory\heap\heap.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_freertos.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\threading\chimera_threading_stl.cpp" />
     <ClCompile Include="..\..\..\Chimera\modules\ulog\serial_sink.cpp" />

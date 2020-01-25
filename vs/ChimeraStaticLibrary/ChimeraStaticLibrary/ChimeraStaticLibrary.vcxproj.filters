@@ -76,6 +76,18 @@
     <Filter Include="Device-specific files">
       <UniqueIdentifier>{6cb3f7f9-9b5a-4197-8ec4-0e54e5024848}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Chimera\standalone">
+      <UniqueIdentifier>{8625e66e-9e56-4c58-8f5d-6c6f92896a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\standalone\config">
+      <UniqueIdentifier>{f85458e2-9012-4de5-b515-49e0f66295f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\standalone\config\chimera">
+      <UniqueIdentifier>{4830dc39-99f1-4ead-a821-82b924db54e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chimera\modules\memory\heap">
+      <UniqueIdentifier>{7ef9e6c1-bf42-468a-8386-d5d2f0ca2d29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ChimeraStaticLibrary-Debug.vgdbsettings">
@@ -431,5 +443,19 @@
     <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_threading_implementation.cpp">
       <Filter>Chimera\threading\freertos</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\modules\memory\heap\heap.cpp">
+      <Filter>Chimera\modules\memory\heap</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraConfig.hpp">
+      <Filter>Chimera\standalone\config\chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraPort.hpp">
+      <Filter>Chimera\standalone\config\chimera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\modules\memory\heap\heap.hpp">
+      <Filter>Chimera\modules\memory\heap</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

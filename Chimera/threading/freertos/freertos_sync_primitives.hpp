@@ -25,6 +25,7 @@ namespace Chimera::Threading::detail
 
   using native_thread             = TaskHandle_t;
   using native_thread_handle_type = TaskHandle_t;
+
 }  // namespace Chimera::Threading::detail
 
 #endif /* !CHIMERA_THREADING_FREERTOS_TYPES_HPP */
