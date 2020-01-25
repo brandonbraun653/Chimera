@@ -55,7 +55,7 @@ namespace Chimera::Threading
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Chimera::Status_t await( const Chimera::Event::Trigger event, void * notifier,
+    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
                              const size_t timeout ) final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;

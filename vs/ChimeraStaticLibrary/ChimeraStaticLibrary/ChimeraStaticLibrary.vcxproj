@@ -280,6 +280,7 @@
     <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\generic\generic_sync_primitives.hpp" />
     <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_threading_implementation.cpp" />
+    <ClCompile Include="..\..\..\Chimera\threading\src\chimera_semaphore.cpp" />
     <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp" />
     <ClInclude Include="..\..\..\Chimera\threading\stl\stl_sync_primitives.hpp" />
     <ClInclude Include="..\..\..\Chimera\types\callback_types.hpp" />

@@ -63,6 +63,22 @@ namespace Chimera::Threading
     mutex.unlock();
   }
 
+
+  /************************************************************************/
+  /*                              SEMAPHORE                               */
+  /************************************************************************/
+  void CountingSemaphore::releaseFromISR()
+  {
+    asm( "bkpt 255" );
+
+    // Need to figure out how to wake up the threads from the ISR
+
+    //    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    //    xSemaphoreGiveFromISR( mLock._mtx, &xHigherPriorityTaskWoken );
+    //    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+  }
+
+
   /************************************************************************/
   /*                                MUTEX                                 */
   /************************************************************************/

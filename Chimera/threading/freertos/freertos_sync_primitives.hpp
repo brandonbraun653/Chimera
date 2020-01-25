@@ -23,6 +23,9 @@ namespace Chimera::Threading::detail
   using native_timed_mutex           = SemaphoreHandle_t;
   using native_recursive_timed_mutex = SemaphoreHandle_t;
 
+  using native_binary_semaphore   = SemaphoreHandle_t;
+  using native_counting_semaphore = SemaphoreHandle_t;
+
   using native_thread             = TaskHandle_t;
   using native_thread_handle_type = TaskHandle_t;
 

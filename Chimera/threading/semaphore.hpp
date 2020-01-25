@@ -8,31 +8,53 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#pragma once
 #ifndef CHIMERA_THREADING_SEMAPHORE_HPP
 #define CHIMERA_THREADING_SEMAPHORE_HPP
 
+/* C++ Includes */
+#include <limits>
+
 /* Chimera Includes */
-#include <Chimera/interface/threading_intf.hpp>
-#include <Chimera/threading/types.hpp>
+#include <Chimera/threading/mutex.hpp>
 
 namespace Chimera::Threading
 {
-  class BinarySemaphore : public SemaphoreInterface
+
+  class CountingSemaphore
   {
   public:
+    CountingSemaphore();
+    CountingSemaphore( const size_t maxCounts );
+    ~CountingSemaphore();
+
+    void release( const size_t update = 1 );
+
+    void acquire();
+
+    bool try_acquire();
+
+    bool try_acquire_for( const size_t timeout );
+
+    bool try_acquire_until( const size_t abs_time );
+
+    size_t max();
+
+    /*------------------------------------------------
+    Implementation Specific
+    ------------------------------------------------*/
+    void releaseFromISR();
 
   private:
-    // Will need to figure out how to abstract this into multiple computers....
-    uint8_t threadLock;
-    uint8_t semaphoreValue;
+    void operator=( const CountingSemaphore & ) = delete;
+
+    const size_t mMaxCount;
+    size_t mCount;
+    RecursiveTimedMutex mLock;
   };
 
-  class CountingSemaphore : public SemaphoreInterface
-  {
-  public:
 
-  private:
-  };
+  using BinarySemaphore = CountingSemaphore;
 
 }  // namespace Chimera::Threading
 

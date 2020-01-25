@@ -13,9 +13,15 @@
 
 namespace Chimera::Threading
 {
+  /*------------------------------------------------
+  Type Aliases
+  ------------------------------------------------*/
   using ThreadArg = void *;
   using ThreadFunctPtr = void ( * )( ThreadArg );
   
+  /*------------------------------------------------
+  Enumerations
+  ------------------------------------------------*/
   enum class Priority
   {
     LEVEL_0, /**< Lowest priority, indicating a task that doesn't care if it runs */
@@ -28,7 +34,11 @@ namespace Chimera::Threading
     MINIMUM = LEVEL_0,
     MAXIMUM = LEVEL_5
   };
-  
+
+  /*------------------------------------------------
+  Forward declarations
+  ------------------------------------------------*/
+
 }
 
 #endif	/* !CHIMERA_THREADING_COMMON_TYPES_HPP */

@@ -15,18 +15,8 @@
 /* Chimera Includes */
 #include <Chimera/types/common_types.hpp>
 #include <Chimera/types/event_types.hpp>
-
-#ifdef USING_FREERTOS
-
-/* FreeRTOS Includes */
-#ifdef __cplusplus
-extern "C"
-{
-#include "FreeRTOS.h"
-#include "semphr.h"
-}
-#endif /* __cplusplus */
-#endif /* USING_FREERTOS */
+#include <Chimera/threading/types.hpp>
+#include <Chimera/threading/semaphore.hpp>
 
 namespace Chimera::Threading
 {
@@ -62,7 +52,7 @@ namespace Chimera::Threading
      *  @param[in]  timeout     How long to wait for the event to occur
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t await( const Chimera::Event::Trigger event, void* notifier,
+    virtual Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
                                      const size_t timeout ) = 0;
   };
 
@@ -132,28 +122,6 @@ namespace Chimera::Threading
      */
     virtual Chimera::Status_t unlockFromISR() = 0;
   };
-
-
-  class SemaphoreInterface
-  {
-  public:
-    virtual ~SemaphoreInterface() = default;
-  };
-
-
-  class MutexInterface
-  {
-  public:
-    virtual ~MutexInterface() = default;
-
-  };
-
-  class ThreadInterface
-  {
-  public:
-    virtual ~ThreadInterface() = default;
-  };
-
 }  // namespace Chimera::Threading
 
 #endif /* !CHIMERA_THREADING_INTERFACE_HPP */

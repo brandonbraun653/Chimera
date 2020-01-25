@@ -88,6 +88,9 @@
     <Filter Include="Chimera\modules\memory\heap">
       <UniqueIdentifier>{7ef9e6c1-bf42-468a-8386-d5d2f0ca2d29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Chimera\threading\src">
+      <UniqueIdentifier>{809c302a-5b6d-4ace-b3ad-349031087c20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ChimeraStaticLibrary-Debug.vgdbsettings">
@@ -445,6 +448,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\modules\memory\heap\heap.cpp">
       <Filter>Chimera\modules\memory\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\threading\src\chimera_semaphore.cpp">
+      <Filter>Chimera\threading\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
