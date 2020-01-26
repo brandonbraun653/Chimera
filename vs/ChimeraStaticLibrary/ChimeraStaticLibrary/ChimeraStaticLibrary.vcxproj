@@ -191,6 +191,7 @@
     <ClCompile Include="..\..\..\Chimera\chimera_crc.cpp" />
     <ClCompile Include="..\..\..\Chimera\chimera_exception.cpp" />
     <ClCompile Include="..\..\..\Chimera\chimera_logging.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera_spi.cpp" />
     <ClCompile Include="..\..\..\Chimera\chimera_system.cpp" />
     <ClCompile Include="..\..\..\Chimera\chimera_threading.cpp" />
     <ClCompile Include="..\..\..\Chimera\chimera_watchdog.cpp" />

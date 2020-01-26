@@ -3,9 +3,9 @@
  *    spi.hpp
  *
  * Description:
- *    Implements a common wrapper interface to the Chimera SPI peripheral.
+ *    Implements an interface to create a Chimera SPI peripheral.
  *
- * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ * 2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -16,37 +16,24 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/base/spi_base.hpp>
 #include <Chimera/interface/spi_intf.hpp>
-#include "chimeraPort.hpp"
 
 namespace Chimera::SPI
 {
-#if !defined( CHIMERA_INHERITED_SPI )
-    using CHIMERA_INHERITED_SPI = SPIUnsupported;
-#endif
-    
-    /**
-     *  A simple wrapper to provide a common SPI class type for programs built
-     *  with Chimera. The runtime behavior of this class is defined by the user
-     *  provided class type CHIMERA_INHERITED_SPI in chimeraPort.hpp.
-     *
-     *  If no user class is provided, a default disabled behavior version will be
-     *  substituted in its place.
-     */
-    class SPIClass : public CHIMERA_INHERITED_SPI
-    {
-    public:
-      SPIClass() : CHIMERA_INHERITED_SPI(){};
-      ~SPIClass() = default;
-    };
+  using SPI_sPtr = std::shared_ptr<HardwareDriverInterface>;
+  using SPI_uPtr = std::unique_ptr<HardwareDriverInterface>;
 
-    static_assert( std::is_base_of<HWInterface, SPIClass>::value, "Invalid interface" );
-    static_assert( std::is_base_of<Chimera::Event::ListenerInterface, SPIClass>::value, "Invalid interface" );
-    static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, SPIClass>::value, "Invalid interface" );
-    static_assert( std::is_base_of<Chimera::Threading::LockableInterface, SPIClass>::value, "Invalid interface" );
+  /**
+   *  Initialize the driver memory and other resources for SPI
+   *
+   *  @return Chimera::Status_t
+   */
+  Chimera::Status_t initialize();
 
+  SPI_sPtr create_shared_ptr();
 
-}  // namespace Chimera
+  SPI_uPtr create_unique_ptr();
+
+}  // namespace Chimera::SPI
 
 #endif

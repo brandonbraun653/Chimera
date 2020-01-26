@@ -5,7 +5,7 @@
  *   Description:
  *    Chimera SPI types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -22,10 +22,6 @@
 
 namespace Chimera::SPI
 {
-  class SPIClass;
-  using SPIClass_sPtr = std::shared_ptr<SPIClass>;
-  using SPIClass_uPtr = std::unique_ptr<SPIClass>;
-
   using ClockFreq    = size_t;
   using Channel      = uint8_t;
   using TransferMode = Chimera::Hardware::PeripheralMode;

@@ -452,6 +452,9 @@
     <ClCompile Include="..\..\..\Chimera\threading\src\chimera_semaphore.cpp">
       <Filter>Chimera\threading\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\chimera_spi.cpp">
+      <Filter>Chimera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraConfig.hpp">

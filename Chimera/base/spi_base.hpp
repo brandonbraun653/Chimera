@@ -5,7 +5,7 @@
  *   Description:
  *    Abstract base class interfaces
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -19,7 +19,7 @@
 
 namespace Chimera::SPI
 {
-  class SPIUnsupported : public HWInterface,
+  class SPIUnsupported : public HardwareDriverInterface,
                          public Chimera::Event::ListenerUnsupported,
                          public Chimera::Threading::AsyncIOUnsupported,
                          public Chimera::Threading::LockableUnsupported

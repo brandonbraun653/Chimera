@@ -5,7 +5,7 @@
  *   Description:
  *    Models the Chimera SPI interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -26,19 +26,23 @@
 
 namespace Chimera::SPI
 {
-  /**
-   *  Initialize the driver memory and other resources for SPI
-   *
-   *  @attention This must be implemented in the project side SPI driver
-   *
-   *  @return Chimera::Status_t
-   */
-  Chimera::Status_t initialize();
+  /*------------------------------------------------
+  Hooks for the backend implementation that allow Chimera to function
+  ------------------------------------------------*/
+  namespace Backend
+  {
+    extern void prjInitialize();
+  }
 
-  class HWInterface
+  /*------------------------------------------------
+  Specification for the hardware driver
+  ------------------------------------------------*/
+  class HardwareDriverInterface : public Chimera::Event::ListenerInterface,
+                                  public Chimera::Threading::AsyncIOInterface,
+                                  public Chimera::Threading::Lockable
   {
   public:
-    virtual ~HWInterface() = default;
+    virtual ~HardwareDriverInterface() = default;
 
     /**
      *  Initializes the SPI hardware according to the setup struct
