@@ -78,12 +78,11 @@ namespace Chimera::Threading
      *  |           OK | The object was reserved before the timeout expired |
      *  |         FAIL | The object was not reserved                        |
      */
-    virtual Chimera::Status_t lock( const size_t timeout_mS ) = 0;
+    virtual void lock() = 0;
 
     /**
      *  Attempts to reserve the inheriting object, but from an ISR safe execution context.
      *
-     *  @param[in]  timeout_mS    If using FreeRTOS, how long to wait for the object to be reserved
      *  @return Chimera::Status_t
      *
      *  | Return Value |                     Explanation                    |
@@ -91,7 +90,9 @@ namespace Chimera::Threading
      *  |           OK | The object was reserved before the timeout expired |
      *  |         FAIL | The object was not reserved                        |
      */
-    virtual Chimera::Status_t lockFromISR( const size_t timeout_mS ) = 0;
+    virtual void lockFromISR() = 0;
+
+    virtual bool try_lock_for( const size_t timeout ) = 0;
 
     /**
      *  Attempts to release the inheriting object
@@ -106,7 +107,7 @@ namespace Chimera::Threading
      *  |           OK | The object was released      |
      *  |         FAIL | The object was not released  |
      */
-    virtual Chimera::Status_t unlock() = 0;
+    virtual void unlock() = 0;
 
     /**
      *  Attempts to release the inheriting object, but from an ISR safe execution context
@@ -120,7 +121,7 @@ namespace Chimera::Threading
      *  |           OK | The object was released      |
      *  |         FAIL | The object was not released  |
      */
-    virtual Chimera::Status_t unlockFromISR() = 0;
+    virtual void unlockFromISR() = 0;
   };
 }  // namespace Chimera::Threading
 

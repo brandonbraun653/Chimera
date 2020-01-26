@@ -13,6 +13,7 @@
 
 /* Chimera Includes */
 #include <Chimera/threading/mutex.hpp>
+#include <Chimera/interface/threading_intf.hpp>
 
 namespace Chimera::Threading
 {
@@ -65,7 +66,7 @@ namespace Chimera::Threading
   };
   
 
-  class Lockable
+  class Lockable : public LockableInterface
   {
   public:
     void lock();

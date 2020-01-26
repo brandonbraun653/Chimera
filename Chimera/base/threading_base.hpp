@@ -23,24 +23,25 @@ namespace Chimera::Threading
     LockableUnsupported()  = default;
     ~LockableUnsupported() = default;
 
-    Chimera::Status_t lock( const size_t timeout_mS ) override
+    void lock() final override
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Chimera::Status_t lockFromISR( const size_t timeout_mS ) override
+    void lockFromISR() final override
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Chimera::Status_t unlock() final override
+    bool try_lock_for( const size_t timeout ) final override
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return false;
     }
 
-    Chimera::Status_t unlockFromISR() final override
+    void unlock() final override
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+
+    void unlockFromISR() final override
+    {
     }
   };
 

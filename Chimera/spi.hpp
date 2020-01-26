@@ -41,11 +41,11 @@ namespace Chimera::SPI
       ~SPIClass() = default;
     };
 
-    static_assert( ( ( std::is_base_of<HWInterface, SPIClass>::value )
-                   && ( std::is_base_of<Chimera::Event::ListenerInterface, SPIClass>::value )
-                   && ( std::is_base_of<Chimera::Threading::AsyncIOInterface, SPIClass>::value )
-                   && ( std::is_base_of<Chimera::Threading::LockableInterface, SPIClass>::value ) ),
-                 "Base class implements the wrong interface" );
+    static_assert( std::is_base_of<HWInterface, SPIClass>::value, "Invalid interface" );
+    static_assert( std::is_base_of<Chimera::Event::ListenerInterface, SPIClass>::value, "Invalid interface" );
+    static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, SPIClass>::value, "Invalid interface" );
+    static_assert( std::is_base_of<Chimera::Threading::LockableInterface, SPIClass>::value, "Invalid interface" );
+
 
 }  // namespace Chimera
 
