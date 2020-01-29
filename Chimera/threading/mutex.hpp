@@ -54,6 +54,9 @@ namespace Chimera::Threading
   class TimedMutex
   {
   public:
+    using native_handle_type = detail::native_timed_mutex;
+    void operator=( const TimedMutex & ) = delete;
+
     TimedMutex();
     ~TimedMutex();
 
@@ -63,16 +66,22 @@ namespace Chimera::Threading
     bool try_lock_until( const size_t timeout );
     void unlock();
 
-    void operator=( const TimedMutex & ) = delete;
+    native_handle_type *native_handle()
+    {
+      return &_mtx;
+    }
 
   private:
-    detail::native_timed_mutex _mtx;
+    native_handle_type _mtx;
   };
 
 
   class RecursiveTimedMutex
   {
   public:
+    using native_handle_type = detail::native_recursive_timed_mutex;
+    void operator=( const RecursiveTimedMutex & ) = delete;
+
     RecursiveTimedMutex() ;
     ~RecursiveTimedMutex();
 
@@ -82,10 +91,13 @@ namespace Chimera::Threading
     bool try_lock_until( const size_t timeout );
     void unlock();
 
-    void operator=( const RecursiveTimedMutex & ) = delete;
+    native_handle_type *native_handle()
+    {
+      return &_mtx;
+    }
 
   private:
-    detail::native_recursive_timed_mutex _mtx;
+    native_handle_type _mtx;
   };
 
 }  // namespace Chimera::Threading

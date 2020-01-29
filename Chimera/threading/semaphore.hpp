@@ -13,9 +13,11 @@
 #define CHIMERA_THREADING_SEMAPHORE_HPP
 
 /* C++ Includes */
+#include <cstdlib>
 #include <limits>
 
 /* Chimera Includes */
+#include <Chimera/threading/internal_types.hpp>
 #include <Chimera/threading/mutex.hpp>
 
 namespace Chimera::Threading
@@ -40,9 +42,8 @@ namespace Chimera::Threading
 
     size_t max();
 
-    /*------------------------------------------------
-    Implementation Specific
-    ------------------------------------------------*/
+    void acquireFromISR();
+
     void releaseFromISR();
 
   private:
@@ -50,7 +51,8 @@ namespace Chimera::Threading
 
     const size_t mMaxCount;
     size_t mCount;
-    RecursiveTimedMutex mLock;
+
+    detail::native_counting_semaphore semphr;
   };
 
 

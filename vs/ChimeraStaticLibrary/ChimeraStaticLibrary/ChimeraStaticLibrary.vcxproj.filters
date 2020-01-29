@@ -64,9 +64,6 @@
     <Filter Include="Chimera\threading\freertos">
       <UniqueIdentifier>{a6ad1328-a5d6-4a01-b950-4fc806b96d1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Chimera\threading\generic">
-      <UniqueIdentifier>{7c71b9b2-cb09-48f4-8a92-fd808786e02f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Chimera\threading\stl">
       <UniqueIdentifier>{e012d7ec-0d48-4448-94c7-94d99c9c8aab}</UniqueIdentifier>
     </Filter>
@@ -87,9 +84,6 @@
     </Filter>
     <Filter Include="Chimera\modules\memory\heap">
       <UniqueIdentifier>{7ef9e6c1-bf42-468a-8386-d5d2f0ca2d29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Chimera\threading\src">
-      <UniqueIdentifier>{809c302a-5b6d-4ace-b3ad-349031087c20}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -384,9 +378,6 @@
     <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp">
       <Filter>Chimera\threading\freertos</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\threading\generic\generic_sync_primitives.hpp">
-      <Filter>Chimera\threading\generic</Filter>
-    </ClInclude>
     <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp">
       <Filter>Chimera\threading\stl</Filter>
     </ClCompile>
@@ -448,9 +439,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\modules\memory\heap\heap.cpp">
       <Filter>Chimera\modules\memory\heap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Chimera\threading\src\chimera_semaphore.cpp">
-      <Filter>Chimera\threading\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\chimera_spi.cpp">
       <Filter>Chimera</Filter>

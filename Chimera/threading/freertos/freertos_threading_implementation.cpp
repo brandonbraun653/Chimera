@@ -67,15 +67,70 @@ namespace Chimera::Threading
   /************************************************************************/
   /*                              SEMAPHORE                               */
   /************************************************************************/
+  CountingSemaphore::CountingSemaphore() : mMaxCount( 1 )
+  {
+    semphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
+  }
+
+  CountingSemaphore::CountingSemaphore( const size_t maxCounts ) : mMaxCount( maxCounts )
+  {
+    semphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
+  }
+
+  CountingSemaphore::~CountingSemaphore()
+  {
+    vSemaphoreDelete( semphr );
+  }
+
+  void CountingSemaphore::release( const size_t update )
+  {
+    for ( size_t x = 0; x < update; x++ )
+    {
+      if ( xSemaphoreGive( semphr ) != pdPASS )
+      {
+        break;
+      }
+    }
+  }
+
+  void CountingSemaphore::acquire()
+  {
+    xSemaphoreTake( semphr, portMAX_DELAY );
+  }
+
+  bool CountingSemaphore::try_acquire()
+  {
+    return ( xSemaphoreTake( semphr, 0 ) == pdPASS );
+  }
+
+  bool CountingSemaphore::try_acquire_for( const size_t timeout )
+  {
+    return ( xSemaphoreTake( semphr, pdMS_TO_TICKS( timeout ) ) == pdPASS );
+  }
+
+  bool CountingSemaphore::try_acquire_until( const size_t abs_time )
+  {
+    auto const currentTime = Chimera::millis();
+    return ( xSemaphoreTake( semphr, pdMS_TO_TICKS( abs_time + currentTime ) ) == pdPASS );
+  }
+
+  size_t CountingSemaphore::max()
+  {
+    return mMaxCount;
+  }
+
+  void CountingSemaphore::acquireFromISR()
+  {
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xSemaphoreTakeFromISR( semphr, &xHigherPriorityTaskWoken );
+    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+  }
+
   void CountingSemaphore::releaseFromISR()
   {
-    asm( "bkpt 255" );
-
-    // Need to figure out how to wake up the threads from the ISR
-
-    //    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    //    xSemaphoreGiveFromISR( mLock._mtx, &xHigherPriorityTaskWoken );
-    //    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xSemaphoreGiveFromISR( semphr, &xHigherPriorityTaskWoken );
+    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
   }
 
 
