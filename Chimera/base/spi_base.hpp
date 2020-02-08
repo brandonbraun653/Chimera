@@ -16,6 +16,7 @@
 #include <Chimera/interface/spi_intf.hpp>
 #include <Chimera/base/event_base.hpp>
 #include <Chimera/base/threading_base.hpp>
+#include <Chimera/types/spi_types.hpp>
 
 namespace Chimera::SPI
 {
@@ -31,6 +32,11 @@ namespace Chimera::SPI
     Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct ) final override
     {
       return Chimera::SPI::Status::FAIL;
+    }
+
+    Chimera::SPI::DriverConfig getInit() final override
+    {
+      return Chimera::SPI::DriverConfig();
     }
 
     Chimera::Status_t deInit() final override
@@ -78,6 +84,29 @@ namespace Chimera::SPI
     {
       return std::numeric_limits<size_t>::min();
     }
+    
+    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener,
+                                                                      const size_t timeout, size_t &registrationID )
+    {
+      return Chimera::Status_t();
+    }
+
+    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout )
+    {
+      return Chimera::Status_t();
+    }
+
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout )
+    {
+      return Chimera::Status_t();
+    }
+
+    Chimera::Status_t await( const Chimera::Event::Trigger event,
+                                                           Chimera::Threading::BinarySemaphore &notifier, const size_t timeout )
+    {
+      return Chimera::Status_t();
+    }
+
   };
 }  // namespace Chimera::SPI
 

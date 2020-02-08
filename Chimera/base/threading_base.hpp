@@ -23,24 +23,24 @@ namespace Chimera::Threading
     LockableUnsupported()  = default;
     ~LockableUnsupported() = default;
 
-    void lock() final override
+    void lock()  override
     {
     }
 
-    void lockFromISR() final override
+    void lockFromISR()  override
     {
     }
 
-    bool try_lock_for( const size_t timeout ) final override
+    bool try_lock_for( const size_t timeout )  override
     {
       return false;
     }
 
-    void unlock() final override
+    void unlock()  override
     {
     }
 
-    void unlockFromISR() final override
+    void unlockFromISR()  override
     {
     }
   };
@@ -51,13 +51,13 @@ namespace Chimera::Threading
     AsyncIOUnsupported()  = default;
     ~AsyncIOUnsupported() = default;
 
-    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout ) final override
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout )  override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
     Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
-                             const size_t timeout ) final override
+                             const size_t timeout )  override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }

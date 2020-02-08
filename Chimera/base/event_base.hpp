@@ -27,12 +27,12 @@ namespace Chimera::Event
     ListenerUnsupported()  = default;
     ~ListenerUnsupported() = default;
 
-    Chimera::Status_t registerListener( Actionable &listener, const size_t timeout, size_t &registrationID ) final override
+    Chimera::Status_t registerListener( Actionable &listener, const size_t timeout, size_t &registrationID )  override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout ) final override
+    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout )  override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }

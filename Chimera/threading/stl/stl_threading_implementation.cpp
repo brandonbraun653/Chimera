@@ -82,15 +82,15 @@ namespace Chimera::Threading
 
   void CountingSemaphore::release( const size_t update )
   {
-    mLock.lock();
+    semphr.lock();
     auto newVal = mCount + update;
     mCount      = ( newVal <= mMaxCount ) ? newVal : mMaxCount;
-    mLock.unlock();
+    semphr.unlock();
   }
 
   void CountingSemaphore::acquire()
   {
-    mLock.lock();
+    semphr.lock();
 
     if ( mCount > 0 )
     {
@@ -100,7 +100,7 @@ namespace Chimera::Threading
 
   bool CountingSemaphore::try_acquire()
   {
-    if ( mLock.try_lock() && ( mCount > 0 ) )
+    if ( semphr.try_lock() && ( mCount > 0 ) )
     {
       --mCount;
       return true;
@@ -111,7 +111,7 @@ namespace Chimera::Threading
 
   bool CountingSemaphore::try_acquire_for( const size_t timeout )
   {
-    if ( mLock.try_lock_for( timeout ) && ( mCount > 0 ) )
+    if ( semphr.try_lock_for( std::chrono::milliseconds( timeout ) ) && ( mCount > 0 ) )
     {
       --mCount;
       return true;
@@ -122,7 +122,8 @@ namespace Chimera::Threading
 
   bool CountingSemaphore::try_acquire_until( const size_t abs_time )
   {
-    if ( mLock.try_lock_until( abs_time ) && ( mCount > 0 ) )
+    auto now = std::chrono::steady_clock::now();
+    if ( semphr.try_lock_until( now + std::chrono::milliseconds( abs_time ) ) && ( mCount > 0 ) )
     {
       --mCount;
       return true;
@@ -255,20 +256,15 @@ namespace Chimera::Threading
     mThreadName.fill( 0 );
   }
 
-  Thread::Thread( ThreadFunctPtr func, ThreadArg arg ) : mFunc( func ), mFuncArg( arg )
-  {
-    mThreadName.fill( 0 );
-  }
-
   Thread::~Thread()
   {
   }
 
-  void Thread::start( const Priority priority, const size_t stackDepth, const std::string_view name )
+  void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth, const std::string_view name)
   {
-    ( void )priority;
-    ( void )stackDepth;
-
+    /*------------------------------------------------
+      Copy out the string data into the name
+      ------------------------------------------------*/
     size_t copyLen = name.length();
     if ( copyLen > MAX_NAME_LEN )
     {
@@ -278,6 +274,17 @@ namespace Chimera::Threading
     mThreadName.fill( 0 );
     memcpy( mThreadName.data(), name.data(), copyLen );
 
+    /*------------------------------------------------
+    Copy the additional parameters
+    ------------------------------------------------*/
+    mFunc       = func;
+    mFuncArg    = arg;
+    mPriority   = priority;
+    mStackDepth = stackDepth;
+  }
+
+  void Thread::start()
+  {
     mThread = std::thread( mFunc, mFuncArg );
   }
 

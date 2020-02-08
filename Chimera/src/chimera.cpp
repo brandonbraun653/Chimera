@@ -11,7 +11,6 @@
 /* Chimera Includes */
 #include "chimeraPort.hpp"
 #include <Chimera/chimera.hpp>
-#include <Chimera/exception.hpp>
 #include <Chimera/preprocessor.hpp>
 #include <Chimera/sim/sim_chimera.hpp>
 #include <Chimera/system.hpp>

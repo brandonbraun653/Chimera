@@ -18,12 +18,12 @@
 #include <Chimera/threading/mutex.hpp>
 #include <Chimera/threading/thread.hpp>
 
+#if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
+
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
-
-#if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 
 namespace Chimera::Threading
 {

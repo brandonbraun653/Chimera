@@ -18,8 +18,6 @@
 #include <Chimera/threading/stl/stl_sync_primitives.hpp>
 #elif defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 #include <Chimera/threading/freertos/freertos_sync_primitives.hpp>
-#else
-#include <Chimera/threading/generic/generic_sync_primitives.hpp>
 #endif 
 
 #endif	/* !CHIMERA_THREADING_OS_TYPING_DETAIL_HPP */

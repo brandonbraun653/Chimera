@@ -22,6 +22,10 @@ namespace Chimera::Threading::detail
   using native_timed_mutex           = std::timed_mutex;
   using native_recursive_timed_mutex = std::recursive_timed_mutex;
 
+  /* Use mutex until compiler supports the C++20 semaphore */
+  using native_binary_semaphore   = std::timed_mutex;
+  using native_counting_semaphore = std::timed_mutex;
+
   using native_thread             = std::thread;
   using native_thread_handle_type = std::thread::native_handle_type;
 }  // namespace Chimera::Threading::detail
