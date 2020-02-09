@@ -15,6 +15,7 @@
 /* Chimera Includes */
 #include <Chimera/base/event_base.hpp>
 #include <Chimera/base/threading_base.hpp>
+#include <Chimera/interface/serial_intf.hpp>
 
 namespace Chimera::Serial
 {
@@ -76,6 +77,28 @@ namespace Chimera::Serial
 
     void postISRProcessing() final override
     {
+    }
+
+    Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len ) final override
+    {
+      return Chimera::CommonStatusCodes::FAIL;
+    }
+
+    Chimera::Status_t enableBuffering( const Chimera::Hardware::SubPeripheral periph,
+                                       boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
+                                       const uint32_t hwBufferSize ) final override
+    {
+      return Chimera::CommonStatusCodes::FAIL;
+    }
+
+    Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph ) final override
+    {
+      return Chimera::CommonStatusCodes::FAIL;
+    }
+
+    bool available( size_t *const bytes ) final override
+    {
+      return false;
     }
   };
 }

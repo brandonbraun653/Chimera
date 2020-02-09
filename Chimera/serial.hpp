@@ -17,7 +17,6 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/constants/common.hpp>
 #include <Chimera/interface/event_intf.hpp>
 #include <Chimera/interface/serial_intf.hpp>
 #include <Chimera/interface/threading_intf.hpp>
