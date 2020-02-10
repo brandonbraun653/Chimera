@@ -1,0 +1,17 @@
+/********************************************************************************
+ *  File Name:
+ *    usart
+ * 
+ *  Description:
+ *    Chimera USART Includes
+ * 
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_USART_INCLUDES
+#define CHIMERA_USART_INCLUDES
+
+#include <Chimera/src/peripherals/usart/usart.hpp>
+
+#endif /* !CHIMERA_USART_INCLUDES */

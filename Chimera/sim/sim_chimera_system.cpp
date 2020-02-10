@@ -10,15 +10,15 @@
 
 #if defined( CHIMERA_SIMULATOR )
 
-/* C++ Includes */
+/* STL Includes */
 #include <atomic>
 #include <cstdint>
 #include <chrono>
 #include <thread>
 
 /* Chimera Includes */
-#include <Chimera/chimera.hpp>
-#include <Chimera/system.hpp>
+#include <Chimera/common>
+#include <Chimera/system>
 
 /* Global system tick counter */
 static std::atomic<size_t> sSysTick = 0;

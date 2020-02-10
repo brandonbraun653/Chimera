@@ -1,0 +1,17 @@
+/********************************************************************************
+ *  File Name:
+ *    uart
+ * 
+ *  Description:
+ *    Chimera UART Includes
+ * 
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_UART_INCLUDES
+#define CHIMERA_UART_INCLUDES
+
+#include <Chimera/src/peripherals/uart/uart.hpp>
+
+#endif /* !CHIMERA_UART_INCLUDES */

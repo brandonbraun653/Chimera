@@ -307,110 +307,133 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Chimera\algorithm\register_optimizer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\allocator\chimera_allocator.cpp" />
+    <ClCompile Include="..\..\..\Chimera\buffer\chimera_buffer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\chimera.cpp" />
+    <ClCompile Include="..\..\..\Chimera\container\chimera_container.cpp" />
+    <ClCompile Include="..\..\..\Chimera\peripherals\crc\chimera_crc.cpp" />
+    <ClCompile Include="..\..\..\Chimera\peripherals\spi\chimera_spi.cpp" />
+    <ClCompile Include="..\..\..\Chimera\peripherals\watchdog\chimera_watchdog.cpp" />
+    <ClCompile Include="..\..\..\Chimera\system\chimera_system.cpp" />
+    <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_hooks.cpp" />
+    <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_threading_implementation.cpp" />
+    <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <None Include="..\..\..\Chimera\algorithm\build.jam" />
+    <None Include="..\..\..\Chimera\allocator\build.jam" />
+    <None Include="..\..\..\Chimera\build.jam" />
+    <ClInclude Include="..\..\..\Chimera\clock">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\crc">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\dma">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\ethernet">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\gpio">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">true</DeploymentContent>
+    </ClInclude>
+    <None Include="..\..\..\Chimera\peripherals\build.jam" />
+    <ClInclude Include="..\..\..\Chimera\power">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\spi">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\thread">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <None Include="..\..\..\Chimera\threading\build.jam" />
+    <ClInclude Include="..\..\..\Chimera\timer">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\watchdog">
+      <FileType>Document</FileType>
+    </ClInclude>
     <None Include="stm32.props" />
     <None Include="ChimeraStaticLibrary-Debug.vgdbsettings" />
     <None Include="ChimeraStaticLibrary-Release.vgdbsettings" />
     <None Include="stm32.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\sim\sim_chimera.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\sim\sim_chimera_system.cpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\allocator.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\buffer.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\chimera.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\container.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\crc.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\dma.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\event.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\gpio.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\memory.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\power.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\preprocessor.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\serial.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\sim\sim_chimera.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\sim\sim_chimera_system.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\spi.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\system.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\threading.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\utilities.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\version.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\watchdog.hpp" />
-    <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraConfig.hpp" />
-    <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraPort.hpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_allocator.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_buffer.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_container.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_crc.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_spi.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_system.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_threading.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Aurora\Chimera\Chimera\src\chimera_watchdog.cpp" />
-    <ClCompile Include="..\..\..\Chimera\algorithm\register_optimizer.cpp" />
     <ClInclude Include="..\..\..\Chimera\algorithm\register_optimizer.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\buffer_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\crc_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\dma_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\event_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\gpio_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\serial_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\spi_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\threading_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\base\watchdog_base.hpp" />
-    <ClInclude Include="..\..\..\Chimera\extensions\common.hpp" />
-    <ClInclude Include="..\..\..\Chimera\extensions\spi_ext.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\buffer_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\callback_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\clock_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\compiler_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\crc_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\dma_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\ethernet_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\event_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\gpio_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\memory_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\power_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\pwm_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\serial_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\spi_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\system_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\threading_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\interface\watchdog_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraPort.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h" />
+    <ClInclude Include="..\..\..\Chimera\allocator\allocator.hpp" />
+    <ClInclude Include="..\..\..\Chimera\buffer\buffer.hpp" />
+    <ClInclude Include="..\..\..\Chimera\buffer\buffer_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\buffer\buffer_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\callback\callback_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\callback\callback_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\chimera.hpp" />
+    <ClInclude Include="..\..\..\Chimera\common\common_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\common\compiler_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\common\preprocessor.hpp" />
+    <ClInclude Include="..\..\..\Chimera\container\container.hpp" />
+    <ClInclude Include="..\..\..\Chimera\event\event.hpp" />
+    <ClInclude Include="..\..\..\Chimera\event\event_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\event\event_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\event\event_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\clock\clock_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\clock\clock_types_fwd.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\crc\crc.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\crc\crc_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\crc\crc_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\crc\crc_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\dma\dma.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\dma\dma_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\dma\dma_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\dma\dma_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\ethernet\ethernet_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\gpio\gpio.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\gpio\gpio_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\gpio\gpio_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\gpio\gpio_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\peripheral_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\power\power.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\power\power_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\power\power_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\power\power_types_fwd.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\spi\spi.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\spi\spi_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\spi\spi_ext.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\spi\spi_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\spi\spi_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\timer\pwm_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\timer\pwm_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\watchdog\watchdog.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\watchdog\watchdog_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\watchdog\watchdog_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\peripherals\watchdog\watchdog_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\serial\serial.hpp" />
+    <ClInclude Include="..\..\..\Chimera\serial\serial_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\serial\serial_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\serial\serial_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\system\system.hpp" />
+    <ClInclude Include="..\..\..\Chimera\system\system_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\system\system_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\extensions.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_hooks.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\internal_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\mutex.hpp" />
     <ClInclude Include="..\..\..\Chimera\threading\semaphore.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading\thread.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading\types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\threading\freertos\freertos_sync_primitives.hpp" />
-    <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_hooks.cpp" />
-    <ClCompile Include="..\..\..\Chimera\threading\freertos\freertos_threading_implementation.cpp" />
-    <ClCompile Include="..\..\..\Chimera\threading\stl\stl_threading_implementation.cpp" />
     <ClInclude Include="..\..\..\Chimera\threading\stl\stl_sync_primitives.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\callback_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\clock_types_fwd.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\common_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\crc_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\dma_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\event_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\gpio_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\memory_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\peripheral_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\power_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\power_types_fwd.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\pwm_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\serial_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\spi_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\system_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\types\watchdog_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\thread.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\threading.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\threading_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\threading_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\threading\types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\utilities\utilities.hpp" />
+    <ClInclude Include="..\..\..\Chimera\version.hpp" />
   </ItemGroup>
 </Project>

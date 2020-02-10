@@ -13,7 +13,7 @@
 #ifndef CHIMERA_COMMON_INTEGRATION_TEST_FIXTURE_HPP
 #define CHIMERA_COMMON_INTEGRATION_TEST_FIXTURE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 
