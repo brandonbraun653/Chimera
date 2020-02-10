@@ -1,0 +1,18 @@
+/********************************************************************************
+*   File Name:
+*     power
+*
+*   Description:
+*     Chimera Power Includes
+*
+*   2020 | Brandon Braun | brandonbraun653@gmail.com
+********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_POWER_INCLUDES
+#define CHIMERA_POWER_INCLUDES
+
+#include <Chimera/power/power.hpp>
+#include <Chimera/power/power_types.hpp>
+
+#endif  /* !CHIMERA_POWER_INCLUDES */

@@ -17,11 +17,11 @@
 
 namespace Chimera
 {
-  static constexpr std::string_view version_major = "1";
+  static constexpr std::string_view version_major = "2";
   static constexpr std::string_view version_minor = "0";
-  static constexpr std::string_view version_patch = "1";
+  static constexpr std::string_view version_patch = "0";
 
-  static constexpr std::string_view version = "1.0.1";
+  static constexpr std::string_view version = "2.0.0";
 }
 
 #endif	/* !CHIMERA_VERSION_HPP */
