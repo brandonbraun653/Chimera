@@ -13,10 +13,7 @@
 #define CHIMERA_THREADING_HPP
 
 /* Chimera Includes */
-#include <Chimera/threading/extensions.hpp>
-#include <Chimera/threading/mutex.hpp>
-#include <Chimera/threading/semaphore.hpp>
-#include <Chimera/threading/thread.hpp>
+#include <Chimera/thread>
 
 namespace Chimera::Threading
 {

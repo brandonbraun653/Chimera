@@ -13,10 +13,9 @@
 #define CHIMERA_THREADING_INTERFACE_HPP
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/event_types.hpp>
-#include <Chimera/threading/types.hpp>
-#include <Chimera/threading/semaphore.hpp>
+#include <Chimera/common>
+#include <Chimera/event>
+#include <Chimera/thread>
 
 namespace Chimera::Threading
 {

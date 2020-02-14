@@ -20,22 +20,8 @@
 #include <variant>
 
 /* Chimera Includes */
-#include "chimeraConfig.hpp"
-#include <Chimera/chimera.hpp>
-#include <Chimera/types/callback_types.hpp>
-
-/* FreeRTOS Includes */
-#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
-
-#ifdef __cplusplus
-extern "C"
-{
-#include "FreeRTOS.h"
-#include "semphr.h"
-}
-#endif /* __cplusplus */
-
-#endif /* CHIMERA_CFG_FREERTOS */
+#include <Chimera/common>
+#include <Chimera/callback>
 
 
 namespace Chimera::Event

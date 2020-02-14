@@ -1,0 +1,42 @@
+# ====================================================
+# Local Rules 
+# ====================================================
+local rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
+    {
+    alias $(name) : $(sources) : $(requirements) : $(default-build) : $(usage-requirements) ;
+    explicit $(name) ;
+    }
+
+# ====================================================
+# Public Targets
+# ====================================================
+lib LIB_THREAD
+  : freertos/freertos_threading_implementation.cpp
+
+  : <FreeRTOS>enabled
+    <link>static
+    <use>/FREERTOS//PUB
+    <use>/CHIMERA//PUB
+    <use>/CHIMERA//PRV
+    <use>/PRJ//FREERTOS_CFG
+    <use>/PRJ//CHIMERA_PORT
+    <use>/PRJ//CHIMERA_DEFS
+    <use>/PRJ//TARGET_OPTIONS
+  ;
+
+lib LIB_THREAD
+  : stl/stl_threading_implementation.cpp
+
+  : <FreeRTOS>disabled
+    <link>static
+    <use>/CHIMERA//PUB
+    <use>/CHIMERA//PRV
+    <use>/PRJ//CHIMERA_PORT
+    <use>/PRJ//CHIMERA_DEFS
+    <use>/PRJ//TARGET_OPTIONS
+  ;
+
+
+explicit LIB_THREAD ;
+
+alias TEST : LIB_THREAD ;

@@ -47,6 +47,22 @@ explicit_alias PUB : : : : <include>$(chimera_inc_dir) ;
 explicit_alias PUB_MOCK : : : : <include>$(chimera_mock_inc_dir) ;
 explicit_alias PUB_SIM : : : : <include>$(chimera_port_sim_inc_dir) ;
 
+alias PRV 
+    : 
+    : <FreeRTOS>disabled
+    : 
+    : <include>./Chimera/src/threading/stl
+    ;
+
+alias PRV
+    :
+    : <FreeRTOS>enabled
+    :
+    : <include>./Chimera/src/threading/freertos 
+    ;
+explicit PRV ;
+
+
 # ------------------------------------------
 # Includes all common FreeRTOS headers
 # -----------------------------------------

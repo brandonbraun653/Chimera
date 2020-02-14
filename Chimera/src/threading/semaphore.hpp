@@ -17,8 +17,7 @@
 #include <limits>
 
 /* Chimera Includes */
-#include <Chimera/threading/internal_types.hpp>
-#include <Chimera/threading/mutex.hpp>
+#include <Chimera/thread>
 
 namespace Chimera::Threading
 {

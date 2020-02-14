@@ -1,0 +1,20 @@
+/********************************************************************************
+ *  File Name:
+ *    event 
+ * 
+ *  Description:
+ *    Chimera Event Includes
+ * 
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_EVENT_INCLUDES
+#define CHIMERA_EVENT_INCLUDES
+
+#include <Chimera/src/event/event_base.hpp>
+#include <Chimera/src/event/event_intf.hpp>
+#include <Chimera/src/event/event_types.hpp>
+#include <Chimera/src/event/event.hpp>
+
+#endif /* !CHIMERA_EVENT_INCLUDES */

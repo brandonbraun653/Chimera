@@ -16,8 +16,9 @@
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/system_types.hpp>
+#include <Chimera/common>
+//#include <Chimera/system>
+#include <Chimera/src/system/system_types.hpp>
 
 namespace Chimera::System
 {
@@ -41,7 +42,7 @@ namespace Chimera::System
    *
    *	@return size_t      Mask indicating which interrupts were disabled
    */
-  extern InterruptMask prjDisableInterrupts();
+  extern Chimera::System::InterruptMask prjDisableInterrupts();
 
   /**
    *  Enables system level interrupts from the mask that was returned when 
@@ -49,7 +50,7 @@ namespace Chimera::System
    *
    *	@return void
    */
-  extern void prjEnableInterrupts( InterruptMask &interruptMask );
+  extern void prjEnableInterrupts( Chimera::System::InterruptMask &interruptMask );
 
   /**
    *	Returns the maximum number of concurrent hardware threads that

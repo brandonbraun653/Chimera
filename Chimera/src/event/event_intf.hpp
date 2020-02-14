@@ -17,9 +17,8 @@
 #include <functional>
 
 /* Chimera Includes */
-#include <Chimera/preprocessor.hpp>
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/event_types.hpp>
+#include <Chimera/common>
+#include <Chimera/event>
 
 namespace Chimera::Event
 {

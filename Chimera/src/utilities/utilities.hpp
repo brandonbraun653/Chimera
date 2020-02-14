@@ -14,10 +14,10 @@
 #include <vector>
 
 /* Chimera Includes */
-#include <Chimera/preprocessor.hpp>
+#include <Chimera/common>
 
 #ifdef CHIMERA_FREERTOS
-#include <Chimera/threading.hpp>
+#include <Chimera/threading>
 #endif
 
 #ifdef USING_BOOST

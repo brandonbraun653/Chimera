@@ -15,13 +15,12 @@
 
 /* C++ Includes */
 #include <chrono>
+#include <thread>
 
 /* Chimera Includes */
-#include <Chimera/chimera.hpp>
-#include <Chimera/system.hpp>
-#include <Chimera/threading/extensions.hpp>
-#include <Chimera/threading/mutex.hpp>
-#include <Chimera/threading/thread.hpp>
+#include <Chimera/common>
+#include <Chimera/system>
+#include <Chimera/thread>
 
 
 #if defined( USING_WINDOWS ) || defined( USING_LINUX ) || defined( USING_STL_THREADS )

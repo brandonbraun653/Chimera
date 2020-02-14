@@ -13,8 +13,8 @@
 #define CHIMERA_HPP
 
 /* Chimera Includes */
-#include <Chimera/preprocessor.hpp>
-#include <Chimera/utilities.hpp>
+#include <Chimera/common>
+#include <Chimera/utility>
 
 /**
  *	Initializes the Chimera subsystem. Should be implemented

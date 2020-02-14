@@ -8,6 +8,7 @@
 *  2020 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
+#pragma once
 #ifndef CHIMERA_THREADING_THREAD_HPP
 #define CHIMERA_THREADING_THREAD_HPP
 
@@ -17,9 +18,7 @@
 #include <string>
 
 /* Chimera Includes */
-#include <Chimera/interface/threading_intf.hpp>
-#include <Chimera/threading/internal_types.hpp>
-#include <Chimera/threading/types.hpp>
+#include <Chimera/thread>
 
 namespace Chimera::Threading
 {

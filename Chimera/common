@@ -1,0 +1,20 @@
+/********************************************************************************
+ *  File Name:
+ *    common
+ * 
+ *  Description:
+ *    Chimera Common Includes
+ * 
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_COMMON_INCLUDES
+#define CHIMERA_COMMON_INCLUDES
+
+#include <Chimera/src/common/chimera.hpp>
+#include <Chimera/src/common/common_types.hpp>
+#include <Chimera/src/common/compiler_intf.hpp>
+#include <Chimera/src/common/preprocessor.hpp>
+
+#endif /* !CHIMERA_COMMON_INCLUDES */

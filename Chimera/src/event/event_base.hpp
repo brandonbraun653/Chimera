@@ -16,8 +16,7 @@
 #include <cstdint>
 
 /* Chimera Includes*/
-#include <Chimera/interface/event_intf.hpp>
-#include <Chimera/types/event_types.hpp>
+#include <Chimera/event>
 
 namespace Chimera::Event
 {

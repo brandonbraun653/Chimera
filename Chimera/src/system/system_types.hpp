@@ -5,7 +5,7 @@
  *   Description:
  *    Chimera System types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -17,12 +17,10 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
-namespace Chimera
+namespace Chimera::System
 {
-  namespace System
-  {
     
     class SystemControl;
     using SystemControl_sPtr = std::shared_ptr<SystemControl>;
@@ -46,8 +44,6 @@ namespace Chimera
       bool interrupted;
       uint32_t mask;
     };
-
-  }  // namespace System
-}  // namespace Chimera
+}  // namespace Chimera::System
 
 #endif /* !CHIMERA_SYSTEM_TYPES_HPP */

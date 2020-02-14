@@ -5,7 +5,7 @@
  *   Description:
  *       Provides common system level functions
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -18,8 +18,7 @@
 #include <type_traits>
 
 /* Chimera Includes */
-#include <Chimera/interface/system_intf.hpp>
-#include "chimeraPort.hpp"
+#include <Chimera/system>
 
 namespace Chimera::System
 {

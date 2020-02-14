@@ -9,11 +9,12 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#pragma once
 #ifndef CHIMERA_THREADING_MUTEX_HPP
 #define CHIMERA_THREADING_MUTEX_HPP
 
 /* Chimera Includes */
-#include <Chimera/threading/internal_types.hpp>
+#include <Chimera/thread>
 
 namespace Chimera::Threading
 {
