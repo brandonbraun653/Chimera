@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    serial_base.hpp
  *
- *   Description:
+ *  Description:
  *    Abstract base class interfaces
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,9 +13,9 @@
 #define CHIMERA_SERIAL_ABSTRACT_BASE_HPP
 
 /* Chimera Includes */
-#include <Chimera/base/event_base.hpp>
-#include <Chimera/base/threading_base.hpp>
-#include <Chimera/interface/serial_intf.hpp>
+#include <Chimera/event>
+#include <Chimera/thread>
+#include <Chimera/src/serial/serial_intf.hpp>
 
 namespace Chimera::Serial
 {
@@ -101,6 +101,6 @@ namespace Chimera::Serial
       return false;
     }
   };
-}
+}  // namespace Chimera::Serial
 
 #endif  // !CHIMERA_SERIAL_ABSTRACT_BASE_HPP

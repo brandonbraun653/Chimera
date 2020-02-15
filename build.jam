@@ -44,6 +44,8 @@ use-project /COMMON :               Chimera/src/common ;
 use-project /CONTAINER :            Chimera/src/container ;
 use-project /PERIPH/GPIO :          Chimera/src/peripherals/gpio ;
 use-project /PERIPH/SPI :           Chimera/src/peripherals/spi ;
+use-project /PERIPH/UART :          Chimera/src/peripherals/uart ;
+use-project /PERIPH/USART :         Chimera/src/peripherals/usart ;
 use-project /PERIPH/WATCHDOG :      Chimera/src/peripherals/watchdog ;
 use-project /SYSTEM :               Chimera/src/system ; 
 use-project /THREADING :            Chimera/src/threading ;
@@ -220,6 +222,8 @@ explicit_alias TEST_COMPILE
         /CONTAINER//LIB
         /PERIPH/GPIO//LIB
         /PERIPH/SPI//LIB
+        /PERIPH/UART//LIB
+        /PERIPH/USART//LIB
         /PERIPH/WATCHDOG//LIB
         /SYSTEM//LIB
         /THREADING//LIB

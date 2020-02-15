@@ -16,9 +16,9 @@
 #include <cstdint>
 
 /* Chimera Includes*/
-#include <Chimera/interface/crc_intf.hpp>
+#include <Chimera/src/peripherals/crc/crc_intf.hpp>
 
-namespace Chimera::AlgCRC
+namespace Chimera::HWCRC
 {
   class HWInterfaceUnsupported : public HWInterface
     {
@@ -37,6 +37,11 @@ namespace Chimera::AlgCRC
       }
 
       uint32_t calculate( const uint32_t *const buffer, const uint32_t length ) final override
+      {
+        return 0u;
+      }
+
+      uint32_t getPolynomial() final override
       {
         return 0u;
       }

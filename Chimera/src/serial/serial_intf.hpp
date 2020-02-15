@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    serial_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Models the Chimera Serial interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -19,9 +19,9 @@
 #include <boost/circular_buffer_fwd.hpp>
 
 /* Chimera Includes */
-#include <Chimera/callback/callback_types.hpp>
-#include <Chimera/common/common_types.hpp>
-#include <Chimera/serial/serial_types.hpp>
+#include <Chimera/callback>
+#include <Chimera/common>
+#include <Chimera/src/serial/serial_types.hpp>
 
 
 namespace Chimera::Serial

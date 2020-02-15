@@ -10,8 +10,8 @@
  ********************************************************************************/
 
 #include "chimeraConfig.hpp"
-#include <Chimera/chimera.hpp>
-#include <Chimera/threading/freertos/freertos_hooks.hpp>
+#include <Chimera/common>
+#include <Chimera/thread>
 
 #if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
 

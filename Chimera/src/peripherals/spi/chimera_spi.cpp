@@ -1,10 +1,10 @@
 /********************************************************************************
  *  File Name:
  *    chimera_spi.cpp
- *  
+ *
  *  Description:
  *    Implements Chimera's SPI functionality.
- *  
+ *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
@@ -39,4 +39,4 @@ namespace Chimera::SPI
   {
     return std::make_unique<CHIMERA_INHERITED_SPI>();
   }
-}
+}  // namespace Chimera::SPI

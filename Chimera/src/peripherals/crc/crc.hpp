@@ -16,7 +16,8 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/peripherals/crc/crc_intf.hpp>
+#include <Chimera/common>
+#include <Chimera/src/peripherals/crc/crc_intf.hpp>
 
 namespace Chimera::HWCRC
 {

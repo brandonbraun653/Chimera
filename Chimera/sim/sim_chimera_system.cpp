@@ -17,8 +17,8 @@
 #include <thread>
 
 /* Chimera Includes */
-#include <Chimera/chimera.hpp>
-#include <Chimera/system.hpp>
+#include <Chimera/common>
+#include <Chimera/system>
 
 /* Global system tick counter */
 static std::atomic<size_t> sSysTick = 0;

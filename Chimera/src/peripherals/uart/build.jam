@@ -1,0 +1,21 @@
+# ====================================================
+# Local Rules 
+# ====================================================
+local rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
+    {
+    alias $(name) : $(sources) : $(requirements) : $(default-build) : $(usage-requirements) ;
+    explicit $(name) ;
+    }
+
+# ====================================================
+# Public Targets
+# ====================================================
+lib LIB
+  : chimera_uart.cpp
+
+  : <link>static
+    <use>/CHIMERA//PUB
+    <use>/PRJ//TARGET_OPTIONS
+  ;
+
+explicit_alias TEST_COMPILE : LIB ;

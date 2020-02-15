@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    serial_types.hpp
  *
- *   Description:
+ *  Description:
  *    Chimera Serial types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -18,8 +18,8 @@
 #include <type_traits>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/gpio_types.hpp>
+#include <Chimera/common>
+#include <Chimera/gpio>
 
 namespace Chimera::Serial
 {

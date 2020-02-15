@@ -16,12 +16,13 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/serial/serial_intf.hpp>
+#include <Chimera/common>
+#include <Chimera/src/serial/serial_intf.hpp>
 
 namespace Chimera::UART
 {
-  using UART_sPtr = std::shared_ptr<HWInterface>;
-  using UART_uPtr = std::unique_ptr<HWInterface>;
+  using UART_sPtr = std::shared_ptr<::Chimera::Serial::HWInterface>;
+  using UART_uPtr = std::unique_ptr<::Chimera::Serial::HWInterface>;
 
   Chimera::Status_t initialize();
 
