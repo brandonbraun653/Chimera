@@ -16,7 +16,7 @@
 
 namespace Chimera::GPIO
 {
-#if !defined( CHIMERA_INHERITED_SPI )
+#if !defined( CHIMERA_INHERITED_GPIO )
   using CHIMERA_INHERITED_GPIO = GPIOUnsupported;
 #endif
 

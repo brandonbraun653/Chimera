@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    watchdog_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Models the Chimera Watchdog interface
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -18,7 +18,7 @@
 #include <limits>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
 namespace Chimera::Watchdog
 {

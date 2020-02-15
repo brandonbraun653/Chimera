@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    watchdog_types.hpp
  *
- *   Description:
+ *  Description:
  *    Chimera Watchdog types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -17,17 +17,10 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
-namespace Chimera
+namespace Chimera::Watchdog
 {
-   namespace Watchdog
-  {
-    class WatchdogClass;
-    using WatchdogClass_sPtr = std::shared_ptr<WatchdogClass>;
-    using WatchdogClass_uPtr = std::unique_ptr<WatchdogClass>;
-    
-  }
 }  // namespace Chimera
 
 #endif /* !CHIMERA_WATCHDOG_TYPES_HPP */

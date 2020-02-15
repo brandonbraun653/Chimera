@@ -1,9 +1,9 @@
 /********************************************************************************
  *   File Name:
- *       watchdog.hpp
+ *    watchdog.hpp
  *
  *   Description:
- *       Implements an interface to create a Chimera Watchdog peripheral
+ *    Implements an interface to create a Chimera Watchdog peripheral
  *
  *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -16,7 +16,7 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/peripherals/watchdog/watchdog_intf.hpp>
+#include <Chimera/src/peripherals/watchdog/watchdog_intf.hpp>
 
 namespace Chimera::Watchdog
 {

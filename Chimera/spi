@@ -1,11 +1,11 @@
 /********************************************************************************
-*   File Name:
-*     spi
+*  File Name:
+*    spi
 *
-*   Description:
-*     Chimera SPI Includes
+*  Description:
+*    Chimera SPI Includes
 *
-*   2020 | Brandon Braun | brandonbraun653@gmail.com
+*  2020 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
 #pragma once

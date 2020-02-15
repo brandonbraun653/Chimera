@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    watchdog_base.hpp
  *
- *   Description:
+ *  Description:
  *    Abstract base class interfaces
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -16,7 +16,7 @@
 #include <cstdint>
 
 /* Chimera Includes*/
-#include <Chimera/interface/watchdog_intf.hpp>
+#include <Chimera/src/peripherals/watchdog/watchdog_intf.hpp>
 
 namespace Chimera::Watchdog
 {

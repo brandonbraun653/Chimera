@@ -1,23 +1,46 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    chimera_watchdog.cpp
  *
- *   Description:
+ *  Description:
  *    Implements watchdog specific functionality
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+/* STL Includes */
+#include <memory>
+
 /* Chimera Includes */
-#include <Chimera/threading.hpp>
-#include <Chimera/threading.hpp>
-#include <Chimera/watchdog.hpp>
+#include <Chimera/thread>
+#include <Chimera/watchdog>
 
 namespace Chimera::Watchdog
 {
+#if !defined( CHIMERA_INHERITED_WATCHDOG )
+  using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
+#endif
+
+  static_assert( std::is_base_of<HWInterface, CHIMERA_INHERITED_WATCHDOG>::value, "Invalid interface" );
+
+  Chimera::Status_t initialize()
+  {
+    return Chimera::CommonStatusCodes::OK;
+  }
+
+  Watchdog_sPtr create_shared_ptr()
+  {
+    return std::make_shared<CHIMERA_INHERITED_WATCHDOG>();
+  }
+
+  Watchdog_uPtr create_unique_ptr()
+  {
+    return std::make_unique<CHIMERA_INHERITED_WATCHDOG>();
+  }
+
   void invokeTimeout()
   {
-#if defined( USING_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
     vTaskSuspendAll();
 #endif
 

@@ -37,15 +37,16 @@ local chimera_src =
 # ====================================================
 project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
 
-use-project /ALGORITHM :    Chimera/src/algorithm ; 
-use-project /ALLOCATOR :    Chimera/src/allocator ;
-use-project /BUFFER :       Chimera/src/buffer ;
-use-project /COMMON :       Chimera/src/common ;
-use-project /CONTAINER :    Chimera/src/container ;
-use-project /PERIPH/GPIO :  Chimera/src/peripherals/gpio ;
-use-project /PERIPH/SPI :   Chimera/src/peripherals/spi ;
-use-project /SYSTEM :       Chimera/src/system ; 
-use-project /THREADING :    Chimera/src/threading ;
+use-project /ALGORITHM :            Chimera/src/algorithm ; 
+use-project /ALLOCATOR :            Chimera/src/allocator ;
+use-project /BUFFER :               Chimera/src/buffer ;
+use-project /COMMON :               Chimera/src/common ;
+use-project /CONTAINER :            Chimera/src/container ;
+use-project /PERIPH/GPIO :          Chimera/src/peripherals/gpio ;
+use-project /PERIPH/SPI :           Chimera/src/peripherals/spi ;
+use-project /PERIPH/WATCHDOG :      Chimera/src/peripherals/watchdog ;
+use-project /SYSTEM :               Chimera/src/system ; 
+use-project /THREADING :            Chimera/src/threading ;
 
 
 # ====================================================
@@ -219,6 +220,7 @@ explicit_alias TEST_COMPILE
         /CONTAINER//LIB
         /PERIPH/GPIO//LIB
         /PERIPH/SPI//LIB
+        /PERIPH/WATCHDOG//LIB
         /SYSTEM//LIB
         /THREADING//LIB
     ;
