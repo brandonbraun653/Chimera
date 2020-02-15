@@ -16,9 +16,10 @@ namespace Chimera::HWCRC
 {
 #if !defined( CHIMERA_INHERITED_HWCRC )
   using CHIMERA_INHERITED_HWCRC = HWInterfaceUnsupported;
+  #warning Hardware CRC driver is unsupported
 #endif
 
-  static_assert( std::is_base_of<HWInterfaceUnsupported, CHIMERA_INHERITED_HWCRC>::value, "Invalid interface" );
+  static_assert( std::is_base_of<ICRC, CHIMERA_INHERITED_HWCRC>::value, "Invalid interface" );
 
 
   Chimera::Status_t initialize()

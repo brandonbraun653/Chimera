@@ -20,6 +20,11 @@
 
 namespace Chimera::GPIO
 {
+  namespace Backend
+  {
+    extern Chimera::Status_t prjInitialize();
+  }
+
   /**
    * Defines expected behavior for all embedded systems that allow the user to control
    * GPIO pins. This is a pure virtual/abstract class.
@@ -129,6 +134,18 @@ namespace Chimera::GPIO
      */
     virtual Chimera::Status_t toggle( const size_t timeout ) = 0;
   };
+
+
+  /**
+   *  Expected interface for all implementers of GPIO
+   */
+  class IGPIO : virtual public HWInterface,
+                virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~IGPIO() = default;
+  };
+
 }  // namespace Chimera::GPIO
 
 #endif /* !CHIMERA_GPIO_INTERFACE_HPP */

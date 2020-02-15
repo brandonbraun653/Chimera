@@ -21,8 +21,8 @@
 /* Chimera Includes */
 #include <Chimera/callback>
 #include <Chimera/common>
+#include <Chimera/event>
 #include <Chimera/src/serial/serial_types.hpp>
-
 
 namespace Chimera::Serial
 {
@@ -282,6 +282,18 @@ namespace Chimera::Serial
      *  |        false | No data is available |
      */
     virtual bool available( size_t *const bytes = nullptr ) = 0;
+  };
+
+  /**
+   *  Expected interface for all implementers of Serial
+   */
+  class ISerial : virtual public Chimera::Serial::HWInterface,
+                  virtual public Chimera::Event::ListenerInterface,
+                  virtual public Chimera::Threading::AsyncIOInterface,
+                  virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~ISerial() = default;
   };
 
 }  // namespace Chimera::Serial

@@ -19,7 +19,7 @@
 
 namespace Chimera::Serial
 {
-  class SerialUnsupported : public Chimera::Serial::HWInterface,
+  class SerialUnsupported : public ISerial,
                             public Chimera::Event::ListenerUnsupported,
                             public Chimera::Threading::AsyncIOUnsupported,
                             public Chimera::Threading::LockableUnsupported

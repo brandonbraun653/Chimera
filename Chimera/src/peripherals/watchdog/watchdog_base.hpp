@@ -16,52 +16,54 @@
 #include <cstdint>
 
 /* Chimera Includes*/
+#include <Chimera/thread>
 #include <Chimera/src/peripherals/watchdog/watchdog_intf.hpp>
 
 namespace Chimera::Watchdog
 {
-  class WatchdogUnsupported : public HWInterface
+  class WatchdogUnsupported : virtual public IWatchdog,
+                              public Chimera::Threading::Lockable
   {
   public:
     WatchdogUnsupported()  = default;
     ~WatchdogUnsupported() = default;
 
-    Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent )
+    Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Status_t start()
+    Status_t start() final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Status_t stop()
+    Status_t stop() final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Status_t kick()
+    Status_t kick() final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    Status_t pauseOnDebugHalt( const bool enable )
+    Status_t pauseOnDebugHalt( const bool enable ) final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
-    size_t getTimeout()
+    size_t getTimeout() final override
     {
       return 0;
     }
 
-    size_t maxTimeout()
+    size_t maxTimeout() final override
     {
       return std::numeric_limits<size_t>::max();
     }
 
-    size_t minTimeout()
+    size_t minTimeout() final override
     {
       return std::numeric_limits<size_t>::min();
     }

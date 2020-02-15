@@ -67,18 +67,18 @@ namespace Chimera::Threading
   };
   
 
-  class Lockable : public LockableInterface
+  class Lockable : virtual public LockableInterface
   {
   public:
-    void lock();
+    void lock() final override;
 
-    void lockFromISR();
+    void lockFromISR() final override;
 
-    bool try_lock_for( const size_t timeout );
+    bool try_lock_for( const size_t timeout ) final override;
 
-    void unlock();
+    void unlock() final override;
 
-    void unlockFromISR();
+    void unlockFromISR() final override;
 
     Lockable();
     ~Lockable();

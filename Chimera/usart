@@ -13,5 +13,6 @@
 #define CHIMERA_USART_INCLUDES
 
 #include <Chimera/src/peripherals/usart/usart.hpp>
+#include <Chimera/src/peripherals/usart/usart_intf.hpp>
 
 #endif /* !CHIMERA_USART_INCLUDES */

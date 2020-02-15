@@ -17,6 +17,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/gpio>
 #include <Chimera/src/peripherals/spi/spi.hpp>
 
 namespace Chimera::SPI
@@ -79,9 +80,9 @@ namespace Chimera::SPI
 
     virtual Chimera::Status_t attachCS( Chimera::GPIO::PinInit &CSConfig ) = 0;
 
-    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIOClass_sPtr &CSPin ) = 0;
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIO_sPtr &CSPin ) = 0;
 
-    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIOClass_uPtr CSPin ) = 0;
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIO_uPtr CSPin ) = 0;
   };
 }  // namespace Chimera::SPI
 

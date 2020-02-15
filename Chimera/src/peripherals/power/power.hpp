@@ -1,55 +1,34 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    power.hpp
  *
- *   Description:
- *    Models the system power interface 
+ *  Description:
+ *    Models the system power interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#pragma once 
+#pragma once
 #ifndef CHIMERA_POWER_HPP
 #define CHIMERA_POWER_HPP
 
+/* STL Includes */
+#include <memory>
+
 /* Chimera Includes */
-#include <Chimera/interface/macro.hpp>
-#include <Chimera/interface/power_intf.hpp>
-#include "chimeraPort.hpp"
+#include <Chimera/src/peripherals/power/power_intf.hpp>
 
-namespace Chimera
+namespace Chimera::Power
 {
-  namespace Power
-  {
-#if !defined( CHIMERA_INHERITED_POWER_INFO )
-    using CHIMERA_INHERITED_POWER_INFO = InfoInterfaceDisabled;
-#endif
+  using Info_sPtr = std::shared_ptr<InfoInterface>;
+  using Info_uPtr = std::unique_ptr<InfoInterface>;
 
-    /**
-     *  A simple wrapper to provide a common class type for programs built
-     *  with Chimera. The runtime behavior of this class is defined by the user
-     *  provided class type CHIMERA_INHERITED_POWER in chimeraPort.hpp.
-     *
-     *  If no user class is provided, a default disabled behavior version will be
-     *  substituted in its place.
-     */
-    class Info : public CHIMERA_INHERITED_POWER_INFO
-    {
-    public:
-      Info() : CHIMERA_INHERITED_POWER_INFO(){};
-      ~Info() = default;
-    };
-  
-    static_assert( std::is_base_of<InfoInterface, Info>::value, "Base class implements the wrong interface" );
+  Chimera::Status_t initialize();
 
-#if !defined( CHIMERA_DISABLE_INHERITANCE_WARNINGS )
-    STATIC_WARNING( !( std::is_base_of<InfoInterfaceDisabled, Info>::value ),
-                    "No power interface defined in backend driver. You can disable these warnings by defining "
-                    "CHIMERA_DISABLE_INHERITANCE_WARNINGS in the preprocessor." );
-#endif
+  Info_sPtr create_shared_info_ptr();
 
-  }  // namespace Power
-}  // namespace Chimera
+  Info_uPtr create_unique_info_ptr();
 
+}  // namespace Chimera::Power
 
 #endif /* !CHIMERA_POWER_HPP */

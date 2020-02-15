@@ -15,13 +15,12 @@
 /* Chimera Includes*/
 #include <Chimera/event>
 #include <Chimera/thread>
-
 #include <Chimera/src/peripherals/spi/spi_types.hpp>
 #include <Chimera/src/peripherals/spi/spi_intf.hpp>
 
 namespace Chimera::SPI
 {
-  class SPIUnsupported : public HardwareDriverInterface,
+  class SPIUnsupported : virtual public ISPI,
                          public Chimera::Event::ListenerUnsupported,
                          public Chimera::Threading::AsyncIOUnsupported,
                          public Chimera::Threading::LockableUnsupported
@@ -85,29 +84,6 @@ namespace Chimera::SPI
     {
       return std::numeric_limits<size_t>::min();
     }
-    
-    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener,
-                                                                      const size_t timeout, size_t &registrationID )
-    {
-      return Chimera::Status_t();
-    }
-
-    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout )
-    {
-      return Chimera::Status_t();
-    }
-
-    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout )
-    {
-      return Chimera::Status_t();
-    }
-
-    Chimera::Status_t await( const Chimera::Event::Trigger event,
-                                                           Chimera::Threading::BinarySemaphore &notifier, const size_t timeout )
-    {
-      return Chimera::Status_t();
-    }
-
   };
 }  // namespace Chimera::SPI
 

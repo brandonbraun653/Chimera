@@ -82,6 +82,13 @@ namespace Chimera::HWCRC
      */
     virtual uint32_t getPolynomial() = 0;
   };
+
+  class ICRC : virtual public HWInterface
+  {
+  public:
+    virtual ~ICRC() = default;
+  };
+
 }  // namespace Chimera::AlgCRC
 
 #endif /* !CHIMERA_CRC_INTERFACE_HPP */

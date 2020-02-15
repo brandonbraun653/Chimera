@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    power_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Models the Chimera power interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,9 +13,9 @@
 #define CHIMERA_POWER_INTERFACE_HPP
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/peripheral_types.hpp>
-#include <Chimera/types/power_types_fwd.hpp>
+#include <Chimera/common>
+#include <Chimera/src/peripherals/peripheral_types.hpp>
+#include <Chimera/src/peripherals/power/power_types_fwd.hpp>
 
 
 namespace Chimera::Power
@@ -26,15 +26,6 @@ namespace Chimera::Power
     virtual ~InfoInterface() = default;
 
     virtual float systemVCC() = 0;
-  };
-
-  class InfoInterfaceDisabled : InfoInterface
-  {
-  public:
-    float systemVCC() final override
-    {
-      return 0.0f;
-    }
   };
 
   /**

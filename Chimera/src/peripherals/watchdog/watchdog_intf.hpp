@@ -19,9 +19,15 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/thread>
 
 namespace Chimera::Watchdog
 {
+  namespace Backend
+  {
+    extern Chimera::Status_t prjInitialize();
+  }
+
   class HWInterface
   {
   public:
@@ -90,6 +96,13 @@ namespace Chimera::Watchdog
      *  @return size_t
      */
     virtual size_t minTimeout() = 0;
+  };
+
+  class IWatchdog : virtual public HWInterface,
+                    virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~IWatchdog() = default;
   };
 }  // namespace Chimera::Watchdog
 

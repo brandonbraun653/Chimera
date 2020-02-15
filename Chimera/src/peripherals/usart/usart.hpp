@@ -21,8 +21,8 @@
 
 namespace Chimera::USART
 {
-  using USART_sPtr = std::shared_ptr<::Chimera::Serial::HWInterface>;
-  using USART_uPtr = std::unique_ptr<::Chimera::Serial::HWInterface>;
+  using USART_sPtr = std::shared_ptr<::Chimera::Serial::ISerial>;
+  using USART_uPtr = std::unique_ptr<::Chimera::Serial::ISerial>;
 
   Chimera::Status_t initialize();
 

@@ -25,20 +25,12 @@
 
 namespace Chimera::SPI
 {
-  /*------------------------------------------------
-  Hooks for the backend implementation that allow Chimera to function
-  ------------------------------------------------*/
   namespace Backend
   {
     extern void prjInitialize();
   }
 
-  /*------------------------------------------------
-  Specification for the hardware driver
-  ------------------------------------------------*/
-  class HardwareDriverInterface : public Chimera::Event::ListenerInterface,
-                                  public Chimera::Threading::AsyncIOInterface,
-                                  public Chimera::Threading::Lockable
+  class HardwareDriverInterface
   {
   public:
     virtual ~HardwareDriverInterface() = default;
@@ -204,6 +196,15 @@ namespace Chimera::SPI
      *  @return size_t
      */
     virtual size_t getClockFrequency() = 0;
+  };
+
+  class ISPI : virtual public HardwareDriverInterface,
+               virtual public Chimera::Event::ListenerInterface,
+               virtual public Chimera::Threading::AsyncIOInterface,
+               virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~ISPI() = default;
   };
 }  // namespace Chimera::SPI
 

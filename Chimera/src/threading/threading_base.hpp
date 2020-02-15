@@ -17,7 +17,7 @@
 
 namespace Chimera::Threading
 {
-  class LockableUnsupported : public LockableInterface
+  class LockableUnsupported : virtual public LockableInterface
   {
   public:
     LockableUnsupported()  = default;
@@ -45,19 +45,19 @@ namespace Chimera::Threading
     }
   };
 
-  class AsyncIOUnsupported : public AsyncIOInterface
+  class AsyncIOUnsupported : virtual public AsyncIOInterface
   {
   public:
     AsyncIOUnsupported()  = default;
     ~AsyncIOUnsupported() = default;
 
-    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout )  override
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout ) final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }
 
     Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
-                             const size_t timeout )  override
+                             const size_t timeout ) final override
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
     }

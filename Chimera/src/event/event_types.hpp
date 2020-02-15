@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
- *    serial_types.hpp
+ *  File Name:
+ *    event_types.hpp
  *
- *   Description:
- *    Chimera Serial types
+ *  Description:
+ *    Chimera Event types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -25,11 +25,7 @@
 
 
 namespace Chimera::Event
-{
-  class Listener;
-  using Listener_sPtr = std::shared_ptr<Listener>;
-  using Listener_uPtr = std::unique_ptr<Listener>;
-  
+{ 
   enum class Trigger : size_t
   {
     INVALID,            /**< Special case used for initialization */

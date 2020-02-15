@@ -18,7 +18,7 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
 namespace Chimera::DMA
 {

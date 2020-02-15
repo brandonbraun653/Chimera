@@ -16,12 +16,14 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/serial/serial_intf.hpp>
+#include <Chimera/event>
+#include <Chimera/thread>
+#include <Chimera/src/serial/serial_intf.hpp>
 
 namespace Chimera::Serial
 {
-  using Serial_sPtr = std::shared_ptr<HWInterface>;
-  using Serial_uPtr = std::unique_ptr<HWInterface>;
+  using Serial_sPtr = std::shared_ptr<ISerial>;
+  using Serial_uPtr = std::unique_ptr<ISerial>;
 
   Chimera::Status_t initialize();
 

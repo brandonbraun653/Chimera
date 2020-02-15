@@ -16,12 +16,12 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/peripherals/dma/dma_intf.hpp>
+#include <Chimera/src/peripherals/dma/dma_intf.hpp>
 
 namespace Chimera::DMA
 {
-  using DMA_sPtr = std::shared_ptr<HWInterface>;
-  using DMA_uPtr = std::unique_ptr<HWInterface>;
+  using DMA_sPtr = std::shared_ptr<IDMA>;
+  using DMA_uPtr = std::unique_ptr<IDMA>;
 
   Chimera::Status_t initialize();
 

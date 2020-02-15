@@ -12,6 +12,7 @@
 #include <memory>
 
 /* Chimera Includes */
+#include "chimeraPort.hpp"
 #include <Chimera/thread>
 #include <Chimera/watchdog>
 
@@ -19,9 +20,10 @@ namespace Chimera::Watchdog
 {
 #if !defined( CHIMERA_INHERITED_WATCHDOG )
   using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
+  #warning Watchdog driver is unsupported
 #endif
 
-  static_assert( std::is_base_of<HWInterface, CHIMERA_INHERITED_WATCHDOG>::value, "Invalid interface" );
+  static_assert( std::is_base_of<IWatchdog, CHIMERA_INHERITED_WATCHDOG>::value, "Invalid interface" );
 
   Chimera::Status_t initialize()
   {

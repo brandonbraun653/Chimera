@@ -1,0 +1,20 @@
+/********************************************************************************
+ *  File Name:
+ *    dma 
+ * 
+ *  Description:
+ *    Chimera DMA Includes
+ * 
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_DMA_INCLUDES
+#define CHIMERA_DMA_INCLUDES
+
+#include <Chimera/src/peripherals/dma/dma.hpp>
+#include <Chimera/src/peripherals/dma/dma_base.hpp>
+#include <Chimera/src/peripherals/dma/dma_intf.hpp>
+#include <Chimera/src/peripherals/dma/dma_types.hpp>
+
+#endif /* !CHIMERA_DMA_INCLUDES */

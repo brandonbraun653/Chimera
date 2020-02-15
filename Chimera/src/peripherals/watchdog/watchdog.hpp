@@ -20,8 +20,8 @@
 
 namespace Chimera::Watchdog
 {
-  using Watchdog_sPtr = std::shared_ptr<HWInterface>;
-  using Watchdog_uPtr = std::unique_ptr<HWInterface>;
+  using Watchdog_sPtr = std::shared_ptr<IWatchdog>;
+  using Watchdog_uPtr = std::unique_ptr<IWatchdog>;
 
   Chimera::Status_t initialize();
 

@@ -23,10 +23,6 @@ namespace Chimera
 {
   namespace GPIO
   {
-    class GPIOClass;
-    using GPIOClass_sPtr = std::shared_ptr<Chimera::GPIO::GPIOClass>;
-    using GPIOClass_uPtr = std::unique_ptr<Chimera::GPIO::GPIOClass>;
-
     using Pin = uint8_t;
 
     class Status : public CommonStatusCodes

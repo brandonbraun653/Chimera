@@ -1,18 +1,17 @@
 /********************************************************************************
  *  File Name:
- *    uart
+ *    algorithm
  * 
  *  Description:
- *    Chimera UART Includes
+ *    Chimera Buffer Includes
  * 
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_UART_INCLUDES
-#define CHIMERA_UART_INCLUDES
+#ifndef CHIMERA_ALGORITHM_INCLUDES
+#define CHIMERA_ALGORITHM_INCLUDES
 
-#include <Chimera/src/peripherals/uart/uart.hpp>
-#include <Chimera/src/peripherals/uart/uart_intf.hpp>
+#include <Chimera/src/algorithm/register_optimizer.hpp>
 
-#endif /* !CHIMERA_UART_INCLUDES */
+#endif /* !CHIMERA_ALGORITHM_INCLUDES */

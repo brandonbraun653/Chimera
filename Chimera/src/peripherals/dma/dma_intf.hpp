@@ -16,8 +16,9 @@
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/interface/event_intf.hpp>
-#include <Chimera/types/dma_types.hpp>
+#include <Chimera/event>
+#include <Chimera/thread>
+#include <Chimera/src/peripherals/dma/dma_types.hpp>
 
 namespace Chimera::DMA
 {
@@ -83,6 +84,13 @@ namespace Chimera::DMA
      *  @return Chimera::Status_t
      */
     virtual Chimera::Status_t status( TransferHandle_t handle, const size_t timeout ) = 0;
+  };
+
+  class IDMA : virtual public HWInterface,
+               virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~IDMA() = default;
   };
 }  // namespace Chimera::DMA
 

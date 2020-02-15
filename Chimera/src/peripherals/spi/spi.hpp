@@ -20,8 +20,8 @@
 
 namespace Chimera::SPI
 {
-  using SPI_sPtr = std::shared_ptr<HardwareDriverInterface>;
-  using SPI_uPtr = std::unique_ptr<HardwareDriverInterface>;
+  using SPI_sPtr = std::shared_ptr<ISPI>;
+  using SPI_uPtr = std::unique_ptr<ISPI>;
 
   Chimera::Status_t initialize();
 

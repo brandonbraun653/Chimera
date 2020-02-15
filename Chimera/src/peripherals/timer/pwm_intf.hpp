@@ -16,7 +16,7 @@
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 #include <Chimera/types/pwm_types.hpp>
 
 namespace Chimera::PWM

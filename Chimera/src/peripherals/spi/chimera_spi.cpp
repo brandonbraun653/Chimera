@@ -17,12 +17,10 @@ namespace Chimera::SPI
 {
 #if !defined( CHIMERA_INHERITED_SPI )
   using CHIMERA_INHERITED_SPI = SPIUnsupported;
+  #warning SPI driver is unsupported
 #endif
 
-  static_assert( std::is_base_of<HardwareDriverInterface, CHIMERA_INHERITED_SPI>::value, "Invalid interface" );
-  static_assert( std::is_base_of<Chimera::Event::ListenerInterface, CHIMERA_INHERITED_SPI>::value, "Invalid interface" );
-  static_assert( std::is_base_of<Chimera::Threading::AsyncIOInterface, CHIMERA_INHERITED_SPI>::value, "Invalid interface" );
-  static_assert( std::is_base_of<Chimera::Threading::LockableInterface, CHIMERA_INHERITED_SPI>::value, "Invalid interface" );
+  static_assert( std::is_base_of<ISPI, CHIMERA_INHERITED_SPI>::value, "Invalid interface" );
 
 
   Chimera::Status_t initialize()

@@ -20,7 +20,7 @@
 
 namespace Chimera::HWCRC
 {
-  class HWInterfaceUnsupported : public HWInterface
+  class HWInterfaceUnsupported : virtual public ICRC
     {
     public:
       HWInterfaceUnsupported()  = default;

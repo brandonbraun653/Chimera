@@ -17,12 +17,14 @@
 
 /* Chimera Includes*/
 #include <Chimera/common>
+#include <Chimera/thread>
 #include <Chimera/src/peripherals/gpio/gpio_intf.hpp>
 #include <Chimera/src/peripherals/gpio/gpio_types.hpp>
 
 namespace Chimera::GPIO
 {
-  class GPIOUnsupported : public HWInterface
+  class GPIOUnsupported : virtual public IGPIO,
+                          public Chimera::Threading::LockableUnsupported
   {
   public:
     GPIOUnsupported()  = default;

@@ -22,9 +22,10 @@ namespace Chimera::USART
 {
 #if !defined( CHIMERA_INHERITED_USART )
   using CHIMERA_INHERITED_USART = ::Chimera::Serial::SerialUnsupported;
+  #warning USART driver is unsupported
 #endif
 
-  static_assert( std::is_base_of<::Chimera::Serial::HWInterface, CHIMERA_INHERITED_USART>::value, "Invalid interface" );
+  static_assert( std::is_base_of<::Chimera::Serial::ISerial, CHIMERA_INHERITED_USART>::value, "Invalid interface" );
 
   Chimera::Status_t initialize()
   {

@@ -25,7 +25,7 @@
 
 /* Chimera Includes */
 #include <Chimera/types/clock_types_fwd.hpp>
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 #include <Chimera/types/peripheral_types.hpp>
 
 namespace Chimera::Clock

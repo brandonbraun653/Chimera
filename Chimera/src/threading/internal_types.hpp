@@ -18,6 +18,7 @@
 #if defined( USING_STL_THREADS )
 #include <Chimera/src/threading/stl/stl_sync_primitives.hpp>
 #elif defined( USING_FREERTOS_THREADS )
+#include <Chimera/src/threading/freertos/freertos_hooks.hpp>
 #include <Chimera/src/threading/freertos/freertos_sync_primitives.hpp>
 #endif 
 
