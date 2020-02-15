@@ -12,7 +12,7 @@
 #ifndef CHIMERA_DMA_TYPES_HPP
 #define CHIMERA_DMA_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <cstring>
 #include <memory>

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_MOCK_WATCHDOG_HPP
 #define CHIMERA_MOCK_WATCHDOG_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <atomic>
 
 /* Test Framework Includes */

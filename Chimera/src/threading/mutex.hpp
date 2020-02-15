@@ -14,7 +14,7 @@
 #define CHIMERA_THREADING_MUTEX_HPP
 
 /* Chimera Includes */
-#include <Chimera/thread>
+#include <Chimera/src/threading/internal_types.hpp>
 
 namespace Chimera::Threading
 {

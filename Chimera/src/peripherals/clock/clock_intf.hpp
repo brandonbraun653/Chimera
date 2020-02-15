@@ -20,7 +20,7 @@
 #ifndef CHIMERA_CLOCK_INTERFACE_HPP
 #define CHIMERA_CLOCK_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes */

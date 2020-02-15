@@ -12,13 +12,14 @@
 #ifndef CHIMERA_THREADING_THREAD_HPP
 #define CHIMERA_THREADING_THREAD_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <array>
 #include <cstdlib>
 #include <string>
 
 /* Chimera Includes */
-#include <Chimera/thread>
+#include <Chimera/src/threading/internal_types.hpp>
+#include <Chimera/src/threading/types.hpp>
 
 namespace Chimera::Threading
 {

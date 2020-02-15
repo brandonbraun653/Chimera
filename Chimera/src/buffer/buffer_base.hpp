@@ -12,11 +12,11 @@
 #ifndef CHIMERA_BUFFER_ABSTRACT_BASE_HPP
 #define CHIMERA_BUFFER_ABSTRACT_BASE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes*/
-#include <Chimera/interface/buffer_intf.hpp>
+#include <Chimera/src/buffer/buffer_intf.hpp>
 
 namespace Chimera::Buffer
 {

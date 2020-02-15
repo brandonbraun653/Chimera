@@ -12,7 +12,7 @@
 #ifndef CHIMERA_DMA_HPP
 #define CHIMERA_DMA_HPP
 
-/* C/C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */

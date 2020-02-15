@@ -1,22 +1,22 @@
 /********************************************************************************
- * File Name:
+ *  File Name:
  *    gpio.hpp
  *
- * Description:
+ *  Description:
  *    Implements an interface to create a Chimera GPIO peripheral
  *
- * 2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_GPIO_HPP
 #define CHIMERA_GPIO_HPP
 
-/* C/C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/peripherals/gpio/gpio_intf.hpp>
+#include <Chimera/src/peripherals/gpio/gpio_intf.hpp>
 
 namespace Chimera::GPIO
 {

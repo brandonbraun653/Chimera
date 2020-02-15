@@ -13,7 +13,7 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-/* C++ Includes */
+/* STL Includes */
 #include <chrono>
 #include <thread>
 
@@ -299,7 +299,7 @@ namespace Chimera::Threading
 
   Id Thread::get_id()
   {
-    auto stl_id = mThread.get_id();
+    //auto stl_id = mThread.get_id();
 
     return Id();
   }
@@ -316,7 +316,7 @@ namespace Chimera::Threading
 
   Id this_thread::get_id()
   {
-    auto stl_id = std::this_thread::get_id();
+    //auto stl_id = std::this_thread::get_id();
     
     return Id();
   }

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_EVENT_HPP
 #define CHIMERA_EVENT_HPP
 
-/* C/C++ Includes */
+/* STL Includes */
 
 /* Chimera Includes */
 #include "chimeraPort.hpp"

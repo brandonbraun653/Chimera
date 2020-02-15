@@ -2,7 +2,7 @@
 #ifndef CHIMERA_UTILITIES_HPP
 #define CHIMERA_UTILITIES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <array>
 #include <algorithm>
 #include <atomic>

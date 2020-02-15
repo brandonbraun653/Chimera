@@ -12,9 +12,6 @@
 #ifndef CHIMERA_THREADING_HPP
 #define CHIMERA_THREADING_HPP
 
-/* Chimera Includes */
-#include <Chimera/thread>
-
 namespace Chimera::Threading
 {
   void startScheduler();

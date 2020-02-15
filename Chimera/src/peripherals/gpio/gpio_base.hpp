@@ -1,22 +1,24 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    gpio_base.hpp
  *
- *   Description:
+ *  Description:
  *    Abstract base class interfaces
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_GPIO_ABSTRACT_BASE_HPP
 #define CHIMERA_GPIO_ABSTRACT_BASE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes*/
-#include <Chimera/interface/gpio_intf.hpp>
+#include <Chimera/common>
+#include <Chimera/src/peripherals/gpio/gpio_intf.hpp>
+#include <Chimera/src/peripherals/gpio/gpio_types.hpp>
 
 namespace Chimera::GPIO
 {

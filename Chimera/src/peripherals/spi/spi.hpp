@@ -1,22 +1,22 @@
 /********************************************************************************
- * File Name:
+ *  File Name:
  *    spi.hpp
  *
- * Description:
+ *  Description:
  *    Implements an interface to create a Chimera SPI peripheral.
  *
- * 2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SPI_HPP
 #define CHIMERA_SPI_HPP
 
-/* C/C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/interface/spi_intf.hpp>
+#include <Chimera/src/peripherals/spi/spi_intf.hpp>
 
 namespace Chimera::SPI
 {

@@ -10,33 +10,24 @@ local rule explicit_alias ( name : sources * : requirements * : default-build * 
 # ====================================================
 # Public Targets
 # ====================================================
-lib LIB_THREAD
+lib LIB
   : freertos/freertos_threading_implementation.cpp
 
   : <FreeRTOS>enabled
     <link>static
-    <use>/FREERTOS//PUB
     <use>/CHIMERA//PUB
-    <use>/CHIMERA//PRV
-    <use>/PRJ//FREERTOS_CFG
-    <use>/PRJ//CHIMERA_PORT
-    <use>/PRJ//CHIMERA_DEFS
     <use>/PRJ//TARGET_OPTIONS
   ;
 
-lib LIB_THREAD
+lib LIB
   : stl/stl_threading_implementation.cpp
 
   : <FreeRTOS>disabled
     <link>static
     <use>/CHIMERA//PUB
-    <use>/CHIMERA//PRV
-    <use>/PRJ//CHIMERA_PORT
-    <use>/PRJ//CHIMERA_DEFS
     <use>/PRJ//TARGET_OPTIONS
   ;
 
-
 explicit LIB_THREAD ;
 
-alias TEST : LIB_THREAD ;
+explicit_alias TEST_COMPILE : LIB ;

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_SERIAL_TYPES_HPP
 #define CHIMERA_SERIAL_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <memory>
 #include <type_traits>

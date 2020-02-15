@@ -12,13 +12,13 @@
 #ifndef CHIMERA_EVENT_INTERFACE_HPP
 #define CHIMERA_EVENT_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <functional>
 
 /* Chimera Includes */
 #include <Chimera/common>
-#include <Chimera/event>
+#include <Chimera/src/event/event_types.hpp>
 
 namespace Chimera::Event
 {

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_PWM_INTERFACE_HPP
 #define CHIMERA_PWM_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes */

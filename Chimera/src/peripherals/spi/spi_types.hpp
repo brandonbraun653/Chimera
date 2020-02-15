@@ -1,24 +1,24 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    spi_types.hpp
  *
- *   Description:
+ *  Description:
  *    Chimera SPI types
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SPI_TYPES_HPP
 #define CHIMERA_SPI_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/gpio_types.hpp>
+#include <Chimera/common>
+#include <Chimera/gpio>
 
 namespace Chimera::SPI
 {

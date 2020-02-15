@@ -1,21 +1,21 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    chimera.cpp
  *
- *   Description:
+ *  Description:
  *      Implements common Chimera functions
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 /* Chimera Includes */
-#include "chimeraPort.hpp"
-#include <Chimera/chimera.hpp>
-#include <Chimera/preprocessor.hpp>
+#include <Chimera/src/common/chimera.hpp>
+#include <Chimera/src/common/preprocessor.hpp>
 #include <Chimera/sim/sim_chimera.hpp>
-#include <Chimera/system.hpp>
-#include <Chimera/threading.hpp>
+#include <Chimera/system>
+#include <Chimera/thread>
 
+#include "chimeraPort.hpp"
 
 void ChimeraInit()
 {

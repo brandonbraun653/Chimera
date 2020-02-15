@@ -12,7 +12,7 @@
 #ifndef CHIMERA_COMMON_TYPES_HPP
 #define CHIMERA_COMMON_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdlib>
 #include <cstdint>
 

@@ -1,30 +1,29 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    system_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Models the Chimera system interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SYSTEM_INTERFACE_HPP
 #define CHIMERA_SYSTEM_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes */
 #include <Chimera/common>
-//#include <Chimera/system>
 #include <Chimera/src/system/system_types.hpp>
 
 namespace Chimera::System
 {
   /**
    *  Low level driver specific system initialization function used for operations
-   *  like clock configuration, peripheral startup, etc. 
+   *  like clock configuration, peripheral startup, etc.
    *
    *  @note     Intended to allow the backend driver to initialize itself before Chimera
    *            code begins execution.
@@ -45,7 +44,7 @@ namespace Chimera::System
   extern Chimera::System::InterruptMask prjDisableInterrupts();
 
   /**
-   *  Enables system level interrupts from the mask that was returned when 
+   *  Enables system level interrupts from the mask that was returned when
    *  interrupts were last disabled.
    *
    *	@return void
@@ -55,11 +54,10 @@ namespace Chimera::System
   /**
    *	Returns the maximum number of concurrent hardware threads that
    *  can be executing at any given time on the CPU.
-   *	
+   *
    *	@return int
    */
   extern int prjMaxConcurrentThreads();
-
 
 }  // namespace Chimera::System
 

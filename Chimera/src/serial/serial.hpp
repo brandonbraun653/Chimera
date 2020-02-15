@@ -12,7 +12,7 @@
 #ifndef CHIMERA_SERIAL_HPP
 #define CHIMERA_SERIAL_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */

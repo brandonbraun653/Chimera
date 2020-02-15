@@ -13,11 +13,11 @@
 #define CHIMERA_THREADING_OS_TYPING_DETAIL_HPP
 
 /* Chimera Includes */
-#include <Chimera/common>
+#include <Chimera/src/common/preprocessor.hpp>
 
-#if defined( USING_WINDOWS ) || defined( USING_LINUX ) || defined( USING_STL_THREADS )
+#if defined( USING_STL_THREADS )
 #include <Chimera/src/threading/stl/stl_sync_primitives.hpp>
-#elif defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
+#elif defined( USING_FREERTOS_THREADS )
 #include <Chimera/src/threading/freertos/freertos_sync_primitives.hpp>
 #endif 
 

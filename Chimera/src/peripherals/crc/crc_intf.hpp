@@ -12,7 +12,7 @@
 #ifndef CHIMERA_CRC_INTERFACE_HPP
 #define CHIMERA_CRC_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes */

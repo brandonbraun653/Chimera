@@ -1,12 +1,12 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    callback_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Describes various kinds of callback interfaces that can be inherited from
  *    to build up a class's functionality and guarantee a particular interface.
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -15,7 +15,6 @@
 
 namespace Chimera::Callback
 {
-
 }  // namespace Chimera::Callback
 
 #endif /* !CHIMERA_CALLBACK_INTERFACE_HPP */

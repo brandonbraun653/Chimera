@@ -3,11 +3,12 @@
 *    types.hpp
 *
 *  Description:
-*    
+*    Types used in Chimera Threading
 *
 *  2020 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
+#pragma once
 #ifndef CHIMERA_THREADING_COMMON_TYPES_HPP
 #define CHIMERA_THREADING_COMMON_TYPES_HPP
 

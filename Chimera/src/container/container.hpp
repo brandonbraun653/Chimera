@@ -5,14 +5,14 @@
  *  Description:
  *    Describes various containers used in Chimera system drivers
  *
- *  2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_CONTAINER_HPP
 #define CHIMERA_CONTAINER_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <algorithm>
 #include <cstring>
 #include <vector>
@@ -47,7 +47,7 @@ namespace Chimera::Container
 
     LightFlatMap( std::initializer_list<std::pair<T1, T2>> list )
     {
-      std::copy( list.begin(), list.end(), std::back_inserter(map) );
+      std::copy( list.begin(), list.end(), std::back_inserter( map ) );
     }
 
     /**
@@ -79,7 +79,7 @@ namespace Chimera::Container
      *  @param[in]  key   The key to search for
      *  @return std::pair<T1,T2>
      */
-    const std::pair<T1, T2> * find( const T1 key ) const 
+    const std::pair<T1, T2> *find( const T1 key ) const
     {
       /*------------------------------------------------
       For now use a naive O(n) implementation as this class
@@ -117,3 +117,4 @@ namespace Chimera::Container
 }  // namespace Chimera::Container
 
 #endif /* !CHIMERA_CONTAINER_HPP */
+

@@ -37,13 +37,51 @@ local chimera_src =
 # ====================================================
 project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
 
+use-project /ALGORITHM :    Chimera/src/algorithm ; 
+use-project /ALLOCATOR :    Chimera/src/allocator ;
+use-project /BUFFER :       Chimera/src/buffer ;
+use-project /COMMON :       Chimera/src/common ;
+use-project /CONTAINER :    Chimera/src/container ;
+use-project /PERIPH/GPIO :  Chimera/src/peripherals/gpio ;
+use-project /PERIPH/SPI :   Chimera/src/peripherals/spi ;
+use-project /SYSTEM :       Chimera/src/system ; 
+use-project /THREADING :    Chimera/src/threading ;
+
+
 # ====================================================
 # Public Targets
 # ====================================================
 # ------------------------------------------
 # Includes all common Chimera headers
 # -----------------------------------------
-explicit_alias PUB : : : : <include>$(chimera_inc_dir) ;
+alias PUB 
+  : 
+  : <FreeRTOS>disabled 
+  : 
+  : 
+    <include>$(chimera_inc_dir)
+    <use>/PRJ//BOOST
+    <use>/PRJ//CHIMERA_PORT
+    <use>/PRJ//CHIMERA_DEFS
+    
+    <define>USING_STL_THREADS
+  ;
+
+alias PUB 
+  : 
+  : <FreeRTOS>enabled 
+  : 
+  : <include>$(chimera_inc_dir)
+    <use>/FREERTOS//PUB
+    <use>/PRJ//BOOST
+    <use>/PRJ//CHIMERA_PORT
+    <use>/PRJ//CHIMERA_DEFS
+  
+    <define>USING_FREERTOS_THREADS
+  ;
+explicit PUB ;
+
+
 explicit_alias PUB_MOCK : : : : <include>$(chimera_mock_inc_dir) ;
 explicit_alias PUB_SIM : : : : <include>$(chimera_port_sim_inc_dir) ;
 
@@ -171,3 +209,16 @@ lib CORE
 explicit CORE ;
 
 explicit_alias CHIMERA_CORE : CORE ;
+
+
+explicit_alias TEST_COMPILE
+    :   /ALGORITHM//LIB
+        /ALLOCATOR//LIB
+        /BUFFER//LIB
+        /COMMON//LIB
+        /CONTAINER//LIB
+        /PERIPH/GPIO//LIB
+        /PERIPH/SPI//LIB
+        /SYSTEM//LIB
+        /THREADING//LIB
+    ;

@@ -1,25 +1,25 @@
 /********************************************************************************
-*  File Name:
-*    chimera.hpp
-*
-*  Description:
-*    Generic header for frequently used Chimera functionality
-*
-*  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
-********************************************************************************/
+ *  File Name:
+ *    chimera.hpp
+ *
+ *  Description:
+ *    Generic header for frequently used Chimera functionality
+ *
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_HPP
 #define CHIMERA_HPP
 
 /* Chimera Includes */
-#include <Chimera/common>
+#include <Chimera/src/common/common_types.hpp>
 #include <Chimera/utility>
 
 /**
  *	Initializes the Chimera subsystem. Should be implemented
  *  by the backend layer that hooks into Chimera.
- *	
+ *
  *	@return void
  */
 extern void ChimeraInit();

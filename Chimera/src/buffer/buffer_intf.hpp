@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    bufferable_intf.hpp
  *
- *   Description:
- *    Models the Chimera SPI interface 
+ *  Description:
+ *    Models the Chimera Bufferable interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -16,12 +16,12 @@
 #include <boost/circular_buffer_fwd.hpp>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
 namespace Chimera::Buffer
 {
   /**
-   * A higher level class that allows public access to multiple internal double buffer objects. 
+   * A higher level class that allows public access to multiple internal double buffer objects.
    * Meant to be used in conjunction with Chimera::Buffer::DoubleBuffer.
    */
   class DoubleBufferableInterface
@@ -44,7 +44,8 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      *  |    NOT_SUPPORTED | This functionality isn't supported             |
      */
-    virtual Chimera::Status_t bufferPush(const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const size_t len ) = 0;
+    virtual Chimera::Status_t bufferPush( const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer,
+                                          const size_t len ) = 0;
 
     /**
      *  Read queued data from the RX buffer. This buffer can only be filled if the
@@ -62,7 +63,8 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function  |
      *  |    NOT_SUPPORTED | This functionality isn't supported             |
      */
-    virtual Chimera::Status_t bufferPop(const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const size_t len ) = 0;
+    virtual Chimera::Status_t bufferPop( const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer,
+                                         const size_t len ) = 0;
 
     /**
      *  Turns on buffering for asynchronous modes (Interrupt, DMA). It will not transition
@@ -97,12 +99,12 @@ namespace Chimera::Buffer
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
     virtual Chimera::Status_t bufferDisable( const Chimera::Hardware::SubPeripheral periph ) = 0;
-    
+
     /**
-     *  Assigns the internal buffer used for actually transfering data on the wire. This 
-     *  is separate from the external buffer which the user can interact with directly. 
+     *  Assigns the internal buffer used for actually transfering data on the wire. This
+     *  is separate from the external buffer which the user can interact with directly.
      *  Double buffering is used to allow more data to be queued up while the previous
-     *  transfer is occuring. 
+     *  transfer is occuring.
      *
      *  @param[in]  periph        The sub peripheral to assign the interal buffer to
      *  @param[in]  buffer        The buffer that will be used for internal purposes
@@ -115,13 +117,14 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t bufferAssignInternal( const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer, const uint16_t size ) = 0;
-    
+    virtual Chimera::Status_t bufferAssignInternal( const Chimera::Hardware::SubPeripheral periph, uint8_t *const buffer,
+                                                    const uint16_t size ) = 0;
+
     /**
-     *  Assigns the external buffer the user will interact with to push/pop data. This 
+     *  Assigns the external buffer the user will interact with to push/pop data. This
      *  is separate from the internal buffer which is not accessable to the user.
      *  Double buffering is used to allow more data to be queued up while the previous
-     *  transfer is occuring. 
+     *  transfer is occuring.
      *
      *  @param[in]  periph        The sub peripheral to assign the external buffer to
      *  @param[in]  buffer        The buffer that the user can push/pop data onto
@@ -133,10 +136,11 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function          |
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
-    virtual Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph, boost::circular_buffer<uint8_t> *const buffer ) = 0;
+    virtual Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph,
+                                                    boost::circular_buffer<uint8_t> *const buffer ) = 0;
 
     virtual Chimera::Status_t bufferFlush( const Chimera::Hardware::SubPeripheral periph ) = 0;
   };
-}  // namespace Chimera::Cache
+}  // namespace Chimera::Buffer
 
 #endif /* !CHIMERA_BUFFERABLE_INTERFACE_HPP */

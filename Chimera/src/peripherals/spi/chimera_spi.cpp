@@ -10,8 +10,7 @@
 
 /* Chimera Includes */
 #include "chimeraPort.hpp"
-#include <Chimera/base/spi_base.hpp>
-#include <Chimera/spi.hpp>
+#include <Chimera/spi>
 
 
 namespace Chimera::SPI

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_CRC_TYPES_HPP
 #define CHIMERA_CRC_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <memory>
 

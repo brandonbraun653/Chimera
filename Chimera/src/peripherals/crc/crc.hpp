@@ -12,7 +12,7 @@
 #ifndef CHIMERA_CRC_HPP
 #define CHIMERA_CRC_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */

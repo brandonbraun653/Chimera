@@ -12,12 +12,12 @@
 #ifndef CHIMERA_THREADING_SEMAPHORE_HPP
 #define CHIMERA_THREADING_SEMAPHORE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdlib>
 #include <limits>
 
 /* Chimera Includes */
-#include <Chimera/thread>
+#include <Chimera/src/threading/internal_types.hpp>
 
 namespace Chimera::Threading
 {

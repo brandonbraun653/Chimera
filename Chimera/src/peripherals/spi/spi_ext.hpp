@@ -1,23 +1,23 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    spi_ext.hpp
  *
- *   Description:
+ *  Description:
  *    Models additional interface specs that are built on top of an SPI object
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SPI_EXTENSIONS_HPP
 #define CHIMERA_SPI_EXTENSIONS_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/chimera.hpp>
-#include <Chimera/spi.hpp>
+#include <Chimera/common>
+#include <Chimera/src/peripherals/spi/spi.hpp>
 
 namespace Chimera::SPI
 {

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_WATCHDOG_HPP
 #define CHIMERA_WATCHDOG_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */

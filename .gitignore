@@ -3,3 +3,6 @@
 **latex
 **html
 bin/*
+
+**.o
+**.a

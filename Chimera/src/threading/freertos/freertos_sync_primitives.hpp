@@ -8,8 +8,11 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#pragma once
 #ifndef CHIMERA_THREADING_FREERTOS_TYPES_HPP
 #define CHIMERA_THREADING_FREERTOS_TYPES_HPP
+
+#if defined( USING_FREERTOS_THREADS )
 
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"
@@ -31,4 +34,5 @@ namespace Chimera::Threading::detail
 
 }  // namespace Chimera::Threading::detail
 
+#endif /* USING_FREERTOS_THREADS */
 #endif /* !CHIMERA_THREADING_FREERTOS_TYPES_HPP */

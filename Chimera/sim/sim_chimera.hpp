@@ -14,7 +14,7 @@
 
 #if defined( CHIMERA_SIMULATOR )
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdlib>
 
 namespace ChimeraSim

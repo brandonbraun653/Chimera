@@ -12,7 +12,7 @@
 #ifndef CHIMERA_SERIAL_INTERFACE_HPP
 #define CHIMERA_SERIAL_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Boost Includes */

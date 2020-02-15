@@ -11,10 +11,11 @@
 #ifndef CHIMERA_THREADING_STL_TYPES_HPP
 #define CHIMERA_THREADING_STL_TYPES_HPP
 
-/* C++ Includes */
+#if defined( USING_STL_THREADS )
+
+/* STL Includes */
 #include <mutex>
 #include <thread>
-
 namespace Chimera::Threading::detail
 {
   using native_mutex                 = std::mutex;
@@ -30,4 +31,5 @@ namespace Chimera::Threading::detail
   using native_thread_handle_type = std::thread::native_handle_type;
 }  // namespace Chimera::Threading::detail
 
+#endif /* USING_STL_THREADS */
 #endif /* !CHIMERA_THREADING_STL_TYPES_HPP */

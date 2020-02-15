@@ -1,26 +1,25 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    callback_types.hpp
  *
- *   Description:
+ *  Description:
  *    Various types of callback signatures used in Chimera. This is surprisingly
- *    difficult to keep track of the naming, so an incredibly generic format is 
+ *    difficult to keep track of the naming, so an incredibly generic format is
  *    used. Whether or not this is a good idea is up for debate.
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_CALLBACK_TYPES_HPP
 #define CHIMERA_CALLBACK_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <functional>
 
 namespace Chimera::Callback
 {
-
   /**
    *  A generic callback type that can be used across a wide variety of
    *  peripheral ISR events. Sometimes the callbacks need data and sometimes

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_USART_HPP
 #define CHIMERA_USART_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */

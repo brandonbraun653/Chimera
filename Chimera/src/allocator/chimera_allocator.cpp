@@ -1,21 +1,21 @@
 /********************************************************************************
- * File Name:
+ *  File Name:
  *	  chimera_allocator.hpp
  *
- * Description:
+ *  Description:
  *	  Provides overloads for common memory allocators and deleters
  *
- * 2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdlib>
 
 /* Chimera Includes */
-#include <Chimera/allocator.hpp>
-#include <Chimera/threading.hpp>
+#include <Chimera/src/allocator/allocator.hpp>
+#include <Chimera/thread>
 
-#if defined( USING_FREERTOS ) && (CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
 
 #include "FreeRTOS.h"
 #include "portable.h"

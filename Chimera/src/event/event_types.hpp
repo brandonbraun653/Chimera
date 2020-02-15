@@ -12,7 +12,7 @@
 #ifndef CHIMERA_EVENT_TYPES_HPP
 #define CHIMERA_EVENT_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <cstdlib>
 #include <limits>

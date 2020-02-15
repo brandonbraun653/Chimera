@@ -12,7 +12,7 @@
 #ifndef CHIMERA_SIMULATOR_SYSTEM_HPP
 #define CHIMERA_SIMULATOR_SYSTEM_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdlib>
 
 namespace Chimera::System

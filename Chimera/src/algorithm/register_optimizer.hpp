@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    register_optimizer.hpp
  *
- *   Description:
+ *  Description:
  *    Various algorithms for commonly used register initialization functionality
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,7 +13,7 @@
 #define CHIMERA_ALGORITHM_REGISTER_OPTIMIZER_HPP
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
 namespace Chimera::Algorithm
 {
@@ -50,8 +50,6 @@ namespace Chimera::Algorithm
     Reg32_t findOptimalSetting( const RegOptimizerData &config, const Reg32_t defaultValue, void *const data );
 
   }  // namespace RegisterOptimization
-
-
 }  // namespace Chimera::Algorithm
 
 #endif /* CHIMERA_ALGORITHM_REGISTER_OPTIMIZER_HPP */

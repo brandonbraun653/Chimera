@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    spi_base.hpp
  *
- *   Description:
+ *  Description:
  *    Abstract base class interfaces
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,10 +13,11 @@
 #define CHIMERA_SPI_ABSTRACT_BASE_HPP
 
 /* Chimera Includes*/
-#include <Chimera/interface/spi_intf.hpp>
-#include <Chimera/base/event_base.hpp>
-#include <Chimera/base/threading_base.hpp>
-#include <Chimera/types/spi_types.hpp>
+#include <Chimera/event>
+#include <Chimera/thread>
+
+#include <Chimera/src/peripherals/spi/spi_types.hpp>
+#include <Chimera/src/peripherals/spi/spi_intf.hpp>
 
 namespace Chimera::SPI
 {

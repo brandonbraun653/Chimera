@@ -1,19 +1,19 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    register_optimizer.cpp
  *
- *   Description:
+ *  Description:
  *    Implements the register optimization functions
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-/* C/C++ Includes */
+/* STL Includes */
 #include <limits>
 #include <cmath>
 
 /* Chimera Includes */
-#include <Chimera/algorithm/register_optimizer.hpp>
+#include <Chimera/src/algorithm/register_optimizer.hpp>
 
 namespace Chimera::Algorithm
 {

@@ -1,23 +1,23 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    gpio_types.hpp
  *
- *   Description:
+ *  Description:
  *    Chimera GPIO types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_GPIO_TYPES_HPP
 #define CHIMERA_GPIO_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
+#include <Chimera/common>
 
 namespace Chimera
 {
@@ -71,11 +71,11 @@ namespace Chimera
 
     /**
      *  GPIO register banks are typically grouped into ports, but there is no commonly accepted
-     *  naming convention amongst all MCU manufacturers. As such, the 'PortX' nomenclature is 
+     *  naming convention amongst all MCU manufacturers. As such, the 'PortX' nomenclature is
      *  used to describe all GPIO IO banks with 'PortA' being the first bank and 'PortX' being
      *  the last bank.
      *
-     *  @warning  The enum values are allowed to be used as array accessor indices, so do not start 
+     *  @warning  The enum values are allowed to be used as array accessor indices, so do not start
      *            assigning random values to the enum literals otherwise low level code could break.
      */
     enum class Port : uint8_t
@@ -92,7 +92,7 @@ namespace Chimera
       PORTJ,
       PORTK,
       PORTL,
-      
+
       UNKNOWN_PORT,
       NUM_OPTIONS
     };
@@ -106,18 +106,18 @@ namespace Chimera
       Pin pin;            /**< Pin number on the given port */
       uint32_t alternate; /**< Project specific indicator of pin AF config */
       Chimera::Hardware::AccessMode accessMode;
-      bool validity;       /**< Indicates if the config should be initialized */
+      bool validity; /**< Indicates if the config should be initialized */
 
       void clear()
       {
         pull       = Pull::UNKNOWN_PULL;
         port       = Port::UNKNOWN_PORT;
-        drive      = Drive::INPUT;      
-        state      = State::LOW;        
-        pin        = 0u;                
-        alternate  = 0u;                
+        drive      = Drive::INPUT;
+        state      = State::LOW;
+        pin        = 0u;
+        alternate  = 0u;
         accessMode = Chimera::Hardware::AccessMode::BARE_METAL;
-        validity    = false;
+        validity   = false;
       }
     };
 

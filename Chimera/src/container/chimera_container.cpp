@@ -1,18 +1,17 @@
 /********************************************************************************
-*  File Name:
-*    chimera_container.cpp
-*
-*  Description:
-*    Implements various containers for Chimera systems.
-*
-*  2019 | Brandon Braun | brandonbraun653@gmail.com
-********************************************************************************/
+ *  File Name:
+ *    chimera_container.cpp
+ *
+ *  Description:
+ *    Implements various containers for Chimera systems.
+ *
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
 
 /* Chimera Includes */
-#include <Chimera/container.hpp>
+#include <Chimera/src/container/container.hpp>
 
 
 namespace Chimera::Container
 {
-
 }

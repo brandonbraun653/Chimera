@@ -12,10 +12,13 @@
 #ifndef CHIMERA_THREADING_INTERFACE_HPP
 #define CHIMERA_THREADING_INTERFACE_HPP
 
+/* STL Includes */
+#include <cstdlib>
+
 /* Chimera Includes */
-#include <Chimera/common>
-#include <Chimera/event>
-#include <Chimera/thread>
+#include <Chimera/src/common/common_types.hpp>
+#include <Chimera/src/event/event_types.hpp>
+#include <Chimera/src/threading/semaphore.hpp>
 
 namespace Chimera::Threading
 {

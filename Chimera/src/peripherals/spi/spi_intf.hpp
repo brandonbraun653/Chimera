@@ -1,28 +1,27 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    spi_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Models the Chimera SPI interface
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SPI_INTERFACE_HPP
 #define CHIMERA_SPI_INTERFACE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes */
-#include <Chimera/interface/buffer_intf.hpp>
-#include <Chimera/interface/event_intf.hpp>
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/spi_types.hpp>
-#include <Chimera/threading.hpp>
+#include <Chimera/buffer>
+#include <Chimera/common>
+#include <Chimera/event>
+#include <Chimera/thread>
 
-#include <Chimera/interface/threading_intf.hpp>
+#include <Chimera/src/peripherals/spi/spi_types.hpp>
 
 namespace Chimera::SPI
 {

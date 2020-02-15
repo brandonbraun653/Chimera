@@ -12,7 +12,7 @@
 #ifndef CHIMERA_VERSION_HPP
 #define CHIMERA_VERSION_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <string_view>
 
 namespace Chimera

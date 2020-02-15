@@ -1,18 +1,18 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    buffer.hpp
  *
- *   Description:
+ *  Description:
  *    Models Chimera buffer related interfaces
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_BUFFER_HPP
 #define CHIMERA_BUFFER_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstring>
 #include <memory>
 
@@ -20,8 +20,8 @@
 #include <boost/circular_buffer_fwd.hpp>
 
 /* Chimera Includes */
-#include <Chimera/interface/buffer_intf.hpp>
-#include <Chimera/threading.hpp>
+#include <Chimera/src/buffer/buffer_intf.hpp>
+#include <Chimera/thread>
 
 namespace Chimera::Buffer
 {
@@ -44,7 +44,7 @@ namespace Chimera::Buffer
     /**
      *  Checks if the buffer assignment has completed successfully, indicating
      *  that the object is ready to be used.
-     *  
+     *
      *  @return bool
      */
     bool initialized();
@@ -135,7 +135,7 @@ namespace Chimera::Buffer
      *  @param[in]  bytes   The number of bytes to try and copy
      *  @param[out] actual  The number of bytes actually copied
      *  @return Chimera::Status_t
-     * 
+     *
      *  |   Return Value  |                     Explanation                    |
      *  |:---------------:|:--------------------------------------------------:|
      *  |              OK | The data was copied successfully                   |
@@ -152,7 +152,7 @@ namespace Chimera::Buffer
      *  @param[in]  bytes   The number of bytes to try and copy
      *  @param[out] actual  The number of bytes actually copied
      *  @return Chimera::Status_t
-     * 
+     *
      *  |   Return Value  |                     Explanation                    |
      *  |:---------------:|:--------------------------------------------------:|
      *  |              OK | The data was copied successfully                   |
@@ -172,15 +172,15 @@ namespace Chimera::Buffer
 
     /**
      *  Gets the internal pointer to the linear buffer
-     * 
-     *  @return uint8_t *const 
+     *
+     *  @return uint8_t *const
      */
     uint8_t *const linearBuffer();
 
     /**
      *  Gets the length of the linear buffer
      *
-     *  @return size_t 
+     *  @return size_t
      */
     size_t linearSize();
 

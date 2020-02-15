@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    gpio_intf.hpp
  *
- *   Description:
+ *  Description:
  *    Models the Chimera GPIO interface
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,9 +13,10 @@
 #define CHIMERA_GPIO_INTERFACE_HPP
 
 /* Chimera Includes */
-#include <Chimera/types/common_types.hpp>
-#include <Chimera/types/gpio_types.hpp>
-#include <Chimera/threading.hpp>
+#include <Chimera/common>
+#include <Chimera/thread>
+
+#include <Chimera/src/peripherals/gpio/gpio_types.hpp>
 
 namespace Chimera::GPIO
 {

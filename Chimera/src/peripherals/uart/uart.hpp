@@ -12,7 +12,7 @@
 #ifndef CHIMERA_UART_HPP
 #define CHIMERA_UART_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <memory>
 
 /* Chimera Includes */

@@ -12,7 +12,7 @@
 #ifndef CHIMERA_CRC_ABSTRACT_BASE_HPP
 #define CHIMERA_CRC_ABSTRACT_BASE_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 /* Chimera Includes*/

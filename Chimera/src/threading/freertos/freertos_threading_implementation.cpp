@@ -1,22 +1,22 @@
 /********************************************************************************
- *   File Name:
- *
- *
- *   Description:
- *
- *
- *   2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  File Name:
+ *    freertos_threading_implementation.cpp
+ *  
+ *  Description:
+ *    Implements the FreeRTOS based version of Chimera Threading
+ *  
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstring>
 
 /* Chimera Includes */
-#include <Chimera/chimera.hpp>
-#include <Chimera/system.hpp>
-#include <Chimera/threading/extensions.hpp>
-#include <Chimera/threading/mutex.hpp>
-#include <Chimera/threading/thread.hpp>
+#include <Chimera/src/common/chimera.hpp>
+#include <Chimera/src/system/system.hpp>
+#include <Chimera/src/threading/extensions.hpp>
+#include <Chimera/src/threading/mutex.hpp>
+#include <Chimera/src/threading/thread.hpp>
 
 #if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 

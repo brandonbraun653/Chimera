@@ -1,19 +1,19 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    chimera_system.cpp
  *
- *   Description:
+ *  Description:
  *    Implements high level system interfaces for Chimera
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-/* C++ Includes */
-
+/* STL Includes */
+#include <cstring>
 
 /* Chimera Includes */
-#include <Chimera/system.hpp>
-#include <Chimera/interface/system_intf.hpp>
+#include <Chimera/src/system/system.hpp>
+#include <Chimera/src/system/system_intf.hpp>
 
 namespace Chimera::System
 {
@@ -56,4 +56,4 @@ namespace Chimera::System
   {
     return prjMaxConcurrentThreads();
   }
-}
+}  // namespace Chimera::System

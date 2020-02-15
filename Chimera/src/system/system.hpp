@@ -1,24 +1,24 @@
 /********************************************************************************
- *   File Name:
- *       system.hpp
+ *  File Name:
+ *    system.hpp
  *
- *   Description:
- *       Provides common system level functions
+ *  Description:
+ *    Provides common system level functions
  *
- *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SYSTEM_HPP
 #define CHIMERA_SYSTEM_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 #include <memory>
 #include <type_traits>
 
 /* Chimera Includes */
-#include <Chimera/system>
+#include <Chimera/common>
 
 namespace Chimera::System
 {

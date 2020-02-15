@@ -10,7 +10,7 @@
 #ifndef CHIMERA_MOCK_DELAY_HPP
 #define CHIMERA_MOCK_DELAY_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 namespace Chimera::Mock

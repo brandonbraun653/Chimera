@@ -12,7 +12,7 @@
 #ifndef CHIMERA_PERIPHERAL_TYPES_HPP
 #define CHIMERA_PERIPHERAL_TYPES_HPP
 
-/* C++ Includes */
+/* STL Includes */
 #include <cstdint>
 
 namespace Chimera::Peripheral
