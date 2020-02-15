@@ -422,6 +422,9 @@
     <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraPort.hpp">
       <Filter>standalone\config\chimera</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\power\power_base.hpp">
+      <Filter>src\peripherals\power</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp">
@@ -474,6 +477,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp">
       <Filter>sim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\serial\chimera_serial.cpp">
+      <Filter>src\serial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\peripherals\power\chimera_power.cpp">
+      <Filter>src\peripherals\power</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
