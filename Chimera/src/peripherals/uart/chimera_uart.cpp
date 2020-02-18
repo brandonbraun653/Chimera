@@ -22,7 +22,7 @@ namespace Chimera::UART
 {
 #if !defined( CHIMERA_INHERITED_UART )
   using CHIMERA_INHERITED_UART = ::Chimera::Serial::SerialUnsupported;
-  #warning UART driver is unsupported
+  #pragma message( "UART driver is unsupported" )
 #endif
 
   static_assert( std::is_base_of<::Chimera::Serial::ISerial, CHIMERA_INHERITED_UART>::value, "Invalid interface" );

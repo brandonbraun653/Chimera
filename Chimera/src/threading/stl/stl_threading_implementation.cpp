@@ -143,6 +143,14 @@ namespace Chimera::Threading
   /*------------------------------------------------
   Mutex Implementation
   ------------------------------------------------*/
+  Mutex::Mutex()
+  {
+  }
+
+  Mutex::~Mutex()
+  {
+  }
+
   void Mutex::lock()
   {
     _mtx.lock();
@@ -161,6 +169,14 @@ namespace Chimera::Threading
   /*------------------------------------------------
   Recursive Mutex Implementation
   ------------------------------------------------*/
+  RecursiveMutex::RecursiveMutex()
+  {
+  }
+
+  RecursiveMutex::~RecursiveMutex()
+  {
+  }
+
   void RecursiveMutex::lock()
   {
     _mtx.lock();
@@ -179,6 +195,14 @@ namespace Chimera::Threading
   /*------------------------------------------------
   Timed Mutex Implementation
   ------------------------------------------------*/
+  TimedMutex::TimedMutex()
+  {
+  }
+
+  TimedMutex::~TimedMutex()
+  {
+  }
+
   void TimedMutex::lock()
   {
     _mtx.lock();
@@ -208,6 +232,14 @@ namespace Chimera::Threading
   /*------------------------------------------------
   Recursive Timed Mutex Implementation
   ------------------------------------------------*/
+  RecursiveTimedMutex::RecursiveTimedMutex()
+  {
+  }
+
+  RecursiveTimedMutex::~RecursiveTimedMutex()
+  {
+  }
+
   void RecursiveTimedMutex::lock()
   {
     _mtx.lock();

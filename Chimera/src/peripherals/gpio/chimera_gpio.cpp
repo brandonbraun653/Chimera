@@ -13,16 +13,13 @@
 
 /* Chimera Includes */
 #include "chimeraPort.hpp"
-#include <Chimera/src/peripherals/gpio/gpio.hpp>
-#include <Chimera/src/peripherals/gpio/gpio_base.hpp>
-#include <Chimera/src/peripherals/gpio/gpio_intf.hpp>
-#include <Chimera/src/peripherals/gpio/gpio_types.hpp>
+#include <Chimera/gpio>
 
 namespace Chimera::GPIO
 {
 #if !defined( CHIMERA_INHERITED_GPIO )
   using CHIMERA_INHERITED_GPIO = GPIOUnsupported;
-  #warning GPIO driver is unsupported
+  #pragma message( "GPIO driver is unsupported" )
 #endif
 
   static_assert( std::is_base_of<IGPIO, CHIMERA_INHERITED_GPIO>::value, "Invalid interface" );

@@ -20,7 +20,7 @@ namespace Chimera::Power
 {
 #if !defined( CHIMERA_INHERITED_POWER_INFO )
   using CHIMERA_INHERITED_POWER_INFO = InfoInterfaceDisabled;
-  #warning Power driver is unsupported
+  #pragma message( "Power driver is unsupported" )
 #endif
   static_assert( std::is_base_of<InfoInterface, CHIMERA_INHERITED_POWER_INFO>::value, "Invalid interface" );
 
