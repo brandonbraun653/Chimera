@@ -20,10 +20,9 @@
 
 namespace Chimera::GPIO
 {
-  using GPIO_sPtr = std::shared_ptr<IGPIO>;
-  using GPIO_uPtr = std::unique_ptr<IGPIO>;
-
   Chimera::Status_t initialize();
+
+  Chimera::Status_t reset();
 
   GPIO_sPtr create_shared_ptr();
 

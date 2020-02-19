@@ -15,14 +15,19 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/thread>
-
 #include <Chimera/src/peripherals/gpio/gpio_types.hpp>
 
 namespace Chimera::GPIO
 {
   namespace Backend
   {
-    extern Chimera::Status_t prjInitialize();
+    /**
+     *  Registers the backend GPIO driver with Chimera
+     *  
+     *  @param[in]  registry    Chimera's copy of the GPIO driver interface
+     *  @return Chimera::Status_t
+     */
+    extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }
 
   /**
