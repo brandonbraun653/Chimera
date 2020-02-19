@@ -10,34 +10,56 @@
 
 /* STL Includes */
 #include <memory>
+#include <cstring>
 
 /* Chimera Includes */
-#include "chimeraPort.hpp"
 #include <Chimera/thread>
 #include <Chimera/watchdog>
 
 namespace Chimera::Watchdog
 {
-#if !defined( CHIMERA_INHERITED_WATCHDOG )
-  using CHIMERA_INHERITED_WATCHDOG = WatchdogUnsupported;
-  #pragma message( "Watchdog driver is unsupported" )
-#endif
-
-  static_assert( std::is_base_of<IWatchdog, CHIMERA_INHERITED_WATCHDOG>::value, "Invalid interface" );
+  static Backend::DriverConfig s_backend_driver;
 
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    return Backend::registerDriver( s_backend_driver );
+  }
+
+  Chimera::Status_t reset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
   }
 
   Watchdog_sPtr create_shared_ptr()
   {
-    return std::make_shared<CHIMERA_INHERITED_WATCHDOG>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    {
+      return s_backend_driver.createShared();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
   Watchdog_uPtr create_unique_ptr()
   {
-    return std::make_unique<CHIMERA_INHERITED_WATCHDOG>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    {
+      return s_backend_driver.createUnique();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
   void invokeTimeout()

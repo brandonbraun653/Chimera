@@ -14,13 +14,27 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/src/peripherals/usart/usart_types.hpp>
+#include <Chimera/src/serial/serial_intf.hpp>
 
 namespace Chimera::USART
 {
   namespace Backend
   {
-    extern Chimera::Status_t prjInitialize();
-  }
+    /**
+     *  Registers the backend driver with Chimera
+     *
+     *  @param[in]  registry    Chimera's copy of the driver interface
+     *  @return Chimera::Status_t
+     */
+    extern Chimera::Status_t registerDriver( DriverConfig &registry );
+  }  // namespace Backend
+
+  class IUSART : virtual public Chimera::Serial::ISerial
+  {
+  public:
+    virtual ~IUSART() = default;
+  };
 }
 
 #endif  /* !CHIMERA_USART_INTERFACE_HPP */

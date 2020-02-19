@@ -10,35 +10,54 @@
 
 /* STL Includes */
 #include <memory>
+#include <cstring>
 
 /* Chimera Includes */
-#include "chimeraPort.hpp"
 #include <Chimera/usart>
-#include <Chimera/src/serial/serial_base.hpp>
-#include <Chimera/src/serial/serial_intf.hpp>
-
 
 namespace Chimera::USART
 {
-#if !defined( CHIMERA_INHERITED_USART )
-  using CHIMERA_INHERITED_USART = ::Chimera::Serial::SerialUnsupported;
-  #pragma message( "USART driver is unsupported" )
-#endif
-
-  static_assert( std::is_base_of<::Chimera::Serial::ISerial, CHIMERA_INHERITED_USART>::value, "Invalid interface" );
+  static Backend::DriverConfig s_backend_driver;
 
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    return Backend::registerDriver( s_backend_driver );
+  }
+
+  Chimera::Status_t reset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
   }
 
   USART_sPtr create_shared_ptr()
   {
-    return std::make_shared<CHIMERA_INHERITED_USART>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    {
+      return s_backend_driver.createShared();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
   USART_uPtr create_unique_ptr()
   {
-    return std::make_unique<CHIMERA_INHERITED_USART>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    {
+      return s_backend_driver.createUnique();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 }  // namespace Chimera::USART

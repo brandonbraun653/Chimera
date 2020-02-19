@@ -8,33 +8,56 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-/* Chimera Includes */
-#include "chimeraPort.hpp"
-#include <Chimera/spi>
+/* STL Includes */
+#include <memory>
+#include <cstring>
 
+/* Chimera Includes */
+#include <Chimera/spi>
 
 namespace Chimera::SPI
 {
-#if !defined( CHIMERA_INHERITED_SPI )
-  using CHIMERA_INHERITED_SPI = SPIUnsupported;
-  #pragma message( "SPI driver is unsupported" )
-#endif
-
-  static_assert( std::is_base_of<ISPI, CHIMERA_INHERITED_SPI>::value, "Invalid interface" );
-
+  static Backend::DriverConfig s_backend_driver;
 
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    return Backend::registerDriver( s_backend_driver );
+  }
+
+  Chimera::Status_t reset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
   }
 
   SPI_sPtr create_shared_ptr()
   {
-    return std::make_shared<CHIMERA_INHERITED_SPI>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    {
+      return s_backend_driver.createShared();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
   SPI_uPtr create_unique_ptr()
   {
-    return std::make_unique<CHIMERA_INHERITED_SPI>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    {
+      return s_backend_driver.createUnique();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 }  // namespace Chimera::SPI

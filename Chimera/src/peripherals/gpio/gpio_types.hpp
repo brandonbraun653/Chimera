@@ -156,7 +156,6 @@ namespace Chimera::GPIO
        */
       CreateUniqueObject_FPtr createUnique;
     };
-
   }  // namespace Backend
 }  // namespace Chimera::GPIO
 

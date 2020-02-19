@@ -8,33 +8,57 @@
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+/* STL Includes */
+#include <memory>
+#include <cstring>
+
 /* Chimera Includes */
-#include "chimeraPort.hpp"
 #include <Chimera/common>
 #include <Chimera/crc>
 
 namespace Chimera::HWCRC
 {
-#if !defined( CHIMERA_INHERITED_HWCRC )
-  using CHIMERA_INHERITED_HWCRC = HWInterfaceUnsupported;
-  #pragma message( "Hardware CRC driver is unsupported" )
-#endif
-
-  static_assert( std::is_base_of<ICRC, CHIMERA_INHERITED_HWCRC>::value, "Invalid interface" );
-
+  static Backend::DriverConfig s_backend_driver;
 
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    return Backend::registerDriver( s_backend_driver );
+  }
+
+  Chimera::Status_t reset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
   }
 
   HWCRC_sPtr create_shared_ptr()
   {
-    return std::make_shared<CHIMERA_INHERITED_HWCRC>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    {
+      return s_backend_driver.createShared();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
   HWCRC_uPtr create_unique_ptr()
   {
-    return std::make_unique<CHIMERA_INHERITED_HWCRC>();
+    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    {
+      return s_backend_driver.createUnique();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 }  // namespace Chimera::HWCRC

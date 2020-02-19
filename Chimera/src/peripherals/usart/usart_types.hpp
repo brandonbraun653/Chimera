@@ -1,16 +1,16 @@
 /********************************************************************************
  *  File Name:
- *    crc_types.hpp
+ *    usart_types.hpp
  *
- *  Description:
- *    Chimera CRC types
+ *	Description:
+ *    Types for the Chimera USART
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *******************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_CRC_TYPES_HPP
-#define CHIMERA_CRC_TYPES_HPP
+#ifndef CHIMERA_USART_TYPES_HPP
+#define CHIMERA_USART_TYPES_HPP
 
 /* STL Includes */
 #include <cstdint>
@@ -19,19 +19,19 @@
 /* Chimera Includes */
 #include <Chimera/common>
 
-namespace Chimera::HWCRC
+namespace Chimera::USART
 {
-  class ICRC;
+  class IUSART;
 
-  using HWCRC_sPtr = std::shared_ptr<ICRC>;
-  using HWCRC_uPtr = std::unique_ptr<ICRC>;
+  using USART_sPtr = std::shared_ptr<IUSART>;
+  using USART_uPtr = std::unique_ptr<IUSART>;
 
   namespace Backend
   {
     using Initialize_FPtr         = Chimera::Status_t ( * )( void );
     using Reset_FPtr              = Chimera::Status_t ( * )( void );
-    using CreateSharedObject_FPtr = HWCRC_sPtr ( * )( void );
-    using CreateUniqueObject_FPtr = HWCRC_uPtr ( * )( void );
+    using CreateSharedObject_FPtr = USART_sPtr ( * )( void );
+    using CreateUniqueObject_FPtr = USART_uPtr ( * )( void );
 
     struct DriverConfig
     {
@@ -62,6 +62,6 @@ namespace Chimera::HWCRC
       CreateUniqueObject_FPtr createUnique;
     };
   }  // namespace Backend
-}  // namespace Chimera::HWCRC
+}
 
-#endif /* !CHIMERA_CRC_TYPES_HPP */
+#endif  /* !CHIMERA_USART_TYPES_HPP */

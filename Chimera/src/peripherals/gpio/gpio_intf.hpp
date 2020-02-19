@@ -22,9 +22,9 @@ namespace Chimera::GPIO
   namespace Backend
   {
     /**
-     *  Registers the backend GPIO driver with Chimera
+     *  Registers the backend driver with Chimera
      *  
-     *  @param[in]  registry    Chimera's copy of the GPIO driver interface
+     *  @param[in]  registry    Chimera's copy of the driver interface
      *  @return Chimera::Status_t
      */
     extern Chimera::Status_t registerDriver( DriverConfig &registry );

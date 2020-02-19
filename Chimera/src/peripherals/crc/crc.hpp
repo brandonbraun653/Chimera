@@ -21,10 +21,9 @@
 
 namespace Chimera::HWCRC
 {
-  using HWCRC_sPtr = std::shared_ptr<ICRC>;
-  using HWCRC_uPtr = std::unique_ptr<ICRC>;
-
   Chimera::Status_t initialize();
+
+  Chimera::Status_t reset();
 
   HWCRC_sPtr create_shared_ptr();
 

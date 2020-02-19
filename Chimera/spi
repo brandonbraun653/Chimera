@@ -13,7 +13,6 @@
 #define CHIMERA_SPI_INCLUDES
 
 #include <Chimera/src/peripherals/spi/spi.hpp>
-#include <Chimera/src/peripherals/spi/spi_base.hpp>
 #include <Chimera/src/peripherals/spi/spi_ext.hpp>
 #include <Chimera/src/peripherals/spi/spi_intf.hpp>
 #include <Chimera/src/peripherals/spi/spi_types.hpp>

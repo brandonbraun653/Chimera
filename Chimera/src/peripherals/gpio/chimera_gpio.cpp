@@ -27,7 +27,7 @@ namespace Chimera::GPIO
 
   Chimera::Status_t reset()
   {
-    if( s_backend_driver.isSupported && s_backend_driver.reset )
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -39,7 +39,7 @@ namespace Chimera::GPIO
 
   GPIO_sPtr create_shared_ptr()
   {
-    if( s_backend_driver.isSupported && s_backend_driver.createShared )
+    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
     {
       return s_backend_driver.createShared();
     }
@@ -51,7 +51,7 @@ namespace Chimera::GPIO
 
   GPIO_uPtr create_unique_ptr()
   {
-    if( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
     {
       return s_backend_driver.createUnique();
     }

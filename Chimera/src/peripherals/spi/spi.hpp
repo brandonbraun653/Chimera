@@ -20,11 +20,10 @@
 
 namespace Chimera::SPI
 {
-  using SPI_sPtr = std::shared_ptr<ISPI>;
-  using SPI_uPtr = std::unique_ptr<ISPI>;
-
   Chimera::Status_t initialize();
 
+  Chimera::Status_t reset();
+  
   SPI_sPtr create_shared_ptr();
 
   SPI_uPtr create_unique_ptr();

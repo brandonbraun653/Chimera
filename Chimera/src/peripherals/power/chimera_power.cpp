@@ -10,34 +10,80 @@
 
 /* STL Includes */
 #include <memory>
+#include <cstring>
 
 /* Chimera Includes */
-#include "chimeraPort.hpp"
 #include <Chimera/common>
 #include <Chimera/power>
 
 namespace Chimera::Power
 {
-#if !defined( CHIMERA_INHERITED_POWER_INFO )
-  using CHIMERA_INHERITED_POWER_INFO = InfoInterfaceDisabled;
-  #pragma message( "Power driver is unsupported" )
-#endif
-  static_assert( std::is_base_of<InfoInterface, CHIMERA_INHERITED_POWER_INFO>::value, "Invalid interface" );
-
+  static Backend::DriverConfig s_backend_driver;
 
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    return Backend::registerDriver( s_backend_driver );
   }
 
-  Info_sPtr create_shared_info_ptr()
+  Chimera::Status_t reset()
   {
-    return std::make_shared<CHIMERA_INHERITED_POWER_INFO>();
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
   }
 
-  Info_uPtr create_unique_info_ptr()
+  Chimera::Status_t periphEnable( const Chimera::Peripheral::Type periph )
   {
-    return std::make_unique<CHIMERA_INHERITED_POWER_INFO>();
+    if ( s_backend_driver.isSupported && s_backend_driver.periphEnable )
+    {
+      return s_backend_driver.periphEnable( periph );
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  }
+
+  Chimera::Status_t periphDisable( const Chimera::Peripheral::Type periph )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.periphDisable )
+    {
+      return s_backend_driver.periphDisable( periph );
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  }
+
+  Chimera::Status_t setPowerState( const Chimera::Power::State state )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.setPowerState )
+    {
+      return s_backend_driver.setPowerState( state );
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  }
+
+  Chimera::Power::State getPowerState( const Chimera::Peripheral::Type periph )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.getPowerState )
+    {
+      return s_backend_driver.getPowerState( periph );
+    }
+    else
+    {
+      return Chimera::Power::State::INVALID;
+    }
   }
 
 }  // namespace Chimera::Power

@@ -20,10 +20,9 @@
 
 namespace Chimera::Watchdog
 {
-  using Watchdog_sPtr = std::shared_ptr<IWatchdog>;
-  using Watchdog_uPtr = std::unique_ptr<IWatchdog>;
-
   Chimera::Status_t initialize();
+
+  Chimera::Status_t reset();
 
   Watchdog_sPtr create_shared_ptr();
 

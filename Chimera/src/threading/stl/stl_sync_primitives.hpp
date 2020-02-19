@@ -16,6 +16,7 @@
 /* STL Includes */
 #include <mutex>
 #include <thread>
+
 namespace Chimera::Threading::detail
 {
   using native_mutex                 = std::mutex;

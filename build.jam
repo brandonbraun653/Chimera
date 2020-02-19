@@ -42,8 +42,11 @@ use-project /ALLOCATOR :            Chimera/src/allocator ;
 use-project /BUFFER :               Chimera/src/buffer ;
 use-project /COMMON :               Chimera/src/common ;
 use-project /CONTAINER :            Chimera/src/container ;
+use-project /PERIPH/CRC :           Chimera/src/peripherals/crc ;
 use-project /PERIPH/GPIO :          Chimera/src/peripherals/gpio ;
+use-project /PERIPH/POWER :         Chimera/src/peripherals/power ;
 use-project /PERIPH/SPI :           Chimera/src/peripherals/spi ;
+use-project /PERIPH/TIMER :         Chimera/src/peripherals/timer ;
 use-project /PERIPH/UART :          Chimera/src/peripherals/uart ;
 use-project /PERIPH/USART :         Chimera/src/peripherals/usart ;
 use-project /PERIPH/WATCHDOG :      Chimera/src/peripherals/watchdog ;
@@ -64,6 +67,7 @@ alias PUB
   : 
     <include>$(chimera_inc_dir)
     <use>/PRJ//BOOST
+    <use>/PRJ//CHIMERA_CFG
     <use>/PRJ//CHIMERA_PORT
     <use>/PRJ//CHIMERA_DEFS
     
@@ -77,6 +81,7 @@ alias PUB
   : <include>$(chimera_inc_dir)
     <use>/FREERTOS//PUB
     <use>/PRJ//BOOST
+    <use>/PRJ//CHIMERA_CFG
     <use>/PRJ//CHIMERA_PORT
     <use>/PRJ//CHIMERA_DEFS
   
@@ -220,8 +225,11 @@ explicit_alias TEST_COMPILE
         /BUFFER//LIB
         /COMMON//LIB
         /CONTAINER//LIB
+        /PERIPH/CRC//LIB
         /PERIPH/GPIO//LIB
+        /PERIPH/POWER//LIB
         /PERIPH/SPI//LIB
+        /PERIPH/TIMER//LIB
         /PERIPH/UART//LIB
         /PERIPH/USART//LIB
         /PERIPH/WATCHDOG//LIB

@@ -20,12 +20,19 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/thread>
+#include <Chimera/src/peripherals/watchdog/watchdog_types.hpp>
 
 namespace Chimera::Watchdog
 {
   namespace Backend
   {
-    extern Chimera::Status_t prjInitialize();
+    /**
+     *  Registers the backend driver with Chimera
+     *  
+     *  @param[in]  registry    Chimera's copy of the driver interface
+     *  @return Chimera::Status_t
+     */
+    extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }
 
   class HWInterface

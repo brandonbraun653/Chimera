@@ -17,14 +17,13 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
-#include <Chimera/src/serial/serial_intf.hpp>
+#include <Chimera/src/peripherals/usart/usart_intf.hpp>
 
 namespace Chimera::USART
 {
-  using USART_sPtr = std::shared_ptr<::Chimera::Serial::ISerial>;
-  using USART_uPtr = std::unique_ptr<::Chimera::Serial::ISerial>;
-
   Chimera::Status_t initialize();
+
+  Chimera::Status_t reset();
 
   USART_sPtr create_shared_ptr();
 

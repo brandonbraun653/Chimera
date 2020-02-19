@@ -14,8 +14,7 @@
 #include <Chimera/sim/sim_chimera.hpp>
 #include <Chimera/system>
 #include <Chimera/thread>
-
-#include "chimeraPort.hpp"
+#include <Chimera/timer>
 
 void ChimeraInit()
 {
@@ -27,16 +26,16 @@ namespace Chimera
 {
   size_t millis()
   {
-    return BACKEND_NAMESPACE::millis();
+    return Timer::millis();
   }
 
   void delayMilliseconds( const size_t val )
   {
-    BACKEND_NAMESPACE::delayMilliseconds( val );
+    Timer::delayMilliseconds( val );
   }
 
   void delayMicroseconds( const size_t val )
   {
-    BACKEND_NAMESPACE::delayMicroseconds( val );
+    Timer::delayMicroseconds( val );
   }
 }  // namespace Chimera

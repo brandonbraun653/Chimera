@@ -20,14 +20,19 @@
 #include <Chimera/common>
 #include <Chimera/event>
 #include <Chimera/thread>
-
 #include <Chimera/src/peripherals/spi/spi_types.hpp>
 
 namespace Chimera::SPI
 {
   namespace Backend
   {
-    extern void prjInitialize();
+    /**
+     *  Registers the backend driver with Chimera
+     *  
+     *  @param[in]  registry    Chimera's copy of the driver interface
+     *  @return Chimera::Status_t
+     */
+    extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }
 
   class HardwareDriverInterface

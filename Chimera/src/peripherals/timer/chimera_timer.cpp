@@ -1,21 +1,22 @@
 /********************************************************************************
  *  File Name:
- *    chimera_uart.cpp
+ *    chimera_timer.cpp
  *
- *	Description:
- *    Implements the Chimera UART driver
+ *	 Description:
+ *    Chimera timer implementation
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* STL Includes */
-#include <memory>
+#include <cstdlib>
 #include <cstring>
 
 /* Chimera Includes */
-#include <Chimera/uart>
+#include <Chimera/common>
+#include <Chimera/timer>
 
-namespace Chimera::UART
+namespace Chimera::Timer
 {
   static Backend::DriverConfig s_backend_driver;
 
@@ -37,27 +38,31 @@ namespace Chimera::UART
     }
   }
 
-  UART_sPtr create_shared_ptr()
+  size_t millis()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    if ( s_backend_driver.isSupported && s_backend_driver.millis )
     {
-      return s_backend_driver.createShared();
+      return s_backend_driver.millis();
     }
     else
     {
-      return nullptr;
+      return 0;
     }
   }
 
-  UART_uPtr create_unique_ptr()
+  void delayMilliseconds( const size_t val )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    if ( s_backend_driver.isSupported && s_backend_driver.delayMilliseconds )
     {
-      return s_backend_driver.createUnique();
-    }
-    else
-    {
-      return nullptr;
+      s_backend_driver.delayMilliseconds( val );
     }
   }
-}  // namespace Chimera::UART
+
+  void delayMicroseconds( const size_t val )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.delayMicroseconds )
+    {
+      s_backend_driver.delayMicroseconds( val );
+    }
+  }
+}
