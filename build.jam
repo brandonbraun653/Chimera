@@ -37,21 +37,21 @@ local chimera_src =
 # ====================================================
 project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
 
-use-project /ALGORITHM :            Chimera/src/algorithm ; 
-use-project /ALLOCATOR :            Chimera/src/allocator ;
-use-project /BUFFER :               Chimera/src/buffer ;
-use-project /COMMON :               Chimera/src/common ;
-use-project /CONTAINER :            Chimera/src/container ;
-use-project /PERIPH/CRC :           Chimera/src/peripherals/crc ;
-use-project /PERIPH/GPIO :          Chimera/src/peripherals/gpio ;
-use-project /PERIPH/POWER :         Chimera/src/peripherals/power ;
-use-project /PERIPH/SPI :           Chimera/src/peripherals/spi ;
-use-project /PERIPH/TIMER :         Chimera/src/peripherals/timer ;
-use-project /PERIPH/UART :          Chimera/src/peripherals/uart ;
-use-project /PERIPH/USART :         Chimera/src/peripherals/usart ;
-use-project /PERIPH/WATCHDOG :      Chimera/src/peripherals/watchdog ;
-use-project /SYSTEM :               Chimera/src/system ; 
-use-project /THREADING :            Chimera/src/threading ;
+use-project /CHIMERA/ALGORITHM :            Chimera/src/algorithm ; 
+use-project /CHIMERA/ALLOCATOR :            Chimera/src/allocator ;
+use-project /CHIMERA/BUFFER :               Chimera/src/buffer ;
+use-project /CHIMERA/COMMON :               Chimera/src/common ;
+use-project /CHIMERA/CONTAINER :            Chimera/src/container ;
+use-project /CHIMERA/PERIPH/CRC :           Chimera/src/peripherals/crc ;
+use-project /CHIMERA/PERIPH/GPIO :          Chimera/src/peripherals/gpio ;
+use-project /CHIMERA/PERIPH/POWER :         Chimera/src/peripherals/power ;
+use-project /CHIMERA/PERIPH/SPI :           Chimera/src/peripherals/spi ;
+use-project /CHIMERA/PERIPH/TIMER :         Chimera/src/peripherals/timer ;
+use-project /CHIMERA/PERIPH/UART :          Chimera/src/peripherals/uart ;
+use-project /CHIMERA/PERIPH/USART :         Chimera/src/peripherals/usart ;
+use-project /CHIMERA/PERIPH/WATCHDOG :      Chimera/src/peripherals/watchdog ;
+use-project /CHIMERA/SYSTEM :               Chimera/src/system ; 
+use-project /CHIMERA/THREADING :            Chimera/src/threading ;
 
 
 # ====================================================
@@ -220,19 +220,19 @@ explicit_alias CHIMERA_CORE : CORE ;
 
 
 explicit_alias TEST_COMPILE
-    :   /ALGORITHM//LIB
-        /ALLOCATOR//LIB
-        /BUFFER//LIB
-        /COMMON//LIB
-        /CONTAINER//LIB
-        /PERIPH/CRC//LIB
-        /PERIPH/GPIO//LIB
-        /PERIPH/POWER//LIB
-        /PERIPH/SPI//LIB
-        /PERIPH/TIMER//LIB
-        /PERIPH/UART//LIB
-        /PERIPH/USART//LIB
-        /PERIPH/WATCHDOG//LIB
-        /SYSTEM//LIB
-        /THREADING//LIB
+    :   /CHIMERA/ALGORITHM//LIB
+        /CHIMERA/ALLOCATOR//LIB
+        /CHIMERA/BUFFER//LIB
+        /CHIMERA/COMMON//LIB
+        /CHIMERA/CONTAINER//LIB
+        /CHIMERA/PERIPH/CRC//LIB
+        /CHIMERA/PERIPH/GPIO//LIB
+        /CHIMERA/PERIPH/POWER//LIB
+        /CHIMERA/PERIPH/SPI//LIB
+        /CHIMERA/PERIPH/TIMER//LIB
+        /CHIMERA/PERIPH/UART//LIB
+        /CHIMERA/PERIPH/USART//LIB
+        /CHIMERA/PERIPH/WATCHDOG//LIB
+        /CHIMERA/SYSTEM//LIB
+        /CHIMERA/THREADING//LIB
     ;
