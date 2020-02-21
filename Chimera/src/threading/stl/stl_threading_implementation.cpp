@@ -16,6 +16,7 @@
 /* STL Includes */
 #include <chrono>
 #include <thread>
+#include <cstring>
 
 /* Chimera Includes */
 #include <Chimera/common>
