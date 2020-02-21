@@ -89,10 +89,23 @@ alias PUB
   ;
 explicit PUB ;
 
-
 explicit_alias PUB_MOCK : : : : <include>$(chimera_mock_inc_dir) ;
 explicit_alias PUB_SIM : : : : <include>$(chimera_port_sim_inc_dir) ;
 
+# ------------------------------------------
+# Core libraries needed by every low level driver. Do *not*
+# add to this list frivolously. It will increase build times.
+# -----------------------------------------
+explicit_alias CORE_LIBS : : : :
+    <library>/CHIMERA/COMMON//LIB
+    <library>/CHIMERA/PERIPH/TIMER//LIB
+    <library>/CHIMERA/SYSTEM//LIB
+    <library>/CHIMERA/THREADING//LIB
+    ;
+
+# ====================================================
+# Private Targets
+# ====================================================
 alias PRV 
     : 
     : <FreeRTOS>disabled
@@ -107,116 +120,6 @@ alias PRV
     : <include>./Chimera/src/threading/freertos 
     ;
 explicit PRV ;
-
-
-# ------------------------------------------
-# Includes all common FreeRTOS headers
-# -----------------------------------------
-explicit_alias _RTOS : : : 
-    :   <define>USING_FREERTOS
-        <use>/FREERTOS//PUB
-        <use>/PRJ//FREERTOS_CFG
-    ;
-
-# ------------------------------------------
-# Thor Backend Driver without FreeRTOS
-# ------------------------------------------
-lib CORE
-    :   $(chimera_src)
-
-    :   <Chimera>enabled-Thor
-        <FreeRTOS>disabled
-        <link>static
-        <include>$(chimera_inc_dir)
-        
-        <library>/THOR//CORE
-
-        <use>/THOR//PUB                         # Thor Headers
-        <use>/THOR//TARGET_PROPAGATED_OPTIONS   # Thor Target Headers
-        <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
-        <use>/PRJ//EIGEN
-    ;
-
-# ------------------------------------------
-# Thor Backend Driver with FreeRTOS
-# ------------------------------------------
-lib CORE
-    :   $(chimera_src_root)
-        $(chimera_src_modules_memory)
-        $(chimera_src_modules_freertos)
-
-    :   <Chimera>enabled
-        <Chimera-backend>Thor
-        <FreeRTOS>enabled
-        <Thor>enabled
-        <link>static
-        <include>$(chimera_inc_dir)
-
-        <library>/THOR//CORE
-        <library>/FREERTOS//CORE
-
-        <use>_RTOS                              # Pull in FreeRTOS from the alias up above
-        <use>/THOR//PUB                         # Thor Headers    
-        <use>/THOR//TARGET_PROPAGATED_OPTIONS                    # Thor Target Headers
-        <use>/PRJ//BOOST                        # All things boost
-        <use>/PRJ//CHIMERA_PORT                 # chimeraPort.hpp
-        <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
-        <use>/PRJ//EIGEN
-    ;
-
-# ------------------------------------------
-# Simulator Backend Driver without FreeRTOS
-# ------------------------------------------
-lib CORE
-    :   $(chimera_src_root)
-        $(chimera_src_modules_memory)
-
-    :   <Chimera>enabled-Sim
-        <FreeRTOS>disabled
-        <link>static
-        <include>$(chimera_inc_dir)
-        <include>$(chimera_port_sim_inc_dir)    # chimeraPort.hpp
-        <define>NOMINMAX
-        <define>SIM
-
-        <use>/PRJ//BOOST                        # All things boost
-        <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
-        <use>/PRJ//EIGEN
-    ;
-
-# ------------------------------------------
-# Simulator Backend Driver with FreeRTOS
-# ------------------------------------------
-lib CORE
-    :   $(chimera_src_root)
-        $(chimera_src_sim)
-        $(chimera_src_modules_memory)
-        $(chimera_src_modules_freertos)
-
-    :   <Chimera>enabled-Sim
-        <FreeRTOS>enabled
-        <link>static
-        <include>$(chimera_inc_dir)
-        <include>$(chimera_port_sim_inc_dir)    # chimeraPort.hpp
-        <define>NOMINMAX
-        <define>SIM
-
-        <library>/FREERTOS//CORE
-
-        <use>_RTOS                              # Pull in FreeRTOS from the alias up above
-        <use>/PRJ//BOOST                        # All things boost
-        <use>/PRJ//CHIMERA_DEFS                 # Missing #defines normally included in the backend driver
-        <use>/PRJ//CHIMERA_PORT
-        <use>/PRJ//EIGEN
-
-        <cov>enabled:<use>/COVERAGE//FLAGS
-    :
-    :   <toolset>msvc:<define>NOMINMAX
-    ;
-
-explicit CORE ;
-
-explicit_alias CHIMERA_CORE : CORE ;
 
 
 explicit_alias TEST_COMPILE
