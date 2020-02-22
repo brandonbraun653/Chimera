@@ -30,33 +30,34 @@ GCC
 
 #endif /* __GNUC__ */
 
-// /*------------------------------------------------
-// WIN32
-// ------------------------------------------------*/
-// #if defined( WIN32 )
-// #define WIN32_LEAN_AND_MEAN
-// #define _X32_
-// #include "debugapi.h"
+/*------------------------------------------------
+WIN32
+------------------------------------------------*/
+#if defined( WIN32 )
+//#define WIN32_LEAN_AND_MEAN
+//#define _X32_
+//#define _X86_
+//#include "debugapi.h"
 
 
-// #define WEAKDECL
-// #define CHIMERA_INSERT_BREAKPOINT DebugBreak()
+#define WEAKDECL
+//#define CHIMERA_INSERT_BREAKPOINT DebugBreak()
 
-// #endif /* WIN32 */
+#endif /* WIN32 */
 
-// /*------------------------------------------------
-// WIN64
-// ------------------------------------------------*/
-// #if defined( WIN64 )
-// #define WIN32_LEAN_AND_MEAN
-// #define _X64_
-// #include "debugapi.h"
+/*------------------------------------------------
+WIN64
+------------------------------------------------*/
+#if defined( WIN64 )
+#define WIN32_LEAN_AND_MEAN
+#define _X64_
+#include "debugapi.h"
 
 
-// #define WEAKDECL
-// #define CHIMERA_INSERT_BREAKPOINT DebugBreak()
+#define WEAKDECL
+#define CHIMERA_INSERT_BREAKPOINT DebugBreak()
 
-// #endif /* WIN64 */
+#endif /* WIN64 */
 
 
 // /*------------------------------------------------
