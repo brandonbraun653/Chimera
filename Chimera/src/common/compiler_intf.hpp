@@ -1,31 +1,33 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    compiler_intf.hpp
  *
- *   Description:
- *    Contains macros for various functionality that must be portable between 
+ *  Description:
+ *    Contains macros for various functionality that must be portable between
  *    compilers.
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_COMPILER_INTERFACE_HPP
 #define CHIMERA_COMPILER_INTERFACE_HPP
 
-namespace Chimera::Compiler
+namespace Chimera
 {
+  /**
+   * Inserts a breakpoint into the program at the call site.
+   */
+  void insert_breakpoint();
+}  // namespace Chimera
+
 /*------------------------------------------------
-GCC 
+GCC
 ------------------------------------------------*/
 #if defined( __GNUC__ )
 
 #if !defined( WEAKDECL )
-#define WEAKDECL __attribute__((weak))
-#endif
-
-#if !defined( CHIMERA_INSERT_BREAKPOINT )
-#define CHIMERA_INSERT_BREAKPOINT __asm( "BKPT #0\n" )
+#define WEAKDECL __attribute__( ( weak ) )
 #endif
 
 #endif /* __GNUC__ */
@@ -34,14 +36,9 @@ GCC
 WIN32
 ------------------------------------------------*/
 #if defined( WIN32 )
-//#define WIN32_LEAN_AND_MEAN
-//#define _X32_
-//#define _X86_
-//#include "debugapi.h"
-
-
+#ifndef WEAKDECL
 #define WEAKDECL
-//#define CHIMERA_INSERT_BREAKPOINT DebugBreak()
+#endif
 
 #endif /* WIN32 */
 
@@ -49,34 +46,10 @@ WIN32
 WIN64
 ------------------------------------------------*/
 #if defined( WIN64 )
-#define WIN32_LEAN_AND_MEAN
-#define _X64_
-#include "debugapi.h"
-
-
+#ifndef WEAKDECL
 #define WEAKDECL
-#define CHIMERA_INSERT_BREAKPOINT DebugBreak()
+#endif
 
 #endif /* WIN64 */
-
-
-// /*------------------------------------------------
-// Weak function declarations 
-// ------------------------------------------------*/
-// #if defined( __GNUC__ )
-
-
-
-// #elif defined( WIN32 ) || defined( WIN64 )
-
-// #define WEAKDECL
-
-// #else 
-
-// #define WEAKDECL
-
-// #endif /* */
-
-}
 
 #endif  // ! CHIMERA_COMPILER_INTERFACE_HPP
