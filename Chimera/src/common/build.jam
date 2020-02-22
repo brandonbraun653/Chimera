@@ -11,7 +11,7 @@ local rule explicit_alias ( name : sources * : requirements * : default-build * 
 # Public Targets
 # ====================================================
 lib LIB
-  : chimera.cpp
+  : [ glob *.cpp ]
 
   : <link>static
     <use>/CHIMERA//PUB

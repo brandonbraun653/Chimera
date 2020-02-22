@@ -18,7 +18,7 @@ namespace Chimera
   /**
    * Inserts a breakpoint into the program at the call site.
    */
-  void insert_breakpoint();
+  void insert_debug_breakpoint();
 }  // namespace Chimera
 
 /*------------------------------------------------

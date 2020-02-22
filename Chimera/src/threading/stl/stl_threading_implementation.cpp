@@ -137,6 +137,16 @@ namespace Chimera::Threading
     return mMaxCount;
   }
 
+  void CountingSemaphore::acquireFromISR()
+  {
+    Chimera::insert_debug_breakpoint();
+  }
+
+  void CountingSemaphore::releaseFromISR()
+  {
+    Chimera::insert_debug_breakpoint();
+  }
+
   /************************************************************************/
   /*                                MUTEX                                 */
   /************************************************************************/
