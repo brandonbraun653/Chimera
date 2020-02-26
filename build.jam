@@ -43,6 +43,7 @@ use-project /CHIMERA/BUFFER :               Chimera/src/buffer ;
 use-project /CHIMERA/COMMON :               Chimera/src/common ;
 use-project /CHIMERA/CONTAINER :            Chimera/src/container ;
 use-project /CHIMERA/PERIPH/CRC :           Chimera/src/peripherals/crc ;
+use-project /CHIMERA/PERIPH/DMA :           Chimera/src/peripherals/dma ;
 use-project /CHIMERA/PERIPH/GPIO :          Chimera/src/peripherals/gpio ;
 use-project /CHIMERA/PERIPH/POWER :         Chimera/src/peripherals/power ;
 use-project /CHIMERA/PERIPH/SPI :           Chimera/src/peripherals/spi ;

@@ -1,0 +1,63 @@
+/********************************************************************************
+ *  File Name:
+ *    chimera_dma.cpp
+ *
+ *  Description:
+ *    Implements Chimera DMA
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+/* STL Includes */
+#include <memory>
+#include <cstring>
+
+/* Chimera Includes */
+#include <Chimera/dma>
+
+namespace Chimera::DMA
+{
+  static Backend::DriverConfig s_backend_driver;
+
+  Chimera::Status_t initialize()
+  {
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    return Backend::registerDriver( s_backend_driver );
+  }
+
+  Chimera::Status_t reset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  }
+
+  DMA_sPtr create_shared_ptr()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    {
+      return s_backend_driver.createShared();
+    }
+    else
+    {
+      return nullptr;
+    }
+  }
+
+  DMA_uPtr create_unique_ptr()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
+    {
+      return s_backend_driver.createUnique();
+    }
+    else
+    {
+      return nullptr;
+    }
+  }
+}  // namespace Chimera::DMA

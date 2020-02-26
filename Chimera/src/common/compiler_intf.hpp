@@ -47,7 +47,7 @@ WIN64
 ------------------------------------------------*/
 #if defined( WIN64 )
 #ifndef WEAKDECL
-#define WEAKDECL
+#define WEAKDECL ()
 #endif
 
 #endif /* WIN64 */

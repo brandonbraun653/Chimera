@@ -22,6 +22,17 @@
 
 namespace Chimera::DMA
 {
+  namespace Backend
+  {
+    /**
+     *  Registers the backend driver with Chimera
+     *  
+     *  @param[in]  registry    Chimera's copy of the driver interface
+     *  @return Chimera::Status_t
+     */
+    extern Chimera::Status_t registerDriver( DriverConfig &registry );
+  }
+
   class HWInterface
   {
   public:
