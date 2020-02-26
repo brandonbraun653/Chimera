@@ -19,8 +19,18 @@
 /* Chimera Includes */
 #include <Chimera/sim/sim_chimera_system.hpp>
 
-namespace ChimeraSim
+namespace ChimeraSim::Timer
 {
+  Chimera::Status_t initialize()
+  {
+    return Chimera::CommonStatusCodes::OK;
+  }
+
+  Chimera::Status_t reset()
+  {
+    return Chimera::CommonStatusCodes::OK;
+  }
+
   size_t millis()
   {
     return Chimera::System::getSystemTick();
@@ -39,6 +49,20 @@ namespace ChimeraSim
   }
 }
 
+namespace Chimera::Timer::Backend
+{
+  Chimera::Status_t registerDriver( Chimera::Timer::Backend::DriverConfig &registry )
+  {
+    registry.isSupported       = true;
+    registry.initialize        = ::ChimeraSim::Timer::initialize;
+    registry.reset             = ::ChimeraSim::Timer::reset;
+    registry.delayMicroseconds = ::ChimeraSim::Timer::delayMicroseconds;
+    registry.delayMilliseconds = ::ChimeraSim::Timer::delayMilliseconds;
+    registry.millis            = ::ChimeraSim::Timer::millis;
+    return Chimera::CommonStatusCodes::OK;
+  }
+}
+
 #if defined( CHIMERA_STANDALONE )
 int main()
 {
@@ -46,5 +70,6 @@ int main()
   return 0;
 }
 #endif
+
 
 #endif /* _WIN32 || _WIN64 */

@@ -11,7 +11,6 @@
 /* Chimera Includes */
 #include <Chimera/src/common/chimera.hpp>
 #include <Chimera/src/common/preprocessor.hpp>
-#include <Chimera/sim/sim_chimera.hpp>
 #include <Chimera/system>
 #include <Chimera/thread>
 #include <Chimera/timer>
@@ -20,7 +19,6 @@ void ChimeraInit()
 {
   Chimera::System::prjSystemStartup();
 }
-
 
 namespace Chimera
 {

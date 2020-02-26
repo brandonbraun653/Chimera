@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
- *       sim_chimera.hpp
+ *  File Name:
+ *    sim_chimera_timer.hpp
  *
- *   Description:
- *       Simulator variant of the core chimera functionality.
+ *  Description:
+ *    Simulator variant of the core chimera functionality.
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -17,8 +17,12 @@
 /* STL Includes */
 #include <cstdlib>
 
-namespace ChimeraSim
+namespace ChimeraSim::Timer
 {
+  Chimera::Status_t initialize();
+
+  Chimera::Status_t reset();
+
   /**
    *	Returns the number of milliseconds that have elapsed since the beginning
    *  of the program.
