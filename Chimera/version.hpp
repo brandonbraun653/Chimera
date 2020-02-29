@@ -17,7 +17,7 @@
 
 namespace Chimera
 {
-  static constexpr std::string_view version = "1.0.2#";
+  static constexpr std::string_view version = "1.1";
 }
 
 #endif	/* !CHIMERA_VERSION_HPP */
