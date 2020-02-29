@@ -67,8 +67,8 @@
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraPort.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h" />
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_system.hpp" />
+    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\algorithm\register_optimizer.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\allocator\allocator.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\buffer\buffer.hpp" />
@@ -113,6 +113,9 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\uart\uart.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\usart\usart.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\watchdog\watchdog.hpp" />
@@ -144,17 +147,20 @@
     <ClInclude Include="..\..\..\Chimera\version.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\allocator\chimera_allocator.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\buffer\chimera_buffer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\src\common\boost_stubs.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\common\chimera.cpp" />
+    <ClCompile Include="..\..\..\Chimera\src\common\compiler_intf.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\container\chimera_container.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\crc\chimera_crc.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\gpio\chimera_gpio.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\power\chimera_power.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\spi\chimera_spi.cpp" />
+    <ClCompile Include="..\..\..\Chimera\src\peripherals\timer\chimera_timer.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\uart\chimera_uart.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\usart\chimera_usart.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\watchdog\chimera_watchdog.cpp" />

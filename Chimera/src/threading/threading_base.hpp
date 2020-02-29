@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    threading_base.hpp
  *
- *   Description:
+ *  Description:
  *    Abstract base class interfaces
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,7 +13,9 @@
 #define CHIMERA_THREADING_ABSTRACT_BASE_HPP
 
 /* Chimera Includes */
-#include <Chimera/thread>
+#include <Chimera/common>
+#include <Chimera/src/event/event_types.hpp>
+#include <Chimera/src/threading/semaphore.hpp>
 
 namespace Chimera::Threading
 {

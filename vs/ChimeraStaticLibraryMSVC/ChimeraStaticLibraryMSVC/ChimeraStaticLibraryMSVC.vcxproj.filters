@@ -401,9 +401,6 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types_fwd.hpp">
       <Filter>src\peripherals\clock</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera.hpp">
-      <Filter>sim</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_system.hpp">
       <Filter>sim</Filter>
     </ClInclude>
@@ -424,6 +421,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\power\power_base.hpp">
       <Filter>src\peripherals\power</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp">
+      <Filter>sim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer.hpp">
+      <Filter>src\peripherals\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf.hpp">
+      <Filter>src\peripherals\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_types.hpp">
+      <Filter>src\peripherals\timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -472,9 +481,6 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\crc\chimera_crc.cpp">
       <Filter>src\peripherals\crc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera.cpp">
-      <Filter>sim</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp">
       <Filter>sim</Filter>
     </ClCompile>
@@ -483,6 +489,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\peripherals\power\chimera_power.cpp">
       <Filter>src\peripherals\power</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp">
+      <Filter>sim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\peripherals\timer\chimera_timer.cpp">
+      <Filter>src\peripherals\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\common\compiler_intf.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\common\boost_stubs.cpp">
+      <Filter>src\common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

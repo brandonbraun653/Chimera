@@ -489,6 +489,69 @@
     <ClInclude Include="..\..\..\Chimera\standalone\config\chimera\chimeraPort.hpp">
       <Filter>Chimera\standalone\config\chimera</Filter>
     </ClInclude>
+    <None Include="..\..\..\Chimera\algorithm">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\buffer">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\callback">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\clock">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\common">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\container">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\crc">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\dma">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\ethernet">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\event">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\gpio">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\power">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\serial">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\spi">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\system">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\thread">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\timer">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\uart">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\usart">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\utility">
+      <Filter>Chimera</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\watchdog">
+      <Filter>Chimera</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp">
@@ -498,6 +561,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp">
       <Filter>Chimera\sim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\event\chimera_event.cpp">
+      <Filter>Chimera\src\event</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

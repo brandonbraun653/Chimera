@@ -252,7 +252,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32F446RE'">
     <ClCompile>
-      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
       <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Og</Optimization>
@@ -266,7 +266,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32F446RE'">
     <ClCompile>
-      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
       <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Og</Optimization>
@@ -281,7 +281,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32F446RE'">
     <ClCompile>
-      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
       <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Og</Optimization>
@@ -301,15 +301,41 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">
     <ClCompile>
-      <CPPLanguageStandard>CPP1Z</CPPLanguageStandard>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
       <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32F446RE'">
+    <ClCompile>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <None Include="..\..\..\Chimera\algorithm" />
+    <None Include="..\..\..\Chimera\buffer" />
+    <None Include="..\..\..\Chimera\callback" />
+    <None Include="..\..\..\Chimera\clock" />
+    <None Include="..\..\..\Chimera\common" />
+    <None Include="..\..\..\Chimera\container" />
+    <None Include="..\..\..\Chimera\crc" />
+    <None Include="..\..\..\Chimera\dma" />
+    <None Include="..\..\..\Chimera\ethernet" />
+    <None Include="..\..\..\Chimera\event" />
+    <None Include="..\..\..\Chimera\gpio" />
+    <None Include="..\..\..\Chimera\power" />
+    <None Include="..\..\..\Chimera\serial" />
+    <None Include="..\..\..\Chimera\spi" />
+    <None Include="..\..\..\Chimera\system" />
+    <None Include="..\..\..\Chimera\thread" />
+    <None Include="..\..\..\Chimera\timer" />
+    <None Include="..\..\..\Chimera\uart" />
+    <None Include="..\..\..\Chimera\usart" />
+    <None Include="..\..\..\Chimera\utility" />
+    <None Include="..\..\..\Chimera\watchdog" />
     <None Include="stm32.props" />
     <None Include="ChimeraStaticLibrary-Debug.vgdbsettings" />
     <None Include="ChimeraStaticLibrary-Release.vgdbsettings" />
@@ -361,6 +387,7 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types_fwd.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\crc\build.jam" />
+    <ClCompile Include="..\..\..\Chimera\src\event\chimera_event.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\crc\chimera_crc.cpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc_intf.hpp" />

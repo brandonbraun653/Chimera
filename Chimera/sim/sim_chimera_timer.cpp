@@ -17,6 +17,8 @@
 #include <thread>
 
 /* Chimera Includes */
+#include <Chimera/common>
+#include <Chimera/timer>
 #include <Chimera/sim/sim_chimera_system.hpp>
 
 namespace ChimeraSim::Timer

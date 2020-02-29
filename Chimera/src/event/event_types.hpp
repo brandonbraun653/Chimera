@@ -18,52 +18,51 @@
 #include <limits>
 #include <memory>
 #include <variant>
+#include <vector>
 
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/callback>
-
+#include <Chimera/src/threading/semaphore.hpp>
 
 namespace Chimera::Event
 { 
-  enum class Trigger : size_t
+  enum Trigger : size_t 
   {
-    INVALID,            /**< Special case used for initialization */
-    READ_COMPLETE,      /**< A read was completed */
-    WRITE_COMPLETE,     /**< A write was completed */
-    TRANSFER_COMPLETE,  /**< A transfer of some sort completed (bi-directional) */
-    SYSTEM_ERROR,       /**< Catch all error case */
+    TRIGGER_INVALID,            /**< Special case used for initialization */
+    TRIGGER_READ_COMPLETE,      /**< A read was completed */
+    TRIGGER_WRITE_COMPLETE,     /**< A write was completed */
+    TRIGGER_TRANSFER_COMPLETE,  /**< A transfer of some sort completed (bi-directional) */
+    TRIGGER_SYSTEM_ERROR,       /**< Catch all error case */
   };
 
-  enum class ElementType : uint8_t
+  enum ListenerType : size_t
   {
-    INVALID,
-    ATOMIC_NOTIFIER_T,
-    THREAD_NOTIFIER_T,
-    CALLBACK_T
+    LISTENER_INVALID,      /**< Listener is invalid */
+    LISTENER_ATOMIC,       /**< Listener is an atomically writeable variable */
+    LISTENER_SEMAPHORE,    /**< Listener is a semaphore to be released/given to */
+    LISTENER_FUNCTION,     /**< Listener is a callback function to be invoked */
+    LISTENER_ISR_CALLBACK, /**< Special listener that executes inside an ISR */
+  };
+
+  union ListenerObject
+  {
+    uint32_t *atomic_listener;
+    Chimera::Callback::EventFunction event_callback_listener;
+    Chimera::Callback::ISRFunction isr_callback_listener;
+    Chimera::Threading::BinarySemaphore *semaphore_listener;
   };
 
   struct Actionable
   {
-    Trigger trigger;  /**< Which kind of event triggers this Actionable */
-    ElementType type; /**< What kind of Actionable is stored in the handle */
-    size_t id;        /**< Uniquely identifies this Actionable */
-
-    /**
-     *  Stores the user defined element that an external 
-     *  processing function will act upon. 
-     */
-    #if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
-    std::variant<uint32_t *, SemaphoreHandle_t, Chimera::Callback::ISRCallbackFunction> element;
-    #else
-    std::variant<uint32_t *, void*, Chimera::Callback::ISRCallbackFunction> element;
-    #endif 
-
-    Actionable() :
-        trigger( Trigger::INVALID ), type( ElementType::INVALID ), id( std::numeric_limits<size_t>::max() )
-    {
-    }
+    size_t id;             /**< Uniquely identifies this Actionable */
+    Trigger trigger;       /**< Which kind of event triggers this Actionable */
+    ListenerType type;     /**< What kind of Actionable is stored in the handle */
+    ListenerObject object; /**< The listener object to be invoked */
   };
+
+
+  using ActionableList = std::vector<Actionable>;
 
 }  // namespace Chimera::Event
 

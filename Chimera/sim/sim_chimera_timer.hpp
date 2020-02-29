@@ -17,6 +17,9 @@
 /* STL Includes */
 #include <cstdlib>
 
+/* Chimera Includes */
+#include <Chimera/common>
+
 namespace ChimeraSim::Timer
 {
   Chimera::Status_t initialize();

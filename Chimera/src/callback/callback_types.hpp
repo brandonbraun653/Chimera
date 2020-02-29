@@ -16,7 +16,6 @@
 
 /* STL Includes */
 #include <cstdint>
-#include <functional>
 
 namespace Chimera::Callback
 {
@@ -27,11 +26,16 @@ namespace Chimera::Callback
    *  most flexibility. The const data specifier was intentionally left removed
    *  so that in a unique scenario the callbacks can talk directly with the handle.
    *
-   *  @param[in]  handle    Some data structure that the ISR wants to give to callbacks
-   *  @param[in]  size      The size of the handle structure in bytes
+   *  @param[in]  handle        Some data structure that the ISR wants to give to callbacks
+   *  @param[in]  handleSize    The size of the handle structure in bytes
    *  @return void
    */
-  using ISRCallbackFunction = std::function<void( void *const handle, const size_t size )>;
+  using ISRFunction = void ( * )( void *const handle, const size_t handleSize );
+
+  /**
+   *  
+   */
+  using EventFunction = void ( * )( const size_t event, void *const handle, const size_t handleSize );
 
 }  // namespace Chimera::Callback
 
