@@ -9,15 +9,29 @@
  ********************************************************************************/
 
 /* Chimera Includes */
-#include <Chimera/src/common/chimera.hpp>
-#include <Chimera/src/common/preprocessor.hpp>
+#include <Chimera/common>
+#include <Chimera/gpio>
+#include <Chimera/spi>
 #include <Chimera/system>
 #include <Chimera/thread>
 #include <Chimera/timer>
+#include <Chimera/watchdog>
 
 void ChimeraInit()
 {
+  /*------------------------------------------------
+  Initialize the back end driver first so that all the necessary
+  resources can be initialized properly
+  ------------------------------------------------*/
   Chimera::System::prjSystemStartup();
+
+  /*------------------------------------------------
+  Now initialize the Chimera drivers, which hook into the backend
+  ------------------------------------------------*/
+  Chimera::GPIO::initialize();
+  Chimera::SPI::initialize();
+  Chimera::Timer::initialize();
+  Chimera::Watchdog::initialize();
 }
 
 namespace Chimera
