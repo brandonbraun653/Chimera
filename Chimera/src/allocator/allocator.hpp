@@ -12,21 +12,13 @@
 #ifndef CHIMERA_ALLOCATOR_HPP
 #define CHIMERA_ALLOCATOR_HPP
 
-#include "chimeraConfig.hpp"
 #include <Chimera/common>
 
-/*------------------------------------------------
-Redirect the new/delete operators into the FreeRTOS
-memory management functions. Without this, all hell
-will break loose.
-------------------------------------------------*/
-#if defined( CHIMERA_CFG_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
 
-#if !defined( CHIMERA_SIMULATOR )
+#if defined( USING_FREERTOS_THREADS )
 void* malloc (size_t size);
 
 void free (void* ptr);
-#endif /* !CHIMERA_SIMULATOR */
 
 #include "new"
 void *operator new( size_t size );
@@ -35,5 +27,6 @@ void *operator new[]( size_t size );
 
 void operator delete( void *p ) noexcept;
 
-#endif /* CHIMERA_CFG_FREERTOS */
+#endif /* USING_FREERTOS_THREADS */
+
 #endif /* CHIMERA_ALLOCATOR_HPP*/

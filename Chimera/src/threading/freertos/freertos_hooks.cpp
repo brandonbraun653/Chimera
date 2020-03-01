@@ -9,11 +9,10 @@
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#include "chimeraConfig.hpp"
 #include <Chimera/common>
 #include <Chimera/thread>
 
-#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS_THREADS )
 
 #ifdef __cplusplus
 extern "C"
