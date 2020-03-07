@@ -100,6 +100,15 @@
     <Filter Include="standalone\config\chimera">
       <UniqueIdentifier>{08fbcf5d-2bb0-4d1c-af3b-0e0f9f0d7ca1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sim\gpio">
+      <UniqueIdentifier>{dedf32b7-b9cf-4d4b-87c6-258d40fcb3de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\spi">
+      <UniqueIdentifier>{357d6e50-7dc8-47b7-baa7-e80ddac06838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\watchdog">
+      <UniqueIdentifier>{da09c95a-d41a-4aaf-b561-cc656fadd0fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Chimera\buffer" />
@@ -501,6 +510,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\common\boost_stubs.cpp">
       <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\gpio\sim_chimera_gpio.cpp">
+      <Filter>sim\gpio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\spi\sim_chimera_spi.cpp">
+      <Filter>sim\spi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\watchdog\sim_chimera_watchdog.cpp">
+      <Filter>sim\watchdog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

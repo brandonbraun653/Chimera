@@ -147,8 +147,11 @@
     <ClInclude Include="..\..\..\Chimera\version.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Chimera\sim\gpio\sim_chimera_gpio.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\spi\sim_chimera_spi.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\watchdog\sim_chimera_watchdog.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\allocator\chimera_allocator.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\buffer\chimera_buffer.cpp" />
