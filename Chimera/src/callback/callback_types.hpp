@@ -19,6 +19,8 @@
 
 namespace Chimera::Callback
 {
+  using DefaultFunction = void ( * )( void );
+
   /**
    *  A generic callback type that can be used across a wide variety of
    *  peripheral ISR events. Sometimes the callbacks need data and sometimes
