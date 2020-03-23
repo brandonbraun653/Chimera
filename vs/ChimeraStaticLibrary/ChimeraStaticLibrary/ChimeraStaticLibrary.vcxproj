@@ -304,6 +304,7 @@
       <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
       <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>Os</Optimization>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32F446RE'">
