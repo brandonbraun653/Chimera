@@ -14,10 +14,9 @@
 #define CHIMERA_FREERTOS_HOOKS_PRJ_HPP
 
 /* Chimera Includes */
-#include "chimeraConfig.hpp"
 #include <Chimera/common>
 
-#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 
 /* FreeRTOS Includes */
 #include "FreeRTOS.h"
