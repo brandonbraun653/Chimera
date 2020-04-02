@@ -23,7 +23,8 @@ void ChimeraInit()
   Initialize the back end driver first so that all the necessary
   resources can be initialized properly
   ------------------------------------------------*/
-  Chimera::System::prjSystemStartup();
+  Chimera::System::initialize();
+  Chimera::System::systemStartup();
 
   /*------------------------------------------------
   Now initialize the Chimera drivers, which hook into the backend

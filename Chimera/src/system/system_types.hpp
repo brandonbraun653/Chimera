@@ -21,24 +21,142 @@
 
 namespace Chimera::System
 {
-  class SystemControl;
-  using SystemControl_sPtr = std::shared_ptr<SystemControl>;
-  using SystemControl_uPtr = std::unique_ptr<SystemControl>;
-
-  enum class ResetType : uint8_t
+  /**
+   *  The possible types of supported system reset events
+   */
+  enum class ResetEvent : uint8_t
   {
-    BROWN_OUT,
-    SOFTWARE,
-    HW_WATCHDOG_TIMEOUT,
-    UNKNOWN_RESET,
+    BROWN_OUT,                       /**< Bad power condition*/
+    EXIT_POWER_MODE,                 /**< Exiting some power mode (standby, shutdown, etc)*/
+    SOFTWARE,                        /**< Software caused the reset*/
+    HW_EXTERNAL_PIN,                 /**< Active logic level on the MCU reset pin */
+    HW_INDEPENDENT_WATCHDOG_TIMEOUT, /**< Independent watchdog timed out*/
+    HW_WINDOW_WATCHDOG_TIMEOUT,      /**< Window watchdog timed out*/
+    UNKNOWN,                         /**< An undocumented reset event */
+    CLEARED,                         /**< Hardware flags were cleared */
+    NOT_SUPPORTED,                   /**< Reset reasoning logic isn't supported */
     MAX_RESET_TYPE
   };
 
+  /**
+   *  Physical hardware packaging option for this device
+   */
+  enum class Packaging : uint8_t
+  {
+    LQFP64,
+    WLCSP64,
+    LQFP100,
+    WLCSP36,
+    UFQFPN32,
+    LQFP32,
+    UFQFPN48,
+    LQFP48,
+    WLCSP49,
+    UFBGA64,
+    UFBGA100,
+    UNKNOWN
+  };
+
+  /**
+   *  Encapsulates information about current system interrupt states
+   */
   struct InterruptMask
   {
     bool interrupted;
     uint32_t mask;
   };
+
+  /**
+   *  System information that describes the chip that is running
+   *  the host software. Intended to provide a generic overview
+   *  of physical specs and capabilities.
+   */
+  struct Information
+  {
+    std::array<uint8_t, 12> uniqueId; /**< Unique identifier for this chip */
+    size_t flashSize;                 /**< The amount of flash on the chip in kB */
+    Packaging chipPackage;            /**< The chip's physical IC packaging type */
+  };
+
+  namespace Backend
+  {
+    /**
+     *  Stores hooks for functions that the driver system should register with 
+     *  Chimera. Not all of the functions have to be implemented in order for
+     *  the driver to be registered. 
+     */
+    struct DriverConfig
+    {
+      bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
+
+      /**
+       *  Function pointer that initializes the backend driver's
+       *  memory. Should really only call once for initial set up.
+       */
+      Chimera::Status_t ( *initialize )( void );
+
+      /**
+       *  Resets the backend driver hardware to default configuration
+       *  settings, but does not wipe out any memory.
+       */
+      Chimera::Status_t ( *reset )( void );
+
+      /**
+       *  Low level driver specific system initialization function used for operations
+       *  like clock configuration, peripheral startup, etc.
+       *
+       *  @note     Intended to allow the backend driver to initialize itself before Chimera
+       *            code begins execution.
+       *
+       *  @warning  Chimera assumes that once this function exits, the backend driver is ready
+       *            to be used in its entirety.
+       *
+       *  @return Chimera::Status_t
+       */
+      Chimera::Status_t ( *systemStartup )( void );
+
+      /**
+       *  Disables system level interrupts, thereby preventing any kind of interrupt from
+       *  executing on the CPU.
+       *
+       *	@return size_t      Mask indicating which interrupts were disabled
+       */
+      Chimera::System::InterruptMask ( *disableInterrupts )( void );
+
+      /**
+       *  Enables system level interrupts from the mask that was returned when
+       *  interrupts were last disabled.
+       *
+       *	@return void
+       */
+      void ( *enableInterrupts )( Chimera::System::InterruptMask &interruptMask );
+
+      /**
+       *	Returns the maximum number of concurrent hardware threads that
+       *  can be executing at any given time on the CPU. This is different
+       *  than a multi-threaded scheduler like FreeRTOS and is physically
+       *  dependent on the hardware.
+       *
+       *	@return int
+       */
+      int ( *maxConcurrentThreads )( void );
+
+      /**
+       *  Returns the last known reason why the system, according to the hardware
+       *
+       *  @return ResetEvent
+       */
+      ResetEvent ( *getResetReason )( void );
+
+      /**
+       *  Gets high level system information that describes this chip
+       *
+       *  @param[in]  info    Chimera owned pointer for backend to point at local memory
+       *  @return void
+       */
+      void ( *getSystemInformation )( Information *&info );
+    };
+  }  // namespace Backend
 }  // namespace Chimera::System
 
 #endif /* !CHIMERA_SYSTEM_TYPES_HPP */

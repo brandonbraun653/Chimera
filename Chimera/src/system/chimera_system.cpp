@@ -19,41 +19,95 @@ namespace Chimera::System
 {
   static InterruptMask s_SystemInterruptState;
 
+  static Backend::DriverConfig s_backend_driver;
+
   Chimera::Status_t initialize()
   {
     memset( &s_SystemInterruptState, 0, sizeof( s_SystemInterruptState ) );
 
     /*------------------------------------------------
-    Execute the user's initialization code first so that Chimera
-    has a clean base to work from.
+    Register the backend interface with Chimera
     ------------------------------------------------*/
-    if ( prjSystemStartup() != Chimera::CommonStatusCodes::OK )
+    auto result = Backend::registerDriver( s_backend_driver );
+    if ( result != Chimera::CommonStatusCodes::OK )
     {
-      return Chimera::CommonStatusCodes::FAIL;
+      return result;
     }
 
     /*------------------------------------------------
-    Perform other initialization steps...when needed...
+    Try and invoke the registered init sequence
     ------------------------------------------------*/
-
-    return Chimera::CommonStatusCodes::OK;
-  }
-
-  void disableInterrupts()
-  {
-    s_SystemInterruptState = prjDisableInterrupts();
-  }
-
-  void enableInterrupts()
-  {
-    if ( s_SystemInterruptState.interrupted )
+    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
-      prjEnableInterrupts( s_SystemInterruptState );
+      return s_backend_driver.initialize();
+    }
+
+    return result;
+  }
+
+  Chimera::Status_t systemStartup()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.systemStartup )
+    {
+      return s_backend_driver.systemStartup();
+    }
+    else
+    {
+      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  }
+
+  Chimera::System::InterruptMask disableInterrupts()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.disableInterrupts )
+    {
+      return s_backend_driver.disableInterrupts();
+    }
+    else
+    {
+      auto temp = InterruptMask();
+      temp.interrupted = false;
+      return temp;
+    }
+  }
+
+  void enableInterrupts( Chimera::System::InterruptMask &interruptMask )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.enableInterrupts )
+    {
+      s_backend_driver.enableInterrupts( interruptMask );
     }
   }
 
   int maxConcurrentThreads()
   {
-    return prjMaxConcurrentThreads();
+    if ( s_backend_driver.isSupported && s_backend_driver.maxConcurrentThreads )
+    {
+      return s_backend_driver.maxConcurrentThreads();
+    }
+    else
+    {
+      return 0;
+    }
+  }
+
+  ResetEvent getResetReason()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.getResetReason )
+    {
+      return s_backend_driver.getResetReason();
+    }
+    else
+    {
+      return ResetEvent::NOT_SUPPORTED;
+    }
+  }
+
+  void getSystemInformation( Information *&info )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.getSystemInformation )
+    {
+      s_backend_driver.getSystemInformation( info );
+    }
   }
 }  // namespace Chimera::System

@@ -19,6 +19,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/src/system/system_types.hpp>
 
 namespace Chimera::System
 {
@@ -35,16 +36,30 @@ namespace Chimera::System
   Chimera::Status_t initialize();
 
   /**
+   *  Low level driver specific system initialization function used for operations
+   *  like clock configuration, peripheral startup, etc.
+   *
+   *  @note     Intended to allow the backend driver to initialize itself before Chimera
+   *            code begins execution.
+   *
+   *  @warning  Chimera assumes that once this function exits, the backend driver is ready
+   *            to be used in its entirety.
+   *
+   *  @return Chimera::Status_t
+   */
+  Chimera::Status_t systemStartup();
+
+  /**
    *  Disables the current system interrupts
    *	@return void
    */
-  void disableInterrupts();
+  Chimera::System::InterruptMask disableInterrupts();
 
   /**
    *  Restores previously disabled interrupts
    *	@return void
    */
-  void enableInterrupts();
+  void enableInterrupts( Chimera::System::InterruptMask &interruptMask );
 
   /**
    *	Returns the maximum number of concurrent hardware threads that
@@ -53,6 +68,15 @@ namespace Chimera::System
    *	@return int
    */
   int maxConcurrentThreads();
+
+  /**
+   *  Returns the last known reason why the hardware was reset
+   *
+   *  @return ResetEvent
+   */
+  ResetEvent getResetReason();
+
+  void getSystemInformation( Information *&info );
 
 }  // namespace Chimera::System
 
