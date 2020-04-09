@@ -555,9 +555,6 @@
     <None Include="..\..\..\Chimera\watchdog">
       <Filter>Chimera</Filter>
     </None>
-    <None Include="ChimeraStaticLibrary-STM32F432KC-Release.vgdbsettings">
-      <Filter>VisualGDB settings</Filter>
-    </None>
     <None Include="ChimeraStaticLibrary-STM32F446RE-Debug.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
@@ -565,6 +562,9 @@
       <Filter>VisualGDB settings</Filter>
     </None>
     <None Include="ChimeraStaticLibrary-STM32L432KC-Debug.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <None Include="ChimeraStaticLibrary-STM32L432KC-Release.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
   </ItemGroup>

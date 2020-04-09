@@ -12,6 +12,10 @@
 #ifndef CHIMERA_THREADING_COMMON_TYPES_HPP
 #define CHIMERA_THREADING_COMMON_TYPES_HPP
 
+/* STL Includes */
+#include <cstddef>
+#include <limits>
+
 namespace Chimera::Threading
 {
   /*------------------------------------------------
@@ -37,9 +41,18 @@ namespace Chimera::Threading
   };
 
   /*------------------------------------------------
-  Forward declarations
+  Common Timeouts
   ------------------------------------------------*/
-
+  static constexpr size_t TIMEOUT_BLOCK     = std::numeric_limits<size_t>::max();
+  static constexpr size_t TIMEOUT_DONT_WAIT = 0;
+  static constexpr size_t TIMEOUT_1MS       = 1;
+  static constexpr size_t TIMEOUT_5MS       = 5;
+  static constexpr size_t TIMEOUT_10MS      = 10;
+  static constexpr size_t TIMEOUT_25MS      = 25;
+  static constexpr size_t TIMEOUT_50MS      = 50;
+  static constexpr size_t TIMEOUT_100MS     = 100;
+  static constexpr size_t TIMEOUT_500MS     = 500;
+  static constexpr size_t TIMEOUT_1S        = 1000;
 }
 
 #endif	/* !CHIMERA_THREADING_COMMON_TYPES_HPP */

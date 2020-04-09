@@ -456,7 +456,7 @@
     <None Include="..\..\..\Chimera\usart" />
     <None Include="..\..\..\Chimera\utility" />
     <None Include="..\..\..\Chimera\watchdog" />
-    <None Include="ChimeraStaticLibrary-STM32F432KC-Release.vgdbsettings" />
+    <None Include="ChimeraStaticLibrary-STM32L432KC-Release.vgdbsettings" />
     <None Include="ChimeraStaticLibrary-STM32F446RE-Debug.vgdbsettings" />
     <None Include="ChimeraStaticLibrary-STM32F446RE-Release.vgdbsettings" />
     <None Include="ChimeraStaticLibrary-STM32L432KC-Debug.vgdbsettings" />
