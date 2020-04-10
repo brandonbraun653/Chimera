@@ -50,13 +50,17 @@ namespace Chimera::System
   Chimera::Status_t systemStartup();
 
   /**
-   *  Disables the current system interrupts
-   *	@return void
+   *  Disables all interrupts and returns a mask indicating which
+   *  ISR vector signals should be unmasked in enableInterrupts()
+   *
+   *	@return Chimera::System::InterruptMask
    */
   Chimera::System::InterruptMask disableInterrupts();
 
   /**
    *  Restores previously disabled interrupts
+   *
+   *  @param[in]  interruptMask     Mask returned from disableInterrupts()
    *	@return void
    */
   void enableInterrupts( Chimera::System::InterruptMask &interruptMask );

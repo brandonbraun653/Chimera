@@ -9,6 +9,7 @@
  ********************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/clock>
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/spi>
@@ -16,6 +17,7 @@
 #include <Chimera/thread>
 #include <Chimera/timer>
 #include <Chimera/watchdog>
+
 
 void ChimeraInit()
 {
@@ -29,6 +31,7 @@ void ChimeraInit()
   /*------------------------------------------------
   Now initialize the Chimera drivers, which hook into the backend
   ------------------------------------------------*/
+  Chimera::Clock::initialize();
   Chimera::GPIO::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();
