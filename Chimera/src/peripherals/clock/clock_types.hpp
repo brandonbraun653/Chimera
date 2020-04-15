@@ -32,6 +32,7 @@ namespace Chimera::Clock
     RC48,
     PLLCLK,
     HCLK,
+    AHB = HCLK,
     PCLK1,
     APB1 = PCLK1,
     PCLK2,

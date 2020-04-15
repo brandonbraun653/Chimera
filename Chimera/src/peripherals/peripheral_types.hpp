@@ -30,6 +30,7 @@ namespace Chimera::Peripheral
     PERIPH_CRC,         /**< Cyclic Redundancy Check */
     PERIPH_DAC,         /**< Digital to Analog Converter */
     PERIPH_DMA,         /**< Direct Memory Access */
+    PERIPH_FLASH,       /**< System Flash Controller */
     PERIPH_FMC,         /**< Flexible Memory Controller */
     PERIPH_GPIO,        /**< General Purpose Input Output */
     PERIPH_I2C,         /**< Inter-Integrated Circuit */
