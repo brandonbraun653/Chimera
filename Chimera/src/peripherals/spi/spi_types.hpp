@@ -5,6 +5,10 @@
  *  Description:
  *    Chimera SPI types
  *
+ *  Note:
+ *    Don't change the order or numbering of the various enum classes as they 
+ *    are allowed to be used as array indexes. Only append to the end.
+ *
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
@@ -23,7 +27,6 @@
 namespace Chimera::SPI
 {
   using ClockFreq    = size_t;
-  using Channel      = uint8_t;
   using TransferMode = Chimera::Hardware::PeripheralMode;
 
   class Status : public CommonStatusCodes
@@ -133,6 +136,23 @@ namespace Chimera::SPI
   };
 
   /**
+   *  Number of supported hardware channels. Each channel corresponds to a physical
+   *  peripheral, starting with SPI1 up to SPIx
+   */
+  enum class Channel : uint8_t
+  {
+    SPI1,
+    SPI2,
+    SPI3,
+    SPI4,
+    SPI5,
+    SPI6,
+
+    NUM_OPTIONS,
+    NOT_SUPPORTED
+  };
+
+  /**
    *  Low level hardware configuration options that define the physical
    *  layer behavior common to all SPI peripherals.
    */
@@ -144,7 +164,7 @@ namespace Chimera::SPI
     ClockMode clockMode     = ClockMode::MODE0;       /**< Sets the clock phase and polarity options */
     CSMode csMode           = CSMode::MANUAL;         /**< Chip select control mode */
     DataSize dataSize       = DataSize::SZ_8BIT;      /**< How wide each transfer should minimally be */
-    Channel hwChannel       = 0;                      /**< Hardware channel to be configured */
+    Channel hwChannel       = Channel::SPI1;          /**< Hardware channel to be configured */
     TransferMode txfrMode   = TransferMode::BLOCKING; /**< Transfer controller mode */
     bool validity           = false;                  /**< Structure validity */
   };

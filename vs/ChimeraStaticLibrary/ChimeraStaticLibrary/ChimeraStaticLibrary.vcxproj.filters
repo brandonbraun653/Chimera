@@ -318,9 +318,6 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\spi\chimera_spi.cpp">
       <Filter>Chimera\src\peripherals\spi</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi.hpp">
-      <Filter>Chimera\src\peripherals\spi</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_ext.hpp">
       <Filter>Chimera\src\peripherals\spi</Filter>
     </ClInclude>
@@ -574,6 +571,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types.hpp">
       <Filter>Chimera\src\peripherals\clock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_user.hpp">
+      <Filter>Chimera\src\peripherals\spi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

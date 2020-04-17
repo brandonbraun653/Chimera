@@ -18,7 +18,7 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/gpio>
-#include <Chimera/src/peripherals/spi/spi.hpp>
+#include <Chimera/src/peripherals/spi/spi_user.hpp>
 
 namespace Chimera::SPI
 {

@@ -537,7 +537,7 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\power\power_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\spi\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\spi\chimera_spi.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_ext.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_types.hpp" />

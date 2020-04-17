@@ -1,6 +1,6 @@
 /********************************************************************************
  *  File Name:
- *    spi.hpp
+ *    spi_user.hpp
  *
  *  Description:
  *    Implements an interface to create a Chimera SPI peripheral.
