@@ -12,6 +12,7 @@
 #include <Chimera/clock>
 #include <Chimera/common>
 #include <Chimera/gpio>
+#include <Chimera/pwm>
 #include <Chimera/spi>
 #include <Chimera/system>
 #include <Chimera/thread>
@@ -33,6 +34,7 @@ void ChimeraInit()
   ------------------------------------------------*/
   Chimera::Clock::initialize();
   Chimera::GPIO::initialize();
+  Chimera::PWM::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();
   Chimera::Watchdog::initialize();

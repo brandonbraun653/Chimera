@@ -16,7 +16,7 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/src/peripherals/spi/spi_intf.hpp>
+#include <Chimera/src/peripherals/spi/spi_types.hpp>
 
 namespace Chimera::SPI
 {

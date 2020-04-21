@@ -109,6 +109,9 @@
     <Filter Include="Device-specific files">
       <UniqueIdentifier>{bb4cbadd-27ec-4c14-80d2-d303d0218b55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Chimera\src\pwm">
+      <UniqueIdentifier>{38684f98-6e3b-401f-b7a4-236294d46d3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ChimeraStaticLibrary-Debug.vgdbsettings">
@@ -561,6 +564,12 @@
     <None Include="ChimeraStaticLibrary-STM32L432KC-Release.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
+    <None Include="..\..\..\Chimera\src\pwm\build.jam">
+      <Filter>Chimera\src\pwm</Filter>
+    </None>
+    <None Include="..\..\..\Chimera\pwm">
+      <Filter>Chimera</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp">
@@ -575,6 +584,15 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_user.hpp">
       <Filter>Chimera\src\peripherals\spi</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_intf.hpp">
+      <Filter>Chimera\src\pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_types.hpp">
+      <Filter>Chimera\src\pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_user.hpp">
+      <Filter>Chimera\src\pwm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp">
@@ -585,6 +603,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\peripherals\clock\chimera_clock.cpp">
       <Filter>Chimera\src\peripherals\clock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\src\pwm\chimera_pwm.cpp">
+      <Filter>Chimera\src\pwm</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -447,8 +447,10 @@
     <None Include="..\..\..\Chimera\event" />
     <None Include="..\..\..\Chimera\gpio" />
     <None Include="..\..\..\Chimera\power" />
+    <None Include="..\..\..\Chimera\pwm" />
     <None Include="..\..\..\Chimera\serial" />
     <None Include="..\..\..\Chimera\spi" />
+    <None Include="..\..\..\Chimera\src\pwm\build.jam" />
     <None Include="..\..\..\Chimera\system" />
     <None Include="..\..\..\Chimera\thread" />
     <None Include="..\..\..\Chimera\timer" />
@@ -469,6 +471,9 @@
     <None Include="..\..\..\Chimera\build.jam" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_intf.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\version.hpp" />
     <None Include="..\..\..\Chimera\sim\build.jam" />
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp" />
@@ -564,6 +569,7 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\watchdog\watchdog_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\watchdog\watchdog_types.hpp" />
     <None Include="..\..\..\Chimera\src\serial\build.jam" />
+    <ClCompile Include="..\..\..\Chimera\src\pwm\chimera_pwm.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\serial\chimera_serial.cpp" />
     <ClInclude Include="..\..\..\Chimera\src\serial\serial.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\serial\serial_base.hpp" />
