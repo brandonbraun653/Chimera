@@ -415,7 +415,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KC'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions);DEBUG=1</PreprocessorDefinitions>
       <Optimization>Og</Optimization>
       <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
@@ -424,7 +424,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KC'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions);NDEBUG=1;RELEASE=1</PreprocessorDefinitions>
       <Optimization>Os</Optimization>
       <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
@@ -548,9 +548,7 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\timer\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\timer\chimera_timer.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_intf.hpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_types.hpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\uart\build.jam" />

@@ -186,15 +186,15 @@ namespace Chimera::SPI
 
   class ISPI;
 
-  using SPI_sPtr = std::shared_ptr<ISPI>;
-  using SPI_uPtr = std::unique_ptr<ISPI>;
+  using ISPI_sPtr = std::shared_ptr<ISPI>;
+  using ISPI_uPtr = std::unique_ptr<ISPI>;
 
   namespace Backend
   {
     using Initialize_FPtr         = Chimera::Status_t ( * )( void );
     using Reset_FPtr              = Chimera::Status_t ( * )( void );
-    using CreateSharedObject_FPtr = SPI_sPtr ( * )( void );
-    using CreateUniqueObject_FPtr = SPI_uPtr ( * )( void );
+    using CreateSharedObject_FPtr = ISPI_sPtr ( * )( void );
+    using CreateUniqueObject_FPtr = ISPI_uPtr ( * )( void );
 
     struct DriverConfig
     {

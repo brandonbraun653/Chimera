@@ -336,15 +336,6 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\timer\chimera_timer.cpp">
       <Filter>Chimera\src\peripherals\timer</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_intf.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_types.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf.hpp">
       <Filter>Chimera\src\peripherals\timer</Filter>
     </ClInclude>
@@ -592,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_user.hpp">
       <Filter>Chimera\src\pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_user.hpp">
+      <Filter>Chimera\src\peripherals\timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

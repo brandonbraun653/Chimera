@@ -1,6 +1,6 @@
 /********************************************************************************
  *  File Name:
- *    timer.hpp
+ *    timer_user.hpp
  *
  *	Description:
  *    Chimera Timer
@@ -17,13 +17,18 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/src/peripherals/timer/timer_types.hpp>
 
 namespace Chimera::Timer
 {
   Chimera::Status_t initialize();
 
   Chimera::Status_t reset();
-  
+
+  ITimer_sPtr create_shared_ptr();
+
+  ITimer_uPtr create_unique_ptr();
+
   size_t millis();
 
   void delayMilliseconds( const size_t val );

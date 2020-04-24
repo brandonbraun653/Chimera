@@ -24,9 +24,9 @@ namespace Chimera::SPI
 
   Chimera::Status_t reset();
   
-  SPI_sPtr create_shared_ptr();
+  ISPI_sPtr create_shared_ptr();
 
-  SPI_uPtr create_unique_ptr();
+  ISPI_uPtr create_unique_ptr();
 
 }  // namespace Chimera::SPI
 

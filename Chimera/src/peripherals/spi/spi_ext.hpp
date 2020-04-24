@@ -43,7 +43,7 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t attachSPI( Chimera::SPI::SPI_sPtr &spi ) = 0;
+    virtual Chimera::Status_t attachSPI( Chimera::SPI::ISPI_sPtr &spi ) = 0;
 
     /**
      *  Attaches an SPI instance to the inheriting class. Setup information is intentionally
@@ -61,7 +61,7 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t attachSPI( Chimera::SPI::SPI_sPtr &spi, Chimera::SPI::DriverConfig &setup ) = 0;
+    virtual Chimera::Status_t attachSPI( Chimera::SPI::ISPI_sPtr &spi, Chimera::SPI::DriverConfig &setup ) = 0;
 
     /**
      *  Attaches an SPI instance to the inheriting class. It is intended that the
@@ -76,7 +76,7 @@ namespace Chimera::SPI
      *  |             FAIL | The operation failed                                      |
      *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
      */
-    virtual Chimera::Status_t attachSPI( Chimera::SPI::SPI_uPtr spi ) = 0;
+    virtual Chimera::Status_t attachSPI( Chimera::SPI::ISPI_uPtr spi ) = 0;
 
     virtual Chimera::Status_t attachCS( Chimera::GPIO::PinInit &CSConfig ) = 0;
 

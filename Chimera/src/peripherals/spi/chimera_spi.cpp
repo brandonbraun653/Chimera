@@ -37,7 +37,7 @@ namespace Chimera::SPI
     }
   }
 
-  SPI_sPtr create_shared_ptr()
+  ISPI_sPtr create_shared_ptr()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.createShared )
     {
@@ -49,7 +49,7 @@ namespace Chimera::SPI
     }
   }
 
-  SPI_uPtr create_unique_ptr()
+  ISPI_uPtr create_unique_ptr()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
     {

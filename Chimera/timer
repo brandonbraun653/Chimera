@@ -12,7 +12,7 @@
 #ifndef CHIMERA_TIMER_INCLUDES
 #define CHIMERA_TIMER_INCLUDES
 
-#include <Chimera/src/peripherals/timer/timer.hpp>
+#include <Chimera/src/peripherals/timer/timer_user.hpp>
 #include <Chimera/src/peripherals/timer/timer_intf.hpp>
 #include <Chimera/src/peripherals/timer/timer_types.hpp>
 

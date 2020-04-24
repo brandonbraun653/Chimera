@@ -18,7 +18,7 @@
 
 namespace Chimera::Timer
 {
-  static Backend::DriverConfig s_backend_driver;
+  static Backend::DriverRegistration s_backend_driver;
 
   Chimera::Status_t initialize()
   {
@@ -35,6 +35,30 @@ namespace Chimera::Timer
     else
     {
       return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    }
+  }
+
+  ITimer_sPtr create_shared_ptr()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.create_shared_ptr )
+    {
+      return s_backend_driver.create_shared_ptr();
+    }
+    else
+    {
+      return nullptr;
+    }
+  }
+
+  ITimer_uPtr create_unique_ptr()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.create_unique_ptr )
+    {
+      return s_backend_driver.create_unique_ptr();
+    }
+    else
+    {
+      return nullptr;
     }
   }
 
