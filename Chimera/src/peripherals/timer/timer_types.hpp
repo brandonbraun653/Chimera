@@ -21,6 +21,49 @@
 
 namespace Chimera::Timer
 {
+  class ITimer;
+  using ITimer_rPtr = ITimer*;
+  using ITimer_sPtr = std::shared_ptr<ITimer>;
+  using ITimer_uPtr = std::unique_ptr<ITimer>;
+
+
+  enum class CoreFeature : uint8_t
+  {
+    INVALID,
+    INPUT_CAPTURE,
+    OUTPUT_COMPARE,
+    PWM_OUTPUT,
+    ONE_PULSE_OUTPUT,
+    ENCODER,
+
+    NUM_OPTIONS
+  };
+
+  enum class DriverAction : size_t
+  {
+    INVALID,
+    NUM_OPTIONS
+  };
+
+  enum class Switchable : uint8_t
+  {
+    INVALID,
+    NUM_OPTIONS
+  };
+
+  enum class SwitchableState : uint8
+  {
+    INVALID,
+    NUM_OPTIONS
+  };
+
+  enum class DriverData : size_t
+  {
+    INVALID,
+    NUM_OPTIONS
+  };
+
+
   enum class Direction : uint8_t
   {
     COUNT_UP,    /**< Counts up from min, overflows, then starts counting up again */
@@ -87,19 +130,6 @@ namespace Chimera::Timer
     NUM_OPTIONS
   };
 
-  #if defined( VIRTUAL_FUNC )
-  class ITimerBase;
-  using ITimerBase_sPtr = std::shared_ptr<ITimerBase>;
-  using ITimerBase_uPtr = std::unique_ptr<ITimerBase>;
-  #else 
-  class TimerBaseImpl;
-
-  template<class T>
-  class ITimerBase;
-
-  using ITimerBase_sPtr = ITimerBase<TimerBaseImpl>*;
-  using ITimerBase_uPtr = ITimerBase<TimerBaseImpl>*;
-  #endif 
 
   struct DriverConfig
   {
@@ -110,19 +140,6 @@ namespace Chimera::Timer
     size_t reloadValue;       /**< Value to load when the counter overflows */
   };
 
-  #if defined( VIRTUAL_FUNC )
-  class ITimerEncoder;
-  using ITimerEncoder_sPtr = std::shared_ptr<ITimerEncoder>;
-  using ITimerEncoder_uPtr = std::unique_ptr<ITimerEncoder>;
-  #else
-  class TimerEncoderImpl;
-
-  template<class T>
-  class ITimerEncoder;
-
-  using ITimerEncoder_sPtr = ITimerEncoder<TimerEncoderImpl>*;
-  using ITimerEncoder_uPtr = ITimerEncoder<TimerEncoderImpl>*;
-  #endif
 
   namespace Encoder
   {
@@ -132,19 +149,6 @@ namespace Chimera::Timer
     };
   }  // namespace Encoder
 
-  #if defined( VIRTUAL_FUNC )
-  class ITimerInputCapture;
-  using ITimerInputCapture_sPtr = std::shared_ptr<ITimerInputCapture>;
-  using ITimerInputCapture_uPtr = std::unique_ptr<ITimerInputCapture>;
-  #else 
-  class TimerInputCaptureImpl;
-
-  template<class T>
-  class ITimerInputCapture;
-
-  using ITimerInputCapture_sPtr = ITimerInputCapture<TimerInputCaptureImpl>*;
-  using ITimerInputCapture_uPtr = ITimerInputCapture<TimerInputCaptureImpl>*;
-  #endif 
 
   namespace InputCapture
   {
@@ -154,19 +158,7 @@ namespace Chimera::Timer
     };
   }  // namespace InputCapture
 
-  #if defined( VIRTUAL_FUNC )
-  class ITimerOnePulse;
-  using ITimerOnePulse_sPtr = std::shared_ptr<ITimerOnePulse>;
-  using ITimerOnePulse_uPtr = std::unique_ptr<ITimerOnePulse>;
-  #else 
-  class TimerOnePulseImpl;
 
-  template<class T>
-  class ITimerOnePulse;
-
-  using ITimerOnePulse_sPtr = ITimerOnePulse<TimerOnePulseImpl>*;
-  using ITimerOnePulse_uPtr = ITimerOnePulse<TimerOnePulseImpl>*;
-  #endif 
 
   namespace OnePulse
   {
@@ -176,19 +168,7 @@ namespace Chimera::Timer
     };
   }  // namespace OnePulse
 
-  #if defined( VIRTUAL_FUNC )
-  class ITimerOutputCompare;
-  using ITimerOutputCompare_sPtr = std::shared_ptr<ITimerOutputCompare>;
-  using ITimerOutputCompare_uPtr = std::unique_ptr<ITimerOutputCompare>;
-  #else 
-  class TimerOutputCompareImpl;
 
-  template<class T>
-  class ITimerOutputCompare;
-
-  using ITimerOutputCompare_sPtr = ITimerOutputCompare<TimerOutputCompareImpl>*;
-  using ITimerOutputCompare_uPtr = ITimerOutputCompare<TimerOutputCompareImpl>*;
-  #endif 
 
   namespace OutputCompare
   {
@@ -198,19 +178,6 @@ namespace Chimera::Timer
     };
   }  // namespace OutputCompare
 
-  #if defined( VIRTUAL_FUNC )
-  class ITimerPWM;
-  using ITimerPWM_sPtr = std::shared_ptr<ITimerPWM>;
-  using ITimerPWM_uPtr = std::unique_ptr<ITimerPWM>;
-  #else 
-  class TimerPWMImpl;
-
-  template<class T>
-  class ITimerPWM;
-
-  using ITimerPWM_sPtr = ITimerPWM<TimerPWMImpl>*;
-  using ITimerPWM_uPtr = ITimerPWM<TimerPWMImpl>*;
-  #endif 
 
   namespace PWM
   {
@@ -232,6 +199,23 @@ namespace Chimera::Timer
       bool validity;
     };
   }  // namespace PWM
+
+
+
+  union CoreFeatureInit
+  {
+    Encoder::Config encoder;
+    InputCapture::Config inputCapture;
+    OnePulse::Config onePulse;
+    OutputCompare::Config outputCompare;
+    PWM::Config pwm;
+  };
+
+  struct Descriptor
+  {
+
+  };
+
 
   namespace Backend
   {
