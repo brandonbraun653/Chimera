@@ -47,6 +47,11 @@ namespace Chimera
     return Timer::millis();
   }
 
+  size_t micros()
+  {
+    return Timer::micros();
+  }
+
   void delayMilliseconds( const size_t val )
   {
     Timer::delayMilliseconds( val );

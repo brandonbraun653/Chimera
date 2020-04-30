@@ -1,18 +1,17 @@
 /********************************************************************************
  *  File Name:
- *    algorithm
+ *    cfg
  *
  *  Description:
- *    Chimera Buffer Includes
+ *    Chimera Callback Includes
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_ALGORITHM_INCLUDES
-#define CHIMERA_ALGORITHM_INCLUDES
+#ifndef CHIMERA_CONFIG_INCLUDES
+#define CHIMERA_CONFIG_INCLUDES
 
-#include <Chimera/src/algorithm/common_types.hpp>
-#include <Chimera/src/algorithm/register_optimizer.hpp>
+#include <Chimera/src/config/configuration.hpp>
 
-#endif /* !CHIMERA_ALGORITHM_INCLUDES */
+#endif /* !CHIMERA_CONFIG_INCLUDES */
