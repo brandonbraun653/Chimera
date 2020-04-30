@@ -38,30 +38,6 @@ namespace Chimera::Timer
     }
   }
 
-  ITimer_sPtr create_shared_ptr()
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.create_shared_ptr )
-    {
-      return s_backend_driver.create_shared_ptr();
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
-
-  ITimer_uPtr create_unique_ptr()
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.create_unique_ptr )
-    {
-      return s_backend_driver.create_unique_ptr();
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
-
   size_t millis()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.millis )
@@ -89,4 +65,5 @@ namespace Chimera::Timer
       s_backend_driver.delayMicroseconds( val );
     }
   }
+
 }

@@ -18,31 +18,21 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/gpio>
+#include <Chimera/timer>
 
 namespace Chimera::PWM
 {
-  enum class IdleState : uint8_t
-  {
-    LOW,
-    HIGH
-  };
-
   /**
-   *  Initialization structure to configure a PWM driver. Because the number
-   *  of PWM capable Timer channels are unknown to Chimera, the actual mapping
-   *  of which channel corresponds to a Timer Peripheral should be checked in
-   *  the back end driver source code.
+   *  Initialization structure to configure a PWM driver
    */
   struct DriverConfig
   {
-    size_t channel;                   /**< PWM channel to use for the driver */
-    size_t dutyCycle;                 /**< Initial duty cycle */
-    size_t frequency;                 /**< Initial output frequency */
-    IdleState idle;                   /**< Idle state when signal not asserted */
-    Chimera::GPIO::PinInit outputPin; /**< Output pin configuration */
-    bool validity;                    /**< Is this configuration data valid */
+    Chimera::GPIO::PinInit outputPin;          /**< Output pin configuration */
+    Chimera::Timer::PWM::Config pwm;           /**< PWM configuration */
+    Chimera::Timer::DriverConfig timer;        /**< Optional timer hardware config */
+    bool validity;                             /**< Is this configuration data valid */
   };
-  
+
   class IPWM;
   using PWM_sPtr = std::shared_ptr<IPWM>;
   using PWM_uPtr = std::unique_ptr<IPWM>;
@@ -56,7 +46,7 @@ namespace Chimera::PWM
       /**
        *  Initializes the backend driver memory
        *
-       *  @return Chimera::Status_t 
+       *  @return Chimera::Status_t
        */
       Chimera::Status_t ( *initialize )( void );
 

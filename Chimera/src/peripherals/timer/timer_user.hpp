@@ -25,9 +25,20 @@ namespace Chimera::Timer
 
   Chimera::Status_t reset();
 
-  ITimer_sPtr create_shared_ptr();
+  ITimerEncoder_sPtr create_encoder_shared_ptr();
+  ITimerEncoder_uPtr create_encoder_unique_ptr();
 
-  ITimer_uPtr create_unique_ptr();
+  ITimerInputCapture_sPtr create_input_capture_shared_ptr();
+  ITimerInputCapture_uPtr create_input_capture_unique_ptr();
+
+  ITimerOnePulse_sPtr create_one_pulse_shared_ptr();
+  ITimerOnePulse_uPtr create_one_pulse_unique_ptr();
+
+  ITimerOutputCompare_sPtr create_output_compare_shared_ptr();
+  ITimerOutputCompare_uPtr create_output_compare_unique_ptr();
+
+  ITimerPWM_sPtr create_pwm_shared_ptr();
+  ITimerPWM_uPtr create_pwm_unique_ptr();
 
   size_t millis();
 
