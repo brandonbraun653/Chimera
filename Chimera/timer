@@ -13,11 +13,6 @@
 #define CHIMERA_TIMER_INCLUDES
 
 #include <Chimera/src/peripherals/timer/timer_intf.hpp>
-#include <Chimera/src/peripherals/timer/timer_intf_encoder.hpp>
-#include <Chimera/src/peripherals/timer/timer_intf_input_capture.hpp>
-#include <Chimera/src/peripherals/timer/timer_intf_one_pulse.hpp>
-#include <Chimera/src/peripherals/timer/timer_intf_output_compare.hpp>
-#include <Chimera/src/peripherals/timer/timer_intf_pwm.hpp>
 #include <Chimera/src/peripherals/timer/timer_types.hpp>
 #include <Chimera/src/peripherals/timer/timer_user.hpp>
 

@@ -30,6 +30,7 @@ namespace Chimera::Timer
   enum class CoreFeature : uint8_t
   {
     INVALID,
+    BASE_TIMER,
     INPUT_CAPTURE,
     OUTPUT_COMPARE,
     PWM_OUTPUT,
@@ -42,6 +43,13 @@ namespace Chimera::Timer
   enum class DriverAction : size_t
   {
     INVALID,
+
+    PWM_ACTION_BEGIN,
+    DISABLE_PWM_CHANNEL = PWM_ACTION_BEGIN,
+    ENABLE_PWM_CHANNEL,
+    PWM_ACTION_END,
+
+
     NUM_OPTIONS
   };
 
@@ -51,15 +59,18 @@ namespace Chimera::Timer
     NUM_OPTIONS
   };
 
-  enum class SwitchableState : uint8
+  enum class SwitchableState : uint8_t
   {
     INVALID,
+    ON,
+    OFF,
     NUM_OPTIONS
   };
 
   enum class DriverData : size_t
   {
     INVALID,
+    IS_CONFIGURED,
     NUM_OPTIONS
   };
 
@@ -133,8 +144,8 @@ namespace Chimera::Timer
 
   struct DriverConfig
   {
-    bool validity;  /**< Decides if the configuration settings are valid */
-    bool overwrite; /**< Allows the config to update the entire timer peripheral (multiple channels share one peripheral) */
+    bool validity;            /**< Decides if the configuration settings are valid */
+    bool overwrite;           /**< Allows the config to update the entire timer peripheral (multiple channels share one peripheral) */
     Peripheral peripheral;    /**< Which peripheral to configure */
     Direction countDirection; /**< Which direction the free-running counter should count */
     size_t reloadValue;       /**< Value to load when the counter overflows */
@@ -204,6 +215,7 @@ namespace Chimera::Timer
 
   union CoreFeatureInit
   {
+    DriverConfig base;
     Encoder::Config encoder;
     InputCapture::Config inputCapture;
     OnePulse::Config onePulse;
@@ -216,7 +228,6 @@ namespace Chimera::Timer
 
   };
 
-
   namespace Backend
   {
     struct DriverRegistration
@@ -225,8 +236,12 @@ namespace Chimera::Timer
       Chimera::Status_t ( *initialize )( void );
       Chimera::Status_t ( *reset )( void );
       size_t ( *millis )( void );
+      size_t ( *micros )( void );
       void ( *delayMilliseconds )( const size_t );
       void ( *delayMicroseconds )( const size_t );
+      ITimer_sPtr ( *createSharedInstance )(  const Chimera::Timer::Peripheral );
+      ITimer_uPtr ( *createUniqueInstance )(  const Chimera::Timer::Peripheral );
+      ITimer_rPtr ( *createUnsafeInstance )(  const Chimera::Timer::Peripheral );
     };
   }  // namespace Backend
 }  // namespace Chimera::Timer

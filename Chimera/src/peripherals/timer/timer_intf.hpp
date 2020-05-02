@@ -90,16 +90,15 @@ namespace Chimera::Timer
     extern Chimera::Status_t registerDriver( DriverRegistration &registry );
   }  // namespace Backend
 
-
   /**
    *  Interface that interacts with the core timer peripheral via a dispatching mechanism.
    *  Various actions can be specified and the implementer can decide whether or not it's
    *  going to support the functionality.
    */
-  class ITimer
+  class ITimerHardwareDriver
   {
   public:
-    virtual ~ITimer() = default;
+    virtual ~ITimerHardwareDriver() = default;
 
     /*------------------------------------------------
     Configuration & Control
@@ -155,7 +154,13 @@ namespace Chimera::Timer
      *
      *  @return const Chimera::Timer::Descriptor *
      */
-    virtual const Chimera::Timer::Descriptor * getDeviceInfo();
+    virtual const Chimera::Timer::Descriptor * getDeviceInfo() = 0;
+  };
+
+  class ITimer : virtual public ITimerHardwareDriver, virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~ITimer() = default;
   };
 }  // namespace Chimera::Timer
 

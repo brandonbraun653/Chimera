@@ -1,0 +1,17 @@
+/********************************************************************************
+ *  File Name:
+ *    cfg
+ *
+ *  Description:
+ *    Chimera Callback Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_CONFIG_INCLUDES
+#define CHIMERA_CONFIG_INCLUDES
+
+#include <Chimera/src/config/configuration.hpp>
+
+#endif /* !CHIMERA_CONFIG_INCLUDES */

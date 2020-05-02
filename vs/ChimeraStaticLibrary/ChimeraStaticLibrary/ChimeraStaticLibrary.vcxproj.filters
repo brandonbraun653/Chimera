@@ -587,21 +587,6 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_user.hpp">
       <Filter>Chimera\src\peripherals\timer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf_encoder.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf_input_capture.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf_one_pulse.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf_output_compare.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_intf_pwm.hpp">
-      <Filter>Chimera\src\peripherals\timer</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp">
