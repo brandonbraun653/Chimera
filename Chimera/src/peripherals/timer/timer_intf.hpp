@@ -54,7 +54,11 @@
  *    enumeration. Data associated with these actions will be passed back and forth
  *    via callbacks and various data structures. This **should** allow for the full
  *    set of timer behaviors to be captured while keeping the memory overhead
- *    minimal and the interface extensible in the future.
+ *    relatively minimal and the interface extensible in the future. Due to the fact
+ *    that generally a timer will get encapsulated as part of another feature (PWM,
+ *    scheduled callbacks, measurement, etc), it feels less important to have a more
+ *    traditional peripheral interface and instead focus on making sure all features
+ *    can be accessed. The many-to-one problem is difficult.
  *
  *    While the interface enforcement is a bit looser than desired (it relies on the
  *    programmer to follow the documented spec per action type), it gets the job done.

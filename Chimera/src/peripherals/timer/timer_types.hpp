@@ -29,7 +29,6 @@ namespace Chimera::Timer
 
   enum class CoreFeature : uint8_t
   {
-    INVALID,
     BASE_TIMER,
     INPUT_CAPTURE,
     OUTPUT_COMPARE,
@@ -37,41 +36,40 @@ namespace Chimera::Timer
     ONE_PULSE_OUTPUT,
     ENCODER,
 
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    INVALID
   };
 
   enum class DriverAction : size_t
   {
-    INVALID,
-
     PWM_ACTION_BEGIN,
     DISABLE_PWM_CHANNEL = PWM_ACTION_BEGIN,
     ENABLE_PWM_CHANNEL,
     PWM_ACTION_END,
 
-
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    INVALID
   };
 
   enum class Switchable : uint8_t
   {
-    INVALID,
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    INVALID
   };
 
   enum class SwitchableState : uint8_t
   {
-    INVALID,
     ON,
     OFF,
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    INVALID
   };
 
   enum class DriverData : size_t
   {
-    INVALID,
     IS_CONFIGURED,
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    INVALID
   };
 
 
@@ -79,7 +77,6 @@ namespace Chimera::Timer
   {
     COUNT_UP,    /**< Counts up from min, overflows, then starts counting up again */
     COUNT_DN,    /**< Counts down from max, underflows, then starts counting down again */
-    COUNT_UP_DN, /**< Alternates between counting up, down, up, etc */
 
     NUM_OPTIONS
   };
@@ -149,6 +146,7 @@ namespace Chimera::Timer
     Peripheral peripheral;    /**< Which peripheral to configure */
     Direction countDirection; /**< Which direction the free-running counter should count */
     size_t reloadValue;       /**< Value to load when the counter overflows */
+    size_t prescaler;         /**< Divides the peripheral source clock to provide the tick clock */
   };
 
 
@@ -200,12 +198,22 @@ namespace Chimera::Timer
       NUM_OPTIONS
     };
 
+    enum class Mode
+    {
+      EDGE_ALIGNED,
+      CENTER_ALIGNED,
+      ASYMMETRIC,
+      COMBINED,
+      
+      NUM_OPTIONS,
+    };
+
     struct Config
     {
       Chimera::Timer::Peripheral peripheral; /**< Timer peripheral in use */
       Chimera::Timer::Channel outputChannel; /**< Channel to configure the PWM output on */
-      size_t dutyCycle;                      /**< Initial duty cycle */
-      size_t frequency;                      /**< Initial output frequency */
+      Mode mode;                             /**< The PWM mode to operate as */
+      size_t compareMatch;                   /**< Value to compare/match to that generates an event */
       Polarity polarity;                     /**< Idle state when signal not asserted */
       bool validity;
     };

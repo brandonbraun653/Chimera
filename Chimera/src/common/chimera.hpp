@@ -31,11 +31,22 @@ namespace Chimera
    *  of the program.
    *
    *  @warning  Must call ChimeraInit() in order for this function to work
-   *  @note     May not be exactly 1mS period as this is OS dependent
+   *  @note     May not be exactly 1mS resolution as this is OS dependent
    *
    *	@return size_t
    */
   size_t millis();
+
+  /**
+   *	Returns the number of microseconds that have elapsed since the beginning
+   *  of the program.
+   *
+   *  @warning  Must call ChimeraInit() in order for this function to work
+   *  @note     May not be exactly 1uS resolution as this is OS dependent
+   *
+   *	@return size_t
+   */
+  size_t micros();
 
   /**
    *  Delays (blocks) the current thread execution for a number of milliseconds
