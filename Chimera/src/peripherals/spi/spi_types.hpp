@@ -189,6 +189,10 @@ namespace Chimera::SPI
   using ISPI_sPtr = std::shared_ptr<ISPI>;
   using ISPI_uPtr = std::unique_ptr<ISPI>;
 
+  // For objects that don't want to look like it's taking implicits
+  using SPI_sPtr = ISPI_sPtr;
+  using SPI_uPtr = ISPI_uPtr;
+
   namespace Backend
   {
     using Initialize_FPtr         = Chimera::Status_t ( * )( void );
