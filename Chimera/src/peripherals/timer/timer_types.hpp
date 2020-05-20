@@ -43,8 +43,10 @@ namespace Chimera::Timer
   enum class DriverAction : size_t
   {
     PWM_ACTION_BEGIN,
-    DISABLE_PWM_CHANNEL = PWM_ACTION_BEGIN,
-    ENABLE_PWM_CHANNEL,
+    PWM_DISABLE_CHANNEL = PWM_ACTION_BEGIN, /**< Disables a PWM channel output */
+    PWM_ENABLE_CHANNEL,                     /**< Enables a PWM channel output */
+    PWM_SET_DUTY_CYCLE,                     /**< Updates the duty cycle of a PWM channel */
+    PWM_SET_FREQUENCY,                      /**< Updates the frequency of a PWM channel */
     PWM_ACTION_END,
 
     NUM_OPTIONS,
@@ -127,7 +129,6 @@ namespace Chimera::Timer
 
   enum class Channel : uint8_t
   {
-    INVALID,
     CHANNEL_1,
     CHANNEL_2,
     CHANNEL_3,
@@ -135,7 +136,8 @@ namespace Chimera::Timer
     CHANNEL_5,
     CHANNEL_6,
 
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    INVALID
   };
 
 
@@ -215,6 +217,8 @@ namespace Chimera::Timer
       Mode mode;                             /**< The PWM mode to operate as */
       size_t compareMatch;                   /**< Value to compare/match to that generates an event */
       Polarity polarity;                     /**< Idle state when signal not asserted */
+      size_t frequency;                      /**< Desired frequency of the PWM output */
+      uint8_t dutyCycle;                     /**< Desired duty cycle of the PWM output */
       bool validity;
     };
   }  // namespace PWM

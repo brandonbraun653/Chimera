@@ -45,18 +45,12 @@ namespace Chimera::PWM
     virtual Chimera::Status_t init( const DriverConfig &cfg ) = 0;
 
     /**
-     *  Enables the PWM output signal on the configured GPIO pin
+     *  Enables/Disables the PWM output signal on the configured GPIO pin
      *
+     *  @param[in]  state   State to place the output in (on/off)
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t enableOutput() = 0;
-
-    /**
-     *  Disables the PWM output signal on the configured GPIO pin
-     *
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t disableOutput() = 0;
+    virtual Chimera::Status_t toggleOutput( const bool state ) = 0;
 
     /**
      *  Sets the output frequency of the PWM signal
