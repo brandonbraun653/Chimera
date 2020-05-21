@@ -17,6 +17,7 @@
 #define CHIMERA_SPI_TYPES_HPP
 
 /* STL Includes */
+#include <cstring>
 #include <cstdint>
 #include <memory>
 
@@ -182,6 +183,17 @@ namespace Chimera::SPI
     HardwareInit HWInit;     /**< Hardware driver configuration options */
     bool externalCS;         /**< Indicates if an external chip select is used */
     bool validity;           /**< Defines if the configuration is valid */
+
+    void clear()
+    {
+      SCKInit.clear();
+      MOSIInit.clear();
+      MISOInit.clear();
+      CSInit.clear();
+      externalCS = false;
+      validity   = false;
+      memset( &HWInit, 0, sizeof( HardwareInit ) );
+    }
   };
 
   class ISPI;
