@@ -37,6 +37,18 @@ namespace Chimera::UART
     }
   }
 
+  bool isChannelUART( const Chimera::Serial::Channel channel )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.isChannelUART )
+    {
+      return s_backend_driver.isChannelUART( channel );
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   UART_sPtr create_shared_ptr()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.createShared )

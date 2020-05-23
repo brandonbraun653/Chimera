@@ -12,32 +12,49 @@
 #include <memory>
 
 /* Chimera Includes */
-#include <Chimera/src/serial/serial.hpp>
-#include <Chimera/src/serial/serial_base.hpp>
-#include <Chimera/src/serial/serial_intf.hpp>
-#include <Chimera/src/serial/serial_types.hpp>
+#include <Chimera/common>
+#include <Chimera/serial>
+#include <Chimera/uart>
+#include <Chimera/usart>
 
 
 namespace Chimera::Serial
 {
-#if !defined( CHIMERA_INHERITED_USART ) && !defined( CHIMERA_INHERITED_UART ) && !defined( CHIMERA_INHERITED_SERIAL )
-  using CHIMERA_INHERITED_SERIAL = SerialUnsupported;
-#endif
-
-  static_assert( std::is_base_of<ISerial, CHIMERA_INHERITED_SERIAL>::value, "Invalid interface" );
 
   Chimera::Status_t initialize()
   {
     return Chimera::CommonStatusCodes::OK;
   }
 
-  Serial_sPtr create_shared_ptr()
+  Serial_sPtr create_shared_ptr( const Chimera::Serial::Channel channel )
   {
-    return std::make_shared<CHIMERA_INHERITED_SERIAL>();
+    if ( Chimera::USART::isChannelUSART( channel ) )
+    {
+      return Chimera::USART::create_shared_ptr();
+    }
+    else if ( Chimera::UART::isChannelUART( channel ) )
+    {
+      return Chimera::UART::create_shared_ptr();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
-  Serial_uPtr create_unique_ptr()
+  Serial_uPtr create_unique_ptr( const Chimera::Serial::Channel channel )
   {
-    return std::make_unique<CHIMERA_INHERITED_SERIAL>();
+    if ( Chimera::USART::isChannelUSART( channel ) )
+    {
+      return Chimera::USART::create_unique_ptr();
+    }
+    else if ( Chimera::UART::isChannelUART( channel ) )
+    {
+      return Chimera::UART::create_unique_ptr();
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 }

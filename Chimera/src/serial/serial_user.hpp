@@ -1,6 +1,6 @@
 /********************************************************************************
  *   File Name:
- *    serial.hpp
+ *    serial_user.hpp
  *
  *   Description:
  *    Defines the interface to the UART/USART hardware
@@ -9,8 +9,8 @@
  ********************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_SERIAL_HPP
-#define CHIMERA_SERIAL_HPP
+#ifndef CHIMERA_SERIAL_USER_HPP
+#define CHIMERA_SERIAL_USER_HPP
 
 /* STL Includes */
 #include <memory>
@@ -27,10 +27,10 @@ namespace Chimera::Serial
 
   Chimera::Status_t initialize();
 
-  Serial_sPtr create_shared_ptr();
+  Serial_sPtr create_shared_ptr( const Chimera::Serial::Channel channel );
 
-  Serial_uPtr create_unique_ptr();
+  Serial_uPtr create_unique_ptr( const Chimera::Serial::Channel channel );
 
 }  // namespace Chimera::Serial
 
-#endif  /* !CHIMERA_SERIAL_HPP */
+#endif  /* !CHIMERA_SERIAL_USER_HPP */

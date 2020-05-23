@@ -17,6 +17,8 @@
 #include <Chimera/system>
 #include <Chimera/thread>
 #include <Chimera/timer>
+#include <Chimera/uart>
+#include <Chimera/usart>
 #include <Chimera/watchdog>
 
 
@@ -37,6 +39,8 @@ void ChimeraInit()
   Chimera::PWM::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();
+  Chimera::UART::initialize();
+  Chimera::USART::initialize();
   Chimera::Watchdog::initialize();
 }
 

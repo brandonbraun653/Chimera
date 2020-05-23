@@ -18,6 +18,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/src/serial/serial_types.hpp>
 
 namespace Chimera::UART
 {
@@ -28,40 +29,16 @@ namespace Chimera::UART
 
   namespace Backend
   {
-    using Initialize_FPtr         = Chimera::Status_t ( * )( void );
-    using Reset_FPtr              = Chimera::Status_t ( * )( void );
-    using CreateSharedObject_FPtr = UART_sPtr ( * )( void );
-    using CreateUniqueObject_FPtr = UART_uPtr ( * )( void );
-
     struct DriverConfig
     {
-      bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
-
-      /**
-       *  Function pointer that initializes the backend driver's
-       *  memory. Should really only call once for initial set up.
-       */
-      Initialize_FPtr initialize;
-
-      /**
-       *  Resets the backend driver hardware to default configuration
-       *  settings, but does not wipe out any memory.
-       */
-      Reset_FPtr reset;
-
-      /**
-       *  Factory function that creates a shared_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
-       */
-      CreateSharedObject_FPtr createShared;
-
-      /**
-       *  Factory function that creates a unique_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
-       */
-      CreateUniqueObject_FPtr createUnique;
+      bool isSupported;
+      Chimera::Status_t ( *initialize )( void );
+      Chimera::Status_t ( *reset )( void );
+      bool ( *isChannelUART )( const Chimera::Serial::Channel );
+      UART_sPtr ( *createShared )( void );
+      UART_uPtr ( *createUnique )( void );
     };
   }  // namespace Backend
-}
+}  // namespace Chimera::UART
 
-#endif  /* !CHIMERA_UART_TYPES_HPP */
+#endif /* !CHIMERA_UART_TYPES_HPP */

@@ -12,8 +12,7 @@
 #ifndef CHIMERA_SERIAL_INCLUDES
 #define CHIMERA_SERIAL_INCLUDES
 
-#include <Chimera/src/serial/serial.hpp>
-#include <Chimera/src/serial/serial_base.hpp>
+#include <Chimera/src/serial/serial_user.hpp>
 #include <Chimera/src/serial/serial_intf.hpp>
 #include <Chimera/src/serial/serial_types.hpp>
 

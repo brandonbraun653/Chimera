@@ -37,6 +37,18 @@ namespace Chimera::USART
     }
   }
 
+  bool isChannelUSART( const Chimera::Serial::Channel channel )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.isChannelUSART )
+    {
+      return s_backend_driver.isChannelUSART( channel );
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   USART_sPtr create_shared_ptr()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.createShared )

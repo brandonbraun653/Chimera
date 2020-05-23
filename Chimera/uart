@@ -1,10 +1,10 @@
 /********************************************************************************
  *  File Name:
  *    uart
- * 
+ *
  *  Description:
  *    Chimera UART Includes
- * 
+ *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
@@ -12,7 +12,7 @@
 #ifndef CHIMERA_UART_INCLUDES
 #define CHIMERA_UART_INCLUDES
 
-#include <Chimera/src/peripherals/uart/uart.hpp>
+#include <Chimera/src/peripherals/uart/uart_user.hpp>
 #include <Chimera/src/peripherals/uart/uart_intf.hpp>
 #include <Chimera/src/peripherals/uart/uart_types.hpp>
 

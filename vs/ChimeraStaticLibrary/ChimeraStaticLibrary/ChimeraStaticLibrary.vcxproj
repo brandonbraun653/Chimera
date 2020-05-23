@@ -553,12 +553,12 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\uart\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\uart\chimera_uart.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\uart\uart.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\uart\uart_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\uart\uart_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\uart\uart_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\usart\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\usart\chimera_usart.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\usart\usart.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\usart\usart_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\usart\usart_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\usart\usart_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\watchdog\build.jam" />
@@ -569,8 +569,7 @@
     <None Include="..\..\..\Chimera\src\serial\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\pwm\chimera_pwm.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\serial\chimera_serial.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\serial\serial.hpp" />
-    <ClInclude Include="..\..\..\Chimera\src\serial\serial_base.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\serial\serial_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\serial\serial_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\serial\serial_types.hpp" />
     <None Include="..\..\..\Chimera\src\system\build.jam" />
