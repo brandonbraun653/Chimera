@@ -28,7 +28,7 @@ namespace Chimera::Serial
     SerialUnsupported()  = default;
     ~SerialUnsupported() = default;
 
-    Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) final override
+    Chimera::Status_t assignHW( const Chimera::Serial::Channel channel, const IOPins &pins ) final override
     {
       return Chimera::CommonStatusCodes::FAIL;
     }

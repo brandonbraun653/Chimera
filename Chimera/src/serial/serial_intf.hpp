@@ -34,7 +34,7 @@ namespace Chimera::Serial
     /**
      *  Attaches and configures the physical hardware channel and GPIO pin setup
      *
-     *  @param[in]  channel       The physical UART hardware channel to use
+     *  @param[in]  channel       The physical serial hardware channel to use
      *  @param[in]  pins          TX and RX pin configuration
      *  @return Chimera::Status_t
      *
@@ -44,7 +44,7 @@ namespace Chimera::Serial
      *  |             FAIL | The function failed                |
      *  | INVAL_FUNC_PARAM | An invalid parameter was passed in |
      */
-    virtual Chimera::Status_t assignHW( const uint8_t channel, const IOPins &pins ) = 0;
+    virtual Chimera::Status_t assignHW( const Chimera::Serial::Channel channel, const IOPins &pins ) = 0;
 
     /**
      *  Starts up the Serial interface with a baud rate and transfer mode
