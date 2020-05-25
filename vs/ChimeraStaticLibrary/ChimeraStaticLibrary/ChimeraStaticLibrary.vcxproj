@@ -584,7 +584,6 @@
     <ClInclude Include="..\..\..\Chimera\src\threading\semaphore.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\threading\thread.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\threading\threading.hpp" />
-    <ClInclude Include="..\..\..\Chimera\src\threading\threading_base.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\threading\threading_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\threading\types.hpp" />
     <ClCompile Include="..\..\..\Chimera\src\threading\freertos\freertos_hooks.cpp" />

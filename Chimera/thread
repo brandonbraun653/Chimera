@@ -17,7 +17,6 @@
 #include <Chimera/src/threading/mutex.hpp>
 #include <Chimera/src/threading/semaphore.hpp>
 #include <Chimera/src/threading/thread.hpp>
-#include <Chimera/src/threading/threading_base.hpp>
 #include <Chimera/src/threading/threading_intf.hpp>
 #include <Chimera/src/threading/threading.hpp>
 

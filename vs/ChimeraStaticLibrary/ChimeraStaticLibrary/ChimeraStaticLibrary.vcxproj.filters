@@ -429,9 +429,6 @@
     <ClInclude Include="..\..\..\Chimera\src\threading\threading.hpp">
       <Filter>Chimera\src\threading</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\threading\threading_base.hpp">
-      <Filter>Chimera\src\threading</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\threading\threading_intf.hpp">
       <Filter>Chimera\src\threading</Filter>
     </ClInclude>

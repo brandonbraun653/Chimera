@@ -217,6 +217,14 @@ namespace Chimera::Serial
     virtual void postISRProcessing() = 0;
 
     /**
+     *  Enables/disables the RX hardware from listening to new transmissions
+     *
+     *  @param[in]  state     True==enabled, false==disabled
+     *  @return Chimera::Status_t
+     */
+    virtual Chimera::Status_t toggleAsyncListening( const bool state ) = 0;
+
+    /**
      *  Read data queued from the RX buffer. This buffer can only be filled if the
      *  hardware was placed in Interrupt or DMA RX mode.
      *
