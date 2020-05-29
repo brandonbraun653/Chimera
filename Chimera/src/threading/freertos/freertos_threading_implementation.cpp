@@ -12,11 +12,9 @@
 #include <cstring>
 
 /* Chimera Includes */
-#include <Chimera/src/common/chimera.hpp>
-#include <Chimera/src/system/system.hpp>
-#include <Chimera/src/threading/extensions.hpp>
-#include <Chimera/src/threading/mutex.hpp>
-#include <Chimera/src/threading/thread.hpp>
+#include <Chimera/common>
+#include <Chimera/system>
+#include <Chimera/thread>
 
 #if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 

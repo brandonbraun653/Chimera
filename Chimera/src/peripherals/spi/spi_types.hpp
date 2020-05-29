@@ -6,7 +6,7 @@
  *    Chimera SPI types
  *
  *  Note:
- *    Don't change the order or numbering of the various enum classes as they 
+ *    Don't change the order or numbering of the various enum classes as they
  *    are allowed to be used as array indexes. Only append to the end.
  *
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
@@ -73,7 +73,7 @@ namespace Chimera::SPI
   };
 
   /**
-   *  Overarching control scheme for the peripheral. Are we going 
+   *  Overarching control scheme for the peripheral. Are we going
    *  to be acting as a Master or Slave device?
    */
   enum class ControlMode : uint8_t
@@ -85,7 +85,7 @@ namespace Chimera::SPI
   };
 
   /**
-   *  Controls how many bits wide each transfer will be. Most chips 
+   *  Controls how many bits wide each transfer will be. Most chips
    *  support anywhere from 8-16 bits.
    */
   enum class DataSize : uint8_t
@@ -104,7 +104,7 @@ namespace Chimera::SPI
   };
 
   /**
-   *  A higher level configuration option that defines the behavior of the 
+   *  A higher level configuration option that defines the behavior of the
    *  chip select line between transfers. This functionality could be implemented
    *  in either software or hardware, so the performance of this could vary from
    *  chip to chip.
@@ -171,8 +171,8 @@ namespace Chimera::SPI
   };
 
   /**
-   *  Configuration struct that fully defines all the necessary information to 
-   *  initialize an SPI peripheral 
+   *  Configuration struct that fully defines all the necessary information to
+   *  initialize an SPI peripheral
    */
   struct DriverConfig
   {
@@ -192,7 +192,7 @@ namespace Chimera::SPI
       CSInit.clear();
       externalCS = false;
       validity   = false;
-      memset( &HWInit, 0, sizeof( HardwareInit ) );
+      HWInit = {};
     }
   };
 

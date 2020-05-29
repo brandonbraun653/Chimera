@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>STM32F446RE</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|STM32L432KB">
+      <Configuration>Debug</Configuration>
+      <Platform>STM32L432KB</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|STM32L432KC">
       <Configuration>Debug</Configuration>
       <Platform>STM32L432KC</Platform>
@@ -24,6 +28,10 @@
     <ProjectConfiguration Include="Release|STM32F446RE">
       <Configuration>Release</Configuration>
       <Platform>STM32F446RE</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|STM32L432KB">
+      <Configuration>Release</Configuration>
+      <Platform>STM32L432KB</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|STM32L432KC">
       <Configuration>Release</Configuration>
@@ -45,6 +53,10 @@
       <Configuration>RF24_1</Configuration>
       <Platform>STM32F446RE</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="RF24_1|STM32L432KB">
+      <Configuration>RF24_1</Configuration>
+      <Platform>STM32L432KB</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="RF24_1|STM32L432KC">
       <Configuration>RF24_1</Configuration>
       <Platform>STM32L432KC</Platform>
@@ -65,6 +77,10 @@
       <Configuration>RF24_2</Configuration>
       <Platform>STM32F446RE</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="RF24_2|STM32L432KB">
+      <Configuration>RF24_2</Configuration>
+      <Platform>STM32L432KB</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="RF24_2|STM32L432KC">
       <Configuration>RF24_2</Configuration>
       <Platform>STM32L432KC</Platform>
@@ -84,6 +100,10 @@
     <ProjectConfiguration Include="Standalone|STM32F446RE">
       <Configuration>Standalone</Configuration>
       <Platform>STM32F446RE</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Standalone|STM32L432KB">
+      <Configuration>Standalone</Configuration>
+      <Platform>STM32L432KB</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Standalone|STM32L432KC">
       <Configuration>Standalone</Configuration>
@@ -210,7 +230,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32L432KC'">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32L432KB'" Label="PropertySheets">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32L432KC'">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32L432KB'" Label="PropertySheets">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='RF24_1|Win32'">
@@ -225,6 +251,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32L432KC'">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32L432KB'" Label="PropertySheets">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Standalone|Win32'">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
@@ -237,6 +266,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KC'">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KB'" Label="PropertySheets">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
@@ -247,6 +279,9 @@
     <Import Project="CommonProperties.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KC'">
+    <Import Project="CommonProperties.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KB'" Label="PropertySheets">
     <Import Project="CommonProperties.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
@@ -314,7 +349,22 @@
     <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KB'">
+    <GNUTargetType>StaticLibrary</GNUTargetType>
+    <GNUConfigurationType>Debug</GNUConfigurationType>
+    <LinkAsWholeArchive>true</LinkAsWholeArchive>
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KC'">
+    <GNUTargetType>StaticLibrary</GNUTargetType>
+    <LinkAsWholeArchive>true</LinkAsWholeArchive>
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KB'">
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
@@ -326,12 +376,27 @@
     <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32L432KB'">
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32L432KC'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
     <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32L432KB'">
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32L432KC'">
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32L432KB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
     <ToolchainVersion>9.2.1/8.3.0/r1</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
@@ -422,7 +487,25 @@
       <CLanguageStandard>C2x</CLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KB'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions);DEBUG=1</PreprocessorDefinitions>
+      <Optimization>Os</Optimization>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
+      <CLanguageStandard>C2x</CLanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KC'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions);NDEBUG=1;RELEASE=1</PreprocessorDefinitions>
+      <Optimization>Os</Optimization>
+      <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
+      <CLanguageStandard>C2x</CLanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KB'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(AuroraIncDir);$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions);NDEBUG=1;RELEASE=1</PreprocessorDefinitions>
@@ -532,7 +615,7 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\ethernet\ethernet_intf.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\gpio\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\gpio\chimera_gpio.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\power\build.jam" />
@@ -574,7 +657,7 @@
     <ClInclude Include="..\..\..\Chimera\src\serial\serial_types.hpp" />
     <None Include="..\..\..\Chimera\src\system\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\system\chimera_system.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\system\system.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\system\system_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\system\system_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\system\system_types.hpp" />
     <None Include="..\..\..\Chimera\src\threading\build.jam" />

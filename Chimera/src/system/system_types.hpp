@@ -84,77 +84,29 @@ namespace Chimera::System
      *  Stores hooks for functions that the driver system should register with 
      *  Chimera. Not all of the functions have to be implemented in order for
      *  the driver to be registered. 
+     *
+     *  @note See function documentation in system_user.hpp
      */
     struct DriverConfig
     {
       bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
 
-      /**
-       *  Function pointer that initializes the backend driver's
-       *  memory. Should really only call once for initial set up.
-       */
+
       Chimera::Status_t ( *initialize )( void );
-
-      /**
-       *  Resets the backend driver hardware to default configuration
-       *  settings, but does not wipe out any memory.
-       */
       Chimera::Status_t ( *reset )( void );
-
-      /**
-       *  Low level driver specific system initialization function used for operations
-       *  like clock configuration, peripheral startup, etc.
-       *
-       *  @note     Intended to allow the backend driver to initialize itself before Chimera
-       *            code begins execution.
-       *
-       *  @warning  Chimera assumes that once this function exits, the backend driver is ready
-       *            to be used in its entirety.
-       *
-       *  @return Chimera::Status_t
-       */
       Chimera::Status_t ( *systemStartup )( void );
-
-      /**
-       *  Disables system level interrupts, thereby preventing any kind of interrupt from
-       *  executing on the CPU.
-       *
-       *	@return size_t      Mask indicating which interrupts were disabled
-       */
       Chimera::System::InterruptMask ( *disableInterrupts )( void );
-
-      /**
-       *  Enables system level interrupts from the mask that was returned when
-       *  interrupts were last disabled.
-       *
-       *	@return void
-       */
       void ( *enableInterrupts )( Chimera::System::InterruptMask &interruptMask );
-
-      /**
-       *	Returns the maximum number of concurrent hardware threads that
-       *  can be executing at any given time on the CPU. This is different
-       *  than a multi-threaded scheduler like FreeRTOS and is physically
-       *  dependent on the hardware.
-       *
-       *	@return int
-       */
       int ( *maxConcurrentThreads )( void );
-
-      /**
-       *  Returns the last known reason why the system, according to the hardware
-       *
-       *  @return ResetEvent
-       */
       ResetEvent ( *getResetReason )( void );
-
-      /**
-       *  Gets high level system information that describes this chip
-       *
-       *  @param[in]  info    Chimera owned pointer for backend to point at local memory
-       *  @return void
-       */
       void ( *getSystemInformation )( Information *&info );
+      std::string_view ( *version_AsString )( void );
+      size_t ( *version_Major )( void );
+      size_t ( *version_Minor )( void );
+      size_t ( *version_Patch )( void );
+      std::string_view ( *desc_About )( void );
+      std::string_view ( *desc_BackendDriverName )( void );
+      std::string_view ( *desc_DocumentationLink )( void );
     };
   }  // namespace Backend
 }  // namespace Chimera::System

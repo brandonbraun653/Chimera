@@ -291,9 +291,6 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\gpio\chimera_gpio.cpp">
       <Filter>Chimera\src\peripherals\gpio</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio.hpp">
-      <Filter>Chimera\src\peripherals\gpio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_intf.hpp">
       <Filter>Chimera\src\peripherals\gpio</Filter>
     </ClInclude>
@@ -399,9 +396,6 @@
     <ClCompile Include="..\..\..\Chimera\src\system\chimera_system.cpp">
       <Filter>Chimera\src\system</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\src\system\system.hpp">
-      <Filter>Chimera\src\system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\system\system_intf.hpp">
       <Filter>Chimera\src\system</Filter>
     </ClInclude>
@@ -580,6 +574,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\uart\uart_user.hpp">
       <Filter>Chimera\src\peripherals\uart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\system\system_user.hpp">
+      <Filter>Chimera\src\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_user.hpp">
+      <Filter>Chimera\src\peripherals\gpio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

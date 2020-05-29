@@ -1,5 +1,5 @@
 # ====================================================
-# Local Rules 
+# Local Rules
 # ====================================================
 local rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
     {
@@ -8,10 +8,10 @@ local rule explicit_alias ( name : sources * : requirements * : default-build * 
     }
 
 # ====================================================
-# Local Resources 
+# Local Resources
 # ====================================================
 # ------------------------------------------
-# Source/Include Directories 
+# Source/Include Directories
 # ------------------------------------------
 local chimera_inc_dir = . ; # Expects the user to reference headers like <Chimera/some_file.hpp>
 local chimera_mock_inc_dir = ./../ ;
@@ -27,7 +27,7 @@ local chimera_src_sim = [ glob $(chimera_src_sim_dir)/*.cpp ] ;
 local chimera_src_modules_memory = Chimera/modules/memory/chimera_memory_device.cpp ;
 local chimera_src_modules_freertos = [ glob Chimera/modules/freertos/*.cpp ] ;
 
-local chimera_src = 
+local chimera_src =
     $(chimera_src_root)
     $(chimera_src_modules_freertos)
     ;
@@ -37,7 +37,7 @@ local chimera_src =
 # ====================================================
 project Chimera : usage-requirements <include>$(chimera_inc_dir) ;
 
-use-project /CHIMERA/ALGORITHM :            Chimera/src/algorithm ; 
+use-project /CHIMERA/ALGORITHM :            Chimera/src/algorithm ;
 use-project /CHIMERA/ALLOCATOR :            Chimera/src/allocator ;
 use-project /CHIMERA/BUFFER :               Chimera/src/buffer ;
 use-project /CHIMERA/COMMON :               Chimera/src/common ;
@@ -52,7 +52,7 @@ use-project /CHIMERA/PERIPH/TIMER :         Chimera/src/peripherals/timer ;
 use-project /CHIMERA/PERIPH/UART :          Chimera/src/peripherals/uart ;
 use-project /CHIMERA/PERIPH/USART :         Chimera/src/peripherals/usart ;
 use-project /CHIMERA/PERIPH/WATCHDOG :      Chimera/src/peripherals/watchdog ;
-use-project /CHIMERA/SYSTEM :               Chimera/src/system ; 
+use-project /CHIMERA/SYSTEM :               Chimera/src/system ;
 use-project /CHIMERA/THREADING :            Chimera/src/threading ;
 
 
@@ -62,31 +62,33 @@ use-project /CHIMERA/THREADING :            Chimera/src/threading ;
 # ------------------------------------------
 # Includes all common Chimera headers
 # -----------------------------------------
-alias PUB 
-  : 
-  : <FreeRTOS>disabled 
-  : 
-  : 
+alias PUB
+  :
+  : <FreeRTOS>disabled
+  :
+  :
     <include>$(chimera_inc_dir)
+    <use>/AURORA//PUB
     <use>/PRJ//BOOST
     <use>/PRJ//CHIMERA_CFG
     <use>/PRJ//CHIMERA_PORT
     <use>/PRJ//CHIMERA_DEFS
-    
+
     <define>USING_STL_THREADS
   ;
 
-alias PUB 
-  : 
-  : <FreeRTOS>enabled 
-  : 
+alias PUB
+  :
+  : <FreeRTOS>enabled
+  :
   : <include>$(chimera_inc_dir)
+    <use>/AURORA//PUB
     <use>/FREERTOS//PUB
     <use>/PRJ//BOOST
     <use>/PRJ//CHIMERA_CFG
     <use>/PRJ//CHIMERA_PORT
     <use>/PRJ//CHIMERA_DEFS
-  
+
     <define>USING_FREERTOS_THREADS
   ;
 explicit PUB ;
@@ -108,10 +110,10 @@ explicit_alias CORE_LIBS : : : :
 # ====================================================
 # Private Targets
 # ====================================================
-alias PRV 
-    : 
+alias PRV
+    :
     : <FreeRTOS>disabled
-    : 
+    :
     : <include>./Chimera/src/threading/stl
     ;
 
@@ -119,7 +121,7 @@ alias PRV
     :
     : <FreeRTOS>enabled
     :
-    : <include>./Chimera/src/threading/freertos 
+    : <include>./Chimera/src/threading/freertos
     ;
 explicit PRV ;
 
