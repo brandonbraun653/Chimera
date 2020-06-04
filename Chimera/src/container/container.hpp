@@ -41,13 +41,13 @@ namespace Chimera::Container
   class LightFlatMap
   {
   public:
-    using ElementType = std::pair<T1, T2>;
+    using value_type = std::pair<T1, T2>;
 
-    LightFlatMap()
+    LightFlatMap() : emptyObj( {} )
     {
     }
 
-    LightFlatMap( std::initializer_list<ElementType> list )
+    LightFlatMap( std::initializer_list<value_type> list ) : emptyObj( {} )
     {
       std::copy( list.begin(), list.end(), std::back_inserter( map ) );
     }
@@ -62,14 +62,13 @@ namespace Chimera::Container
      *  @param[in]  key   The key to search for
      *  @return T2        The key's value if it exists
      */
-    T2 operator[]( const T1 key )
+    T2 operator[]( const T1 &key )
     {
-      T2 tempVal;
-      memset( &tempVal, 0, sizeof( T2 ) );
+      T2 tempVal = {};
 
-      if ( auto x = find( key ); x )
+      if ( auto x = at( key ); &x != &emptyObj )
       {
-        tempVal = x->second;
+        tempVal = x.second;
       }
 
       return tempVal;
@@ -81,7 +80,7 @@ namespace Chimera::Container
      *  @param[in]  key   The key to search for
      *  @return std::pair<T1,T2>
      */
-    ElementType *find( const T1 key )
+    value_type &at( const T1 &key ) 
     {
       /*------------------------------------------------
       For now use a naive O(n) implementation as this class
@@ -91,11 +90,28 @@ namespace Chimera::Container
       {
         if ( map[ x ].first == key )
         {
-          return &map[ x ];
+          return map[ x ];
         }
       }
 
-      return nullptr;
+      return emptyObj;
+    }
+
+    const value_type &at( const T1 &key ) const
+    {
+      /*------------------------------------------------
+      For now use a naive O(n) implementation as this class
+      isn't meant to hold a large number of elements.
+      ------------------------------------------------*/
+      for ( size_t x = 0; x < map.size(); x++ )
+      {
+        if ( map[ x ].first == key )
+        {
+          return map[ x ];
+        }
+      }
+
+      return emptyObj;
     }
 
     /**
@@ -104,7 +120,7 @@ namespace Chimera::Container
      *  @param[in]  value     The value to search for
      *  @return std::pair<T1,T2>
      */
-    ElementType *findWithValue( const T2 value )
+    value_type *findWithValue( const T2 &value )
     {
       for ( size_t x = 0; x < map.size(); x++ )
       {
@@ -126,10 +142,10 @@ namespace Chimera::Container
      *  @param[in]  element   The key-value pair element associated with the key
      *  @return bool
      */
-    bool exists( const T1 key, ElementType **element = nullptr )
+    bool exists( const T1 &key, value_type **element = nullptr )
     {
-      auto tmp = find( key );
-      auto result = static_cast<bool>( tmp != nullptr );
+      auto tmp = at( key );
+      auto result = static_cast<bool>( &tmp != &emptyObj );
 
       if ( element )
       {
@@ -146,7 +162,7 @@ namespace Chimera::Container
      *  @param[in]  value   The new value to assign
      *  @return void
      */
-    void append( const T1 key, const T2 value )
+    void append( const T1 &key, const T2 &value )
     {
       map.push_back( { key, value } );
     }
@@ -158,13 +174,13 @@ namespace Chimera::Container
      *  @param[in]  value   The new value to assign
      *  @return void
      */
-    void assign( const T1 key, const T2 value )
+    void assign( const T1 &key, const T2 &value )
     {
-      std::pair<T1, T2> * tmp = find( key );
+      auto tmp = at( key );
 
-      if ( tmp )
+      if ( &tmp != &emptyObj )
       {
-        ( *tmp ).second = value;
+        tmp.second = value;
       }
     }
 
@@ -192,7 +208,8 @@ namespace Chimera::Container
      *  no issues of runtime allocation with vectors in embedded systems should occur. This
      *  way we can handle multi-length common table types without issue.
      */
-    std::vector<ElementType> map;
+    std::vector<value_type> map;
+    value_type emptyObj;
   };
 }  // namespace Chimera::Container
 

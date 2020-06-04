@@ -1,5 +1,5 @@
 # ====================================================
-# Local Rules 
+# Local Rules
 # ====================================================
 local rule explicit_alias ( name : sources * : requirements * : default-build * : usage-requirements * )
     {
@@ -11,7 +11,7 @@ local rule explicit_alias ( name : sources * : requirements * : default-build * 
 # Public Targets
 # ====================================================
 lib LIB
-  : freertos/freertos_threading_implementation.cpp
+  : [ glob freertos/*.cpp ]
 
   : <FreeRTOS>enabled
     <link>static
@@ -20,7 +20,7 @@ lib LIB
   ;
 
 lib LIB
-  : stl/stl_threading_implementation.cpp
+  : [ glob stl/*.cpp ]
 
   : <FreeRTOS>disabled
     <link>static
@@ -28,6 +28,6 @@ lib LIB
     <use>/PRJ//TARGET_OPTIONS
   ;
 
-explicit LIB_THREAD ;
+explicit LIB ;
 
 explicit_alias TEST_COMPILE : LIB ;
