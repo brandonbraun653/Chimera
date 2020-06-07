@@ -103,7 +103,13 @@ namespace Chimera::Threading
 
   bool CountingSemaphore::try_acquire_for( const size_t timeout )
   {
-    return ( xSemaphoreTake( semphr, pdMS_TO_TICKS( timeout ) ) == pdPASS );
+    size_t _t = pdMS_TO_TICKS( timeout );
+    if ( timeout == Chimera::Threading::TIMEOUT_BLOCK )
+    {
+      _t = portMAX_DELAY;
+    }
+
+    return ( xSemaphoreTake( semphr, _t ) == pdPASS );
   }
 
   bool CountingSemaphore::try_acquire_until( const size_t abs_time )

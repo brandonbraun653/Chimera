@@ -48,11 +48,7 @@ namespace Chimera::GPIO
   enum class State : bool
   {
     HIGH = true,
-    HI   = true,
-    ON   = true,
-    LOW  = false,
-    LO   = false,
-    OFF  = false
+    LOW  = false
   };
 
   enum class Pull : uint8_t
@@ -94,7 +90,7 @@ namespace Chimera::GPIO
 
   /**
    *  Alternate function options for all MCU chips. Not all of these will be used
-   *  on a given chip, but they will correctly allow the GPIO driver to configure 
+   *  on a given chip, but they will correctly allow the GPIO driver to configure
    *  available pins to their alternate function behavior. See the device datasheet
    *  for more details on available functions and the device driver for details
    *  on how the enumeration here is mapped to a given function.
