@@ -67,8 +67,8 @@
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraPort.hpp" />
     <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h" />
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_system.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp" />
+    <ClInclude Include="..\..\..\Chimera\sim\system\sim_chimera_system.hpp" />
+    <ClInclude Include="..\..\..\Chimera\sim\timer\sim_chimera_timer.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\algorithm\register_optimizer.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\allocator\allocator.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\buffer\buffer.hpp" />
@@ -147,10 +147,14 @@
     <ClInclude Include="..\..\..\Chimera\version.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Chimera\sim\clock\sim_chimera_clock.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\gpio\sim_chimera_gpio.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\pwm\sim_chimera_pwm.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\spi\sim_chimera_spi.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\system\sim_chimera_system.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\timer\sim_chimera_timer.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\uart\sim_chimera_uart.cpp" />
+    <ClCompile Include="..\..\..\Chimera\sim\usart\sim_chimera_usart.cpp" />
     <ClCompile Include="..\..\..\Chimera\sim\watchdog\sim_chimera_watchdog.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\allocator\chimera_allocator.cpp" />
@@ -247,11 +251,11 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);$(ChimeraCompilerDefines)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(AuroraCompilerDefines);$(ChimeraCompilerDefines);WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -264,10 +268,10 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN64;_DEBUG;_LIB;%(PreprocessorDefinitions);$(ChimeraCompilerDefines)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(AuroraCompilerDefines);$(ChimeraCompilerDefines);WIN64;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
@@ -283,11 +287,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);$(ChimeraCompilerDefines)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(AuroraCompilerDefines);$(ChimeraCompilerDefines);WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -304,10 +308,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN64;NDEBUG;_LIB;%(PreprocessorDefinitions);$(ChimeraCompilerDefines)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(AuroraCompilerDefines);$(ChimeraCompilerDefines);WIN64;NDEBUG;_LIB;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AuroraIncDir);$(BoostIncDir);$(ChimeraIncDir);$(ChimeraPortDir);$(ChimeraCfgDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>

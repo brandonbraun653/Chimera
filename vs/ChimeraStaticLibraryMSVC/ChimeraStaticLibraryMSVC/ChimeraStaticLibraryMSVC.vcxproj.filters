@@ -109,6 +109,24 @@
     <Filter Include="sim\watchdog">
       <UniqueIdentifier>{da09c95a-d41a-4aaf-b561-cc656fadd0fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sim\system">
+      <UniqueIdentifier>{746a1679-abe4-4efd-9677-69b689934d1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\timer">
+      <UniqueIdentifier>{60ad5f3b-dc68-4f28-8b46-7842eaeed71c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\clock">
+      <UniqueIdentifier>{7c78de7e-17ea-45ee-a0c1-4450670c9109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\uart">
+      <UniqueIdentifier>{a01543de-30aa-4133-a806-2108d6e2a3eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\usart">
+      <UniqueIdentifier>{28ff63c8-5be3-48d0-b745-4d8d4de4e368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sim\pwm">
+      <UniqueIdentifier>{cc12f6bd-cf37-4103-b3b3-0bf05637d35b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Chimera\buffer" />
@@ -410,9 +428,6 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types_fwd.hpp">
       <Filter>src\peripherals\clock</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_system.hpp">
-      <Filter>sim</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h">
       <Filter>sim\config\freertos</Filter>
     </ClInclude>
@@ -431,9 +446,6 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\power\power_base.hpp">
       <Filter>src\peripherals\power</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp">
-      <Filter>sim</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer.hpp">
       <Filter>src\peripherals\timer</Filter>
     </ClInclude>
@@ -442,6 +454,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\timer_types.hpp">
       <Filter>src\peripherals\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\sim\system\sim_chimera_system.hpp">
+      <Filter>sim\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\sim\timer\sim_chimera_timer.hpp">
+      <Filter>sim\timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -490,17 +508,11 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\crc\chimera_crc.cpp">
       <Filter>src\peripherals\crc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp">
-      <Filter>sim</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\serial\chimera_serial.cpp">
       <Filter>src\serial</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\peripherals\power\chimera_power.cpp">
       <Filter>src\peripherals\power</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp">
-      <Filter>sim</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\peripherals\timer\chimera_timer.cpp">
       <Filter>src\peripherals\timer</Filter>
@@ -519,6 +531,24 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\sim\watchdog\sim_chimera_watchdog.cpp">
       <Filter>sim\watchdog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\system\sim_chimera_system.cpp">
+      <Filter>sim\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\timer\sim_chimera_timer.cpp">
+      <Filter>sim\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\clock\sim_chimera_clock.cpp">
+      <Filter>sim\clock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\pwm\sim_chimera_pwm.cpp">
+      <Filter>sim\pwm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\uart\sim_chimera_uart.cpp">
+      <Filter>sim\uart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chimera\sim\usart\sim_chimera_usart.cpp">
+      <Filter>sim\usart</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

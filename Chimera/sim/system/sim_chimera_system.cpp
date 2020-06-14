@@ -62,13 +62,40 @@ namespace Chimera::System
   {
     /*------------------------------------------------
     Last known value of the system millisecond timer. Intentionally
-    using an async thread to update the tick count to reflect how 
-    FreeRTOS updates their system tick counter. Most of my systems 
+    using an async thread to update the tick count to reflect how
+    FreeRTOS updates their system tick counter. Most of my systems
     at the moment are Embedded FreeRTOS based, so it makes some sense.
     ------------------------------------------------*/
     return sSysTick;
   }
 }  // namespace Chimera::System
+
+
+namespace Chimera::System::Backend
+{
+  Chimera::Status_t registerDriver( struct Chimera::System::Backend::DriverConfig &cfg )
+  {
+    cfg.isSupported            = true;
+    cfg.desc_About             = nullptr;
+    cfg.desc_BackendDriverName = nullptr;
+    cfg.desc_DocumentationLink = nullptr;
+    cfg.disableInterrupts      = prjDisableInterrupts;
+    cfg.enableInterrupts       = prjEnableInterrupts;
+    cfg.getResetReason         = nullptr;
+    cfg.getSystemInformation   = nullptr;
+    cfg.initialize             = nullptr;
+    cfg.maxConcurrentThreads   = prjMaxConcurrentThreads;
+    cfg.reset                  = nullptr;
+    cfg.systemStartup          = prjSystemStartup;
+    cfg.version_AsString       = nullptr;
+    cfg.version_Major          = nullptr;
+    cfg.version_Minor          = nullptr;
+    cfg.version_Patch          = nullptr;
+
+    return Chimera::CommonStatusCodes::OK;
+  }
+}
+
 
 static void SimSystemTick()
 {

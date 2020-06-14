@@ -15,6 +15,7 @@
 /* STL Includes */
 #include <algorithm>
 #include <cstring>
+#include <iterator>
 #include <vector>
 
 namespace Chimera::Container

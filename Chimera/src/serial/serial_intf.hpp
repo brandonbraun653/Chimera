@@ -260,7 +260,7 @@ namespace Chimera::Serial
      */
     virtual Chimera::Status_t enableBuffering( const Chimera::Hardware::SubPeripheral periph,
                                                boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
-                                               const uint32_t hwBufferSize ) = 0;
+                                               const size_t hwBufferSize ) = 0;
 
     /**
      *  Turns off the buffering feature

@@ -19,7 +19,7 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/timer>
-#include <Chimera/sim/sim_chimera_system.hpp>
+#include <Chimera/sim/system/sim_chimera_system.hpp>
 
 namespace ChimeraSim::Timer
 {
@@ -53,7 +53,7 @@ namespace ChimeraSim::Timer
 
 namespace Chimera::Timer::Backend
 {
-  Chimera::Status_t registerDriver( Chimera::Timer::Backend::DriverConfig &registry )
+  Chimera::Status_t registerDriver( Chimera::Timer::Backend::DriverRegistration &registry )
   {
     registry.isSupported       = true;
     registry.initialize        = ::ChimeraSim::Timer::initialize;
