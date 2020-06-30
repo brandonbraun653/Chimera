@@ -491,7 +491,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(AuroraIncDir);$(ChimeraBackendIncDirs);$(ChimeraPortDir);$(ChimeraCfgDir);$(ChimeraIncDir)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ChimeraCompilerDefines);$(ChimeraBackendCompilerDefines);$(ProjectCompilerDefines);%(ClCompile.PreprocessorDefinitions);DEBUG=1</PreprocessorDefinitions>
-      <Optimization>Og</Optimization>
+      <Optimization>Os</Optimization>
       <CPPLanguageStandard>CPP2A</CPPLanguageStandard>
       <CLanguageStandard>C2x</CLanguageStandard>
     </ClCompile>
