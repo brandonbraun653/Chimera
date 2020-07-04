@@ -570,13 +570,6 @@
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\version.hpp" />
-    <None Include="..\..\..\Chimera\sim\build.jam" />
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp" />
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_system.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp" />
-    <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h" />
     <None Include="..\..\..\Chimera\src\algorithm\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp" />
     <ClInclude Include="..\..\..\Chimera\src\algorithm\register_optimizer.hpp" />

@@ -7,18 +7,6 @@
     <Filter Include="Chimera">
       <UniqueIdentifier>{ddf0c47d-670d-4824-ae1b-76dc57c0307b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Chimera\sim">
-      <UniqueIdentifier>{8d34f0f5-fbf5-4c0b-9356-08a0d0011f2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Chimera\sim\config">
-      <UniqueIdentifier>{d5ed7c97-2453-455f-9eb2-d7c456676bed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Chimera\sim\config\chimera">
-      <UniqueIdentifier>{586fd265-e48a-4a6e-96a9-388ad9413ea7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Chimera\sim\config\freertos">
-      <UniqueIdentifier>{d2edc37d-7b89-46d4-87d5-300cab56c328}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Chimera\src">
       <UniqueIdentifier>{da55d75d-861f-4e64-a58e-abfa73bfbd99}</UniqueIdentifier>
     </Filter>
@@ -131,21 +119,6 @@
     </None>
     <ClInclude Include="..\..\..\Chimera\version.hpp">
       <Filter>Chimera</Filter>
-    </ClInclude>
-    <None Include="..\..\..\Chimera\sim\build.jam">
-      <Filter>Chimera\sim</Filter>
-    </None>
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_system.cpp">
-      <Filter>Chimera\sim</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_system.hpp">
-      <Filter>Chimera\sim</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\sim\config\chimera\chimeraConfig.hpp">
-      <Filter>Chimera\sim\config\chimera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\sim\config\freertos\FreeRTOSConfig.h">
-      <Filter>Chimera\sim\config\freertos</Filter>
     </ClInclude>
     <None Include="..\..\..\Chimera\src\algorithm\build.jam">
       <Filter>Chimera\src\algorithm</Filter>
@@ -542,9 +515,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Chimera\sim\sim_chimera_timer.hpp">
-      <Filter>Chimera\sim</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock.hpp">
       <Filter>Chimera\src\peripherals\clock</Filter>
     </ClInclude>
@@ -583,9 +553,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Chimera\sim\sim_chimera_timer.cpp">
-      <Filter>Chimera\sim</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\event\chimera_event.cpp">
       <Filter>Chimera\src\event</Filter>
     </ClCompile>
