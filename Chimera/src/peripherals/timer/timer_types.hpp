@@ -22,11 +22,13 @@
 namespace Chimera::Timer
 {
   class ITimer;
-  using ITimer_rPtr = ITimer*;
+  using ITimer_rPtr = ITimer *;
   using ITimer_sPtr = std::shared_ptr<ITimer>;
   using ITimer_uPtr = std::unique_ptr<ITimer>;
 
-
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
   enum class CoreFeature : uint8_t
   {
     BASE_TIMER,
@@ -70,15 +72,16 @@ namespace Chimera::Timer
   enum class DriverData : size_t
   {
     IS_CONFIGURED,
+    DRIVER_CONFIG,
+    CHANNEL_CONFIG,
     NUM_OPTIONS,
     INVALID
   };
 
-
   enum class Direction : uint8_t
   {
-    COUNT_UP,    /**< Counts up from min, overflows, then starts counting up again */
-    COUNT_DN,    /**< Counts down from max, underflows, then starts counting down again */
+    COUNT_UP, /**< Counts up from min, overflows, then starts counting up again */
+    COUNT_DN, /**< Counts down from max, underflows, then starts counting down again */
 
     NUM_OPTIONS
   };
@@ -141,17 +144,9 @@ namespace Chimera::Timer
   };
 
 
-  struct DriverConfig
-  {
-    bool validity;            /**< Decides if the configuration settings are valid */
-    bool overwrite;           /**< Allows the config to update the entire timer peripheral (multiple channels share one peripheral) */
-    Peripheral peripheral;    /**< Which peripheral to configure */
-    Direction countDirection; /**< Which direction the free-running counter should count */
-    size_t reloadValue;       /**< Value to load when the counter overflows */
-    size_t prescaler;         /**< Divides the peripheral source clock to provide the tick clock */
-  };
-
-
+  /*-------------------------------------------------------------------------------
+  Namespaces
+  -------------------------------------------------------------------------------*/
   namespace Encoder
   {
     struct Config
@@ -170,7 +165,6 @@ namespace Chimera::Timer
   }  // namespace InputCapture
 
 
-
   namespace OnePulse
   {
     struct Config
@@ -178,7 +172,6 @@ namespace Chimera::Timer
       // Currently not used
     };
   }  // namespace OnePulse
-
 
 
   namespace OutputCompare
@@ -206,7 +199,7 @@ namespace Chimera::Timer
       CENTER_ALIGNED,
       ASYMMETRIC,
       COMBINED,
-      
+
       NUM_OPTIONS,
     };
 
@@ -224,6 +217,19 @@ namespace Chimera::Timer
   }  // namespace PWM
 
 
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
+
+  struct DriverConfig
+  {
+    bool validity;  /**< Decides if the configuration settings are valid */
+    bool overwrite; /**< Allows the config to update the entire timer peripheral (multiple channels share one peripheral) */
+    Peripheral peripheral;    /**< Which peripheral to configure */
+    Direction countDirection; /**< Which direction the free-running counter should count */
+    size_t reloadValue;       /**< Value to load when the counter overflows */
+    size_t prescaler;         /**< Divides the peripheral source clock to provide the tick clock */
+  };
 
   union CoreFeatureInit
   {
@@ -235,9 +241,36 @@ namespace Chimera::Timer
     PWM::Config pwm;
   };
 
+
+  /*-------------------------------------------------
+  Structures associated with DriverData
+  -------------------------------------------------*/
+  struct DataRequest_ChannelConfig_t
+  {
+    Channel channel;         /**< Which channel to request the data for */
+    CoreFeatureInit cfgData; /**< Memory to place config data into */
+    bool validity;           /**< Whether or not the data is valid */
+  };
+
+  struct DataRequest_DriverConfig_t
+  {
+    CoreFeatureInit cfgData; /**< Memory to place config data into */
+    bool validity;           /**< Whether or not the data is valid */
+  };
+
+
+  /*-------------------------------------------------
+  Structures associated with DriverAction
+  -------------------------------------------------*/
+  struct DriverAction_PWMDutyCycle_t
+  {
+    Channel channel;  /**< The channel to update */
+    size_t dutyCycle; /**< The new duty cycle to be set */
+  };
+
+
   struct Descriptor
   {
-
   };
 
   namespace Backend
@@ -251,9 +284,9 @@ namespace Chimera::Timer
       size_t ( *micros )( void );
       void ( *delayMilliseconds )( const size_t );
       void ( *delayMicroseconds )( const size_t );
-      ITimer_sPtr ( *createSharedInstance )(  const Chimera::Timer::Peripheral );
-      ITimer_uPtr ( *createUniqueInstance )(  const Chimera::Timer::Peripheral );
-      ITimer_rPtr ( *createUnsafeInstance )(  const Chimera::Timer::Peripheral );
+      ITimer_sPtr ( *createSharedInstance )( const Chimera::Timer::Peripheral );
+      ITimer_uPtr ( *createUniqueInstance )( const Chimera::Timer::Peripheral );
+      ITimer_rPtr ( *createUnsafeInstance )( const Chimera::Timer::Peripheral );
     };
   }  // namespace Backend
 }  // namespace Chimera::Timer
