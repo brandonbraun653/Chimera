@@ -290,63 +290,63 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|VisualGDB'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|VisualGDB'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32F446RE'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32F446RE'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32F446RE'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32F446RE'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|VisualGDB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KC'">
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|STM32L432KB'">
@@ -354,56 +354,56 @@
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KC'">
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|STM32L432KB'">
     <GNUTargetType>StaticLibrary</GNUTargetType>
     <LinkAsWholeArchive>true</LinkAsWholeArchive>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32L432KC'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_2|STM32L432KB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32L432KC'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RF24_1|STM32L432KB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32L432KC'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32L432KB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Standalone|STM32F446RE'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r1</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <ClCompile>

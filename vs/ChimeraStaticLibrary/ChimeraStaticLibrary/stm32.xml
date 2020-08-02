@@ -4,7 +4,7 @@
   <ToolchainVersion>
     <GCC>9.3.1</GCC>
     <GDB>9.2.0</GDB>
-    <Revision>1</Revision>
+    <Revision>2</Revision>
   </ToolchainVersion>
   <BspID>com.sysprogs.arm.stm32</BspID>
   <BspVersion>2020.06</BspVersion>
