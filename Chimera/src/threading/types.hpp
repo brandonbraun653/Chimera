@@ -53,6 +53,8 @@ namespace Chimera::Threading
   static constexpr size_t TIMEOUT_100MS     = 100;
   static constexpr size_t TIMEOUT_500MS     = 500;
   static constexpr size_t TIMEOUT_1S        = 1000;
+  static constexpr size_t TIMEOUT_1MIN      = 60 * TIMEOUT_1S;
+  static constexpr size_t TIMEOUT_1HR       = 60 * TIMEOUT_1MIN;
 }
 
 #endif	/* !CHIMERA_THREADING_COMMON_TYPES_HPP */
