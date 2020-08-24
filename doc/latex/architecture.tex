@@ -1,5 +1,40 @@
-\documentclass[10pt, letterpaper]{article}
+\documentclass[10pt, letterpaper, tikz]{article}
 \usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+\usepackage{listings}
+
+% Directory Structures Configurations
+\usepackage[edges]{forest}
+\definecolor{foldercolor}{RGB}{124,166,198}
+
+\tikzset{pics/folder/.style={code={%
+    \node[inner sep=0pt, minimum size=#1](-foldericon){};
+    \node[folder style, inner sep=0pt, minimum width=0.3*#1, minimum height=0.6*#1, above right, xshift=0.05*#1] at (-foldericon.west){};
+    \node[folder style, inner sep=0pt, minimum size=#1] at (-foldericon.center){};}
+    },
+    pics/folder/.default={20pt},
+    folder style/.style={draw=foldercolor!80!black,top color=foldercolor!40,bottom color=foldercolor}
+}
+
+\forestset{is file/.style={edge path'/.expanded={%
+        ([xshift=\forestregister{folder indent}]!u.parent anchor) |- (.child anchor)},
+        inner sep=1pt},
+    this folder size/.style={edge path'/.expanded={%
+        ([xshift=\forestregister{folder indent}]!u.parent anchor) |- (.child anchor) pic[solid]{folder=#1}}, inner xsep=0.6*#1},
+    folder tree indent/.style={before computing xy={l=#1}},
+    folder icons/.style={folder, this folder size=#1, folder tree indent=3*#1},
+    folder icons/.default={12pt},
+}
+
+% URL Styling
+\urlstyle{same}
 
 \title{Chimera Embedded Driver Architecture}
 \author{Brandon Braun}
@@ -10,21 +45,142 @@
     \maketitle
   \end{titlepage}
 
+\pagebreak
+\tableofcontents
+
 % ABSTRACT
+  \pagebreak
   \begin{abstract}
-    Abstract
+    The Chimera Embedded System Driver architecture is split into high level and low level drivers to facilitate
+    abstraction of hardware level MCU peripherals into a common framework. This eases development of new
+    peripheral interfaces and provides a unified layout for projects to build on. This document summarizes the
+    structure of the drivers and various thoughts behind its design.
   \end{abstract}
 
 % INTRODUCTION
   \section{Introduction}
+    The goal of Chimera is to provide a standard C++ API upon which I could build all my future embedded projects upon.
+    While Linux exists and is a very useful and widely accepted approach to hardware driver development, it didn't
+    offer any opportunity for personal growth in software architectural design. While a labor of love, Chimera is
+    slowly improving into a useful tool for accessing common embedded peripherals in a manner that takes into account
+    modern C++ concepts. The idea is that this approach will drive faster development of future projects by simplifying
+    the requirements to get hardware up and running, while also offering more complex and modern functionality.
+
+    From a conceptual perspective, Chimera provides an architectural specification that outlines how drivers for custom
+    CPU/MCUs should be created, which is split into a high level driver(HLD) and low level driver (LLD). The HLD is
+    platform agnostic and is responsible for the 'expected-use' functionality of a particular peripheral. Typically this involves generic
+    configuration settings, reading and writing data, handling event callbacks, etc. The LLD is platform specific and is
+    responsible for implementing hardware configuration aspects of the peripheral. It translates the generic HLD peripheral
+    settings into the proper bits, bytes, and words that enable the desired functionality in the hardware. By following these
+    specs, software built on top of it can be easily ported to other devices without much hassle. Simply swap out the low level
+    driver and a new device is ready to go.
+
+    For reference, this document outlines the \href{https://github.com/brandonbraun653/Thor}{Thor} driver implementation for
+    Chimera, which adds STM32 device support. While some of the implementation details in the Thor LLD might not be portable to other
+    devices, it serves as a good example of the kind of detail that might be needed to implement Chimera on another device.
 
 % HIGH LEVEL DRIVER
-  \section{High Level Driver}
+  \pagebreak
+  \section{Thor High Level Driver (HLD)}
+
+  % INTRODUCTION
+  \subsection{Introduction}
+    The Thor high level driver handles commonly desired abstractions for various peripheral interfaces to help
+    ease the integration of hardware peripherals into application code. The high level driver conforms to the
+    Chimera interface specification through the use of pure virtual inheritance to ensure that applications can
+    safely build on top of a Chimera driver implementation without worrying about the hardware details.
+
+
+  % GENERIC STRUCTURE
+  \subsection{Generic Structure}
+    Each peripheral driver follows a particular structure to provide a consistent layout of the driver software.
+    By keeping the folder/file structure consistent, it is expected to allow easier navigation of other peripheral
+    drivers in the system. The current structure is outlined below and in later sections is described in detail:
+  \paragraph{}
+  \begin{forest}
+    for tree={font=\sffamily, grow'=0,
+    folder indent=.1em, folder icons,
+    edge=densely dotted}
+    [HLD Peripheral Driver (GPIO Example)
+      [test
+          [test\_entry\_gpio.cpp, is file]
+          [test\_fixture\_gpio.cpp, is file]
+          [test\_fixture\_gpio.hpp, is file]
+          [test\_hld\_gpio\_chimera.cpp, is file]
+          [test\_hld\_gpio\_driver.cpp, is file]
+          ]
+      [build.jam, is file]
+      [hld\_gpio\_chimera.cpp, is file]
+      [hld\_gpio\_chimera.hpp, is file]
+      [hld\_gpio\_driver.cpp, is file]
+      [hld\_gpio\_driver.hpp, is file]
+      [hld\_gpio\_types.cpp, is file]
+    ]
+  \end{forest}
+
+  \paragraph{hld\_$<$\emph{peripheral}$>$\_chimera.hpp:}\mbox{}\\
+    Publicly declares the driver's interface to Chimera. It is expected that this will only be used internally
+    within the driver implementation, but it may be useful to include this elsewhere.
+
+  \paragraph{hld\_$<$\emph{peripheral}$>$\_chimera.cpp:}\mbox{}\\
+    Implements the driver registration functionality to Chimera. Typically this involves definitions
+    of the function prototypes in the associated driver interface header file and a function(s)
+    that register the driver with the Chimera back end. If no driver is currently implemented for the
+    given peripheral, then default behavior can be provided here.
+
+  \paragraph{hld\_$<$\emph{peripheral}$>$\_driver.(c,h)pp:}\mbox{}\\
+    These two files define the full HLD interface that can be used by projects. At a bare minimum, a
+    peripheral driver class is declared that inherits from the Chimera virtual base class for that
+    peripheral. This will guarantee the proper interface spec is upheld. Additional functionality can
+    be declared that is not defined in Chimera, but it will not be propagated to Chimera peripheral
+    objects.
+
+  \paragraph{hld\_$<$\emph{peripheral}$>$\_types.hpp:}\mbox{}\\
+    Defines commonly used types that are shared across all driver specific implementations. There is
+    not likely to be much in this file as it's common for the Chimera driver defintions to be sufficient.
+
+  % BUILD SYSTEM
+  \subsection{Build System}
+
+
+  % CHIMERA HOOKS
+  \subsection{Chimera Hooks}
+
+
+
+
+  % DRIVER IMPLEMENTATION
+  \subsection{Driver Implementation}
+
+
+
+  % Mention something about include headers
+
+  % TEST IMPLEMENTATION
+  \subsection{Test Implementation}
+
+
+
 
 % LOW LEVEL DRIVER
-  \section{Low Level Driver}
-  \begin{flushleft}
+  \pagebreak
+  \section{Thor Low Level Driver (LLD)}
+  \subsection{Introduction}
 
-  \end{flushleft}
+  \subsection{Interface Layer}
+
+
+
+  \subsection{Driver Layer}
+
+  \subsubsection{Generic Structure}
+
+  \subsubsection{Build System}
+
+  \subsubsection{Driver Implementation}
+
+  \begin{lstlisting}
+
+  \end{lstlisting}
 
 \end{document}
