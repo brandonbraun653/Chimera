@@ -1,9 +1,10 @@
-.idea/*
-**build
-**latex
-**html
-bin/*
-
-**.o
 **.a
+**.gcda
+**.gcno
 **.lib
+**.o
+**build
+**html
+**latex
+.idea/*
+bin/*

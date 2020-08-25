@@ -17,11 +17,11 @@ GCC
 #if defined( __GNUC__ )
 namespace Chimera
 {
-   void insert_debug_breakpoint()
+  void insert_debug_breakpoint()
   {
-    #if defined( DEBUG )
+#if defined( DEBUG ) && defined( EMBEDDED )
     __asm( "BKPT #0\n" );
-    #endif 
+#endif
   }
 }  // namespace Chimera
 
@@ -34,11 +34,11 @@ namespace Chimera
 
 namespace Chimera
 {
-   void insert_debug_breakpoint()
+  void insert_debug_breakpoint()
   {
-    #if defined( DEBUG )
+#if defined( DEBUG )
     DebugBreak();
-    #endif 
+#endif
   }
 }  // namespace Chimera
 
@@ -51,11 +51,11 @@ namespace Chimera
 
 namespace Chimera
 {
-   void insert_debug_breakpoint()
+  void insert_debug_breakpoint()
   {
-    #if defined( DEBUG )
+#if defined( DEBUG )
     DebugBreak();
-    #endif 
+#endif
   }
 }  // namespace Chimera
 
@@ -63,9 +63,8 @@ namespace Chimera
 #pragma message( "Unknown build environment" )
 namespace Chimera
 {
-   void insert_debug_breakpoint()
+  void insert_debug_breakpoint()
   {
-
   }
-}
+}  // namespace Chimera
 #endif
