@@ -38,7 +38,7 @@ namespace Chimera
     ------------------------------------------------*/
     TEST_F( SerialIntegrationTestFixture, assignHW_badChannel )
     {
-      auto expected = Chimera::CommonStatusCodes::FAIL;
+      auto expected = Chimera::Status::FAIL;
 
       Chimera::Serial::IOPins pins;
       pins.rx.pin  = 0;
@@ -51,7 +51,7 @@ namespace Chimera
 
     TEST_F( SerialIntegrationTestFixture, assignHW_badPins )
     {
-      auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      auto expected = Chimera::Status::INVAL_FUNC_PARAM;
 
       Chimera::Serial::IOPins pins;
       pins.rx.pin  = 0;
@@ -64,7 +64,7 @@ namespace Chimera
 
     TEST_F( SerialIntegrationTestFixture, assignHW_pass )
     {
-      auto expected = Chimera::CommonStatusCodes::OK;
+      auto expected = Chimera::Status::OK;
 
       Chimera::Serial::IOPins pins;
       pins.rx.pin  = 0;
@@ -81,8 +81,8 @@ namespace Chimera
     ------------------------------------------------*/
     TEST_F( SerialIntegrationTestFixture, begin_notInitializedYet )
     {
-      auto expected1 = Chimera::CommonStatusCodes::NOT_INITIALIZED;
-      auto expected2 = Chimera::CommonStatusCodes::FAIL;
+      auto expected1 = Chimera::Status::NOT_INITIALIZED;
+      auto expected2 = Chimera::Status::FAIL;
 
       auto result = serial->begin( SubPeripheralMode::BLOCKING, SubPeripheralMode::BLOCKING );
       EXPECT_TRUE( ( result == expected1 ) || ( result == expected2 ) );
@@ -120,19 +120,19 @@ namespace Chimera
         serial->assignHW( channel, validPins );
 
         auto try1 = serial->begin( SubPeripheralMode::UNKNOWN_MODE, SubPeripheralMode::BLOCKING );
-        EXPECT_TRUE( ( try1 == Chimera::CommonStatusCodes::FAIL ) || ( try1 == Chimera::CommonStatusCodes::NOT_INITIALIZED )
-                     || ( try1 == Chimera::CommonStatusCodes::INVAL_FUNC_PARAM ) );
+        EXPECT_TRUE( ( try1 == Chimera::Status::FAIL ) || ( try1 == Chimera::Status::NOT_INITIALIZED )
+                     || ( try1 == Chimera::Status::INVAL_FUNC_PARAM ) );
 
         auto try2 = serial->begin( SubPeripheralMode::BLOCKING, SubPeripheralMode::UNKNOWN_MODE );
-        EXPECT_TRUE( ( try2 == Chimera::CommonStatusCodes::FAIL ) || ( try2 == Chimera::CommonStatusCodes::NOT_INITIALIZED )
-                     || ( try2 == Chimera::CommonStatusCodes::INVAL_FUNC_PARAM ) );
+        EXPECT_TRUE( ( try2 == Chimera::Status::FAIL ) || ( try2 == Chimera::Status::NOT_INITIALIZED )
+                     || ( try2 == Chimera::Status::INVAL_FUNC_PARAM ) );
       }
     }
 
     TEST_F( SerialIntegrationTestFixture, begin_InitRequirements )
     {
-      constexpr auto expected_fail = Chimera::CommonStatusCodes::NOT_INITIALIZED;
-      constexpr auto expected_pass = Chimera::CommonStatusCodes::OK;
+      constexpr auto expected_fail = Chimera::Status::NOT_INITIALIZED;
+      constexpr auto expected_pass = Chimera::Status::OK;
 
       uint8_t channel = invalidChannel;
       boost::circular_buffer<uint8_t> circBuf( 10 );
@@ -242,7 +242,7 @@ namespace Chimera
       I'm not really sure how to guarantee a failed scenario for this
       function, so I'm leaving that up to the backend driver.
       ------------------------------------------------*/
-      EXPECT_EQ( Chimera::CommonStatusCodes::OK, serial->end() );
+      EXPECT_EQ( Chimera::Status::OK, serial->end() );
     }
 
     /*------------------------------------------------

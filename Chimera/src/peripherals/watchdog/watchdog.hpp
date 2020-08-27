@@ -17,16 +17,13 @@
 
 /* Chimera Includes */
 #include <Chimera/src/peripherals/watchdog/watchdog_intf.hpp>
+#include <Chimera/src/peripherals/watchdog/watchdog_types.hpp>
 
 namespace Chimera::Watchdog
 {
   Chimera::Status_t initialize();
-
   Chimera::Status_t reset();
-
-  Watchdog_sPtr create_shared_ptr();
-
-  Watchdog_uPtr create_unique_ptr();
+  IWatchdog_sPtr getDriver( const Channel channel );
 
   /**
    *  Intentionally halts the CPU so that the watchdog timer will reset the

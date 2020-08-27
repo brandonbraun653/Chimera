@@ -21,12 +21,12 @@ namespace Chimera::PWM
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-    
+
     /*------------------------------------------------
     Register the backend interface with Chimera
     ------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::CommonStatusCodes::OK )
+    if ( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -50,7 +50,7 @@ namespace Chimera::PWM
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 

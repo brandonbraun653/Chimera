@@ -63,26 +63,9 @@ namespace Chimera::SPI
      */
     virtual Chimera::Status_t attachSPI( Chimera::SPI::ISPI_sPtr &spi, Chimera::SPI::DriverConfig &setup ) = 0;
 
-    /**
-     *  Attaches an SPI instance to the inheriting class. It is intended that the
-     *  user std::move() the object so that the function takes ownership.
-     *
-     *  @param[in]  spi     SPI object to be moved into the inheriting class
-     *  @return Chimera::Status_t
-     *
-     *  |   Return Value   |                        Explanation                        |
-     *  |:----------------:|:---------------------------------------------------------:|
-     *  |               OK | The operation completed successfully                      |
-     *  |             FAIL | The operation failed                                      |
-     *  | INVAL_FUNC_PARAM | One or more of the initialization parameters were invalid |
-     */
-    virtual Chimera::Status_t attachSPI( Chimera::SPI::ISPI_uPtr spi ) = 0;
-
     virtual Chimera::Status_t attachCS( Chimera::GPIO::PinInit &CSConfig ) = 0;
 
-    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIO_sPtr &CSPin ) = 0;
-
-    virtual Chimera::Status_t attachCS( Chimera::GPIO::GPIO_uPtr CSPin ) = 0;
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::IGPIO_sPtr &CSPin ) = 0;
   };
 }  // namespace Chimera::SPI
 

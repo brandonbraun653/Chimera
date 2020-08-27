@@ -78,7 +78,7 @@ namespace Chimera::Serial
     /**
      *  Configures the serial port with the desired properties
      *
-     *  @param[in]  config        The configuration parameters 
+     *  @param[in]  config        The configuration parameters
      *  @return Chimera::Status_t
      *
      *  |   Return Value   |                     Explanation                    |
@@ -201,15 +201,15 @@ namespace Chimera::Serial
     virtual Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph ) = 0;
 
     /**
-     *  A lot of the functionality of this class depends upon reacting to some kind of 
+     *  A lot of the functionality of this class depends upon reacting to some kind of
      *  interrupt or asynchronous event. Given that some non-trivial processing could
      *  occur in either a callback or by suddenly having to handle a large amount of
      *  data, this function allows that processing to occur in a non-ISR context.
-     * 
+     *
      *  @note It is recommended to signal a high priority thread to wake up and call
      *        this function when the ISR exits. As such, there may be a slight delay
      *        between the signal and the time this function actually executes.
-     * 
+     *
      *  @warning Under no circumstances should this function be called inside an ISR.
      *
      *	@return void

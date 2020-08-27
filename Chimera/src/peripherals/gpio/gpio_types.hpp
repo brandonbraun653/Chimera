@@ -22,16 +22,20 @@
 
 namespace Chimera::GPIO
 {
-  using Pin = uint8_t;
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
+  class IGPIO;
 
-  class Status : public CommonStatusCodes
-  {
-  public:
-    static constexpr Status_t codeOffset = Chimera::Status::Internal::gpioOffset;
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using Pin = uint16_t;
+  using IGPIO_sPtr = std::shared_ptr<IGPIO>;
 
-    // Add status codes as needed. Currently all CommonStatusCodes suffice.
-  };
-
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
   enum class Drive : uint8_t
   {
     INPUT,
@@ -201,6 +205,9 @@ namespace Chimera::GPIO
     NONE
   };
 
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
   struct PinInit
   {
     Alternate alternate; /**< What peripheral type the pin should be configured as */
@@ -224,19 +231,8 @@ namespace Chimera::GPIO
     }
   };
 
-
-  class IGPIO;
-
-  using GPIO_sPtr = std::shared_ptr<IGPIO>;
-  using GPIO_uPtr = std::unique_ptr<IGPIO>;
-
   namespace Backend
   {
-    using Initialize_FPtr         = Chimera::Status_t ( * )( void );
-    using Reset_FPtr              = Chimera::Status_t ( * )( void );
-    using CreateSharedObject_FPtr = GPIO_sPtr ( * )( void );
-    using CreateUniqueObject_FPtr = GPIO_uPtr ( * )( void );
-
     struct DriverConfig
     {
       bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
@@ -245,25 +241,19 @@ namespace Chimera::GPIO
        *  Function pointer that initializes the backend driver's
        *  memory. Should really only call once for initial set up.
        */
-      Initialize_FPtr initialize;
+      Chimera::Status_t ( *initialize )();
 
       /**
        *  Resets the backend driver hardware to default configuration
        *  settings, but does not wipe out any memory.
        */
-      Reset_FPtr reset;
+      Chimera::Status_t ( *reset )();
 
       /**
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      CreateSharedObject_FPtr createShared;
-
-      /**
-       *  Factory function that creates a unique_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
-       */
-      CreateUniqueObject_FPtr createUnique;
+      IGPIO_sPtr ( *getDriver )( const Pin pin );
     };
   }  // namespace Backend
 }  // namespace Chimera::GPIO

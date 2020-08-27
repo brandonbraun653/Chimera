@@ -28,12 +28,12 @@ namespace Chimera::Watchdog
   {
     /**
      *  Registers the backend driver with Chimera
-     *  
+     *
      *  @param[in]  registry    Chimera's copy of the driver interface
      *  @return Chimera::Status_t
      */
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
-  }
+  }  // namespace Backend
 
   class HWInterface
   {
@@ -45,7 +45,7 @@ namespace Chimera::Watchdog
      *  peripheral. This does not start the timer.
      *
      *  @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
-     *  
+     *
      *  @param[in] timeout_mS        How many milliseconds can elapse before watchdog expires
      *  @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked
      *  @return Status::OK if the initialization was a success, Status::FAIL if not
@@ -105,8 +105,7 @@ namespace Chimera::Watchdog
     virtual size_t minTimeout() = 0;
   };
 
-  class IWatchdog : virtual public HWInterface,
-                    virtual public Chimera::Threading::LockableInterface
+  class IWatchdog : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~IWatchdog() = default;

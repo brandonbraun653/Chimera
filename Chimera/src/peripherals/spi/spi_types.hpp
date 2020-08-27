@@ -27,26 +27,21 @@
 
 namespace Chimera::SPI
 {
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
+  class ISPI;
+
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
   using ClockFreq    = size_t;
   using TransferMode = Chimera::Hardware::PeripheralMode;
+  using ISPI_sPtr    = std::shared_ptr<ISPI>;
 
-  class Status : public CommonStatusCodes
-  {
-  public:
-    static constexpr Status_t codeOffset = Chimera::Status::Internal::spiOffset;
-
-    static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 1;
-    static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;
-    static constexpr Status_t INVALID_HARDWARE_PARAM      = codeOffset + 3;
-    static constexpr Status_t FAILED_CHIP_SELECT_WRITE    = codeOffset + 4;
-    static constexpr Status_t CLOCK_SET_LT                = codeOffset + 5;
-    static constexpr Status_t CLOCK_SET_GT                = codeOffset + 6;
-    static constexpr Status_t CLOCK_SET_EQ                = OK;
-    static constexpr Status_t TRANSFER_COMPLETE           = codeOffset + 7;
-    static constexpr Status_t TRANSFER_IN_PROGRESS        = codeOffset + 8;
-    static constexpr Status_t TRANSFER_ERROR              = codeOffset + 9;
-  };
-
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
   /**
    *  Controls the endianness of the transfers.
    */
@@ -153,6 +148,9 @@ namespace Chimera::SPI
     NOT_SUPPORTED
   };
 
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
   /**
    *  Low level hardware configuration options that define the physical
    *  layer behavior common to all SPI peripherals.
@@ -176,13 +174,13 @@ namespace Chimera::SPI
    */
   struct DriverConfig
   {
-    GPIO::PinInit SCKInit;   /**< The GPIO pin settings used for SCK */
-    GPIO::PinInit MOSIInit;  /**< The GPIO pin settings used for MOSI */
-    GPIO::PinInit MISOInit;  /**< The GPIO pin settings used for MISO */
-    GPIO::PinInit CSInit;    /**< The GPIO pin settings used for CS */
-    HardwareInit HWInit;     /**< Hardware driver configuration options */
-    bool externalCS;         /**< Indicates if an external chip select is used */
-    bool validity;           /**< Defines if the configuration is valid */
+    GPIO::PinInit SCKInit;  /**< The GPIO pin settings used for SCK */
+    GPIO::PinInit MOSIInit; /**< The GPIO pin settings used for MOSI */
+    GPIO::PinInit MISOInit; /**< The GPIO pin settings used for MISO */
+    GPIO::PinInit CSInit;   /**< The GPIO pin settings used for CS */
+    HardwareInit HWInit;    /**< Hardware driver configuration options */
+    bool externalCS;        /**< Indicates if an external chip select is used */
+    bool validity;          /**< Defines if the configuration is valid */
 
     void clear()
     {
@@ -192,26 +190,12 @@ namespace Chimera::SPI
       CSInit.clear();
       externalCS = false;
       validity   = false;
-      HWInit = {};
+      HWInit     = {};
     }
   };
 
-  class ISPI;
-
-  using ISPI_sPtr = std::shared_ptr<ISPI>;
-  using ISPI_uPtr = std::unique_ptr<ISPI>;
-
-  // For objects that don't want to look like it's taking implicits
-  using SPI_sPtr = ISPI_sPtr;
-  using SPI_uPtr = ISPI_uPtr;
-
   namespace Backend
   {
-    using Initialize_FPtr         = Chimera::Status_t ( * )( void );
-    using Reset_FPtr              = Chimera::Status_t ( * )( void );
-    using CreateSharedObject_FPtr = ISPI_sPtr ( * )( void );
-    using CreateUniqueObject_FPtr = ISPI_uPtr ( * )( void );
-
     struct DriverConfig
     {
       bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
@@ -220,27 +204,41 @@ namespace Chimera::SPI
        *  Function pointer that initializes the backend driver's
        *  memory. Should really only call once for initial set up.
        */
-      Initialize_FPtr initialize;
+      Chimera::Status_t ( *initialize )();
 
       /**
        *  Resets the backend driver hardware to default configuration
        *  settings, but does not wipe out any memory.
        */
-      Reset_FPtr reset;
+      Chimera::Status_t ( *reset )();
 
       /**
-       *  Factory function that creates a shared_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
+       *  Gets the driver instance associated with the requested channel
        */
-      CreateSharedObject_FPtr createShared;
-
-      /**
-       *  Factory function that creates a unique_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
-       */
-      CreateUniqueObject_FPtr createUnique;
+      ISPI_sPtr ( *getDriver )( const Channel channel );
     };
   }  // namespace Backend
+
+  /*-------------------------------------------------------------------------------
+  Classes
+  -------------------------------------------------------------------------------*/
+  class Status : public Status
+  {
+  public:
+    static constexpr Status_t codeOffset = Chimera::Status::Internal::spiErrorCodeStart;
+
+    static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 1;
+    static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;
+    static constexpr Status_t INVALID_HARDWARE_PARAM      = codeOffset + 3;
+    static constexpr Status_t FAILED_CHIP_SELECT_WRITE    = codeOffset + 4;
+    static constexpr Status_t CLOCK_SET_LT                = codeOffset + 5;
+    static constexpr Status_t CLOCK_SET_GT                = codeOffset + 6;
+    static constexpr Status_t CLOCK_SET_EQ                = OK;
+    static constexpr Status_t TRANSFER_COMPLETE           = codeOffset + 7;
+    static constexpr Status_t TRANSFER_IN_PROGRESS        = codeOffset + 8;
+    static constexpr Status_t TRANSFER_ERROR              = codeOffset + 9;
+  };
+
 }  // namespace Chimera::SPI
 
 #endif /* !CHIMERA_SPI_TYPES_HPP */

@@ -34,7 +34,7 @@ namespace Chimera::Power
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 
@@ -46,7 +46,7 @@ namespace Chimera::Power
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 
@@ -58,7 +58,7 @@ namespace Chimera::Power
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 
@@ -70,7 +70,7 @@ namespace Chimera::Power
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 

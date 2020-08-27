@@ -28,7 +28,7 @@ namespace Chimera::Watchdog
     Register the backend interface with Chimera
     ------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::CommonStatusCodes::OK )
+    if ( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -52,27 +52,15 @@ namespace Chimera::Watchdog
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 
-  Watchdog_sPtr create_shared_ptr()
+  IWatchdog_sPtr getDriver( const Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.createShared();
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
-
-  Watchdog_uPtr create_unique_ptr()
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
-    {
-      return s_backend_driver.createUnique();
+      return s_backend_driver.getDriver( channel );
     }
     else
     {

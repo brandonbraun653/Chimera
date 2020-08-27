@@ -70,5 +70,4 @@ namespace Chimera::Event
 
 }  // namespace Chimera::Event
 
-
 #endif /* !CHIMERA_EVENT_INTERFACE_HPP */

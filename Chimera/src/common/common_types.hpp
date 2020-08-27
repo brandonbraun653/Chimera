@@ -27,20 +27,18 @@ using Reg8_t  = uint8_t;
 namespace Chimera
 {
   using Status_t = uint16_t;
-  namespace Status
+
+  namespace Internal
   {
-    namespace Internal
-    {
-      static constexpr Status_t gpioOffset     = 100;
-      static constexpr Status_t crcOffset      = 200;
-      static constexpr Status_t dmaOffset      = 300;
-      static constexpr Status_t serialOffset   = 400;
-      static constexpr Status_t spiOffset      = 500;
-      static constexpr Status_t watchdogOffset = 600;
-    }
+    static constexpr Status_t gpioErrorCodeStart     = 100;
+    static constexpr Status_t crcErrorCodeStart      = 200;
+    static constexpr Status_t dmaErrorCodeStart      = 300;
+    static constexpr Status_t serialErrorCodeStart   = 400;
+    static constexpr Status_t spiErrorCodeStart      = 500;
+    static constexpr Status_t watchdogErrorCodeStart = 600;
   }
 
-  class CommonStatusCodes
+  class Status
   {
   public:
     static constexpr Status_t UNKNOWN_ERROR    = 0;  /**< Don't know what went wrong, but need to report an error */
@@ -103,13 +101,13 @@ namespace Chimera
       NUM_SUBPERIPH_MODES,
       UNKNOWN_MODE
     };
-    
+
     enum class AccessMode : uint8_t
     {
       BARE_METAL,
       THREADED,
       ATOMIC,
-      
+
       NUM_ACCESS_MODES
     };
   }

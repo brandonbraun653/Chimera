@@ -25,12 +25,12 @@ namespace ChimeraSim::Timer
 {
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 
   Chimera::Status_t reset()
   {
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 
   size_t millis()
@@ -61,7 +61,7 @@ namespace Chimera::Timer::Backend
     registry.delayMicroseconds = ::ChimeraSim::Timer::delayMicroseconds;
     registry.delayMilliseconds = ::ChimeraSim::Timer::delayMilliseconds;
     registry.millis            = ::ChimeraSim::Timer::millis;
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 }
 

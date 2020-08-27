@@ -3,7 +3,7 @@
  *    serial_user.hpp
  *
  *   Description:
- *    Defines the interface to the UART/USART hardware
+ *    User interface to the serial drivers
  *
  *   2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -22,15 +22,9 @@
 
 namespace Chimera::Serial
 {
-  using Serial_sPtr = std::shared_ptr<ISerial>;
-  using Serial_uPtr = std::unique_ptr<ISerial>;
-
   Chimera::Status_t initialize();
-
-  Serial_sPtr create_shared_ptr( const Chimera::Serial::Channel channel );
-
-  Serial_uPtr create_unique_ptr( const Chimera::Serial::Channel channel );
-
+  Chimera::Status_t reset();
+  ISerial_sPtr getDriver( const Channel channel );
 }  // namespace Chimera::Serial
 
 #endif  /* !CHIMERA_SERIAL_USER_HPP */

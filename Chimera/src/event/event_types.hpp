@@ -26,14 +26,14 @@
 #include <Chimera/src/threading/semaphore.hpp>
 
 namespace Chimera::Event
-{ 
-  enum Trigger : size_t 
+{
+  enum Trigger : size_t
   {
-    TRIGGER_INVALID,            /**< Special case used for initialization */
-    TRIGGER_READ_COMPLETE,      /**< A read was completed */
-    TRIGGER_WRITE_COMPLETE,     /**< A write was completed */
-    TRIGGER_TRANSFER_COMPLETE,  /**< A transfer of some sort completed (bi-directional) */
-    TRIGGER_SYSTEM_ERROR,       /**< Catch all error case */
+    TRIGGER_INVALID,           /**< Special case used for initialization */
+    TRIGGER_READ_COMPLETE,     /**< A read was completed */
+    TRIGGER_WRITE_COMPLETE,    /**< A write was completed */
+    TRIGGER_TRANSFER_COMPLETE, /**< A transfer of some sort completed (bi-directional) */
+    TRIGGER_SYSTEM_ERROR,      /**< Catch all error case */
   };
 
   enum ListenerType : size_t
@@ -61,10 +61,8 @@ namespace Chimera::Event
     ListenerObject object; /**< The listener object to be invoked */
   };
 
-
   using ActionableList = std::vector<Actionable>;
 
 }  // namespace Chimera::Event
-
 
 #endif /* !CHIMERA_EVENT_TYPES_HPP */

@@ -25,7 +25,7 @@ namespace Chimera::UART
       cfg.isChannelUART = nullptr;
       cfg.reset         = nullptr;
 
-      return Chimera::CommonStatusCodes::OK;
+      return Chimera::Status::OK;
     }
   }  // namespace Backend
 }  // namespace Chimera::UART

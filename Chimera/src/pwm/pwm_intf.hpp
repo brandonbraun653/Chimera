@@ -30,7 +30,6 @@ namespace Chimera::PWM
     extern Chimera::Status_t registerDriver( DriverRegistration &registry );
   }  // namespace Backend
 
-
   class HardwareDriverInterface
   {
   public:

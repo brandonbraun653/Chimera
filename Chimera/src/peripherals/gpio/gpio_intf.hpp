@@ -23,12 +23,12 @@ namespace Chimera::GPIO
   {
     /**
      *  Registers the backend driver with Chimera
-     *  
+     *
      *  @param[in]  registry    Chimera's copy of the driver interface
      *  @return Chimera::Status_t
      */
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
-  }
+  }  // namespace Backend
 
   /**
    * Defines expected behavior for all embedded systems that allow the user to control
@@ -47,7 +47,6 @@ namespace Chimera::GPIO
      *
      *	@param[in]	port        The port to be used
      *	@param[in]	pin         The pin to be used
-     *	@param[in]  timeout     How long to wait for hardware to be free (mS)
      *	@return Chimera::Status_t
      *
      *
@@ -57,13 +56,12 @@ namespace Chimera::GPIO
      *  |             FAIL | The GPIO failed initialization     |
      *  | INVAL_FUNC_PARAM | User passed in an invalid value    |
      */
-    virtual Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin, const size_t timeout ) = 0;
+    virtual Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin ) = 0;
 
     /**
      *  Initialize the GPIO object using the fully descriptive initialization struct
      *
      *	@param[in]	pinInit     Initialization struct
-     *	@param[in]  timeout     How long to wait for hardware to be free (mS)
      *	@return Chimera::Status_t
      *
      *
@@ -73,14 +71,13 @@ namespace Chimera::GPIO
      *  |             FAIL | The GPIO failed initialization     |
      *  | INVAL_FUNC_PARAM | User passed in an invalid value    |
      */
-    virtual Chimera::Status_t init( const Chimera::GPIO::PinInit &pinInit, const size_t timeout ) = 0;
+    virtual Chimera::Status_t init( const Chimera::GPIO::PinInit &pinInit ) = 0;
 
     /**
      *  Change the GPIO pin electrical input/output behavior mode
      *
      *	@param[in]	drive       The new drive mode to be set
      *	@param[in]	pullup      Enable or disable pullups
-     *	@param[in]  timeout     How long to wait for hardware to be free (mS)
      *	@return Chimera::Status_t
      *
      *	|   Return Value   |                 Explanation                 |
@@ -90,14 +87,12 @@ namespace Chimera::GPIO
      *  | INVAL_FUNC_PARAM | User passed in an invalid value             |
      *  |  NOT_INITIALIZED | The GPIO object has not been initialized    |
      */
-    virtual Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const Chimera::GPIO::Pull pullup,
-                                       const size_t timeout ) = 0;
+    virtual Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const Chimera::GPIO::Pull pullup ) = 0;
 
     /**
      *  Change the logical state of the pin
      *
      *	@param[in]	state       The new state to transition into
-     *	@param[in]  timeout     How long to wait for hardware to be free (mS)
      *	@return Chimera::Status_t
      *
      *	|   Return Value   |                 Explanation                 |
@@ -106,13 +101,12 @@ namespace Chimera::GPIO
      *  |             FAIL | The pin failed applying the settings        |
      *  |  NOT_INITIALIZED | The GPIO object has not been initialized    |
      */
-    virtual Chimera::Status_t setState( const Chimera::GPIO::State state, const size_t timeout ) = 0;
+    virtual Chimera::Status_t setState( const Chimera::GPIO::State state ) = 0;
 
     /**
      *  Read the current logical state of the pin
      *
      *	@param[out]	state       Variable to record the state info into
-     *	@param[in]  timeout     How long to wait for hardware to be free (mS)
      *	@return Chimera::Status_t
      *
      *	|   Return Value  |                  Explanation                 |
@@ -122,12 +116,10 @@ namespace Chimera::GPIO
      *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
      *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
      */
-    virtual Chimera::Status_t getState( Chimera::GPIO::State &state, const size_t timeout ) = 0;
+    virtual Chimera::Status_t getState( Chimera::GPIO::State &state ) = 0;
 
     /**
      *  Toggle the state of the pin
-     *
-     *	@param[in]  timeout     How long to wait for hardware to be free (mS)
      *	@return Chimera::Status_t
      *
      *	|   Return Value  |                  Explanation                 |
@@ -137,15 +129,14 @@ namespace Chimera::GPIO
      *  |   NOT_SUPPORTED | This behavior is not supported on the driver |
      *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
      */
-    virtual Chimera::Status_t toggle( const size_t timeout ) = 0;
+    virtual Chimera::Status_t toggle() = 0;
   };
 
 
   /**
    *  Expected interface for all implementers of GPIO
    */
-  class IGPIO : virtual public HWInterface,
-                virtual public Chimera::Threading::LockableInterface
+  class IGPIO : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~IGPIO() = default;

@@ -116,7 +116,8 @@ namespace Chimera::Timer
      *  @param[in]  init      Configuration data for the feature
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t initializeCoreFeature( const Chimera::Timer::CoreFeature feature, Chimera::Timer::CoreFeatureInit &init ) = 0;
+    virtual Chimera::Status_t initializeCoreFeature( const Chimera::Timer::CoreFeature feature,
+                                                     Chimera::Timer::CoreFeatureInit &init ) = 0;
 
     /**
      *  Invoke some kind of behavior on the hardware. Usually this is to update previously configured
@@ -136,7 +137,8 @@ namespace Chimera::Timer
      *  @param[in]  device    Hardware to interact with
      *  @param[in]  state     The state to place the hardware in
      */
-    virtual Chimera::Status_t setState( const Chimera::Timer::Switchable device, const Chimera::Timer::SwitchableState state ) = 0;
+    virtual Chimera::Status_t setState( const Chimera::Timer::Switchable device,
+                                        const Chimera::Timer::SwitchableState state ) = 0;
 
     /*------------------------------------------------
     Data getters
@@ -158,7 +160,7 @@ namespace Chimera::Timer
      *
      *  @return const Chimera::Timer::Descriptor *
      */
-    virtual const Chimera::Timer::Descriptor * getDeviceInfo() = 0;
+    virtual const Chimera::Timer::Descriptor *getDeviceInfo() = 0;
   };
 
   class ITimer : virtual public ITimerHardwareDriver, virtual public Chimera::Threading::LockableInterface

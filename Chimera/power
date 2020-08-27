@@ -12,7 +12,7 @@
 #ifndef CHIMERA_POWER_INCLUDES
 #define CHIMERA_POWER_INCLUDES
 
-#include <Chimera/src/peripherals/power/power.hpp>
+#include <Chimera/src/peripherals/power/power_user.hpp>
 #include <Chimera/src/peripherals/power/power_intf.hpp>
 #include <Chimera/src/peripherals/power/power_types.hpp>
 

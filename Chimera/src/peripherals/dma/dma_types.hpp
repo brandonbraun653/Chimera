@@ -22,6 +22,15 @@
 
 namespace Chimera::DMA
 {
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
+  class IDMA;
+
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using IDMA_sPtr        = std::shared_ptr<IDMA>;
   using TransferHandle_t = void *;
 
   /**
@@ -31,6 +40,17 @@ namespace Chimera::DMA
    *  @note These values are used to index arrays! Do not change their order or value!
    */
   using RequestID = uint32_t;
+
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
+  enum class Controller : uint8_t
+  {
+    CHANNEL1,
+    CHANNEL2,
+
+    NUM_OPTIONS
+  };
 
   /**
    *  Options for the memory transfer direction
@@ -132,6 +152,9 @@ namespace Chimera::DMA
     NUM_OPTIONS
   };
 
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
   struct Init
   {
     TransferDirection direction; /**< What direction the transfer will be occuring */
@@ -151,9 +174,9 @@ namespace Chimera::DMA
 
   struct TCB
   {
-    uint32_t srcAddress;  /**< Location where data will be copied from */
-    uint32_t dstAddress;  /**< Location where data will be copied into */
-    size_t transferSize;  /**< How many bytes to transfer */
+    uint32_t srcAddress; /**< Location where data will be copied from */
+    uint32_t dstAddress; /**< Location where data will be copied into */
+    size_t transferSize; /**< How many bytes to transfer */
 
     TCB()
     {
@@ -161,18 +184,8 @@ namespace Chimera::DMA
     }
   };
 
-  class IDMA;
-
-  using DMA_sPtr = std::shared_ptr<IDMA>;
-  using DMA_uPtr = std::unique_ptr<IDMA>;
-
   namespace Backend
   {
-    using Initialize_FPtr         = Chimera::Status_t ( * )( void );
-    using Reset_FPtr              = Chimera::Status_t ( * )( void );
-    using CreateSharedObject_FPtr = DMA_sPtr ( * )( void );
-    using CreateUniqueObject_FPtr = DMA_uPtr ( * )( void );
-
     struct DriverConfig
     {
       bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
@@ -181,25 +194,19 @@ namespace Chimera::DMA
        *  Function pointer that initializes the backend driver's
        *  memory. Should really only call once for initial set up.
        */
-      Initialize_FPtr initialize;
+      Chimera::Status_t ( *initialize )( void );
 
       /**
        *  Resets the backend driver hardware to default configuration
        *  settings, but does not wipe out any memory.
        */
-      Reset_FPtr reset;
+      Chimera::Status_t ( *reset )( void );
 
       /**
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      CreateSharedObject_FPtr createShared;
-
-      /**
-       *  Factory function that creates a unique_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
-       */
-      CreateUniqueObject_FPtr createUnique;
+      IDMA_sPtr ( *getDriver )( const Controller channel );
     };
   }  // namespace Backend
 

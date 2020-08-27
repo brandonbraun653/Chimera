@@ -38,7 +38,7 @@ namespace Chimera::Buffer
   {
     if ( !circularSize || !linearSize )
     {
-      return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      return Chimera::Status::INVAL_FUNC_PARAM;
     }
 
     /*-------------------------------------------------
@@ -65,10 +65,10 @@ namespace Chimera::Buffer
     if ( !pLinearBuffer || !pCircularBuffer )
     {
       freeDynamicData();
-      return Chimera::CommonStatusCodes::MEMORY;
+      return Chimera::Status::MEMORY;
     }
 
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 
   Chimera::Status_t PeripheralBuffer::assign( boost::circular_buffer<uint8_t> *const circularBuffer,
@@ -78,7 +78,7 @@ namespace Chimera::Buffer
 
     if ( !circularBuffer || !linearBuffer || !linearSize )
     {
-      return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      return Chimera::Status::INVAL_FUNC_PARAM;
     }
 
     if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
@@ -102,7 +102,7 @@ namespace Chimera::Buffer
       dynamicData = false;
     }
 
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 
   Chimera::Status_t PeripheralBuffer::push( const uint8_t *const buffer, const size_t len, size_t &actual )
@@ -110,7 +110,7 @@ namespace Chimera::Buffer
     using namespace Chimera::Hardware;
     using namespace Chimera::Threading;
 
-    auto error          = Chimera::CommonStatusCodes::LOCKED;
+    auto error          = Chimera::Status::LOCKED;
     size_t bytesWritten = 0;
     actual              = 0;
 
@@ -119,11 +119,11 @@ namespace Chimera::Buffer
     -------------------------------------------------*/
     if ( !buffer || !len )
     {
-      return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      return Chimera::Status::INVAL_FUNC_PARAM;
     }
     else if ( !pCircularBuffer )
     {
-      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      return Chimera::Status::NOT_INITIALIZED;
     }
 
     /*-------------------------------------------------
@@ -131,7 +131,7 @@ namespace Chimera::Buffer
     -------------------------------------------------*/
     if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
-      error = Chimera::CommonStatusCodes::OK;
+      error = Chimera::Status::OK;
 
       while ( pCircularBuffer->reserve() && ( bytesWritten < len ) )
       {
@@ -142,7 +142,7 @@ namespace Chimera::Buffer
       actual = bytesWritten;
       if ( bytesWritten != len )
       {
-        error = Chimera::CommonStatusCodes::FULL;
+        error = Chimera::Status::FULL;
       }
     }
 
@@ -154,7 +154,7 @@ namespace Chimera::Buffer
     using namespace Chimera::Hardware;
     using namespace Chimera::Threading;
 
-    auto error       = Chimera::CommonStatusCodes::LOCKED;
+    auto error       = Chimera::Status::LOCKED;
     size_t bytesRead = 0;
     actual           = 0;
 
@@ -163,11 +163,11 @@ namespace Chimera::Buffer
     -------------------------------------------------*/
     if ( !buffer || !len )
     {
-      return Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      return Chimera::Status::INVAL_FUNC_PARAM;
     }
     else if ( !pCircularBuffer )
     {
-      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      return Chimera::Status::NOT_INITIALIZED;
     }
 
     /*-------------------------------------------------
@@ -175,7 +175,7 @@ namespace Chimera::Buffer
     -------------------------------------------------*/
     if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
-      error = Chimera::CommonStatusCodes::OK;
+      error = Chimera::Status::OK;
 
       while ( !pCircularBuffer->empty() && ( bytesRead < len ) )
       {
@@ -187,7 +187,7 @@ namespace Chimera::Buffer
       actual = bytesRead;
       if ( bytesRead != len )
       {
-        error = Chimera::CommonStatusCodes::EMPTY;
+        error = Chimera::Status::EMPTY;
       }
     }
 
@@ -197,16 +197,16 @@ namespace Chimera::Buffer
   Chimera::Status_t PeripheralBuffer::flush()
   {
     using namespace Chimera::Threading;
-    auto error = Chimera::CommonStatusCodes::LOCKED;
+    auto error = Chimera::Status::LOCKED;
 
     if ( !pLinearBuffer || !pCircularBuffer )
     {
-      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      return Chimera::Status::NOT_INITIALIZED;
     }
 
     if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
-      error = Chimera::CommonStatusCodes::OK;
+      error = Chimera::Status::OK;
       memset( pLinearBuffer, 0, linearLength );
       pCircularBuffer->clear();
     }
@@ -218,19 +218,19 @@ namespace Chimera::Buffer
   {
     using namespace Chimera::Threading;
 
-    auto result = Chimera::CommonStatusCodes::LOCKED;
+    auto result = Chimera::Status::LOCKED;
     size_t bytesToCopy = 0;
     size_t bytesCopied = 0;
     actual = 0;
 
     if( !initialized() )
     {
-      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      return Chimera::Status::NOT_INITIALIZED;
     }
 
     if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
-      result = Chimera::CommonStatusCodes::OK;
+      result = Chimera::Status::OK;
 
       /*-------------------------------------------------
       Assume we are going to copy everything
@@ -243,11 +243,11 @@ namespace Chimera::Buffer
       if ( bytesToCopy > linearLength )
       {
         bytesToCopy = linearLength;
-        result      = Chimera::CommonStatusCodes::FULL;
+        result      = Chimera::Status::FULL;
       }
 
       /*-------------------------------------------------
-      Truncate the number of bytes we try and copy from 
+      Truncate the number of bytes we try and copy from
       the circular buffer
       -------------------------------------------------*/
       if ( bytesToCopy > bytes )
@@ -275,7 +275,7 @@ namespace Chimera::Buffer
   {
     using namespace Chimera::Threading;
 
-    auto result = Chimera::CommonStatusCodes::LOCKED;
+    auto result = Chimera::Status::LOCKED;
     size_t bytesToCopy = 0;
     size_t bytesbytesCopied = 0;
     size_t remainingSpace = 0;
@@ -283,12 +283,12 @@ namespace Chimera::Buffer
 
     if( !initialized() )
     {
-      return Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      return Chimera::Status::NOT_INITIALIZED;
     }
 
     if ( TimedLockGuard( *this ).try_lock_for( 10 ) )
     {
-      result = Chimera::CommonStatusCodes::OK;
+      result = Chimera::Status::OK;
 
       bytesToCopy = bytes;
       remainingSpace = pCircularBuffer->reserve();
@@ -307,7 +307,7 @@ namespace Chimera::Buffer
       if( bytesToCopy > remainingSpace )
       {
         bytesToCopy = remainingSpace;
-        result = Chimera::CommonStatusCodes::FULL;
+        result = Chimera::Status::FULL;
       }
 
       /*-------------------------------------------------

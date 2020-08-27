@@ -58,12 +58,12 @@ namespace BoundaryChecks
 
     auto result      = buffer.assign( 0, 10 );
     auto initialized = buffer.initialized();
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
     ASSERT_EQ( initialized, false );
 
     result      = buffer.assign( 10, 0 );
     initialized = buffer.initialized();
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
     ASSERT_EQ( initialized, false );
   }
 
@@ -79,7 +79,7 @@ namespace BoundaryChecks
     auto result      = buffer.assign( nullptr, nullptr, 0 );
     auto initialized = buffer.initialized();
 
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
     ASSERT_EQ( initialized, false );
 
     /*------------------------------------------------
@@ -88,7 +88,7 @@ namespace BoundaryChecks
     result      = buffer.assign( &cbuf, nullptr, 0 );
     initialized = buffer.initialized();
 
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
     ASSERT_EQ( initialized, false );
 
     /*------------------------------------------------
@@ -97,7 +97,7 @@ namespace BoundaryChecks
     result      = buffer.assign( nullptr, lbuf.data(), lbuf.size() );
     initialized = buffer.initialized();
 
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
     ASSERT_EQ( initialized, false );
 
     /*------------------------------------------------
@@ -106,7 +106,7 @@ namespace BoundaryChecks
     result      = buffer.assign( &cbuf, lbuf.data(), 0 );
     initialized = buffer.initialized();
 
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
     ASSERT_EQ( initialized, false );
   }
 
@@ -124,16 +124,16 @@ namespace BoundaryChecks
     Bad buffer inputs
     ------------------------------------------------*/
     auto result = buffer.push( nullptr, tmpSize, actuallyPushed );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
 
     result = buffer.push( &tmp, 0, actuallyPushed );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
 
     /*------------------------------------------------
     Circular buffer not initialized
     ------------------------------------------------*/
     result = buffer.push( &tmp, tmpSize, actuallyPushed );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::NOT_INITIALIZED );
+    ASSERT_EQ( result, Chimera::Status::NOT_INITIALIZED );
   }
 
   TEST( BoundaryChecks, Push_LockedDriver )
@@ -148,13 +148,13 @@ namespace BoundaryChecks
 
     buffer.assign( 10, 10 );
 
-    ASSERT_EQ( buffer.lock( 10 ), Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( buffer.lock( 10 ), Chimera::Status::OK );
 
     /*------------------------------------------------
     Call while locked
     ------------------------------------------------*/
     auto result = buffer.push( &tmp, tmpSize, actuallyPushed );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::LOCKED );
+    ASSERT_EQ( result, Chimera::Status::LOCKED );
   }
 
   TEST( BoundaryChecks, Pop_NullInput )
@@ -171,16 +171,16 @@ namespace BoundaryChecks
     Bad buffer inputs
     ------------------------------------------------*/
     auto result = buffer.pop( nullptr, tmpSize, actuallyPopped );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
 
     result = buffer.pop( &tmp, 0, actuallyPopped );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::INVAL_FUNC_PARAM );
+    ASSERT_EQ( result, Chimera::Status::INVAL_FUNC_PARAM );
 
     /*------------------------------------------------
     Circular buffer not initialized
     ------------------------------------------------*/
     result = buffer.pop( &tmp, tmpSize, actuallyPopped );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::NOT_INITIALIZED );
+    ASSERT_EQ( result, Chimera::Status::NOT_INITIALIZED );
   }
 
   TEST( BoundaryChecks, Pop_LockedDriver )
@@ -195,13 +195,13 @@ namespace BoundaryChecks
 
     buffer.assign( 10, 10 );
 
-    ASSERT_EQ( buffer.lock( 10 ), Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( buffer.lock( 10 ), Chimera::Status::OK );
 
     /*------------------------------------------------
     Call while locked
     ------------------------------------------------*/
     auto result = buffer.pop( &tmp, tmpSize, actuallyPopped );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::LOCKED );
+    ASSERT_EQ( result, Chimera::Status::LOCKED );
   }
 
   TEST( BoundaryChecks, Flush_NotInitialized )
@@ -209,7 +209,7 @@ namespace BoundaryChecks
     PeripheralBuffer buffer;
 
     auto result = buffer.flush();
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::NOT_INITIALIZED );
+    ASSERT_EQ( result, Chimera::Status::NOT_INITIALIZED );
   }
 
   TEST( BoundaryChecks, Flush_LockedDriver )
@@ -220,7 +220,7 @@ namespace BoundaryChecks
     buffer.lock( 100 );
 
     auto result = buffer.flush();
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::LOCKED );
+    ASSERT_EQ( result, Chimera::Status::LOCKED );
   }
 
   TEST( BoundaryChecks, TransferInto_NotInitialized )
@@ -228,7 +228,7 @@ namespace BoundaryChecks
     PeripheralBuffer buffer;
     size_t tmp  = 0;
     auto result = buffer.transferInto( 10, tmp );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::NOT_INITIALIZED );
+    ASSERT_EQ( result, Chimera::Status::NOT_INITIALIZED );
   }
 
   TEST( BoundaryChecks, TransferInto_LockedDriver )
@@ -240,7 +240,7 @@ namespace BoundaryChecks
     buffer.lock( 100 );
 
     auto result = buffer.transferInto( 10, tmp );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::LOCKED );
+    ASSERT_EQ( result, Chimera::Status::LOCKED );
   }
 
   TEST( BoundaryChecks, TransferOutOf_NotInitialized )
@@ -248,7 +248,7 @@ namespace BoundaryChecks
     PeripheralBuffer buffer;
     size_t tmp  = 0;
     auto result = buffer.transferOutOf( 10, tmp );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::NOT_INITIALIZED );
+    ASSERT_EQ( result, Chimera::Status::NOT_INITIALIZED );
   }
 
   TEST( BoundaryChecks, TransferOutOf_LockedDriver )
@@ -260,7 +260,7 @@ namespace BoundaryChecks
     buffer.lock( 100 );
 
     auto result = buffer.transferOutOf( 10, tmp );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::LOCKED );
+    ASSERT_EQ( result, Chimera::Status::LOCKED );
   }
 }  // namespace BoundaryChecks
 
@@ -277,7 +277,7 @@ namespace NormalOperation
     const size_t linearBufferSize   = static_cast<size_t>( rand() % 100 + 1 );
 
     auto result = buffer.assign( circularBufferSize, linearBufferSize );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
   }
 
   TEST( NormalOperation, AssignStatic )
@@ -290,7 +290,7 @@ namespace NormalOperation
     uint8_t *lbuf = new uint8_t[ linearBufferSize ];
 
     auto result = buffer.assign( &cbuf, lbuf, linearBufferSize );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
   }
 
   /*------------------------------------------------
@@ -326,13 +326,13 @@ namespace NormalOperation
     auto pushResult       = buffer.push( randomData.data(), randomData.size(), actuallyPushed );
 
     ASSERT_EQ( actuallyPushed, circularBufferSize );
-    ASSERT_EQ( pushResult, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( pushResult, Chimera::Status::OK );
 
     size_t actuallyPopped = ~circularBufferSize;
     auto popResult        = buffer.pop( outputData.data(), outputData.size(), actuallyPopped );
 
     ASSERT_EQ( actuallyPopped, circularBufferSize );
-    ASSERT_EQ( popResult, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( popResult, Chimera::Status::OK );
 
     ASSERT_EQ( outputData, randomData );
   }
@@ -358,7 +358,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::FULL );
+    ASSERT_EQ( result, Chimera::Status::FULL );
     ASSERT_EQ( actuallyPushed, circularBufferSize );
   }
 
@@ -388,7 +388,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::EMPTY );
+    ASSERT_EQ( result, Chimera::Status::EMPTY );
     ASSERT_EQ( actuallyPopped, circularBufferSize );
   }
 
@@ -402,7 +402,7 @@ namespace NormalOperation
     buffer.assign( 10, 10 );
 
     auto result = buffer.flush();
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
   }
 
   /*------------------------------------------------
@@ -421,7 +421,7 @@ namespace NormalOperation
     uint8_t *lbuf = new uint8_t[ linearBufferSize ];
 
     auto result = buffer.assign( &cbuf, lbuf, linearBufferSize );
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
 
     /*------------------------------------------------
     Call
@@ -465,7 +465,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
     ASSERT_EQ( txfrSize, transferBytes );
     ASSERT_TRUE( txfrSize < pushedBytes );
   }
@@ -496,7 +496,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::FULL );
+    ASSERT_EQ( result, Chimera::Status::FULL );
     ASSERT_EQ( transferBytes, linearBufferSize );
     ASSERT_TRUE( transferBytes < pushedBytes );
   }
@@ -529,7 +529,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
     ASSERT_EQ( txfrSize, transferBytes );
     ASSERT_TRUE( txfrSize < randomData.size() );
   }
@@ -559,7 +559,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::FULL );
+    ASSERT_EQ( result, Chimera::Status::FULL );
     ASSERT_EQ( transferBytes, circularBufferSize );
     ASSERT_TRUE( linearBufferSize > circularBufferSize );
   }
@@ -589,7 +589,7 @@ namespace NormalOperation
     /*------------------------------------------------
     Verify
     ------------------------------------------------*/
-    ASSERT_EQ( result, Chimera::CommonStatusCodes::OK );
+    ASSERT_EQ( result, Chimera::Status::OK );
     ASSERT_EQ( transferBytes, linearBufferSize );
     ASSERT_TRUE( txfrSize > linearBufferSize );
   }

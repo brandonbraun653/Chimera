@@ -33,27 +33,15 @@ namespace Chimera::DMA
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 
-  DMA_sPtr create_shared_ptr()
+  IDMA_sPtr getDriver( const Controller channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.createShared();
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
-
-  DMA_uPtr create_unique_ptr()
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
-    {
-      return s_backend_driver.createUnique();
+      return s_backend_driver.getDriver( channel );
     }
     else
     {

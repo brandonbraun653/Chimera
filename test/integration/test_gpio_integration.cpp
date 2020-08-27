@@ -28,13 +28,13 @@ namespace Chimera
     ------------------------------------------------*/
     TEST_F( GPIOIntegrationTestFixture, init_badPort )
     {
-      auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      auto expected = Chimera::Status::INVAL_FUNC_PARAM;
       EXPECT_EQ( expected, gpio->init( Port::NUM_PORTS, 0 ) );
     }
 
     TEST_F( GPIOIntegrationTestFixture, init_badPin )
     {
-      auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      auto expected = Chimera::Status::INVAL_FUNC_PARAM;
       EXPECT_EQ( expected, gpio->init( Port::PORTA, std::numeric_limits<uint8_t>::max() ) );
     }
 
@@ -45,7 +45,7 @@ namespace Chimera
       pin on the first GPIO register. Otherwise, GPIO
       probably shouldn't be supported...
       ------------------------------------------------*/
-      auto expected = Chimera::CommonStatusCodes::OK;
+      auto expected = Chimera::Status::OK;
       EXPECT_EQ( expected, gpio->init( Port::PORTA, 0 ) );
     }
 
@@ -55,14 +55,14 @@ namespace Chimera
     TEST_F( GPIOIntegrationTestFixture, setMode_badDrive )
     {
       defaultInit();
-      auto expected = Chimera::CommonStatusCodes::INVAL_FUNC_PARAM;
+      auto expected = Chimera::Status::INVAL_FUNC_PARAM;
       EXPECT_EQ( expected, gpio->setMode( Drive::UNKNOWN_DRIVE, true ) );
       EXPECT_EQ( expected, gpio->setMode( Drive::UNKNOWN_DRIVE, false ) );
     }
 
     TEST_F( GPIOIntegrationTestFixture, setMode_preInit )
     {
-      auto expected = Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      auto expected = Chimera::Status::NOT_INITIALIZED;
       EXPECT_EQ( expected, gpio->setMode( Drive::INPUT, true ) );
     }
 
@@ -72,7 +72,7 @@ namespace Chimera
     TEST_F( GPIOIntegrationTestFixture, setState_allVals )
     {
       defaultInit();
-      auto expected = Chimera::CommonStatusCodes::OK;
+      auto expected = Chimera::Status::OK;
       EXPECT_EQ( expected, gpio->setState( State::HI ) );
       EXPECT_EQ( expected, gpio->setState( State::HIGH ) );
       EXPECT_EQ( expected, gpio->setState( State::LO ) );
@@ -83,7 +83,7 @@ namespace Chimera
 
     TEST_F( GPIOIntegrationTestFixture, setState_preInit )
     {
-      auto expected = Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      auto expected = Chimera::Status::NOT_INITIALIZED;
       EXPECT_EQ( expected, gpio->setState( State::HI ) );
     }
 
@@ -93,7 +93,7 @@ namespace Chimera
     TEST_F( GPIOIntegrationTestFixture, getState_preInit )
     {
       Chimera::GPIO::State state;
-      auto expected = Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      auto expected = Chimera::Status::NOT_INITIALIZED;
       EXPECT_EQ( expected, gpio->getState( state ) );
     }
 
@@ -101,13 +101,13 @@ namespace Chimera
     {
       defaultInit();
       Chimera::GPIO::State state;
-      auto expected = Chimera::CommonStatusCodes::OK;
+      auto expected = Chimera::Status::OK;
       EXPECT_EQ( expected, gpio->getState( state ) );
 
       /* clang-format off */
       EXPECT_EQ( true, ( ( state == State::HI   )
                       || ( state == State::HIGH )
-                      || ( state == State::ON   ) 
+                      || ( state == State::ON   )
                       || ( state == State::LOW  )
                       || ( state == State::LO   )
                       || ( state == State::OFF  ) ) );
@@ -119,14 +119,14 @@ namespace Chimera
     ------------------------------------------------*/
     TEST_F( GPIOIntegrationTestFixture, toggle_preInit )
     {
-      auto expected = Chimera::CommonStatusCodes::NOT_INITIALIZED;
+      auto expected = Chimera::Status::NOT_INITIALIZED;
       EXPECT_EQ( expected, gpio->toggle() );
     }
 
     TEST_F( GPIOIntegrationTestFixture, toggle_normal )
     {
       defaultInit();
-      auto expected = Chimera::CommonStatusCodes::OK;
+      auto expected = Chimera::Status::OK;
       EXPECT_EQ( expected, gpio->toggle() );
     }
 

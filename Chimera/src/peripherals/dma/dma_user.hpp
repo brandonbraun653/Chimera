@@ -17,17 +17,13 @@
 
 /* Chimera Includes */
 #include <Chimera/src/peripherals/dma/dma_intf.hpp>
+#include <Chimera/src/peripherals/dma/dma_types.hpp>
 
 namespace Chimera::DMA
 {
-  using DMA_sPtr = std::shared_ptr<IDMA>;
-  using DMA_uPtr = std::unique_ptr<IDMA>;
-
   Chimera::Status_t initialize();
-
-  DMA_sPtr create_shared_ptr();
-
-  DMA_uPtr create_unique_ptr();
+  Chimera::Status_t reset();
+  IDMA_sPtr getDriver( const Controller channel );
 }  // namespace Chimera::DMA
 
 #endif /* !CHIMERA_DMA_HPP */

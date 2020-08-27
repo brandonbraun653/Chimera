@@ -21,13 +21,8 @@
 namespace Chimera::GPIO
 {
   Chimera::Status_t initialize();
-
   Chimera::Status_t reset();
-
-  GPIO_sPtr create_shared_ptr();
-
-  GPIO_uPtr create_unique_ptr();
-
+  IGPIO_sPtr getDriver( const Pin pin );
 }  // namespace Chimera::GPIO
 
 #endif  /* !CHIMERA_GPIO_HPP */

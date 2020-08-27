@@ -20,8 +20,7 @@ namespace Chimera::PWM
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  PWM_sPtr create_shared_ptr();
-  PWM_uPtr create_unique_ptr();
+  IPWM_sPtr getDriver( const size_t channel );
   size_t numSupportedChannels();
 }  // namespace Chimera::PWM
 

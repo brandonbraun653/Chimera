@@ -37,7 +37,7 @@ namespace Chimera::System
     sSysTick       = 0;
     sSysTickThread = std::thread( SimSystemTick );
 
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 
   InterruptMask prjDisableInterrupts()
@@ -92,7 +92,7 @@ namespace Chimera::System::Backend
     cfg.version_Minor          = nullptr;
     cfg.version_Patch          = nullptr;
 
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 }
 

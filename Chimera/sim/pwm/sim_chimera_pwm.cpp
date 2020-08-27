@@ -16,7 +16,7 @@ namespace Chimera::PWM
 {
   Chimera::Status_t initialize()
   {
-    return Chimera::CommonStatusCodes::OK;
+    return Chimera::Status::OK;
   }
 
 }  // namespace Chimera::PWM

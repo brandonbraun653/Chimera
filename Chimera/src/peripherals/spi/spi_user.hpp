@@ -21,13 +21,8 @@
 namespace Chimera::SPI
 {
   Chimera::Status_t initialize();
-
   Chimera::Status_t reset();
-  
-  ISPI_sPtr create_shared_ptr();
-
-  ISPI_uPtr create_unique_ptr();
-
+  ISPI_sPtr getDriver( const Channel channel );
 }  // namespace Chimera::SPI
 
-#endif  /* !CHIMERA_SPI_HPP */
+#endif /* !CHIMERA_SPI_HPP */

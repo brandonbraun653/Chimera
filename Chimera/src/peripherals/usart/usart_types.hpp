@@ -22,23 +22,61 @@
 
 namespace Chimera::USART
 {
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
   class IUSART;
 
-  using USART_sPtr = std::shared_ptr<IUSART>;
-  using USART_uPtr = std::unique_ptr<IUSART>;
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using IUSART_sPtr = std::shared_ptr<IUSART>;
 
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
+
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     struct DriverConfig
     {
       bool isSupported;
+
+      /**
+       *  Initializes the backend driver's memory. Should really only call once for initial set up.
+       *
+       *  @return Chimera::Status_t
+       */
       Chimera::Status_t ( *initialize )( void );
+
+      /**
+       *  Resets the backend driver hardware to default configuration
+       *  settings, but does not wipe out any memory.
+       *
+       *  @return Chimera::Status_t
+       */
       Chimera::Status_t ( *reset )( void );
+
+      /**
+       *  Checks if the given channel is a USART channel or not
+       *
+       *  @param[in]  channel     The serial channel to be checked
+       *  @return bool
+       */
       bool ( *isChannelUSART )( const Chimera::Serial::Channel );
-      USART_sPtr ( *createShared )( void );
-      USART_uPtr ( *createUnique )( void );
+
+      /**
+       *  Factory function that creates a shared_ptr instance of the backend
+       *  driver, as long as it conforms to the expected interface.
+       *
+       *  @return IUSART_sPtr
+       */
+      IUSART_sPtr ( *getDriver )( const Chimera::Serial::Channel );
     };
   }  // namespace Backend
-}
+}  // namespace Chimera::USART
 
-#endif  /* !CHIMERA_USART_TYPES_HPP */
+#endif /* !CHIMERA_USART_TYPES_HPP */

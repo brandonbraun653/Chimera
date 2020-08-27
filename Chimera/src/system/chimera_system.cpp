@@ -31,7 +31,7 @@ namespace Chimera::System
     Register the backend interface with Chimera
     ------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::CommonStatusCodes::OK )
+    if ( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -56,7 +56,7 @@ namespace Chimera::System
     }
     else
     {
-      return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+      return Chimera::Status::NOT_SUPPORTED;
     }
   }
 

@@ -1,6 +1,6 @@
 /********************************************************************************
  *   File Name:
- *    crc.hpp
+ *    crc_user.hpp
  *
  *   Description:
  *    Implements an interface to create a Chimera CRC peripheral
@@ -12,23 +12,16 @@
 #ifndef CHIMERA_CRC_HPP
 #define CHIMERA_CRC_HPP
 
-/* STL Includes */
-#include <memory>
-
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/src/peripherals/crc/crc_intf.hpp>
+#include <Chimera/src/peripherals/crc/crc_types.hpp>
 
 namespace Chimera::HWCRC
 {
   Chimera::Status_t initialize();
-
   Chimera::Status_t reset();
-
-  HWCRC_sPtr create_shared_ptr();
-
-  HWCRC_uPtr create_unique_ptr();
-
+  IHWCRC_sPtr getDriver( const Channel channel );
 }  // namespace Chimera
 
 #endif /* !CHIMERA_CRC_HPP */

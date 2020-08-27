@@ -22,20 +22,33 @@
 
 namespace Chimera::PWM
 {
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
+  class IPWM;
+
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using IPWM_sPtr = std::shared_ptr<IPWM>;
+
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
+
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
   /**
    *  Initialization structure to configure a PWM driver
    */
   struct DriverConfig
   {
-    Chimera::GPIO::PinInit outputPin;          /**< Output pin configuration */
-    Chimera::Timer::PWM::Config pwm;           /**< PWM configuration */
-    Chimera::Timer::DriverConfig timer;        /**< Optional timer hardware config */
-    bool validity;                             /**< Is this configuration data valid */
+    Chimera::GPIO::PinInit outputPin;   /**< Output pin configuration */
+    Chimera::Timer::PWM::Config pwm;    /**< PWM configuration */
+    Chimera::Timer::DriverConfig timer; /**< Optional timer hardware config */
+    bool validity;                      /**< Is this configuration data valid */
   };
-
-  class IPWM;
-  using PWM_sPtr = std::shared_ptr<IPWM>;
-  using PWM_uPtr = std::unique_ptr<IPWM>;
 
   namespace Backend
   {
@@ -63,14 +76,7 @@ namespace Chimera::PWM
        *
        *  @return PWM_sPtr
        */
-      PWM_sPtr ( *createShared )( void );
-
-      /**
-       *  Creates a unique driver object
-       *
-       *  @return PWM_uPtr
-       */
-      PWM_uPtr ( *createUnique )( void );
+      IPWM_sPtr ( *getDriver )( const size_t channel );
 
       /**
        *  Gets the number of supported PWM channels on the device

@@ -23,7 +23,7 @@ namespace Chimera::SPI::Backend
     registry.createUnique = nullptr;
     registry.initialize   = nullptr;
     registry.reset        = nullptr;
-    return Chimera::CommonStatusCodes::NOT_SUPPORTED;
+    return Chimera::Status::NOT_SUPPORTED;
   }
 }  // namespace Chimera::SPI::Backend
 

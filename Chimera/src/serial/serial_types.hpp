@@ -23,18 +23,20 @@
 
 namespace Chimera::Serial
 {
-  class HWInterface;
-  using Interface_sPtr = std::shared_ptr<HWInterface>;
-  using Interface_uPtr = std::unique_ptr<HWInterface>;
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
+  class ISerial;
 
-  class SerialClass;
-  using SerialClass_sPtr = std::shared_ptr<SerialClass>;
-  using SerialClass_uPtr = std::unique_ptr<SerialClass>;
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using ISerial_sPtr = std::shared_ptr<ISerial>;
 
-  class Status : public CommonStatusCodes
+  class Status : public Status
   {
   public:
-    static constexpr Status_t codeOffset = Chimera::Status::Internal::serialOffset;
+    static constexpr Status_t codeOffset = Chimera::Internal::serialErrorCodeStart;
 
     static constexpr Status_t RX_ABORTED                  = codeOffset + 2;
     static constexpr Status_t RX_READY                    = codeOffset + 3;
@@ -54,6 +56,9 @@ namespace Chimera::Serial
     static constexpr Status_t TX_ABORTED                  = codeOffset + 19;
   };
 
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
   /**
    *  Options for selecting a baud rate. These are intended
    *  to be converted by the backend driver into the appropriate
