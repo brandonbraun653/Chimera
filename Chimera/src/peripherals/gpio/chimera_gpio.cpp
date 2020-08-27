@@ -55,23 +55,11 @@ namespace Chimera::GPIO
     }
   }
 
-  GPIO_sPtr create_shared_ptr()
+  IGPIO_sPtr getDriver( const Pin pin )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.createShared();
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
-
-  GPIO_uPtr create_unique_ptr()
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
-    {
-      return s_backend_driver.createUnique();
+      return s_backend_driver.getDriver( pin );
     }
     else
     {

@@ -33,7 +33,7 @@ namespace Chimera::Serial
   -------------------------------------------------------------------------------*/
   using ISerial_sPtr = std::shared_ptr<ISerial>;
 
-  class Status : public Status
+  class Status
   {
   public:
     static constexpr Status_t codeOffset = Chimera::Internal::serialErrorCodeStart;

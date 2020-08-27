@@ -19,8 +19,7 @@ namespace Chimera::UART
     Chimera::Status_t registerDriver( struct Chimera::UART::Backend::DriverConfig &cfg )
     {
       cfg.isSupported   = false;
-      cfg.createShared  = nullptr;
-      cfg.createUnique  = nullptr;
+      cfg.getDriver     = nullptr;
       cfg.initialize    = nullptr;
       cfg.isChannelUART = nullptr;
       cfg.reset         = nullptr;

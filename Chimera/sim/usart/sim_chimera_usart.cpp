@@ -19,8 +19,7 @@ namespace Chimera::USART
     Chimera::Status_t registerDriver( struct Chimera::USART::Backend::DriverConfig &cfg )
     {
       cfg.isSupported    = false;
-      cfg.createShared   = nullptr;
-      cfg.createUnique   = nullptr;
+      cfg.getDriver      = nullptr;
       cfg.initialize     = nullptr;
       cfg.isChannelUSART = nullptr;
       cfg.reset          = nullptr;

@@ -356,12 +356,6 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\timer\pwm_types.hpp">
       <Filter>src\peripherals\timer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi.hpp">
-      <Filter>src\peripherals\spi</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_base.hpp">
-      <Filter>src\peripherals\spi</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_ext.hpp">
       <Filter>src\peripherals\spi</Filter>
     </ClInclude>
@@ -382,12 +376,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\power\power_types_fwd.hpp">
       <Filter>src\peripherals\power</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio.hpp">
-      <Filter>src\peripherals\gpio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_base.hpp">
-      <Filter>src\peripherals\gpio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_intf.hpp">
       <Filter>src\peripherals\gpio</Filter>
@@ -461,6 +449,12 @@
     <ClInclude Include="..\..\..\Chimera\sim\timer\sim_chimera_timer.hpp">
       <Filter>sim\timer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_user.hpp">
+      <Filter>src\peripherals\gpio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\spi\spi_user.hpp">
+      <Filter>src\peripherals\spi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp">
@@ -474,9 +468,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\common\chimera.cpp">
       <Filter>src\common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Chimera\src\container\chimera_container.cpp">
-      <Filter>src\container</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Chimera\src\system\chimera_system.cpp">
       <Filter>src\system</Filter>

@@ -55,23 +55,11 @@ namespace Chimera::SPI
     }
   }
 
-  ISPI_sPtr create_shared_ptr()
+  ISPI_sPtr getDriver( const Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.createShared )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.createShared();
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
-
-  ISPI_uPtr create_unique_ptr()
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.createUnique )
-    {
-      return s_backend_driver.createUnique();
+      return s_backend_driver.getDriver( channel );
     }
     else
     {

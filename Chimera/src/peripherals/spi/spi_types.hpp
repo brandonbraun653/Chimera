@@ -222,10 +222,10 @@ namespace Chimera::SPI
   /*-------------------------------------------------------------------------------
   Classes
   -------------------------------------------------------------------------------*/
-  class Status : public Status
+  class Status
   {
   public:
-    static constexpr Status_t codeOffset = Chimera::Status::Internal::spiErrorCodeStart;
+    static constexpr Status_t codeOffset = Chimera::Internal::spiErrorCodeStart;
 
     static constexpr Status_t PACKET_TOO_LARGE_FOR_BUFFER = codeOffset + 1;
     static constexpr Status_t FAILED_CONVERSION           = codeOffset + 2;
@@ -233,7 +233,7 @@ namespace Chimera::SPI
     static constexpr Status_t FAILED_CHIP_SELECT_WRITE    = codeOffset + 4;
     static constexpr Status_t CLOCK_SET_LT                = codeOffset + 5;
     static constexpr Status_t CLOCK_SET_GT                = codeOffset + 6;
-    static constexpr Status_t CLOCK_SET_EQ                = OK;
+    static constexpr Status_t CLOCK_SET_EQ                = Chimera::Status::OK;
     static constexpr Status_t TRANSFER_COMPLETE           = codeOffset + 7;
     static constexpr Status_t TRANSFER_IN_PROGRESS        = codeOffset + 8;
     static constexpr Status_t TRANSFER_ERROR              = codeOffset + 9;
