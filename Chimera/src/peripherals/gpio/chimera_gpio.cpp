@@ -55,11 +55,11 @@ namespace Chimera::GPIO
     }
   }
 
-  IGPIO_sPtr getDriver( const Pin pin )
+  IGPIO_sPtr getDriver( const Port port )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.getDriver( pin );
+      return s_backend_driver.getDriver( port );
     }
     else
     {

@@ -9,8 +9,8 @@
  ********************************************************************************/
 
 #pragma once
-#ifndef CHIMERA_DMA_HPP
-#define CHIMERA_DMA_HPP
+#ifndef CHIMERA_DMA_USER_HPP
+#define CHIMERA_DMA_USER_HPP
 
 /* STL Includes */
 #include <memory>

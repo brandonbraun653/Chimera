@@ -22,7 +22,7 @@ namespace Chimera::GPIO
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  IGPIO_sPtr getDriver( const Pin pin );
+  IGPIO_sPtr getDriver( const Port port );
 }  // namespace Chimera::GPIO
 
 #endif  /* !CHIMERA_GPIO_HPP */

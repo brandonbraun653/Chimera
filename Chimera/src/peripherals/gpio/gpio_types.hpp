@@ -253,7 +253,7 @@ namespace Chimera::GPIO
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      IGPIO_sPtr ( *getDriver )( const Pin pin );
+      IGPIO_sPtr ( *getDriver )( const Port port );
     };
   }  // namespace Backend
 }  // namespace Chimera::GPIO

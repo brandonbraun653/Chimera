@@ -189,9 +189,6 @@
     <None Include="..\..\..\Chimera\src\container\build.jam">
       <Filter>Chimera\src\container</Filter>
     </None>
-    <ClCompile Include="..\..\..\Chimera\src\container\chimera_container.cpp">
-      <Filter>Chimera\src\container</Filter>
-    </ClCompile>
     <ClInclude Include="..\..\..\Chimera\src\container\container.hpp">
       <Filter>Chimera\src\container</Filter>
     </ClInclude>
@@ -228,9 +225,6 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\crc\chimera_crc.cpp">
       <Filter>Chimera\src\peripherals\crc</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc.hpp">
-      <Filter>Chimera\src\peripherals\crc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc_intf.hpp">
       <Filter>Chimera\src\peripherals\crc</Filter>
     </ClInclude>
@@ -243,9 +237,6 @@
     <ClCompile Include="..\..\..\Chimera\src\peripherals\dma\chimera_dma.cpp">
       <Filter>Chimera\src\peripherals\dma</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma.hpp">
-      <Filter>Chimera\src\peripherals\dma</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma_intf.hpp">
       <Filter>Chimera\src\peripherals\dma</Filter>
     </ClInclude>
@@ -515,9 +506,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock.hpp">
-      <Filter>Chimera\src\peripherals\clock</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types.hpp">
       <Filter>Chimera\src\peripherals\clock</Filter>
     </ClInclude>
@@ -550,6 +538,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Chimera\src\peripherals\gpio\gpio_user.hpp">
       <Filter>Chimera\src\peripherals\gpio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma_user.hpp">
+      <Filter>Chimera\src\peripherals\dma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc_user.hpp">
+      <Filter>Chimera\src\peripherals\crc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_user.hpp">
+      <Filter>Chimera\src\peripherals\clock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

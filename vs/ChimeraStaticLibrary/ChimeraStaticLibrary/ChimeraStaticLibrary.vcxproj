@@ -568,8 +568,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Chimera\build.jam" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_types.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_user.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc_user.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma_user.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_user.hpp" />
@@ -597,7 +599,6 @@
     <ClInclude Include="..\..\..\Chimera\src\common\compiler_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\common\preprocessor.hpp" />
     <None Include="..\..\..\Chimera\src\container\build.jam" />
-    <ClCompile Include="..\..\..\Chimera\src\container\chimera_container.cpp" />
     <ClInclude Include="..\..\..\Chimera\src\container\container.hpp" />
     <None Include="..\..\..\Chimera\src\event\build.jam" />
     <ClInclude Include="..\..\..\Chimera\src\event\event.hpp" />
@@ -612,12 +613,10 @@
     <ClCompile Include="..\..\..\Chimera\src\event\chimera_event.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\clock\chimera_clock.cpp" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\crc\chimera_crc.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\crc\crc_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\dma\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\peripherals\dma\chimera_dma.cpp" />
-    <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\peripherals\dma\dma_types.hpp" />
     <None Include="..\..\..\Chimera\src\peripherals\ethernet\build.jam" />
