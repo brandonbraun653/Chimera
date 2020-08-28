@@ -108,7 +108,6 @@ namespace Chimera::SPI
      *
      *  @param[in]  txBuffer        Data buffer to be sent
      *  @param[in]  length          Number of bytes to be sent (should not be larger than txBuffer)
-     *  @param[in]  timeoutMS       How long to wait for SPI hardware to become available
      *  @return Chimera::Status_t
      *
      *  |   Return Value  |                  Explanation                 |
@@ -117,7 +116,7 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t writeBytes( const void *const txBuffer, const size_t length, const size_t timeoutMS ) = 0;
+    virtual Chimera::Status_t writeBytes( const void *const txBuffer, const size_t length ) = 0;
 
     /**
      *  Reads data from the SPI bus. The number of bytes actually read will be returned
@@ -125,7 +124,6 @@ namespace Chimera::SPI
      *
      *  @param[out] rxBuffer        Data buffer to read into
      *  @param[in]  length          Number of bytes to read (must not be larger than rxBuffer size)
-     *  @param[in]  timeoutMS       How long to wait for SPI hardware to become available
      *  @return Chimera::Status_t
      *
      *  |   Return Value  |                  Explanation                 |
@@ -134,7 +132,7 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t readBytes( void *const rxBuffer, const size_t length, const size_t timeoutMS ) = 0;
+    virtual Chimera::Status_t readBytes( void *const rxBuffer, const size_t length ) = 0;
 
     /**
      *  Transmits and receives data on the SPI bus in a single operation. Returns the actual
@@ -143,7 +141,6 @@ namespace Chimera::SPI
      *  @param[in]  txBuffer        Data buffer to write from
      *  @param[out] rxBuffer        Data buffer to read into
      *  @param[in]  length          Number of bytes to transfer (must not be larger than rxBuffer size)
-     *  @param[in]  timeoutMS       How long to wait for SPI hardware to become available
      *  @return Chimera::Status_t
      *
      *  |   Return Value  |                  Explanation                 |
@@ -152,8 +149,7 @@ namespace Chimera::SPI
      *  |            FAIL | The operation failed                         |
      *  | NOT_INITIALIZED | The class object has not been initialized    |
      */
-    virtual Chimera::Status_t readWriteBytes( const void *const txBuffer, void *const rxBuffer, const size_t length,
-                                              const size_t timeoutMS ) = 0;
+    virtual Chimera::Status_t readWriteBytes( const void *const txBuffer, void *const rxBuffer, const size_t length ) = 0;
 
     /**
      *  Set the hardware operational mode in either Blocking, Interrupt, or DMA.
