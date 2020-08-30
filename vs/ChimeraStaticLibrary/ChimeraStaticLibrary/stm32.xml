@@ -8,7 +8,7 @@
   </ToolchainVersion>
   <BspID>com.sysprogs.arm.stm32</BspID>
   <BspVersion>2020.06</BspVersion>
-  <McuID>STM32L432KC</McuID>
+  <McuID>STM32L432KB</McuID>
   <MCUDefinitionFile>STM32L4xxxx/DeviceDefinitions/stm32l432xx.xml</MCUDefinitionFile>
   <MCUProperties>
     <Entries>
