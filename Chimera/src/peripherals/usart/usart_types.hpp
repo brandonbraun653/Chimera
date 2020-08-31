@@ -26,11 +26,13 @@ namespace Chimera::USART
   Forward Declarations
   -------------------------------------------------------------------------------*/
   class IUSART;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
   using IUSART_sPtr = std::shared_ptr<IUSART>;
+  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -74,7 +76,7 @@ namespace Chimera::USART
        *
        *  @return IUSART_sPtr
        */
-      IUSART_sPtr ( *getDriver )( const Chimera::Serial::Channel );
+      Driver_sPtr ( *getDriver )( const Chimera::Serial::Channel );
     };
   }  // namespace Backend
 }  // namespace Chimera::USART

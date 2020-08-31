@@ -24,7 +24,7 @@ namespace Chimera::Serial
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  ISerial_sPtr getDriver( const Channel channel );
+  Driver_sPtr getDriver( const Channel channel );
 }  // namespace Chimera::Serial
 
 #endif  /* !CHIMERA_SERIAL_USER_HPP */

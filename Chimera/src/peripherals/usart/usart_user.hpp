@@ -22,7 +22,7 @@ namespace Chimera::USART
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
   bool isChannelUSART( const Chimera::Serial::Channel channel );
-  IUSART_sPtr getDriver( const Chimera::Serial::Channel channel );
+  Driver_sPtr getDriver( const Chimera::Serial::Channel channel );
 }  // namespace Chimera::USART
 
 #endif /* !CHIMERA_USART_USER_HPP */

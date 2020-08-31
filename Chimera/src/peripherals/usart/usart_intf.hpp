@@ -19,6 +19,9 @@
 
 namespace Chimera::USART
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
@@ -30,10 +33,75 @@ namespace Chimera::USART
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
 
+
+  /*-------------------------------------------------------------------------------
+  Classes
+  -------------------------------------------------------------------------------*/
+  /**
+   *  Virtual class to facilitate easy mocking of the driver
+   */
   class IUSART : virtual public Chimera::Serial::ISerial
   {
   public:
     virtual ~IUSART() = default;
+  };
+
+
+  /**
+   *  Concrete class declaration that promises to implement the virtual one, to
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side.
+   */
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Interface: Hardware
+    -------------------------------------------------*/
+    Chimera::Status_t assignHW( const Chimera::Serial::Channel channel, const Chimera::Serial::IOPins &pins );
+    Chimera::Status_t begin( const Chimera::Hardware::PeripheralMode txMode, const Chimera::Hardware::PeripheralMode rxMode );
+    Chimera::Status_t end();
+    Chimera::Status_t configure( const Chimera::Serial::Config &config );
+    Chimera::Status_t setBaud( const uint32_t baud );
+    Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Chimera::Hardware::PeripheralMode mode );
+    Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 );
+    Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 );
+    Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph );
+    Chimera::Status_t toggleAsyncListening( const bool state );
+    Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len );
+    Chimera::Status_t enableBuffering( const Chimera::Hardware::SubPeripheral periph,
+                                       boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
+                                       const size_t hwBufferSize );
+    Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph );
+    bool available( size_t *const bytes = nullptr );
+    void postISRProcessing();
+
+    /*-------------------------------------------------
+    Interface: Listener
+    -------------------------------------------------*/
+    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
+    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
+
+    /*-------------------------------------------------
+    Interface: AsyncIO
+    -------------------------------------------------*/
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout );
+    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
+                             const size_t timeout );
+
+    /*-------------------------------------------------
+    Interface: Lockable
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    Chimera::Serial::Channel mChannel;
   };
 }
 

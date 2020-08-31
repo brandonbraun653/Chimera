@@ -19,6 +19,9 @@ namespace Chimera::USART
 {
   static Backend::DriverConfig s_backend_driver;
 
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -49,7 +52,7 @@ namespace Chimera::USART
     }
   }
 
-  IUSART_sPtr getDriver( const Chimera::Serial::Channel channel )
+  Driver_sPtr getDriver( const Chimera::Serial::Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
