@@ -19,6 +19,9 @@
 
 namespace Chimera::GPIO
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
@@ -30,6 +33,9 @@ namespace Chimera::GPIO
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
 
+  /*-------------------------------------------------------------------------------
+  Classes
+  -------------------------------------------------------------------------------*/
   /**
    * Defines expected behavior for all embedded systems that allow the user to control
    * GPIO pins. This is a pure virtual/abstract class.
@@ -134,13 +140,48 @@ namespace Chimera::GPIO
 
 
   /**
-   *  Expected interface for all implementers of GPIO
+   *  Virtual class to facilitate easy mocking of the driver
    */
   class IGPIO : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~IGPIO() = default;
   };
+
+
+  /**
+   *  Concrete class declaration that promises to implement the virtual one, to
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side.
+   */
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Interface: Hardware
+    -------------------------------------------------*/
+    Chimera::Status_t init( const Chimera::GPIO::PinInit &pinInit );
+    Chimera::Status_t init( const Chimera::GPIO::Port port, const uint8_t pin );
+    Chimera::Status_t setMode( const Chimera::GPIO::Drive drive, const Chimera::GPIO::Pull pull );
+    Chimera::Status_t setState( const Chimera::GPIO::State state );
+    Chimera::Status_t getState( Chimera::GPIO::State &state );
+    Chimera::Status_t toggle();
+
+    /*-------------------------------------------------
+    Interface: Lockable
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    Chimera::GPIO::Pin mPin;
+    Chimera::GPIO::Port mPort;
+  }
 
 }  // namespace Chimera::GPIO
 

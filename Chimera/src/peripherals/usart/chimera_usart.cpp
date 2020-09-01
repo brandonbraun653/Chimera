@@ -28,6 +28,7 @@ namespace Chimera::USART
     return Backend::registerDriver( s_backend_driver );
   }
 
+
   Chimera::Status_t reset()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.reset )
@@ -40,6 +41,7 @@ namespace Chimera::USART
     }
   }
 
+
   bool isChannelUSART( const Chimera::Serial::Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.isChannelUSART )
@@ -51,6 +53,7 @@ namespace Chimera::USART
       return false;
     }
   }
+
 
   Driver_sPtr getDriver( const Chimera::Serial::Channel channel )
   {

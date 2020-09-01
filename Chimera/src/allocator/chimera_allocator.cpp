@@ -17,7 +17,7 @@
 
 #if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
 
-#include "FreeRTOS.h"
+#include <FreeRTOS/FreeRTOS.h>
 #include "portable.h"
 
 #if !defined( SIM )

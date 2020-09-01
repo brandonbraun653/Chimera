@@ -19,8 +19,7 @@ namespace Chimera::SPI::Backend
   Chimera::Status_t registerDriver( Chimera::SPI::Backend::DriverConfig &registry )
   {
     registry.isSupported  = false;
-    registry.createShared = nullptr;
-    registry.createUnique = nullptr;
+    registry.getDriver    = nullptr;
     registry.initialize   = nullptr;
     registry.reset        = nullptr;
     return Chimera::Status::NOT_SUPPORTED;

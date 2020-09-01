@@ -1,10 +1,10 @@
 /********************************************************************************
  *  File Name:
  *    freertos_threading_implementation.cpp
- *  
+ *
  *  Description:
  *    Implements the FreeRTOS based version of Chimera Threading
- *  
+ *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
@@ -19,9 +19,9 @@
 #if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 
 /* FreeRTOS Includes */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/semphr.h>
 
 namespace Chimera::Threading
 {
@@ -388,4 +388,4 @@ namespace Chimera::Threading
   }
 }
 
-#endif 
+#endif

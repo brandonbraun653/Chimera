@@ -25,13 +25,14 @@ namespace Chimera::GPIO
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class IGPIO;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Pin = uint16_t;
-  using IGPIO_sPtr = std::shared_ptr<IGPIO>;
+  using Pin = uint8_t;
+  using Driver_rPtr = Driver *;
+  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -45,8 +46,9 @@ namespace Chimera::GPIO
     ALTERNATE_OPEN_DRAIN,
     ANALOG,
     HIZ,
-    UNKNOWN_DRIVE,
-    NUM_OPTIONS
+
+    NUM_OPTIONS,
+    UNKNOWN_DRIVE
   };
 
   enum class State : bool
@@ -60,8 +62,9 @@ namespace Chimera::GPIO
     NO_PULL,
     PULL_UP,
     PULL_DN,
-    UNKNOWN_PULL,
-    NUM_OPTIONS
+
+    NUM_OPTIONS,
+    UNKNOWN_PULL
   };
 
   /**
@@ -88,8 +91,8 @@ namespace Chimera::GPIO
     PORTK,
     PORTL,
 
-    UNKNOWN_PORT,
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    UNKNOWN_PORT
   };
 
   /**
@@ -202,6 +205,8 @@ namespace Chimera::GPIO
     SAI1_FS_A,
     SWPMI1_IO,
     SAI1_SCK_A,
+
+    NUM_OPTIONS,
     NONE
   };
 
@@ -253,7 +258,7 @@ namespace Chimera::GPIO
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      IGPIO_sPtr ( *getDriver )( const Port port );
+      Driver_sPtr ( *getDriver )( const Port port, const Pin pin );
     };
   }  // namespace Backend
 }  // namespace Chimera::GPIO
