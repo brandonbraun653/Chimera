@@ -65,7 +65,7 @@ namespace Chimera::SPI
 
     virtual Chimera::Status_t attachCS( Chimera::GPIO::PinInit &CSConfig ) = 0;
 
-    virtual Chimera::Status_t attachCS( Chimera::GPIO::IGPIO_sPtr &CSPin ) = 0;
+    virtual Chimera::Status_t attachCS( Chimera::GPIO::Driver_sPtr &CSPin ) = 0;
   };
 }  // namespace Chimera::SPI
 

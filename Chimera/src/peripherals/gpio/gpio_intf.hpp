@@ -181,7 +181,7 @@ namespace Chimera::GPIO
   private:
     Chimera::GPIO::Pin mPin;
     Chimera::GPIO::Port mPort;
-  }
+  };
 
 }  // namespace Chimera::GPIO
 
