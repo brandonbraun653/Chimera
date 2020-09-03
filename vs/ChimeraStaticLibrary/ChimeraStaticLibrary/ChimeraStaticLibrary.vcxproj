@@ -576,6 +576,7 @@
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_intf.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_types.hpp" />
     <ClInclude Include="..\..\..\Chimera\src\pwm\pwm_user.hpp" />
+    <ClInclude Include="..\..\..\Chimera\src\utilities\macros.hpp" />
     <ClInclude Include="..\..\..\Chimera\version.hpp" />
     <None Include="..\..\..\Chimera\src\algorithm\build.jam" />
     <ClCompile Include="..\..\..\Chimera\src\algorithm\register_optimizer.cpp" />

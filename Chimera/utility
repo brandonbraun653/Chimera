@@ -12,6 +12,7 @@
 #ifndef CHIMERA_UTILITY_INCLUDES
 #define CHIMERA_UTILITY_INCLUDES
 
+#include <Chimera/src/utilities/macros.hpp>
 #include <Chimera/src/utilities/utilities.hpp>
 
 #endif /* !CHIMERA_UTILITY_INCLUDES */

@@ -548,6 +548,9 @@
     <ClInclude Include="..\..\..\Chimera\src\peripherals\clock\clock_user.hpp">
       <Filter>Chimera\src\peripherals\clock</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Chimera\src\utilities\macros.hpp">
+      <Filter>Chimera\src\utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chimera\src\event\chimera_event.cpp">
