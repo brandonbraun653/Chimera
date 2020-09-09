@@ -179,8 +179,7 @@ namespace Chimera::GPIO
     void unlockFromISR();
 
   private:
-    Chimera::GPIO::Pin mPin;
-    Chimera::GPIO::Port mPort;
+    void * mDriver; /**< Instance of the implementer's GPIO driver */
   };
 
 }  // namespace Chimera::GPIO
