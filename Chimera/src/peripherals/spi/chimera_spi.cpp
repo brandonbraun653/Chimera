@@ -19,6 +19,9 @@ namespace Chimera::SPI
 {
   static Backend::DriverConfig s_backend_driver;
 
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -43,6 +46,7 @@ namespace Chimera::SPI
     return result;
   }
 
+
   Chimera::Status_t reset()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.reset )
@@ -55,7 +59,8 @@ namespace Chimera::SPI
     }
   }
 
-  ISPI_sPtr getDriver( const Channel channel )
+
+  Driver_sPtr getDriver( const Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

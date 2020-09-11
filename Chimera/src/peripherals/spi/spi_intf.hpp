@@ -24,6 +24,9 @@
 
 namespace Chimera::SPI
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
@@ -35,10 +38,17 @@ namespace Chimera::SPI
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
 
-  class HardwareDriverInterface
+
+  /*-------------------------------------------------------------------------------
+  Classes
+  -------------------------------------------------------------------------------*/
+  /**
+   *  Defines expected behavior for all hardware SPI drivers. Pure virtual class.
+   */
+  class HWInterface
   {
   public:
-    virtual ~HardwareDriverInterface() = default;
+    virtual ~HWInterface() = default;
 
     /**
      *  Initializes the SPI hardware according to the setup struct
@@ -199,7 +209,11 @@ namespace Chimera::SPI
     virtual size_t getClockFrequency() = 0;
   };
 
-  class ISPI : virtual public HardwareDriverInterface,
+
+  /**
+   *  Virtual class to facilitate easy mocking of the driver
+   */
+  class ISPI : virtual public HWInterface,
                virtual public Chimera::Event::ListenerInterface,
                virtual public Chimera::Threading::AsyncIOInterface,
                virtual public Chimera::Threading::LockableInterface
@@ -207,6 +221,59 @@ namespace Chimera::SPI
   public:
     virtual ~ISPI() = default;
   };
+
+
+  /**
+   *  Concrete class declaration that promises to implement the virtual one, to
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
+   *  using the Bridge pattern.
+   */
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Interface: Hardware
+    -------------------------------------------------*/
+    Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct );
+    Chimera::SPI::DriverConfig getInit();
+    Chimera::Status_t deInit();
+    Chimera::Status_t setChipSelect( const Chimera::GPIO::State value );
+    Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::CSMode mode );
+    Chimera::Status_t writeBytes( const void *const txBuffer, const size_t length );
+    Chimera::Status_t readBytes( void *const rxBuffer, const size_t length );
+    Chimera::Status_t readWriteBytes( const void *const txBuffer, void *const rxBuffer, const size_t length );
+    Chimera::Status_t setPeripheralMode( const Chimera::Hardware::PeripheralMode mode );
+    Chimera::Status_t setClockFrequency( const size_t freq, const size_t tolerance );
+    size_t getClockFrequency();
+
+    /*-------------------------------------------------
+    Interface: Listener
+    -------------------------------------------------*/
+    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
+    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
+
+    /*-------------------------------------------------
+    Interface: AsyncIO
+    -------------------------------------------------*/
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout );
+    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
+                             const size_t timeout );
+    /*-------------------------------------------------
+    Interface: Lockable
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    void *mDriver;
+  };
+
 }  // namespace Chimera::SPI
 
 #endif /* !CHIMERA_SPI_INTERFACE_HPP */

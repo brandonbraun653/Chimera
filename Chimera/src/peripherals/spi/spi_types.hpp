@@ -30,14 +30,15 @@ namespace Chimera::SPI
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class ISPI;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
   using ClockFreq    = size_t;
   using TransferMode = Chimera::Hardware::PeripheralMode;
-  using ISPI_sPtr    = std::shared_ptr<ISPI>;
+  using Driver_rPtr  = Driver *;
+  using Driver_sPtr  = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -141,8 +142,6 @@ namespace Chimera::SPI
     SPI2,
     SPI3,
     SPI4,
-    SPI5,
-    SPI6,
 
     NUM_OPTIONS,
     NOT_SUPPORTED
@@ -157,15 +156,28 @@ namespace Chimera::SPI
    */
   struct HardwareInit
   {
-    BitOrder bitOrder       = BitOrder::MSB_FIRST;    /**< Sets LSB or MSB ordering of the transfers */
-    ControlMode controlMode = ControlMode::MASTER;    /**< The primary arbitration method for the peripheral */
-    ClockFreq clockFreq     = 1000000;                /**< The desired approximate clock frequency */
-    ClockMode clockMode     = ClockMode::MODE0;       /**< Sets the clock phase and polarity options */
-    CSMode csMode           = CSMode::MANUAL;         /**< Chip select control mode */
-    DataSize dataSize       = DataSize::SZ_8BIT;      /**< How wide each transfer should minimally be */
-    Channel hwChannel       = Channel::SPI1;          /**< Hardware channel to be configured */
-    TransferMode txfrMode   = TransferMode::BLOCKING; /**< Transfer controller mode */
-    bool validity           = false;                  /**< Structure validity */
+    BitOrder bitOrder;       /**< Sets LSB or MSB ordering of the transfers */
+    ControlMode controlMode; /**< The primary arbitration method for the peripheral */
+    ClockFreq clockFreq;     /**< The desired approximate clock frequency */
+    ClockMode clockMode;     /**< Sets the clock phase and polarity options */
+    CSMode csMode;           /**< Chip select control mode */
+    DataSize dataSize;       /**< How wide each transfer should minimally be */
+    Channel hwChannel;       /**< Hardware channel to be configured */
+    TransferMode txfrMode;   /**< Transfer controller mode */
+    bool validity;           /**< Structure validity */
+
+    void clear()
+    {
+      bitOrder    = BitOrder::MSB_FIRST;
+      controlMode = ControlMode::MASTER;
+      clockFreq   = 1000000;
+      clockMode   = ClockMode::MODE0;
+      csMode      = CSMode::MANUAL;
+      dataSize    = DataSize::SZ_8BIT;
+      hwChannel   = Channel::SPI1;
+      txfrMode    = TransferMode::BLOCKING;
+      validity    = false;
+    }
   };
 
   /**
@@ -188,9 +200,9 @@ namespace Chimera::SPI
       MOSIInit.clear();
       MISOInit.clear();
       CSInit.clear();
+      HWInit.clear();
       externalCS = false;
       validity   = false;
-      HWInit     = {};
     }
   };
 
@@ -215,7 +227,7 @@ namespace Chimera::SPI
       /**
        *  Gets the driver instance associated with the requested channel
        */
-      ISPI_sPtr ( *getDriver )( const Channel channel );
+      Driver_sPtr ( *getDriver )( const Channel channel );
     };
   }  // namespace Backend
 

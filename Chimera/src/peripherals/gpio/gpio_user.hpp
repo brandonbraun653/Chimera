@@ -20,6 +20,9 @@
 
 namespace Chimera::GPIO
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
   Driver_sPtr getDriver( const Port port, const Pin pin );

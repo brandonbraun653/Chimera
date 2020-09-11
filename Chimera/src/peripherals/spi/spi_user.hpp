@@ -20,9 +20,12 @@
 
 namespace Chimera::SPI
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  ISPI_sPtr getDriver( const Channel channel );
+  Driver_sPtr getDriver( const Channel channel );
 }  // namespace Chimera::SPI
 
 #endif /* !CHIMERA_SPI_HPP */

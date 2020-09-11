@@ -33,19 +33,17 @@ namespace Chimera::GPIO
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
 
+
   /*-------------------------------------------------------------------------------
   Classes
   -------------------------------------------------------------------------------*/
   /**
    * Defines expected behavior for all embedded systems that allow the user to control
-   * GPIO pins. This is a pure virtual/abstract class.
+   * GPIO pins. This is a pure virtual class.
    */
   class HWInterface
   {
   public:
-    /**
-     *	Virtual destructor necessary for GMock as well as inheritors
-     */
     virtual ~HWInterface() = default;
 
     /**
@@ -151,7 +149,8 @@ namespace Chimera::GPIO
 
   /**
    *  Concrete class declaration that promises to implement the virtual one, to
-   *  avoid paying the memory penalty of a v-table lookup. Implemented project side.
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
+   *  using the Bridge pattern.
    */
   class Driver
   {
