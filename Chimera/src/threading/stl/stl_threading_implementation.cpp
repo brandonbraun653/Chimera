@@ -24,7 +24,7 @@
 #include <Chimera/thread>
 
 
-#if defined( USING_WINDOWS ) || defined( USING_LINUX ) || defined( USING_STL_THREADS )
+#if defined( USING_WINDOWS ) || defined( USING_LINUX ) || defined( USING_NATIVE_THREADS )
 
 namespace Chimera::Threading
 {
@@ -360,7 +360,7 @@ namespace Chimera::Threading
   Id this_thread::get_id()
   {
     //auto stl_id = std::this_thread::get_id();
-    
+
     return Id();
   }
 
