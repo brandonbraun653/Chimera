@@ -10,7 +10,7 @@ add_subdirectory("stl")
 # ====================================================
 add_library(chimera_threading INTERFACE)
 
-if(FREERTOS)
+if(Toolchain::REQUIRES_FREERTOS_THREADS)
   target_link_libraries(chimera_threading INTERFACE chimera_threading_freertos)
 else()
   target_link_libraries(chimera_threading INTERFACE chimera_threading_stl)
