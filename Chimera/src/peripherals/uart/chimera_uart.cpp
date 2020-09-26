@@ -22,7 +22,25 @@ namespace Chimera::UART
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-    return Backend::registerDriver( s_backend_driver );
+
+    /*------------------------------------------------
+    Register the backend interface with Chimera
+    ------------------------------------------------*/
+    auto result = Backend::registerDriver( s_backend_driver );
+    if ( result != Chimera::Status::OK )
+    {
+      return result;
+    }
+
+    /*------------------------------------------------
+    Try and invoke the registered init sequence
+    ------------------------------------------------*/
+    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    {
+      return s_backend_driver.initialize();
+    }
+
+    return result;
   }
 
   Chimera::Status_t reset()

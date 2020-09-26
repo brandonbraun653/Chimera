@@ -13,6 +13,7 @@
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/pwm>
+#include <Chimera/serial>
 #include <Chimera/spi>
 #include <Chimera/system>
 #include <Chimera/thread>
@@ -32,11 +33,12 @@ void ChimeraInit()
   Chimera::System::systemStartup();
 
   /*------------------------------------------------
-  Now initialize the Chimera drivers, which hook into the backend
+  Initialize peripheral drivers, which hook into the backend
   ------------------------------------------------*/
   Chimera::Clock::initialize();
   Chimera::GPIO::initialize();
   Chimera::PWM::initialize();
+  Chimera::Serial::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();
   Chimera::UART::initialize();

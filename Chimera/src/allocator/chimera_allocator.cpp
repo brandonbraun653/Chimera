@@ -15,10 +15,10 @@
 #include <Chimera/src/allocator/allocator.hpp>
 #include <Chimera/thread>
 
-#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
-
+#if defined( USING_FREERTOS_THREADS )
+/* FreeRTOS Includes */
 #include <FreeRTOS/FreeRTOS.h>
-#include "portable.h"
+#include <FreeRTOS/portable.h>
 
 #if !defined( SIM )
 void *malloc( size_t size )
