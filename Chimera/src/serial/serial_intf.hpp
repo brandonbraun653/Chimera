@@ -144,7 +144,6 @@ namespace Chimera::Serial
      *
      *  @param[in]  buffer        The data to be written on the wire
      *  @param[in]  length        How many bytes to write
-     *  @param[in]  timeout_mS    How long to wait on hardware before aborting
      *  @return Chimera::Status_t
      *
      *  |   Return Value   |                  Explanation                  |
@@ -154,7 +153,7 @@ namespace Chimera::Serial
      *  |  NOT_INITIALIZED | The serial hardware is not ready              |
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function |
      */
-    virtual Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
+    virtual Chimera::Status_t write( const void *const buffer, const size_t length ) = 0;
 
     /**
      *  Read an exact number of bytes from the wire
@@ -178,7 +177,6 @@ namespace Chimera::Serial
      *
      *  @param[in]  buffer        In blocking mode, will contain data read from RX
      *  @param[in]  length        How many bytes to read
-     *  @param[in]  timeout_mS    How long to wait on hardware before aborting
      *  @return Chimera::Status_t
      *
      *  |   Return Value   |                  Explanation                  |
@@ -188,7 +186,7 @@ namespace Chimera::Serial
      *  |  NOT_INITIALIZED | The serial hardware is not ready              |
      *  | INVAL_FUNC_PARAM | A bad parameter was passed in to the function |
      */
-    virtual Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 ) = 0;
+    virtual Chimera::Status_t read( void *const buffer, const size_t length ) = 0;
 
     /**
      *	Flushes out the given sub peripheral queues
@@ -326,8 +324,8 @@ namespace Chimera::Serial
     Chimera::Status_t configure( const Chimera::Serial::Config &config );
     Chimera::Status_t setBaud( const uint32_t baud );
     Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Chimera::Hardware::PeripheralMode mode );
-    Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 );
-    Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 );
+    Chimera::Status_t write( const void *const buffer, const size_t length );
+    Chimera::Status_t read( void *const buffer, const size_t length );
     Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph );
     Chimera::Status_t toggleAsyncListening( const bool state );
     Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len );

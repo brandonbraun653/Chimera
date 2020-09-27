@@ -66,8 +66,8 @@ namespace Chimera::USART
     Chimera::Status_t configure( const Chimera::Serial::Config &config );
     Chimera::Status_t setBaud( const uint32_t baud );
     Chimera::Status_t setMode( const Chimera::Hardware::SubPeripheral periph, const Chimera::Hardware::PeripheralMode mode );
-    Chimera::Status_t write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 );
-    Chimera::Status_t read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS = 500 );
+    Chimera::Status_t write( const void *const buffer, const size_t length );
+    Chimera::Status_t read( void *const buffer, const size_t length );
     Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph );
     Chimera::Status_t toggleAsyncListening( const bool state );
     Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len );

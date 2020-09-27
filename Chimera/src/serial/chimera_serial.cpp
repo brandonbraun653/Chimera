@@ -196,28 +196,28 @@ namespace Chimera::Serial
   }
 
 
-  Chimera::Status_t Driver::write( const uint8_t *const buffer, const size_t length, const uint32_t timeout_mS )
+  Chimera::Status_t Driver::write( const void *const buffer, const size_t length )
   {
     if ( mUsart )
     {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->write( buffer, length, timeout_mS );
+      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->write( buffer, length );
     }
     else
     {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->write( buffer, length, timeout_mS );
+      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->write( buffer, length );
     }
   }
 
 
-  Chimera::Status_t Driver::read( uint8_t *const buffer, const size_t length, const uint32_t timeout_mS )
+  Chimera::Status_t Driver::read( void *const buffer, const size_t length )
   {
     if ( mUsart )
     {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->read( buffer, length, timeout_mS );
+      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->read( buffer, length );
     }
     else
     {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->read( buffer, length, timeout_mS );
+      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->read( buffer, length );
     }
   }
 
