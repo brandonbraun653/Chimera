@@ -55,6 +55,15 @@ namespace Chimera::CAN
   /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
+  enum class BufferType : uint8_t
+  {
+    TX,
+    RX,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   enum class Channel : uint8_t
   {
     CAN0,
