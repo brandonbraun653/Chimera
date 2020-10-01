@@ -24,6 +24,9 @@
 
 namespace Chimera::Watchdog
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
@@ -34,6 +37,14 @@ namespace Chimera::Watchdog
      */
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
+
+
+  /*-------------------------------------------------------------------------------
+  Classes
+  -------------------------------------------------------------------------------*/
+  /**
+   *  Defines expected behavior for all hardware SPI drivers. Pure virtual class.
+   */
 
   class HWInterface
   {
@@ -105,10 +116,51 @@ namespace Chimera::Watchdog
     virtual size_t minTimeout() = 0;
   };
 
-  class IWatchdog : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+
+  /**
+   *  Virtual class to facilitate easy mocking of the driver
+   */
+  class IDriver : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
-    virtual ~IWatchdog() = default;
+    virtual ~IDriver() = default;
+  };
+
+
+  /**
+   *  Concrete class declaration that promises to implement the virtual one, to
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
+   *  using the Bridge pattern.
+   */
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Hardware Interface
+    -------------------------------------------------*/
+    Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent );
+    Status_t start();
+    Status_t stop();
+    Status_t kick();
+    Status_t pauseOnDebugHalt( const bool enable );
+    size_t getTimeout();
+    size_t maxTimeout();
+    size_t minTimeout();
+
+    /*-------------------------------------------------
+    Lockable Interface
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    void *mDriver;
   };
 }  // namespace Chimera::Watchdog
 

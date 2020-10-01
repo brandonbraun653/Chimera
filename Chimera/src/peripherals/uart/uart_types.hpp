@@ -25,16 +25,12 @@ namespace Chimera::UART
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class IUART;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using IUART_sPtr = std::shared_ptr<IUART>;
-
-  /*-------------------------------------------------------------------------------
-  Enumerations
-  -------------------------------------------------------------------------------*/
+  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -72,10 +68,9 @@ namespace Chimera::UART
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        *
-       *  @param[in]  channel     The serial channel to get
-       *  @return IUART_sPtr
+       *  @return IUSART_sPtr
        */
-      IUART_sPtr ( *getDriver )( const Chimera::Serial::Channel channel );
+      Driver_sPtr ( *getDriver )( const Chimera::Serial::Channel );
     };
   }  // namespace Backend
 }  // namespace Chimera::UART

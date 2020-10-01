@@ -15,13 +15,14 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/src/peripherals/uart/uart_intf.hpp>
+#include <Chimera/src/peripherals/uart/uart_types.hpp>
 
 namespace Chimera::UART
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
   bool isChannelUART( const Chimera::Serial::Channel channel );
-  IUART_sPtr getDriver( const Chimera::Serial::Channel channel );
+  Driver_sPtr getDriver( const Chimera::Serial::Channel channel );
 }  // namespace Chimera::UART
 
 #endif  /* !CHIMERA_UART_HPP */

@@ -24,12 +24,12 @@ namespace Chimera::Watchdog
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class IWatchdog;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using IWatchdog_sPtr = std::shared_ptr<IWatchdog>;
+  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -67,7 +67,7 @@ namespace Chimera::Watchdog
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      IWatchdog_sPtr ( *getDriver )( const Channel channel );
+      Driver_sPtr ( *getDriver )( const Channel channel );
     };
   }  // namespace Backend
 }  // namespace Chimera

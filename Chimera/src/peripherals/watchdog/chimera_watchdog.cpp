@@ -20,6 +20,7 @@ namespace Chimera::Watchdog
 {
   static Backend::DriverConfig s_backend_driver;
 
+
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -40,9 +41,14 @@ namespace Chimera::Watchdog
     {
       return s_backend_driver.initialize();
     }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
 
     return result;
   }
+
 
   Chimera::Status_t reset()
   {
@@ -56,7 +62,8 @@ namespace Chimera::Watchdog
     }
   }
 
-  IWatchdog_sPtr getDriver( const Channel channel )
+
+  Driver_sPtr getDriver( const Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
@@ -70,12 +77,15 @@ namespace Chimera::Watchdog
 
   void invokeTimeout()
   {
-#if defined( USING_FREERTOS ) && ( CHIMERA_CFG_FREERTOS == 1 )
+#if defined( USING_FREERTOS_THREADS )
     vTaskSuspendAll();
 #endif
 
     while ( 1 )
     {
+      #if defined( CHIMERA_TEST )
+      break;
+      #endif
     }
   }
 }  // namespace Chimera::Watchdog

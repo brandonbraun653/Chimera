@@ -39,6 +39,10 @@ namespace Chimera::UART
     {
       return s_backend_driver.initialize();
     }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
 
     return result;
   }
@@ -67,7 +71,7 @@ namespace Chimera::UART
     }
   }
 
-  IUART_sPtr getDriver( const Chimera::Serial::Channel channel )
+  Driver_sPtr getDriver( const Chimera::Serial::Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

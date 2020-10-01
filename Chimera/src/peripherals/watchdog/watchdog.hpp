@@ -23,7 +23,7 @@ namespace Chimera::Watchdog
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  IWatchdog_sPtr getDriver( const Channel channel );
+  Driver_sPtr getDriver( const Channel channel );
 
   /**
    *  Intentionally halts the CPU so that the watchdog timer will reset the

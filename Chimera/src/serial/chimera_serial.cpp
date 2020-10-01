@@ -30,7 +30,7 @@ Variables
 -------------------------------------------------------------------------------*/
 static Chimera::Serial::Driver s_raw_driver[ NUM_DRIVERS ];
 static Chimera::Serial::Driver_sPtr s_shared_driver[ NUM_DRIVERS ];
-static Chimera::UART::IUART_sPtr s_uart_driver[ NUM_DRIVERS ];
+static Chimera::UART::Driver_sPtr s_uart_driver[ NUM_DRIVERS ];
 static Chimera::USART::Driver_sPtr s_usart_driver[ NUM_DRIVERS ];
 
 

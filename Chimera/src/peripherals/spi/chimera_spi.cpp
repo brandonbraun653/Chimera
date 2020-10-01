@@ -42,6 +42,10 @@ namespace Chimera::SPI
     {
       return s_backend_driver.initialize();
     }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
 
     return result;
   }
