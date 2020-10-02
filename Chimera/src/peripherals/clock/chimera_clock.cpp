@@ -33,9 +33,15 @@ namespace Chimera::Clock
     {
       return s_backend_driver.initialize();
     }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+
 
     return result;
   }
+
 
   Chimera::Status_t periphEnable( const Chimera::Peripheral::Type periph )
   {
@@ -49,6 +55,7 @@ namespace Chimera::Clock
     }
   }
 
+
   Chimera::Status_t periphDisable( const Chimera::Peripheral::Type periph )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.periphDisable )
@@ -60,6 +67,7 @@ namespace Chimera::Clock
       return Chimera::Status::NOT_SUPPORTED;
     }
   }
+
 
   Chimera::Status_t enableClock( const Chimera::Clock::Bus bus )
   {
@@ -73,6 +81,7 @@ namespace Chimera::Clock
     }
   }
 
+
   Chimera::Status_t disableClock( const Chimera::Clock::Bus bus )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.disableClock )
@@ -85,6 +94,7 @@ namespace Chimera::Clock
     }
   }
 
+
   bool isEnabled( const Chimera::Clock::Bus bus )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.isEnabled )
@@ -93,9 +103,10 @@ namespace Chimera::Clock
     }
     else
     {
-      return Chimera::Status::NOT_SUPPORTED;
+      return false;
     }
   }
+
 
   size_t getFrequency( const Chimera::Clock::Bus bus )
   {
@@ -105,9 +116,10 @@ namespace Chimera::Clock
     }
     else
     {
-      return Chimera::Status::NOT_SUPPORTED;
+      return 1;
     }
   }
+
 
   Chimera::Status_t setFrequency( const Chimera::Clock::Bus bus, const size_t freq )
   {

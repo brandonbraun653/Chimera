@@ -20,11 +20,35 @@ namespace Chimera::Power
 {
   static Backend::DriverConfig s_backend_driver;
 
+
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-    return Backend::registerDriver( s_backend_driver );
+
+    /*------------------------------------------------
+    Register the backend interface with Chimera
+    ------------------------------------------------*/
+    auto result = Backend::registerDriver( s_backend_driver );
+    if ( result != Chimera::Status::OK )
+    {
+      return result;
+    }
+
+    /*------------------------------------------------
+    Try and invoke the registered init sequence
+    ------------------------------------------------*/
+    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    {
+      return s_backend_driver.initialize();
+    }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+
+    return result;
   }
+
 
   Chimera::Status_t reset()
   {
@@ -38,6 +62,7 @@ namespace Chimera::Power
     }
   }
 
+
   Chimera::Status_t periphEnable( const Chimera::Peripheral::Type periph )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.periphEnable )
@@ -49,6 +74,7 @@ namespace Chimera::Power
       return Chimera::Status::NOT_SUPPORTED;
     }
   }
+
 
   Chimera::Status_t periphDisable( const Chimera::Peripheral::Type periph )
   {
@@ -62,6 +88,7 @@ namespace Chimera::Power
     }
   }
 
+
   Chimera::Status_t setPowerState( const Chimera::Power::State state )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.setPowerState )
@@ -73,6 +100,7 @@ namespace Chimera::Power
       return Chimera::Status::NOT_SUPPORTED;
     }
   }
+
 
   Chimera::Power::State getPowerState( const Chimera::Peripheral::Type periph )
   {
