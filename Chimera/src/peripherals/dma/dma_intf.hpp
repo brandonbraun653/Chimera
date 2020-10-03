@@ -22,17 +22,26 @@
 
 namespace Chimera::DMA
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
      *  Registers the backend driver with Chimera
-     *  
+     *
      *  @param[in]  registry    Chimera's copy of the driver interface
      *  @return Chimera::Status_t
      */
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
-  }
+  }  // namespace Backend
 
+  /*-------------------------------------------------------------------------------
+  Class
+  -------------------------------------------------------------------------------*/
+  /**
+   * Defines expected behavior for all embedded systems that hardware control
+   */
   class HWInterface
   {
   public:
@@ -97,11 +106,49 @@ namespace Chimera::DMA
     virtual Chimera::Status_t status( TransferHandle_t handle, const size_t timeout ) = 0;
   };
 
-  class IDMA : virtual public HWInterface,
-               virtual public Chimera::Threading::LockableInterface
+  /**
+   *  Virtual class to facilitate easy mocking of the driver
+   */
+  class IDMA : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~IDMA() = default;
+  };
+
+
+  /**
+   *  Concrete class declaration that promises to implement the virtual one, to
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
+   *  using the Bridge pattern.
+   */
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Interface: Hardware
+    -------------------------------------------------*/
+    Chimera::Status_t init();
+    Chimera::Status_t reset();
+    Chimera::Status_t start();
+    Chimera::Status_t configure( const Init &config, const TCB &transfer, const size_t timeout,
+                                 TransferHandle_t *const handle );
+    Chimera::Status_t abort( TransferHandle_t handle, const size_t timeout );
+    Chimera::Status_t status( TransferHandle_t handle, const size_t timeout );
+
+    /*-------------------------------------------------
+    Interface: Lockable
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    void *mDriver; /**< Opaque pointer to the implementer's driver */
   };
 }  // namespace Chimera::DMA
 

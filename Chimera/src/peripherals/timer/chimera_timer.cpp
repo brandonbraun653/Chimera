@@ -20,8 +20,14 @@
 
 namespace Chimera::Timer
 {
-  static Backend::DriverRegistration s_backend_driver;
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
+  static Backend::DriverConfig s_backend_driver;
 
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -42,9 +48,14 @@ namespace Chimera::Timer
     {
       return s_backend_driver.initialize();
     }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
 
     return result;
   }
+
 
   Chimera::Status_t reset()
   {
@@ -57,6 +68,7 @@ namespace Chimera::Timer
       return Chimera::Status::NOT_SUPPORTED;
     }
   }
+
 
   size_t millis()
   {
@@ -71,6 +83,7 @@ namespace Chimera::Timer
     }
   }
 
+
   size_t micros()
   {
     if ( s_backend_driver.isSupported && s_backend_driver.millis )
@@ -84,6 +97,7 @@ namespace Chimera::Timer
     }
   }
 
+
   void delayMilliseconds( const size_t val )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.delayMilliseconds )
@@ -91,6 +105,7 @@ namespace Chimera::Timer
       s_backend_driver.delayMilliseconds( val );
     }
   }
+
 
   void delayMicroseconds( const size_t val )
   {
@@ -100,11 +115,12 @@ namespace Chimera::Timer
     }
   }
 
-  ITimer_sPtr getSharedInstance( const Chimera::Timer::Peripheral peripheral )
+
+  Driver_sPtr getDriver( const Chimera::Timer::Peripheral peripheral )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getSharedInstance )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.getSharedInstance( peripheral );
+      return s_backend_driver.getDriver( peripheral );
     }
     else
     {
@@ -112,22 +128,4 @@ namespace Chimera::Timer
     }
   }
 
-  ITimer_rPtr getUnsafeInstance( const Chimera::Timer::Peripheral peripheral )
-  {
-    if constexpr ( Chimera::Config::DriverInfiniteLifetime )
-    {
-      if ( s_backend_driver.isSupported && s_backend_driver.getUnsafeInstance )
-      {
-        return s_backend_driver.getUnsafeInstance( peripheral );
-      }
-      else
-      {
-        return nullptr;
-      }
-    }
-    else
-    {
-      return nullptr;
-    }
-  }
 }  // namespace Chimera::Timer

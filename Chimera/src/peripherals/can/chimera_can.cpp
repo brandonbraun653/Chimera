@@ -17,6 +17,9 @@
 
 namespace Chimera::CAN
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverConfig s_backend_driver;
 
   /*-------------------------------------------------------------------------------
@@ -42,6 +45,10 @@ namespace Chimera::CAN
     {
       return s_backend_driver.initialize();
     }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
 
     return result;
   }
@@ -60,11 +67,11 @@ namespace Chimera::CAN
   }
 
 
-  Driver_sPtr getDriver( const Port port, const Pin pin )
+  Driver_sPtr getDriver( const Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.getDriver( port, pin );
+      return s_backend_driver.getDriver( channel );
     }
     else
     {

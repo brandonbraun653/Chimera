@@ -19,17 +19,17 @@
 /* Chimera Includes */
 #include <Chimera/common>
 
-namespace Chimera::HWCRC
+namespace Chimera::CRC
 {
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class ICRC;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using IHWCRC_sPtr = std::shared_ptr<ICRC>;
+  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -67,9 +67,9 @@ namespace Chimera::HWCRC
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      IHWCRC_sPtr ( *getDriver )( const Channel channel );
+      Driver_sPtr ( *getDriver )( const Channel channel );
     };
   }  // namespace Backend
-}  // namespace Chimera::HWCRC
+}  // namespace Chimera::CRC
 
 #endif /* !CHIMERA_CRC_TYPES_HPP */

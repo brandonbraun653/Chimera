@@ -17,13 +17,42 @@
 
 namespace Chimera::DMA
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverConfig s_backend_driver;
 
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-    return Backend::registerDriver( s_backend_driver );
+
+    /*------------------------------------------------
+    Register the backend interface with Chimera
+    ------------------------------------------------*/
+    auto result = Backend::registerDriver( s_backend_driver );
+    if ( result != Chimera::Status::OK )
+    {
+      return result;
+    }
+
+    /*------------------------------------------------
+    Try and invoke the registered init sequence
+    ------------------------------------------------*/
+    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    {
+      return s_backend_driver.initialize();
+    }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+
+    return result;
   }
+
 
   Chimera::Status_t reset()
   {
@@ -37,7 +66,8 @@ namespace Chimera::DMA
     }
   }
 
-  IDMA_sPtr getDriver( const Controller channel )
+
+  Driver_sPtr getDriver( const Controller channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

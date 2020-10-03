@@ -83,6 +83,9 @@
 
 namespace Chimera::Timer
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
@@ -91,82 +94,46 @@ namespace Chimera::Timer
      *  @param[in]  registry    Chimera's copy of the driver interface
      *  @return Chimera::Status_t
      */
-    extern Chimera::Status_t registerDriver( DriverRegistration &registry );
+    extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
 
+  /*-------------------------------------------------------------------------------
+  Classes
+  -------------------------------------------------------------------------------*/
   /**
    *  Interface that interacts with the core timer peripheral via a dispatching mechanism.
    *  Various actions can be specified and the implementer can decide whether or not it's
    *  going to support the functionality.
    */
-  class ITimerHardwareDriver
+  class HWInterface
   {
   public:
-    virtual ~ITimerHardwareDriver() = default;
-
-    /*------------------------------------------------
-    Configuration & Control
-    ------------------------------------------------*/
-    /**
-     *  Initialization function for a core hardware feature that is supported
-     *  by the peripheral. This should only do the bare minimum to configure
-     *  the hardware.
-     *
-     *  @param[in]  feature   The hardware feature to be initialized
-     *  @param[in]  init      Configuration data for the feature
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t initializeCoreFeature( const Chimera::Timer::CoreFeature feature,
-                                                     Chimera::Timer::CoreFeatureInit &init ) = 0;
-
-    /**
-     *  Invoke some kind of behavior on the hardware. Usually this is to update previously configured
-     *  hardware with new settings. For example, the PWM compare match value can be updated to
-     *  change the output pulse width or frequency.
-     *
-     *  @param[in]  action    The desired to action to invoke
-     *  @param[in]  arg       Data associated with the action
-     *  @param[in]  argSize   Size of the data passed in
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t invokeAction( const Chimera::Timer::DriverAction action, void *arg, const size_t argSize ) = 0;
-
-    /**
-     *  Turn something in the hardware on, off, or another state
-     *
-     *  @param[in]  device    Hardware to interact with
-     *  @param[in]  state     The state to place the hardware in
-     */
-    virtual Chimera::Status_t setState( const Chimera::Timer::Switchable device,
-                                        const Chimera::Timer::SwitchableState state ) = 0;
-
-    /*------------------------------------------------
-    Data getters
-    ------------------------------------------------*/
-    /**
-     *  Requests some data from the hardware. This could be taking a measurement, getting the results
-     *  of a previous action, etc.
-     *
-     *  @param[in]  data      The data type that is being requested
-     *  @param[out] arg       Memory for the data to be returned into
-     *  @param[in]  argSize   Size of the output data buffer
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t requestData( const Chimera::Timer::DriverData data, void *arg, const size_t argSize ) = 0;
-
-    /**
-     *  Gets description information about the timer peripheral. This includes
-     *  things like its current state, what its capabilities are, etc.
-     *
-     *  @return const Chimera::Timer::Descriptor *
-     */
-    virtual const Chimera::Timer::Descriptor *getDeviceInfo() = 0;
+    virtual ~HWInterface() = default;
   };
 
-  class ITimer : virtual public ITimerHardwareDriver, virtual public Chimera::Threading::LockableInterface
+  class ITimer : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~ITimer() = default;
+  };
+
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Interface: Lockable
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    void *mDriver; /**< Opaque pointer to the implementer's driver */
   };
 }  // namespace Chimera::Timer
 

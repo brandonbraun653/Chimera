@@ -27,8 +27,7 @@ namespace Chimera::Timer
   size_t micros();
   void delayMilliseconds( const size_t val );
   void delayMicroseconds( const size_t val );
-  ITimer_rPtr getUnsafeInstance( const Chimera::Timer::Peripheral peripheral );
-  ITimer_sPtr getSharedInstance( const Chimera::Timer::Peripheral peripheral );
+  Driver_sPtr getDriver( const Chimera::Timer::Peripheral peripheral );
 }
 
 #endif  /* !CHIMERA_TIMER_HPP */

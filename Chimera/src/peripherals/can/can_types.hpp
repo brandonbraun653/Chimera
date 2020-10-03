@@ -31,7 +31,6 @@ namespace Chimera::CAN
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_rPtr = Driver *;
   using Driver_sPtr = std::shared_ptr<Driver>;
 
   using Identifier_t = uint32_t;

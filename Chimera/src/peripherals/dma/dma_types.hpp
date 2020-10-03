@@ -1,11 +1,11 @@
 /********************************************************************************
- *   File Name:
+ *  File Name:
  *    dma_types.hpp
  *
- *   Description:
+ *  Description:
  *    Chimera DMA types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -25,12 +25,12 @@ namespace Chimera::DMA
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class IDMA;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using IDMA_sPtr        = std::shared_ptr<IDMA>;
+  using Driver_sPtr        = std::shared_ptr<Driver>;
   using TransferHandle_t = void *;
 
   /**
@@ -206,7 +206,7 @@ namespace Chimera::DMA
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      IDMA_sPtr ( *getDriver )( const Controller channel );
+      Driver_sPtr ( *getDriver )( const Controller channel );
     };
   }  // namespace Backend
 

@@ -24,13 +24,12 @@ namespace Chimera::Timer
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class ITimer;
+  class Driver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using ITimer_rPtr = ITimer *;
-  using ITimer_sPtr = std::shared_ptr<ITimer>;
+  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -280,7 +279,7 @@ namespace Chimera::Timer
 
   namespace Backend
   {
-    struct DriverRegistration
+    struct DriverConfig
     {
       bool isSupported;
 
@@ -336,7 +335,7 @@ namespace Chimera::Timer
       void ( *delayMicroseconds )( const size_t );
 
       /**
-       *  Gets an unmanaged pointer to a timer instance
+       *  Gets a reference to the driver
        *
        *  @warning Only use this function if you know what you are doing with raw pointers
        *
@@ -344,17 +343,9 @@ namespace Chimera::Timer
        *        option has been enabled.
        *
        *  @param[in]  peripheral    The peripheral to get the instance for
-       *  @return ITimer_rPtr
+       *  @return Driver_rPtr
        */
-      ITimer_sPtr ( *getSharedInstance )( const Chimera::Timer::Peripheral );
-
-      /**
-       *  Creates a shared pointer to a timer instance
-       *
-       *  @param[in]  peripheral    The peripheral to get the instance for
-       *  @return ITimer_sPtr
-       */
-      ITimer_rPtr ( *getUnsafeInstance )( const Chimera::Timer::Peripheral );
+      Driver_sPtr ( *getDriver )( const Chimera::Timer::Peripheral );
     };
   }  // namespace Backend
 }  // namespace Chimera::Timer

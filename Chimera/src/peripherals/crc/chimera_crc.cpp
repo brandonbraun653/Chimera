@@ -16,14 +16,36 @@
 #include <Chimera/common>
 #include <Chimera/crc>
 
-namespace Chimera::HWCRC
+namespace Chimera::CRC
 {
   static Backend::DriverConfig s_backend_driver;
 
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-    return Backend::registerDriver( s_backend_driver );
+
+    /*------------------------------------------------
+    Register the backend interface with Chimera
+    ------------------------------------------------*/
+    auto result = Backend::registerDriver( s_backend_driver );
+    if ( result != Chimera::Status::OK )
+    {
+      return result;
+    }
+
+    /*------------------------------------------------
+    Try and invoke the registered init sequence
+    ------------------------------------------------*/
+    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    {
+      return s_backend_driver.initialize();
+    }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+
+    return result;
   }
 
   Chimera::Status_t reset()
@@ -38,7 +60,7 @@ namespace Chimera::HWCRC
     }
   }
 
-  IHWCRC_sPtr getDriver( const Channel channel )
+  Driver_sPtr getDriver( const Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
@@ -49,4 +71,4 @@ namespace Chimera::HWCRC
       return nullptr;
     }
   }
-}  // namespace Chimera::HWCRC
+}  // namespace Chimera::CRC

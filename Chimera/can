@@ -1,0 +1,19 @@
+/********************************************************************************
+ *  File Name:
+ *    can
+ *
+ *  Description:
+ *    Chimera CAN Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_CAN_INCLUDES
+#define CHIMERA_CAN_INCLUDES
+
+#include <Chimera/src/peripherals/can/can_user.hpp>
+#include <Chimera/src/peripherals/can/can_intf.hpp>
+#include <Chimera/src/peripherals/can/can_types.hpp>
+
+#endif /* !CHIMERA_CAN_INCLUDES */

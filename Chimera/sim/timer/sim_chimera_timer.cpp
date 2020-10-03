@@ -53,7 +53,7 @@ namespace ChimeraSim::Timer
 
 namespace Chimera::Timer::Backend
 {
-  Chimera::Status_t registerDriver( Chimera::Timer::Backend::DriverRegistration &registry )
+  Chimera::Status_t registerDriver( Chimera::Timer::Backend::DriverConfig &registry )
   {
     registry.isSupported       = true;
     registry.initialize        = ::ChimeraSim::Timer::initialize;

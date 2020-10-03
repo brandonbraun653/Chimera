@@ -1,6 +1,7 @@
 # ====================================================
 # Import sub-projects
 # ====================================================
+add_subdirectory("can")
 add_subdirectory("clock")
 add_subdirectory("crc")
 add_subdirectory("dma")

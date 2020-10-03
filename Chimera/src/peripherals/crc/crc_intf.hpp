@@ -17,21 +17,32 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/thread>
 #include <Chimera/src/peripherals/crc/crc_types.hpp>
 
-namespace Chimera::HWCRC
+namespace Chimera::CRC
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     /**
      *  Registers the backend driver with Chimera
-     *  
+     *
      *  @param[in]  registry    Chimera's copy of the driver interface
      *  @return Chimera::Status_t
      */
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
-  }
+  }  // namespace Backend
 
+  /*-------------------------------------------------------------------------------
+    Classes
+    -------------------------------------------------------------------------------*/
+  /**
+   * Defines expected behavior for all embedded systems that allow the user to control
+   * the CRC hardware.
+   */
   class HWInterface
   {
   public:
@@ -95,12 +106,46 @@ namespace Chimera::HWCRC
     virtual uint32_t getPolynomial() = 0;
   };
 
-  class ICRC : virtual public HWInterface
+  /**
+   *  Virtual class to facilitate easy mocking of the driver
+   */
+  class ICRC : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~ICRC() = default;
   };
 
-}  // namespace Chimera::AlgCRC
+  /**
+   *  Concrete class declaration that promises to implement the virtual one, to
+   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
+   *  using the Bridge pattern.
+   */
+  class Driver
+  {
+  public:
+    Driver();
+    ~Driver();
+
+    /*-------------------------------------------------
+    Interface: Hardware
+    -------------------------------------------------*/
+    Chimera::Status_t init( const uint32_t polynomial, const uint8_t crcWidth );
+    uint32_t accumulate( const uint32_t *const buffer, const uint32_t length );
+    uint32_t calculate( const uint32_t *const buffer, const uint32_t length );
+    uint32_t getPolynomial();
+
+    /*-------------------------------------------------
+    Interface: Lockable
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    void *mDriver; /**< Opaque pointer to the implementer's driver */
+  };
+}  // namespace Chimera::CRC
 
 #endif /* !CHIMERA_CRC_INTERFACE_HPP */

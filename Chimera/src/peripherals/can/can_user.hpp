@@ -17,6 +17,7 @@
 
 /* Chimera Includes */
 #include <Chimera/src/peripherals/can/can_intf.hpp>
+#include <Chimera/src/peripherals/can/can_types.hpp>
 
 namespace Chimera::CAN
 {
@@ -25,7 +26,7 @@ namespace Chimera::CAN
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_sPtr getDriver( const Port port, const Pin pin );
+  Driver_sPtr getDriver( const Channel channel );
 }  // namespace Chimera::CAN
 
 #endif  /* !CHIMERA_CAN_HPP */

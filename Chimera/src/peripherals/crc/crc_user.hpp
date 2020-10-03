@@ -17,11 +17,11 @@
 #include <Chimera/src/peripherals/crc/crc_intf.hpp>
 #include <Chimera/src/peripherals/crc/crc_types.hpp>
 
-namespace Chimera::HWCRC
+namespace Chimera::CRC
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  IHWCRC_sPtr getDriver( const Channel channel );
+  Driver_sPtr getDriver( const Channel channel );
 }  // namespace Chimera
 
 #endif /* !CHIMERA_CRC_HPP */
