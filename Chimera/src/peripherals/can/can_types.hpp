@@ -134,6 +134,40 @@ namespace Chimera::CAN
     FilterMode type;  /**< How to interpret the ID filter */
   };
 
+  struct HardwareInit
+  {
+    Channel channel;      /**< Channel the config settings are for */
+    BasicFrame *txBuffer; /**< Buffer for queueing TX frames */
+    size_t txElements;    /**< Number of frames the TX buffer can hold */
+    BasicFrame *rxBuffer; /**< Buffer for queuing RX frames */
+    size_t rxElements;    /**< Number of frame the RX buffer can hold */
+
+    void clear()
+    {
+      channel    = Channel::UNKNOWN;
+      txBuffer   = nullptr;
+      txElements = 0;
+      rxBuffer   = nullptr;
+      rxElements = 0;
+    }
+  };
+
+  struct DriverConfig
+  {
+    GPIO::PinInit TXInit; /**< The GPIO pin settings used for TX */
+    GPIO::PinInit RXInit; /**< The GPIO pin settings used for RX */
+    HardwareInit HWInit;  /**< Hardware configuration options */
+    bool validity;        /**< Defines if the configuration is valid */
+
+    void clear()
+    {
+      TXInit.clear();
+      RXInit.clear();
+      HWInit.clear();
+      validity   = false;
+    }
+  };
+
   namespace Backend
   {
     struct DriverConfig

@@ -261,6 +261,7 @@ namespace Chimera::SPI
     Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout );
     Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
                              const size_t timeout );
+
     /*-------------------------------------------------
     Interface: Lockable
     -------------------------------------------------*/

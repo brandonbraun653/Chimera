@@ -5,7 +5,7 @@
  *  Description:
  *    Implements an interface to create a Chimera CAN peripheral
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once

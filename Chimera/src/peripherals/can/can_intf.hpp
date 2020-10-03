@@ -15,6 +15,7 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/thread>
+#include <Chimera/event>
 #include <Chimera/src/peripherals/can/can_types.hpp>
 
 namespace Chimera::CAN
@@ -46,36 +47,10 @@ namespace Chimera::CAN
      *  Opens a CAN port using the given channel. Initializes the TX/RX
      *  FIFOs using the default sizing with dynamic memory allocation.
      *
-     *  @param[in]  channel     The channel being opened
+     *  @param[in]  cfg         The CAN bus configuration settings
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t open( const Channel channel ) = 0;
-
-    /**
-     *  Opens a CAN port using the given channel. Initializes the TX/RX
-     *  FIFOs with dynamic memory allocation to contain the given number
-     *  of BasicFrame elements.
-     *
-     *  @param[in]  channel     The channel being opened
-     *  @param[in]  txElements  How many frames can be stored in the TX FIFO
-     *  @param[in]  rxElements  How many frames can be stored in the RX FIFO
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t open( const Channel channel, const size_t txElements, const size_t rxElements ) = 0;
-
-    /**
-     *  Opens a CAN port using the given channel. Initializes the TX/RX FIFOs
-     *  with static memory sized for the given number of BasicFrame elements.
-     *
-     *  @param[in]  channel     The channel being opened
-     *  @param[in]  txBuffer    Buffer utilized for storing TX frame data
-     *  @param[in]  txElements  How many frames can be stored in the TX FIFO
-     *  @param[in]  rxBuffer    Buffer utilized for storing RX frame data
-     *  @param[in]  rxElements  How many frames can be stored in the RX FIFO
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t open( const Channel channel, BasicFrame *txBuffer, const size_t txElements, BasicFrame *rxBuffer,
-                                    const size_t rxElements ) = 0;
+    virtual Chimera::Status_t open( const DriverConfig &cfg ) = 0;
 
     /**
      *  Closes the current port if already open. This will also
@@ -154,7 +129,10 @@ namespace Chimera::CAN
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class ICAN : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class ICAN : virtual public HWInterface,
+               virtual public Chimera::Event::ListenerInterface,
+               virtual public Chimera::Threading::AsyncIOInterface,
+               virtual public Chimera::Threading::LockableInterface
   {
   public:
     virtual ~ICAN() = default;
@@ -175,10 +153,7 @@ namespace Chimera::CAN
     /*-------------------------------------------------
     Interface: Hardware
     -------------------------------------------------*/
-    Chimera::Status_t open( const Channel channel );
-    Chimera::Status_t open( const Channel channel, const size_t txElements, const size_t rxElements );
-    Chimera::Status_t open( const Channel channel, BasicFrame *txBuffer, const size_t txElements, BasicFrame *rxBuffer,
-                            const size_t rxElements );
+    Chimera::Status_t open( const DriverConfig &cfg );
     Chimera::Status_t close();
     CANStatus getStatus();
     Chimera::Status_t send( const BasicFrame &frame );
@@ -187,6 +162,19 @@ namespace Chimera::CAN
     Chimera::Status_t unsubscribe( const Identifier_t id );
     Chimera::Status_t filter( const Filter *const list, const size_t size );
     Chimera::Status_t flush( BufferType buffer );
+
+    /*-------------------------------------------------
+    Interface: Listener
+    -------------------------------------------------*/
+    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
+    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
+
+    /*-------------------------------------------------
+    Interface: AsyncIO
+    -------------------------------------------------*/
+    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout );
+    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
+                             const size_t timeout );
 
     /*-------------------------------------------------
     Interface: Lockable
