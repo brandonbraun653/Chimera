@@ -18,6 +18,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/gpio>
 #include <Chimera/src/peripherals/peripheral_types.hpp>
 
 namespace Chimera::CAN
@@ -41,7 +42,7 @@ namespace Chimera::CAN
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t MAX_PAYLOAD_LENGTH = 8; // Bytes
+  static constexpr size_t MAX_PAYLOAD_LENGTH = 8;  // Bytes
 
   /*-------------------------------------------------
   Special message ID used to indicate to the driver
@@ -130,41 +131,50 @@ namespace Chimera::CAN
 
   struct Filter
   {
-    Identifier_t id;  /**< ID being filtered on */
-    FilterMode type;  /**< How to interpret the ID filter */
+    Identifier_t id; /**< ID being filtered on */
+    FilterMode type; /**< How to interpret the ID filter */
   };
 
   struct HardwareInit
   {
-    Channel channel;      /**< Channel the config settings are for */
-    BasicFrame *txBuffer; /**< Buffer for queueing TX frames */
-    size_t txElements;    /**< Number of frames the TX buffer can hold */
-    BasicFrame *rxBuffer; /**< Buffer for queuing RX frames */
-    size_t rxElements;    /**< Number of frame the RX buffer can hold */
+    Channel channel;          /**< Channel the config settings are for */
+    BasicFrame *txBuffer;     /**< Buffer for queueing TX frames */
+    size_t txElements;        /**< Number of frames the TX buffer can hold */
+    BasicFrame *rxBuffer;     /**< Buffer for queuing RX frames */
+    size_t rxElements;        /**< Number of frame the RX buffer can hold */
+    float samplePointPercent; /**< How far into the bit period to sample (CANOpen: 87.5%, ARINC825: 75%)*/
+    size_t baudRate;          /**< Bus communication rate in Hz*/
+    uint8_t timeQuanta;       /**< Number of intervals each bit is divided into (Recommend 16 or 8) */
+    uint8_t resyncJumpWidth;  /**< Number of time quanta allowed to shift for syncing (Recommend 1) */
+    float maxBaudError;       /**< Max allowable baud rate error abs(%) */
 
     void clear()
     {
-      channel    = Channel::UNKNOWN;
-      txBuffer   = nullptr;
-      txElements = 0;
-      rxBuffer   = nullptr;
-      rxElements = 0;
+      channel            = Channel::UNKNOWN;
+      txBuffer           = nullptr;
+      txElements         = 0;
+      rxBuffer           = nullptr;
+      rxElements         = 0;
+      timeQuanta         = 16;
+      resyncJumpWidth    = 1;
+      samplePointPercent = 0.875;
+      baudRate           = 100000;
     }
   };
 
   struct DriverConfig
   {
-    GPIO::PinInit TXInit; /**< The GPIO pin settings used for TX */
-    GPIO::PinInit RXInit; /**< The GPIO pin settings used for RX */
-    HardwareInit HWInit;  /**< Hardware configuration options */
-    bool validity;        /**< Defines if the configuration is valid */
+    Chimera::GPIO::PinInit TXInit; /**< The GPIO pin settings used for TX */
+    Chimera::GPIO::PinInit RXInit; /**< The GPIO pin settings used for RX */
+    HardwareInit HWInit;           /**< Hardware configuration options */
+    bool validity;                 /**< Defines if the configuration is valid */
 
     void clear()
     {
       TXInit.clear();
       RXInit.clear();
       HWInit.clear();
-      validity   = false;
+      validity = false;
     }
   };
 
