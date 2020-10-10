@@ -55,6 +55,16 @@ namespace Chimera::CAN
   /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
+  enum class DebugMode : uint8_t
+  {
+    SILENT,
+    LOOPBACK,
+    LOOPBACK_AND_SILENT,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   enum class BufferType : uint8_t
   {
     TX,
@@ -74,7 +84,7 @@ namespace Chimera::CAN
     UNKNOWN
   };
 
-  enum class IdMode : uint8_t
+  enum class IdentifierMode : uint8_t
   {
     STANDARD,
     EXTENDED,
@@ -87,6 +97,15 @@ namespace Chimera::CAN
   {
     MASK,
     ID_LIST,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
+  enum class FilterWidth : uint8_t
+  {
+    WIDTH_16BIT,
+    WIDTH_32BIT,
 
     NUM_OPTIONS,
     UNKNOWN
@@ -108,13 +127,31 @@ namespace Chimera::CAN
     UNKNOWN
   };
 
+  enum class InterruptType : uint8_t
+  {
+    TRANSMIT_MAILBOX_EMPTY,
+    RECEIVE_FIFO_NEW_MESSAGE,
+    RECEIVE_FIFO_FULL,
+    RECEIVE_FIFO_OVERRUN,
+    SLEEP_EVENT,
+    WAKEUP_EVENT,
+    ERROR_PENDING,
+    ERROR_CODE_EVENT,
+    ERROR_BUS_OFF_EVENT,
+    ERROR_PASSIVE_EVENT,
+    ERROR_WARNING_EVENT,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
   struct BasicFrame
   {
     Identifier_t id;
-    IdMode idMode;
+    IdentifierMode idMode;
     FrameType frameType;
     DataLength_t dataLength;
     uint8_t data[ MAX_PAYLOAD_LENGTH ];
@@ -147,6 +184,8 @@ namespace Chimera::CAN
     uint8_t timeQuanta;       /**< Number of intervals each bit is divided into (Recommend 16 or 8) */
     uint8_t resyncJumpWidth;  /**< Number of time quanta allowed to shift for syncing (Recommend 1) */
     float maxBaudError;       /**< Max allowable baud rate error abs(%) */
+    FilterMode filterMode;    /**< Filter mode behavior */
+    FilterWidth filterWidth;  /**< Filter width behavior */
 
     void clear()
     {
@@ -159,6 +198,8 @@ namespace Chimera::CAN
       resyncJumpWidth    = 1;
       samplePointPercent = 0.875;
       baudRate           = 100000;
+      filterMode         = FilterMode::UNKNOWN;
+      filterWidth        = FilterWidth::UNKNOWN;
     }
   };
 
