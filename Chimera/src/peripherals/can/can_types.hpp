@@ -14,6 +14,7 @@
 
 /* STL Includes */
 #include <cstdint>
+#include <cstring>
 #include <memory>
 
 /* Chimera Includes */
@@ -43,6 +44,8 @@ namespace Chimera::CAN
   Constants
   -------------------------------------------------------------------------------*/
   static constexpr size_t MAX_PAYLOAD_LENGTH = 8;  // Bytes
+  static constexpr size_t ID_MASK_11_BIT     = 0x000007FF;
+  static constexpr size_t ID_MASK_29_BIT     = 0x1FFFFFFF;
 
   /*-------------------------------------------------
   Special message ID used to indicate to the driver
@@ -129,13 +132,32 @@ namespace Chimera::CAN
 
   enum class InterruptType : uint8_t
   {
-    TRANSMIT_MAILBOX_EMPTY,
-    RECEIVE_FIFO_NEW_MESSAGE,
+    /*-------------------------------------------------
+    Transmit Interrupt Category
+    -------------------------------------------------*/
+    TX_ISR                 = 0,
+    TRANSMIT_MAILBOX_EMPTY = TX_ISR,
+
+    /*-------------------------------------------------
+    Receive Interrupt Category
+    -------------------------------------------------*/
+    RX_ISR,
+    RECEIVE_FIFO_NEW_MESSAGE = RX_ISR,
     RECEIVE_FIFO_FULL,
     RECEIVE_FIFO_OVERRUN,
-    SLEEP_EVENT,
+
+    /*-------------------------------------------------
+    Status Change Interrupt Category
+    -------------------------------------------------*/
+    STS_ISR,
+    SLEEP_EVENT = STS_ISR,
     WAKEUP_EVENT,
-    ERROR_PENDING,
+
+    /*-------------------------------------------------
+    Error Interrupt Category
+    -------------------------------------------------*/
+    ERR_ISR,
+    ERROR_PENDING = ERR_ISR,
     ERROR_CODE_EVENT,
     ERROR_BUS_OFF_EVENT,
     ERROR_PASSIVE_EVENT,
@@ -150,11 +172,22 @@ namespace Chimera::CAN
   -------------------------------------------------------------------------------*/
   struct BasicFrame
   {
-    Identifier_t id;
-    IdentifierMode idMode;
-    FrameType frameType;
-    DataLength_t dataLength;
-    uint8_t data[ MAX_PAYLOAD_LENGTH ];
+    Identifier_t id;                    /**< Message identifier, sized according to idMode */
+    IdentifierMode idMode;              /**< Specifies either standard or extended ID */
+    FrameType frameType;                /**< Is this a data or remote frame */
+    DataLength_t dataLength;            /**< How many bytes are in the data field */
+    uint8_t filterIndex;                /**< RX only: Which filter this frame matched against */
+    uint8_t data[ MAX_PAYLOAD_LENGTH ]; /**< Data payload */
+
+    void clear()
+    {
+      id          = 0;
+      idMode      = IdentifierMode::UNKNOWN;
+      frameType   = FrameType::UNKNOWN;
+      dataLength  = 0;
+      filterIndex = 0;
+      memset( data, 0, MAX_PAYLOAD_LENGTH );
+    }
   };
 
 

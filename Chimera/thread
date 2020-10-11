@@ -1,10 +1,10 @@
 /********************************************************************************
  *  File Name:
  *    thread
- * 
+ *
  *  Description:
  *    Chimera Thread Includes
- * 
+ *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
@@ -19,5 +19,6 @@
 #include <Chimera/src/threading/thread.hpp>
 #include <Chimera/src/threading/threading_intf.hpp>
 #include <Chimera/src/threading/threading.hpp>
+#include <Chimera/src/threading/queue.hpp>
 
 #endif /* !CHIMERA_THREAD_INCLUDES */

@@ -14,14 +14,12 @@
 
 /* STL Includes */
 #include <cstdlib>
-#include <limits>
 
 /* Chimera Includes */
 #include <Chimera/src/threading/internal_types.hpp>
 
 namespace Chimera::Threading
 {
-
   class CountingSemaphore
   {
   public:

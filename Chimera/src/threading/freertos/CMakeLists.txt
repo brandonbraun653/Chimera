@@ -13,6 +13,7 @@ set(CHIMERA chimera_threading_freertos)
 add_library(${CHIMERA} STATIC
   freertos_hooks.cpp
   freertos_threading_implementation.cpp
+  freertos_queue_implementation.cpp
 )
 target_link_libraries(${CHIMERA} PRIVATE ${LINK_LIBS})
 export(TARGETS ${CHIMERA} FILE "${PROJECT_BINARY_DIR}/Chimera/src/${CHIMERA}.cmake")
