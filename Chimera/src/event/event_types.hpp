@@ -27,22 +27,29 @@
 
 namespace Chimera::Event
 {
-  enum Trigger : size_t
+  enum class Trigger : size_t
   {
     TRIGGER_INVALID,           /**< Special case used for initialization */
     TRIGGER_READ_COMPLETE,     /**< A read was completed */
     TRIGGER_WRITE_COMPLETE,    /**< A write was completed */
     TRIGGER_TRANSFER_COMPLETE, /**< A transfer of some sort completed (bi-directional) */
     TRIGGER_SYSTEM_ERROR,      /**< Catch all error case */
+    TRIGGER_DATA_AVAILABLE,    /**< Some kind of data is ready for processing */
+
+    NUM_OPTIONS,
+    UNKNOWN
   };
 
-  enum ListenerType : size_t
+  enum class ListenerType : size_t
   {
     LISTENER_INVALID,      /**< Listener is invalid */
     LISTENER_ATOMIC,       /**< Listener is an atomically writeable variable */
     LISTENER_SEMAPHORE,    /**< Listener is a semaphore to be released/given to */
     LISTENER_FUNCTION,     /**< Listener is a callback function to be invoked */
     LISTENER_ISR_CALLBACK, /**< Special listener that executes inside an ISR */
+
+    NUM_OPTIONS,
+    UNKNOWN
   };
 
   union ListenerObject

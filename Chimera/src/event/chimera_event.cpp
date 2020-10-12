@@ -27,23 +27,23 @@ namespace Chimera::Event
   {
     switch ( listener.type )
     {
-      case LISTENER_ATOMIC:
+      case ListenerType::LISTENER_ATOMIC:
         return processListener_Atomic( event, listener, value );
         break;
 
-      case LISTENER_SEMAPHORE:
+      case ListenerType::LISTENER_SEMAPHORE:
         return processListener_Semaphore( event, listener, value );
         break;
 
-      case LISTENER_FUNCTION:
+      case ListenerType::LISTENER_FUNCTION:
         return processListener_UserCallback( event, listener, value );
         break;
 
-      case LISTENER_ISR_CALLBACK:
+      case ListenerType::LISTENER_ISR_CALLBACK:
         return processListener_ISRCallback( event, listener, value );
         break;
 
-      case LISTENER_INVALID:
+      case ListenerType::LISTENER_INVALID:
       default:
         return false;
         break;
@@ -149,7 +149,7 @@ namespace Chimera::Event
     ------------------------------------------------*/
     if ( listener.object.event_callback_listener )
     {
-      listener.object.event_callback_listener( event, &value, sizeof( value ) );
+      listener.object.event_callback_listener( static_cast<size_t>( event ), &value, sizeof( value ) );
       return true;
     }
     else

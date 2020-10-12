@@ -86,13 +86,13 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Modifier Methods
   -------------------------------------------------------------------------------*/
-  bool Queue::push( void *element, const size_t timeout )
+  bool Queue::push( const void *element, const size_t timeout )
   {
     return false;
   }
 
 
-  bool Queue::isrPush( void *element )
+  bool Queue::isrPush( const void *element )
   {
     return false;
   }

@@ -39,6 +39,28 @@ extern "C"
     Chimera::Threading::FreeRTOS::ApplicationIdleHook();
   }
 
+#if( configSUPPORT_STATIC_ALLOCATION == 1 )
+  void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize )
+  {
+    static StaticTask_t timerTCB;
+    static StackType_t timerStack[ 64 ];
+
+    *ppxTimerTaskTCBBuffer = &timerTCB;
+    *ppxTimerTaskStackBuffer = timerStack;
+    *pulTimerTaskStackSize   = ARRAY_BYTES( timerStack );
+  }
+
+  void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize )
+  {
+    static StaticTask_t idleTCB;
+    static StackType_t idleStack[ 64 ];
+
+    *ppxIdleTaskTCBBuffer = &idleTCB;
+    *ppxIdleTaskStackBuffer = idleStack;
+    *pulIdleTaskStackSize   = ARRAY_BYTES( idleStack );
+  }
+#endif
+
 #ifdef __cplusplus
 }
 #endif

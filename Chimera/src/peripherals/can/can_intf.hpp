@@ -88,24 +88,6 @@ namespace Chimera::CAN
     virtual Chimera::Status_t receive( BasicFrame &frame, const size_t timeout ) = 0;
 
     /**
-     *  Register a message handler to process specific frames. If a handler is
-     *  desired for all messages, pass in the ANY_MESSAGE_ID constant.
-     *
-     *  @param[in]  id          The message ID being subscribed to
-     *  @param[in]  callback    Callback to be invoked
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t subscribe( const Identifier_t id, FrameCallback_t callback ) = 0;
-
-    /**
-     *  Removes any message handler associated with a specific frame
-     *
-     *  @param[in]  id          The message ID being unsubscribed from
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t unsubscribe( const Identifier_t id ) = 0;
-
-    /**
      *  Uses the given filter list to selectively decide which messages
      *  will make it into the RX FIFO. This is a whitelisting approach.
      *
@@ -158,8 +140,6 @@ namespace Chimera::CAN
     CANStatus getStatus();
     Chimera::Status_t send( const BasicFrame &frame );
     Chimera::Status_t receive( BasicFrame &frame, const size_t timeout );
-    Chimera::Status_t subscribe( const Identifier_t id, FrameCallback_t callback );
-    Chimera::Status_t unsubscribe( const Identifier_t id );
     Chimera::Status_t filter( const Filter *const list, const size_t size );
     Chimera::Status_t flush( BufferType buffer );
 

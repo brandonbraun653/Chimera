@@ -110,7 +110,7 @@ namespace Chimera::Threading
      *  @param[in]  timeout       How long to wait for access
      *  @return bool
      */
-    bool push( void *element, const size_t timeout );
+    bool push( const void *element, const size_t timeout );
 
     /**
      *  ISR variant to push a single element to the back of the queue
@@ -118,7 +118,7 @@ namespace Chimera::Threading
      *  @param[in]  element       The element to be pushed back
      *  @return bool
      */
-    bool isrPush( void *buffer );
+    bool isrPush( const void *buffer );
 
     /**
      *  Removes a single item from the front of the queue

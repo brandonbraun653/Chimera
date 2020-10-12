@@ -36,6 +36,7 @@ namespace Chimera::Threading
   {
     mMaxSize = qLen;
     mQueueHandle = xQueueCreateStatic( qLen, itemSize, reinterpret_cast<uint8_t *>( qBuffer ), &mQueueStructure );
+    return true;
   }
 
   /*-------------------------------------------------------------------------------
@@ -91,15 +92,15 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Modifier Methods
   -------------------------------------------------------------------------------*/
-  bool Queue::push( void *element, const size_t timeout )
+  bool Queue::push( const void *element, const size_t timeout )
   {
     return ( pdPASS == xQueueSendToBack( mQueueHandle, element, pdMS_TO_TICKS( timeout ) ) );
   }
 
 
-  bool Queue::isrPush( void *element )
+  bool Queue::isrPush( const void *element )
   {
-    return ( pdPASS == xQueueSendToBackFromISR( mQueueHandle, element ) );
+    return ( pdPASS == xQueueSendToBackFromISR( mQueueHandle, element, nullptr) );
   }
 
 

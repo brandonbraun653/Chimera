@@ -39,12 +39,12 @@ Calculates the number of elements in a C-style array
 /*-------------------------------------------------
 SIGNED number of elements in the array
 -------------------------------------------------*/
-#define ARRAY_SCOUNT( arr ) ( ( ptrdiff_t )ARRAY_SIZE( arr ) )
+#define ARRAY_SCOUNT( arr ) ( ( ptrdiff_t )ARRAY_COUNT( arr ) )
 
 /*-------------------------------------------------
 Calculates the number of bytes contained in the array
 -------------------------------------------------*/
-#define ARRAY_BYTES( arr ) ( sizeof( ( arr )[ 0 ] ) * ARRAY_SIZE( arr ) )
+#define ARRAY_BYTES( arr ) ( sizeof( ( arr )[ 0 ] ) * ARRAY_COUNT( arr ) )
 
 
 #endif  /* !CHIMERA_MACROS_HPP */
