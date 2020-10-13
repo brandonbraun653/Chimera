@@ -6,7 +6,7 @@ add_subdirectory("src")
 
 
 # ====================================================
-# All  Drivers
+# All Drivers
 # ====================================================
 set(CHIMERA_SRC chimera_src)
 add_library(${CHIMERA_SRC} INTERFACE)

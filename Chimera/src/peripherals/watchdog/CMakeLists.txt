@@ -3,7 +3,7 @@
 # ====================================================
 set(LINK_LIBS
   chimera_inc       # Chimera public headers
-  prj_device_target # Compiler options for target device
+  chimera_build_options
 )
 
 # ====================================================

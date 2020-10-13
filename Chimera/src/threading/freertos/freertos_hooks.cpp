@@ -47,7 +47,7 @@ extern "C"
 
     *ppxTimerTaskTCBBuffer = &timerTCB;
     *ppxTimerTaskStackBuffer = timerStack;
-    *pulTimerTaskStackSize   = ARRAY_BYTES( timerStack );
+    *pulTimerTaskStackSize   = ARRAY_COUNT( timerStack );
   }
 
   void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize )
@@ -57,7 +57,7 @@ extern "C"
 
     *ppxIdleTaskTCBBuffer = &idleTCB;
     *ppxIdleTaskStackBuffer = idleStack;
-    *pulIdleTaskStackSize   = ARRAY_BYTES( idleStack );
+    *pulIdleTaskStackSize   = ARRAY_COUNT( idleStack );
   }
 #endif
 
