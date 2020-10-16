@@ -157,8 +157,7 @@ namespace Chimera::CAN
     Error Interrupt Category
     -------------------------------------------------*/
     ERR_ISR,
-    ERROR_PENDING = ERR_ISR,
-    ERROR_CODE_EVENT,
+    ERROR_CODE_EVENT = ERR_ISR,
     ERROR_BUS_OFF_EVENT,
     ERROR_PASSIVE_EVENT,
     ERROR_WARNING_EVENT,
