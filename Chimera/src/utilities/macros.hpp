@@ -14,6 +14,7 @@
 
 /* STL Includes */
 #include <cstddef>
+#include <cstring>
 
 /*-------------------------------------------------------------------------------
 Macros to Determine Array Count & Size
@@ -46,5 +47,10 @@ Calculates the number of bytes contained in the array
 -------------------------------------------------*/
 #define ARRAY_BYTES( arr ) ( sizeof( ( arr )[ 0 ] ) * ARRAY_COUNT( arr ) )
 
+
+/*-------------------------------------------------------------------------------
+Macros for Memory Initialization
+-------------------------------------------------------------------------------*/
+#define CLEAR_ARRAY( arr ) ( memset( arr, 0, ARRAY_BYTES( arr ) ) )
 
 #endif  /* !CHIMERA_MACROS_HPP */

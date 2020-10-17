@@ -216,8 +216,6 @@ namespace Chimera::CAN
     uint8_t timeQuanta;       /**< Number of intervals each bit is divided into (Recommend 16 or 8) */
     uint8_t resyncJumpWidth;  /**< Number of time quanta allowed to shift for syncing (Recommend 1) */
     float maxBaudError;       /**< Max allowable baud rate error abs(%) */
-    FilterMode filterMode;    /**< Filter mode behavior */
-    FilterWidth filterWidth;  /**< Filter width behavior */
 
     void clear()
     {
@@ -230,8 +228,6 @@ namespace Chimera::CAN
       resyncJumpWidth    = 1;
       samplePointPercent = 0.875;
       baudRate           = 100000;
-      filterMode         = FilterMode::UNKNOWN;
-      filterWidth        = FilterWidth::UNKNOWN;
     }
   };
 
