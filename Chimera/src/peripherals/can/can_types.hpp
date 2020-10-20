@@ -98,17 +98,10 @@ namespace Chimera::CAN
 
   enum class FilterMode : uint8_t
   {
-    MASK,
-    ID_LIST,
-
-    NUM_OPTIONS,
-    UNKNOWN
-  };
-
-  enum class FilterWidth : uint8_t
-  {
-    WIDTH_16BIT,
-    WIDTH_32BIT,
+    MODE_16BIT_LIST,
+    MODE_16BIT_MASK,
+    MODE_32BIT_LIST,
+    MODE_32BIT_MASK,
 
     NUM_OPTIONS,
     UNKNOWN
