@@ -87,7 +87,7 @@ namespace Chimera::CAN
     UNKNOWN
   };
 
-  enum class IdentifierMode : uint8_t
+  enum class IdType : uint8_t
   {
     STANDARD,
     EXTENDED,
@@ -96,7 +96,7 @@ namespace Chimera::CAN
     UNKNOWN
   };
 
-  enum class FilterMode : uint8_t
+  enum class FilterType : uint8_t
   {
     MODE_16BIT_LIST,
     MODE_16BIT_MASK,
@@ -165,7 +165,7 @@ namespace Chimera::CAN
   struct BasicFrame
   {
     Identifier_t id;                    /**< Message identifier, sized according to idMode */
-    IdentifierMode idMode;              /**< Specifies either standard or extended ID */
+    IdType idMode;                      /**< Specifies either standard or extended ID */
     FrameType frameType;                /**< Is this a data or remote frame */
     DataLength_t dataLength;            /**< How many bytes are in the data field */
     uint8_t filterIndex;                /**< RX only: Which filter this frame matched against */
@@ -174,7 +174,7 @@ namespace Chimera::CAN
     void clear()
     {
       id          = 0;
-      idMode      = IdentifierMode::UNKNOWN;
+      idMode      = IdType::UNKNOWN;
       frameType   = FrameType::UNKNOWN;
       dataLength  = 0;
       filterIndex = 0;
@@ -194,7 +194,7 @@ namespace Chimera::CAN
   struct Filter
   {
     Identifier_t id; /**< ID being filtered on */
-    FilterMode type; /**< How to interpret the ID filter */
+    FilterType type; /**< How to interpret the ID filter */
   };
 
   struct HardwareInit
