@@ -54,7 +54,7 @@ namespace Chimera::Threading::detail
     uint8_t placeholder;
   };
 
-  using native_queue           = std::queue;
+  using native_queue           = void*;
   using native_queue_structure = _DummyQueueStructure;
 }  // namespace Chimera::Threading::detail
 

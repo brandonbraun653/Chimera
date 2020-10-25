@@ -14,21 +14,22 @@
 
 #if defined( USING_WINDOWS ) || defined( USING_LINUX ) || defined( USING_NATIVE_THREADS )
 
-#pragma error("Missing STL queue implementation")
-
+#pragma warning("Queue definition exists but isn't functional")
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------
   Constructor/Destructor
   -------------------------------------------------------------------------------*/
-  Queue::Queue( const size_t qLen, const size_t itemSize, void *qBuffer )
+  Queue::Queue()
   {
-    // Will need to figure out how to use the templates or perhaps a
-    // custom allocator to allow for size definition based on the variables
-    // here.
   }
 
   Queue::~Queue()
+  {
+
+  }
+
+  bool create( const size_t qLen, const size_t itemSize, void *qBuffer )
   {
 
   }
