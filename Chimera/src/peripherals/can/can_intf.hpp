@@ -82,10 +82,9 @@ namespace Chimera::CAN
      *  @note The RX FIFO only contains messages that are not subscribed to
      *
      *  @param[out] frame       The frame to place the received message into
-     *  @param[in]  timeout     How long to wait for a new message to arrive
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t receive( BasicFrame &frame, const size_t timeout ) = 0;
+    virtual Chimera::Status_t receive( BasicFrame &frame ) = 0;
 
     /**
      *  Uses the given filter list to selectively decide which messages
@@ -139,7 +138,7 @@ namespace Chimera::CAN
     Chimera::Status_t close();
     CANStatus getStatus();
     Chimera::Status_t send( const BasicFrame &frame );
-    Chimera::Status_t receive( BasicFrame &frame, const size_t timeout );
+    Chimera::Status_t receive( BasicFrame &frame );
     Chimera::Status_t filter( const Filter *const list, const size_t size );
     Chimera::Status_t flush( BufferType buffer );
 
