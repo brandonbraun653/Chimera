@@ -1,0 +1,18 @@
+/********************************************************************************
+ *  File Name:
+ *    algorithm
+ *
+ *  Description:
+ *    Chimera Buffer Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_ALGORITHM_INCLUDES
+#define CHIMERA_ALGORITHM_INCLUDES
+
+#include <Chimera/source/drivers/algorithm/common_types.hpp>
+#include <Chimera/source/drivers/algorithm/register_optimizer.hpp>
+
+#endif /* !CHIMERA_ALGORITHM_INCLUDES */

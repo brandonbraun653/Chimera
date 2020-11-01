@@ -10,14 +10,14 @@
 # ====================================================
 # Import sub-projects
 # ====================================================
-add_subdirectory("Chimera")
+add_subdirectory("source")
 
 # ====================================================
 # Public Headers
 # ====================================================
 set(PUB_HDR chimera_inc)
 add_library(${PUB_HDR} INTERFACE)
-target_include_directories(${PUB_HDR} INTERFACE ".")
+target_include_directories(${PUB_HDR} INTERFACE "./../" "./include")
 
 # Select the appropriate threading interface (if any)
 if(Toolchain::REQUIRES_FREERTOS_THREADS)

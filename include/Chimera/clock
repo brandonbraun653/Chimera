@@ -1,0 +1,19 @@
+/********************************************************************************
+ *  File Name:
+ *    clock
+ *
+ *  Description:
+ *    Chimera CLOCK Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_CLOCK_INCLUDES
+#define CHIMERA_CLOCK_INCLUDES
+
+#include <Chimera/source/drivers/peripherals/clock/clock_user.hpp>
+#include <Chimera/source/drivers/peripherals/clock/clock_intf.hpp>
+#include <Chimera/source/drivers/peripherals/clock/clock_types.hpp>
+
+#endif /* !CHIMERA_CLOCK_INCLUDES */

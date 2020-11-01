@@ -1,0 +1,22 @@
+/********************************************************************************
+ *  File Name:
+ *    common
+ *
+ *  Description:
+ *    Chimera Common Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_COMMON_INCLUDES
+#define CHIMERA_COMMON_INCLUDES
+
+#include <Chimera/source/drivers/common/chimera.hpp>
+#include <Chimera/source/drivers/common/common_types.hpp>
+#include <Chimera/source/drivers/common/compiler_intf.hpp>
+#include <Chimera/source/drivers/common/preprocessor.hpp>
+
+#include <Chimera/source/drivers/peripherals/peripheral_types.hpp>
+
+#endif /* !CHIMERA_COMMON_INCLUDES */

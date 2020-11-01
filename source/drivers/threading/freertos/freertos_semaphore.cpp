@@ -1,0 +1,165 @@
+/********************************************************************************
+ *  File Name:
+ *    freertos_semaphore.cpp
+ *
+ *  Description:
+ *    Chimera semaphore implementation with FreeRTOS
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *******************************************************************************/
+
+/* STL Includes */
+#include <cstring>
+
+/* Chimera Includes */
+#include <Chimera/common>
+#include <Chimera/system>
+#include <Chimera/thread>
+
+#if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
+
+/* FreeRTOS Includes */
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/semphr.h>
+
+namespace Chimera::Threading
+{
+  /*-------------------------------------------------------------------------------
+  Counting Semaphore
+  -------------------------------------------------------------------------------*/
+  CountingSemaphore::CountingSemaphore() : mMaxCount( 1 )
+  {
+    semphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
+  }
+
+
+  CountingSemaphore::CountingSemaphore( const size_t maxCounts ) : mMaxCount( maxCounts )
+  {
+    semphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
+  }
+
+
+  CountingSemaphore::~CountingSemaphore()
+  {
+    vSemaphoreDelete( semphr );
+  }
+
+
+  void CountingSemaphore::release( const size_t update )
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      for ( size_t x = 0; x < update; x++ )
+      {
+        if ( xSemaphoreGive( semphr ) != pdPASS )
+        {
+          break;
+        }
+      }
+    }
+  }
+
+
+  void CountingSemaphore::acquire()
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      xSemaphoreTake( semphr, portMAX_DELAY );
+    }
+  }
+
+
+  bool CountingSemaphore::try_acquire()
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      return ( xSemaphoreTake( semphr, 0 ) == pdPASS );
+    }
+    else
+    {
+      return true;
+    }
+  }
+
+
+  bool CountingSemaphore::try_acquire_for( const size_t timeout )
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      size_t _t = pdMS_TO_TICKS( timeout );
+      if ( timeout == Chimera::Threading::TIMEOUT_BLOCK )
+      {
+        _t = portMAX_DELAY;
+      }
+
+      return ( xSemaphoreTake( semphr, _t ) == pdPASS );
+    }
+    else
+    {
+      return true;
+    }
+  }
+
+
+  bool CountingSemaphore::try_acquire_until( const size_t abs_time )
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      auto const currentTime = Chimera::millis();
+      return ( xSemaphoreTake( semphr, pdMS_TO_TICKS( abs_time + currentTime ) ) == pdPASS );
+    }
+    else
+    {
+      return true;
+    }
+  }
+
+
+  size_t CountingSemaphore::max()
+  {
+    return mMaxCount;
+  }
+
+
+  void CountingSemaphore::acquireFromISR()
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+      xSemaphoreTakeFromISR( semphr, &xHigherPriorityTaskWoken );
+      portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+    }
+    else
+    {
+      /*-------------------------------------------------
+      This shouldn't be happening. If it is, then you are
+      likely running ISRs that expect the scheduler to be
+      running. Investigate why you hit this point.
+      -------------------------------------------------*/
+      Chimera::insert_debug_breakpoint();
+    }
+  }
+
+
+  void CountingSemaphore::releaseFromISR()
+  {
+    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+      BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+      xSemaphoreGiveFromISR( semphr, &xHigherPriorityTaskWoken );
+      portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+    }
+    else
+    {
+      /*-------------------------------------------------
+      This shouldn't be happening. If it is, then you are
+      likely running ISRs that expect the scheduler to be
+      running. Investigate why you hit this point.
+      -------------------------------------------------*/
+      Chimera::insert_debug_breakpoint();
+    }
+  }
+}  // namespace Chimera::Threading
+
+#endif /* FREERTOS */
