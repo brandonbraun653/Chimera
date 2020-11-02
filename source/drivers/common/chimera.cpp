@@ -12,6 +12,7 @@
 #include <Chimera/can>
 #include <Chimera/clock>
 #include <Chimera/common>
+#include <Chimera/exti>
 #include <Chimera/gpio>
 #include <Chimera/pwm>
 #include <Chimera/serial>
@@ -38,6 +39,7 @@ void ChimeraInit()
   ------------------------------------------------*/
   Chimera::CAN::initialize();
   Chimera::Clock::initialize();
+  Chimera::EXTI::open();
   Chimera::GPIO::initialize();
   Chimera::PWM::initialize();
   Chimera::Serial::initialize();

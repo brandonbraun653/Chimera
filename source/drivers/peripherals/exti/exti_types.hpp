@@ -23,6 +23,19 @@ namespace Chimera::EXTI
   -------------------------------------------------------------------------------*/
   using EventLine_t = uint8_t;
 
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
+  enum class EdgeTrigger : uint8_t
+  {
+    RISING_EDGE,
+    FALLING_EDGE,
+    BOTH_EDGE,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -39,7 +52,7 @@ namespace Chimera::EXTI
       -------------------------------------------------*/
       Chimera::Status_t ( *open )();
       Chimera::Status_t ( *close )();
-      Chimera::Status_t ( *attach )( const EventLine_t listener, Chimera::Function::vGeneric callback );
+      Chimera::Status_t ( *attach )( const EventLine_t listener, const EdgeTrigger edge, Chimera::Function::vGeneric callback );
       Chimera::Status_t ( *detach )( const EventLine_t listener );
       Chimera::Status_t ( *trigger )( const EventLine_t listener );
       Chimera::Status_t ( *disable )( const EventLine_t listener );

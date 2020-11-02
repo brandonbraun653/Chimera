@@ -35,10 +35,11 @@ namespace Chimera::EXTI
    *  Configures the interrupt line
    *
    *  @param[in]  listener      The listener being configured
+   *  @param[in]  edge          Which edge to trigger off of
    *  @param[in]  callback      What callback to invoke upon interrupt firing
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t attach( const EventLine_t listener, Chimera::Function::vGeneric callback );
+  Chimera::Status_t attach( const EventLine_t listener, const EdgeTrigger edge, Chimera::Function::vGeneric callback );
 
   /**
    *  Disables the given interrupt and resets it to defaults

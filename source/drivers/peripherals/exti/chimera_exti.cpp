@@ -63,11 +63,11 @@ namespace Chimera::EXTI
   }
 
 
-  Chimera::Status_t attach( const EventLine_t listener, Chimera::Function::vGeneric callback )
+  Chimera::Status_t attach( const EventLine_t listener, const EdgeTrigger edge, Chimera::Function::vGeneric callback )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.attach )
     {
-      return s_backend_driver.attach( listener, callback );
+      return s_backend_driver.attach( listener, edge, callback );
     }
     else
     {
