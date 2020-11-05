@@ -73,7 +73,7 @@
 #define CHIMERA_TIMER_INTERFACE_HPP
 
 /* Aurora Includes */
-#include <Aurora/units/units.hpp>
+#include <Aurora/units>
 
 /* Chimera Includes */
 #include <Chimera/common>
