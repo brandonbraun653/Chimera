@@ -153,6 +153,14 @@ namespace Chimera::GPIO
      *  @return void
      */
     virtual void detachInterrupt() = 0;
+
+    /**
+     *  Gets the EXTI interrupt line associated with the GPIO pin, assuming
+     *  it has been properly configured.
+     *
+     *  @return Chimera::EXTI::EventLine_t
+     */
+    virtual Chimera::EXTI::EventLine_t getInterruptLine() = 0;
   };
 
 
@@ -188,6 +196,7 @@ namespace Chimera::GPIO
     Chimera::Status_t toggle();
     Chimera::Status_t attachInterrupt( Chimera::Function::vGeneric &func, const Chimera::EXTI::EdgeTrigger trigger );
     void detachInterrupt();
+    Chimera::EXTI::EventLine_t getInterruptLine();
 
     /*-------------------------------------------------
     Interface: Lockable
