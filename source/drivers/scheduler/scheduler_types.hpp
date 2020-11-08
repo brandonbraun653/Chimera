@@ -48,7 +48,7 @@ namespace Chimera::Scheduler
   -------------------------------------------------------------------------------*/
   struct SoftwareTimerEntry
   {
-    Chimera::Function::Opaque *func; /**< Function to be invoked */
+    Chimera::Function::Opaque func; /**< Function to be invoked */
     size_t callRate;                 /**< For periodic, rate at which function should be invoked */
     size_t nextCallTime;             /**< Absolute system time when the function should be invoked next */
     size_t numCalls;                 /**< Tracks how many times the function has been called */
@@ -57,7 +57,7 @@ namespace Chimera::Scheduler
 
     void clear()
     {
-      func         = nullptr;
+      func         = Chimera::Function::Opaque();
       callRate     = 0;
       nextCallTime = 0;
       numCalls     = 0;

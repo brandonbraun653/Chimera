@@ -14,6 +14,8 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/exti>
+#include <Chimera/function>
 #include <Chimera/thread>
 #include <Chimera/source/drivers/peripherals/gpio/gpio_types.hpp>
 
@@ -134,6 +136,23 @@ namespace Chimera::GPIO
      *  | NOT_INITIALIZED | The GPIO object has not been initialized     |
      */
     virtual Chimera::Status_t toggle() = 0;
+
+    /**
+     *  Attaches a function to be called when the GPIO pin is configured
+     *  as an external interrupt source.
+     *
+     *  @param[in]  func        The function to be called
+     *  @param[in]  trigger     Which edge to be triggered on
+     *  @return Chimera::Status_t
+     */
+    virtual Chimera::Status_t attachInterrupt( Chimera::Function::vGeneric &func,
+                                               const Chimera::EXTI::EdgeTrigger trigger ) = 0;
+
+    /**
+     *  Detaches any previously attached interrupt function
+     *  @return void
+     */
+    virtual void detachInterrupt() = 0;
   };
 
 
@@ -167,6 +186,8 @@ namespace Chimera::GPIO
     Chimera::Status_t setState( const Chimera::GPIO::State state );
     Chimera::Status_t getState( Chimera::GPIO::State &state );
     Chimera::Status_t toggle();
+    Chimera::Status_t attachInterrupt( Chimera::Function::vGeneric &func, const Chimera::EXTI::EdgeTrigger trigger );
+    void detachInterrupt();
 
     /*-------------------------------------------------
     Interface: Lockable
@@ -178,7 +199,7 @@ namespace Chimera::GPIO
     void unlockFromISR();
 
   private:
-    void * mDriver; /**< Instance of the implementer's GPIO driver */
+    void *mDriver; /**< Instance of the implementer's GPIO driver */
   };
 
 }  // namespace Chimera::GPIO

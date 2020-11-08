@@ -90,7 +90,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t oneShot( Chimera::Function::Opaque *const method, const size_t when, const TimingType relation )
+  Chimera::Status_t oneShot( Chimera::Function::Opaque &method, const size_t when, const TimingType relation )
   {
     auto result = Chimera::Status::OK;
     s_mtx.lock();
@@ -126,7 +126,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t periodic( Chimera::Function::Opaque *const method, const size_t rate )
+  Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate )
   {
     auto result = Chimera::Status::OK;
     s_mtx.lock();
@@ -152,7 +152,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t periodic( Chimera::Function::Opaque *const method, const size_t rate, const size_t numTimes )
+  Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate, const size_t numTimes )
   {
     auto result = Chimera::Status::OK;
     s_mtx.lock();
@@ -180,7 +180,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t cancel( Chimera::Function::Opaque *const method )
+  Chimera::Status_t cancel( Chimera::Function::Opaque &method )
   {
     auto result = Chimera::Status::NOT_FOUND;
     s_mtx.lock();
@@ -237,7 +237,7 @@ namespace Chimera::Scheduler::LoRes
         /*-------------------------------------------------
         Execute the function
         -------------------------------------------------*/
-        ( *s_registry[ timer ].func )();
+        s_registry[ timer ].func();
         s_registry[ timer ].numCalls++;
 
         /*-------------------------------------------------

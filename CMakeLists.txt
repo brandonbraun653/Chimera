@@ -18,6 +18,7 @@ add_subdirectory("source")
 set(PUB_HDR chimera_inc)
 add_library(${PUB_HDR} INTERFACE)
 target_include_directories(${PUB_HDR} INTERFACE "./../" "./include")
+target_link_libraries(${PUB_HDR} INTERFACE etl_inc)
 
 # Select the appropriate threading interface (if any)
 if(Toolchain::REQUIRES_FREERTOS_THREADS)

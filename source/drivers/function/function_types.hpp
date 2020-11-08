@@ -15,19 +15,22 @@
 /* STL Includes */
 #include <cstdint>
 
+/* ETL Includes */
+#include <etl/delegate.h>
+
 namespace Chimera::Function
 {
   /**
    *  Signature that specifies a function which accepts no
    *  arguments and returns nothing.
    */
-  using Opaque = void ( * )( void );
+  using Opaque = etl::delegate<void(void)>;
 
   /**
    *  Signature that returns nothing but can accept anything in
    *  the function arguments.
    */
-  using vGeneric  = void ( * )( void * );
+  using vGeneric = etl::delegate<void(void*)>;
 
   /**
    *  Signature that returns some kind of boolean value. Used when
@@ -39,6 +42,7 @@ namespace Chimera::Function
    *  Signature to evaluate arguments and return a pass/fail result.
    */
   using PassFailGeneric = bool ( * )( void * );
+
 
 }  // namespace Chimera::Function
 

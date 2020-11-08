@@ -43,6 +43,7 @@ namespace Chimera::Peripheral
     PERIPH_RTC,     /**< Real Time Clock */
     PERIPH_SDIO,    /**< Secure Digital Input Output */
     PERIPH_SPI,     /**< Serial Peripheral Interface */
+    PERIPH_SYSCFG,  /**< System Configuration */
     PERIPH_TIM,     /**< Timer */
     PERIPH_UART,    /**< Universal Asynchronous Receiver Transmitter */
     PERIPH_USART,   /**< Universal Synchronous/Asynchronous Receiver Transmitter */
