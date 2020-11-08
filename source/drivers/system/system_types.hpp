@@ -81,16 +81,15 @@ namespace Chimera::System
   namespace Backend
   {
     /**
-     *  Stores hooks for functions that the driver system should register with 
+     *  Stores hooks for functions that the driver system should register with
      *  Chimera. Not all of the functions have to be implemented in order for
-     *  the driver to be registered. 
+     *  the driver to be registered.
      *
      *  @note See function documentation in system_user.hpp
      */
     struct DriverConfig
     {
       bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
-
 
       Chimera::Status_t ( *initialize )( void );
       Chimera::Status_t ( *reset )( void );
@@ -99,6 +98,7 @@ namespace Chimera::System
       void ( *enableInterrupts )( Chimera::System::InterruptMask &interruptMask );
       int ( *maxConcurrentThreads )( void );
       ResetEvent ( *getResetReason )( void );
+      bool ( *inISR )( void );
       void ( *getSystemInformation )( Information *&info );
       std::string_view ( *version_AsString )( void );
       size_t ( *version_Major )( void );

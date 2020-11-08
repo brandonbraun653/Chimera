@@ -96,6 +96,19 @@ namespace Chimera::Scheduler
      *  @return Chimera::Status_t
      */
     Chimera::Status_t cancel( Chimera::Function::Opaque &method );
+
+    /**
+     *  Stop a function from executing, from within the context of the
+     *  function being executed. Basically this allows a function to
+     *  early stop itself if desired.
+     *
+     *  @warning Do not call from any other context than a registered method.
+     *  This will disrupt the scheduler processing.
+     *
+     *  @return void
+     */
+    void cancel_this();
+
   }  // namespace LoRes
 
 

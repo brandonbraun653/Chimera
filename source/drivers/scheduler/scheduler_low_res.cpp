@@ -10,9 +10,11 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
-#include <Chimera/thread>
-#include <Chimera/scheduler>
 #include <Chimera/function>
+#include <Chimera/scheduler>
+#include <Chimera/system>
+#include <Chimera/thread>
+
 
 namespace Chimera::Scheduler::LoRes
 {
@@ -27,13 +29,14 @@ namespace Chimera::Scheduler::LoRes
   Static Functions
   -------------------------------------------------------------------------------*/
   static void TimerThreadFunction( void *arg );
-  static SoftwareTimerEntry* findNextSlot();
+  static SoftwareTimerEntry *findNextSlot();
 
 
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
   static bool s_CanExecute = false;
+  static bool s_CancelThis = false;
   static Chimera::Threading::RecursiveMutex s_mtx;
   static Chimera::Threading::Thread s_TimerThread;
   static SoftwareTimerEntry s_registry[ s_NumTimers ];
@@ -56,9 +59,10 @@ namespace Chimera::Scheduler::LoRes
     }
 
     /*-------------------------------------------------
-    Turn on the timer processing
+    Initialize static variables
     -------------------------------------------------*/
     s_CanExecute = true;
+    s_CancelThis = false;
 
     /*-------------------------------------------------
     Initialize the timer thread
@@ -93,25 +97,33 @@ namespace Chimera::Scheduler::LoRes
   Chimera::Status_t oneShot( Chimera::Function::Opaque &method, const size_t when, const TimingType relation )
   {
     auto result = Chimera::Status::OK;
-    s_mtx.lock();
 
-    if( auto nextSlot = findNextSlot(); nextSlot )
+    /*-------------------------------------------------
+    Prevent interruption from threads and ISRs
+    -------------------------------------------------*/
+    s_mtx.lock();
+    auto isrMask = Chimera::System::disableInterrupts();
+
+    /*-------------------------------------------------
+    Register the handler
+    -------------------------------------------------*/
+    if ( auto nextSlot = findNextSlot(); nextSlot )
     {
       /*-------------------------------------------------
       Set up the basic call structure
       -------------------------------------------------*/
       nextSlot->clear();
       nextSlot->callType = CallType::ONE_SHOT;
-      nextSlot->func = method;
+      nextSlot->func     = method;
 
       /*-------------------------------------------------
       Set up the call timing
       -------------------------------------------------*/
-      if( relation == TimingType::ABSOLUTE )
+      if ( relation == TimingType::ABSOLUTE )
       {
         nextSlot->nextCallTime = when;
       }
-      else // TimingType::RELATIVE
+      else  // TimingType::RELATIVE
       {
         nextSlot->nextCallTime = Chimera::millis() + when;
       }
@@ -121,7 +133,12 @@ namespace Chimera::Scheduler::LoRes
       result = Chimera::Status::FULL;
     }
 
+    /*-------------------------------------------------
+    Allow interrupts again
+    -------------------------------------------------*/
+    Chimera::System::enableInterrupts( isrMask );
     s_mtx.unlock();
+
     return result;
   }
 
@@ -129,17 +146,25 @@ namespace Chimera::Scheduler::LoRes
   Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate )
   {
     auto result = Chimera::Status::OK;
-    s_mtx.lock();
 
-    if( auto nextSlot = findNextSlot(); nextSlot )
+    /*-------------------------------------------------
+    Prevent interruption from threads and ISRs
+    -------------------------------------------------*/
+    s_mtx.lock();
+    auto isrMask = Chimera::System::disableInterrupts();
+
+    /*-------------------------------------------------
+    Register the handler
+    -------------------------------------------------*/
+    if ( auto nextSlot = findNextSlot(); nextSlot )
     {
       /*-------------------------------------------------
       Set up the basic call structure
       -------------------------------------------------*/
       nextSlot->clear();
-      nextSlot->callType = CallType::PERIODIC;
-      nextSlot->func = method;
-      nextSlot->callRate = rate;
+      nextSlot->callType     = CallType::PERIODIC;
+      nextSlot->func         = method;
+      nextSlot->callRate     = rate;
       nextSlot->nextCallTime = Chimera::millis() + rate;
     }
     else
@@ -147,7 +172,12 @@ namespace Chimera::Scheduler::LoRes
       result = Chimera::Status::FULL;
     }
 
+    /*-------------------------------------------------
+    Allow interrupts again
+    -------------------------------------------------*/
+    Chimera::System::enableInterrupts( isrMask );
     s_mtx.unlock();
+
     return result;
   }
 
@@ -155,27 +185,40 @@ namespace Chimera::Scheduler::LoRes
   Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate, const size_t numTimes )
   {
     auto result = Chimera::Status::OK;
-    s_mtx.lock();
 
-    if( auto nextSlot = findNextSlot(); nextSlot )
+    /*-------------------------------------------------
+    Prevent interruption from threads and ISRs
+    -------------------------------------------------*/
+    s_mtx.lock();
+    auto isrMask = Chimera::System::disableInterrupts();
+
+    /*-------------------------------------------------
+    Register the handler
+    -------------------------------------------------*/
+    if ( auto nextSlot = findNextSlot(); nextSlot )
     {
       /*-------------------------------------------------
       Set up the basic call structure
       -------------------------------------------------*/
       nextSlot->clear();
-      nextSlot->callType = CallType::PERIODIC_LIMITED;
-      nextSlot->func = method;
-      nextSlot->callRate = rate;
+      nextSlot->callType     = CallType::PERIODIC_LIMITED;
+      nextSlot->func         = method;
+      nextSlot->callRate     = rate;
       nextSlot->nextCallTime = Chimera::millis() + rate;
-      nextSlot->maxCalls = numTimes;
-      nextSlot->numCalls = 0;
+      nextSlot->maxCalls     = numTimes;
+      nextSlot->numCalls     = 0;
     }
     else
     {
       result = Chimera::Status::FULL;
     }
 
+    /*-------------------------------------------------
+    Allow interrupts again
+    -------------------------------------------------*/
+    Chimera::System::enableInterrupts( isrMask );
     s_mtx.unlock();
+
     return result;
   }
 
@@ -200,6 +243,12 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
+  void cancel_this()
+  {
+    s_CancelThis = true;
+  }
+
+
   /*-------------------------------------------------------------------------------
   Static Function Definition
   -------------------------------------------------------------------------------*/
@@ -212,7 +261,7 @@ namespace Chimera::Scheduler::LoRes
       /*-------------------------------------------------
       Yield execution to other threads if we can't execute
       -------------------------------------------------*/
-      if( !s_CanExecute )
+      if ( !s_CanExecute )
       {
         this_thread::yield();
       }
@@ -243,14 +292,14 @@ namespace Chimera::Scheduler::LoRes
         /*-------------------------------------------------
         Update the execution state based on the call type
         -------------------------------------------------*/
-        switch( s_registry[ timer ].callType )
+        switch ( s_registry[ timer ].callType )
         {
           case CallType::PERIODIC:
             s_registry[ timer ].nextCallTime = currentTick + s_registry[ timer ].callRate;
             break;
 
           case CallType::PERIODIC_LIMITED:
-            if( s_registry[ timer ].numCalls >= s_registry[ timer ].maxCalls )
+            if ( s_registry[ timer ].numCalls >= s_registry[ timer ].maxCalls )
             {
               s_registry[ timer ].clear();
             }
@@ -265,6 +314,15 @@ namespace Chimera::Scheduler::LoRes
             s_registry[ timer ].clear();
             break;
         };
+
+        /*-------------------------------------------------
+        Optionally cancel execution of the current function
+        -------------------------------------------------*/
+        if ( s_CancelThis )
+        {
+          s_CancelThis = false;
+          s_registry[ timer ].clear();
+        }
       }
 
       s_mtx.unlock();

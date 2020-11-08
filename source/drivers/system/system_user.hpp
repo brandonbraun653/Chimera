@@ -81,6 +81,12 @@ namespace Chimera::System
    */
   ResetEvent getResetReason();
 
+  /**
+   *  Checks if the processor is currently executing inside an ISR handler
+   *
+   *  @return bool
+   */
+  bool inISR();
 
   /**
    *  Gets high level system information that describes this chip
@@ -116,7 +122,7 @@ namespace Chimera::System
      *  @return size_t
      */
     size_t patch();
-  }
+  }  // namespace Version
 
   namespace Description
   {
@@ -137,7 +143,7 @@ namespace Chimera::System
      *  @return std::string_view
      */
     std::string_view documentationLink();
-  }
+  }  // namespace Description
 
 }  // namespace Chimera::System
 

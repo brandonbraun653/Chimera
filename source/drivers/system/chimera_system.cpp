@@ -69,7 +69,7 @@ namespace Chimera::System
     }
     else
     {
-      auto temp = InterruptMask();
+      auto temp        = InterruptMask();
       temp.interrupted = false;
       return temp;
     }
@@ -107,6 +107,19 @@ namespace Chimera::System
     else
     {
       return ResetEvent::NOT_SUPPORTED;
+    }
+  }
+
+
+  bool inISR()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.inISR )
+    {
+      return s_backend_driver.inISR();
+    }
+    else
+    {
+      return false;
     }
   }
 
@@ -172,7 +185,7 @@ namespace Chimera::System
         return 0;
       }
     }
-  }
+  }  // namespace Version
 
   namespace Description
   {
@@ -213,5 +226,5 @@ namespace Chimera::System
         return {};
       }
     }
-  }
+  }  // namespace Description
 }  // namespace Chimera::System

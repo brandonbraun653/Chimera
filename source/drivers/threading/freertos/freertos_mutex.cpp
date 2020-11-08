@@ -3,7 +3,15 @@
  *    freertos_mutex.cpp
  *
  *  Description:
- *    Chimera mutex implementation with FreeRTOS
+ *    Chimera mutex implementation with FreeRTOS. Note that v10.0 of the API
+ *    states that recursive calls cannot happen inside ISRs (critical sections)
+ *    and must be avoided. This limits the use of the Mutex class of objects to
+ *    thread mode only and care must be taken to prevent a system architecture
+ *    that requires access in an ISR.
+ *
+ *    Given that from a conceptual perspective mutexes shouldn't be used in ISRs
+ *    anyways (they are thread synchronizers, not interrupt synchronizers), this
+ *    shouldn't be too much to ask.
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
@@ -42,7 +50,7 @@ namespace Chimera::Threading
 
   void Mutex::lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreTake( _mtx, portMAX_DELAY );
     }
@@ -51,7 +59,7 @@ namespace Chimera::Threading
 
   bool Mutex::try_lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       return ( xSemaphoreTake( _mtx, 0 ) == pdPASS );
     }
@@ -64,7 +72,7 @@ namespace Chimera::Threading
 
   void Mutex::unlock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreGive( _mtx );
     }
@@ -88,7 +96,7 @@ namespace Chimera::Threading
 
   void RecursiveMutex::lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreTakeRecursive( _mtx, portMAX_DELAY );
     }
@@ -97,7 +105,7 @@ namespace Chimera::Threading
 
   bool RecursiveMutex::try_lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       return ( xSemaphoreTakeRecursive( _mtx, 0 ) == pdPASS );
     }
@@ -110,7 +118,7 @@ namespace Chimera::Threading
 
   void RecursiveMutex::unlock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreGiveRecursive( _mtx );
     }
@@ -134,7 +142,7 @@ namespace Chimera::Threading
 
   void TimedMutex::lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreTake( _mtx, portMAX_DELAY );
     }
@@ -143,7 +151,7 @@ namespace Chimera::Threading
 
   bool TimedMutex::try_lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       return ( xSemaphoreTake( _mtx, 0 ) == pdPASS );
     }
@@ -156,7 +164,7 @@ namespace Chimera::Threading
 
   bool TimedMutex::try_lock_for( const size_t timeout )
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       return ( xSemaphoreTake( _mtx, pdMS_TO_TICKS( timeout ) ) == pdPASS );
     }
@@ -169,7 +177,7 @@ namespace Chimera::Threading
 
   bool TimedMutex::try_lock_until( const size_t timeout )
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       auto now = Chimera::millis();
       return ( xSemaphoreTake( _mtx, pdMS_TO_TICKS( timeout - now ) ) == pdPASS );
@@ -183,7 +191,7 @@ namespace Chimera::Threading
 
   void TimedMutex::unlock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreGive( _mtx );
     }
@@ -207,7 +215,7 @@ namespace Chimera::Threading
 
   void RecursiveTimedMutex::lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreTakeRecursive( _mtx, portMAX_DELAY );
     }
@@ -216,7 +224,7 @@ namespace Chimera::Threading
 
   bool RecursiveTimedMutex::try_lock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       return ( xSemaphoreTakeRecursive( _mtx, 0 ) == pdPASS );
     }
@@ -229,7 +237,7 @@ namespace Chimera::Threading
 
   bool RecursiveTimedMutex::try_lock_for( const size_t timeout )
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       return ( xSemaphoreTakeRecursive( _mtx, pdMS_TO_TICKS( timeout ) ) == pdPASS );
     }
@@ -242,7 +250,7 @@ namespace Chimera::Threading
 
   bool RecursiveTimedMutex::try_lock_until( const size_t timeout )
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       auto now = Chimera::millis();
       return ( xSemaphoreTakeRecursive( _mtx, pdMS_TO_TICKS( timeout - now ) ) == pdPASS );
@@ -256,7 +264,7 @@ namespace Chimera::Threading
 
   void RecursiveTimedMutex::unlock()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( !Chimera::System::inISR() && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING ) )
     {
       xSemaphoreGiveRecursive( _mtx );
     }
