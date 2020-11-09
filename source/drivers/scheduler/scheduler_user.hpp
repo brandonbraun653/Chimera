@@ -68,7 +68,7 @@ namespace Chimera::Scheduler
      *  @param[in]  relation    Whether to use absolute or relative timing
      *  @return Chimera::Status_t
      */
-    Chimera::Status_t oneShot( Chimera::Function::Opaque &method, const size_t when, const TimingType relation );
+    Chimera::Status_t oneShot( Chimera::Function::Opaque method, const size_t when, const TimingType relation );
 
     /**
      *  Schedules a function to execute periodically
@@ -76,7 +76,7 @@ namespace Chimera::Scheduler
      *  @param[in]  methdod     The function to be executed
      *  @param[in]  rate        How often to run the function, in milliseconds
      */
-    Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate );
+    Chimera::Status_t periodic( Chimera::Function::Opaque method, const size_t rate );
 
     /**
      *  Schedules a function to execute periodically, but only a number of times
@@ -87,7 +87,7 @@ namespace Chimera::Scheduler
      *  @param[in]  numTimes    Number of times to run the function before expiring
      *  @return Chimera::Status_t
      */
-    Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate, const size_t numTimes );
+    Chimera::Status_t periodic( Chimera::Function::Opaque method, const size_t rate, const size_t numTimes );
 
     /**
      *  Stops a function from executing, assuming it's pending
@@ -95,7 +95,7 @@ namespace Chimera::Scheduler
      *  @param[in]  method      The method to cancel
      *  @return Chimera::Status_t
      */
-    Chimera::Status_t cancel( Chimera::Function::Opaque &method );
+    Chimera::Status_t cancel( Chimera::Function::Opaque method );
 
     /**
      *  Stop a function from executing, from within the context of the

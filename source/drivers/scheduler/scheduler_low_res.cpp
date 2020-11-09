@@ -8,6 +8,9 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Aurora Includes */
+#include <Aurora/constants>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/function>
@@ -37,6 +40,7 @@ namespace Chimera::Scheduler::LoRes
   -------------------------------------------------------------------------------*/
   static bool s_CanExecute = false;
   static bool s_CancelThis = false;
+  static size_t s_driver_initialized;
   static Chimera::Threading::RecursiveMutex s_mtx;
   static Chimera::Threading::Thread s_TimerThread;
   static SoftwareTimerEntry s_registry[ s_NumTimers ];
@@ -48,6 +52,15 @@ namespace Chimera::Scheduler::LoRes
   Chimera::Status_t open()
   {
     using namespace Chimera::Threading;
+
+    /*------------------------------------------------
+    Prevent multiple initializations (need reset first)
+    ------------------------------------------------*/
+    if ( s_driver_initialized == Chimera::DRIVER_INITIALIZED_KEY )
+    {
+      return Chimera::Status::OK;
+    }
+
     s_mtx.lock();
 
     /*-------------------------------------------------
@@ -73,7 +86,12 @@ namespace Chimera::Scheduler::LoRes
       s_TimerThread.start();
     }
 
+    /*-------------------------------------------------
+    Mark as initialized and exit
+    -------------------------------------------------*/
+    s_driver_initialized = Chimera::DRIVER_INITIALIZED_KEY;
     s_mtx.unlock();
+
     return Chimera::Status::OK;
   }
 
@@ -94,7 +112,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t oneShot( Chimera::Function::Opaque &method, const size_t when, const TimingType relation )
+  Chimera::Status_t oneShot( Chimera::Function::Opaque method, const size_t when, const TimingType relation )
   {
     auto result = Chimera::Status::OK;
 
@@ -143,7 +161,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate )
+  Chimera::Status_t periodic( Chimera::Function::Opaque method, const size_t rate )
   {
     auto result = Chimera::Status::OK;
 
@@ -182,7 +200,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t periodic( Chimera::Function::Opaque &method, const size_t rate, const size_t numTimes )
+  Chimera::Status_t periodic( Chimera::Function::Opaque method, const size_t rate, const size_t numTimes )
   {
     auto result = Chimera::Status::OK;
 
@@ -223,7 +241,7 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  Chimera::Status_t cancel( Chimera::Function::Opaque &method )
+  Chimera::Status_t cancel( Chimera::Function::Opaque method )
   {
     auto result = Chimera::Status::NOT_FOUND;
     s_mtx.lock();
