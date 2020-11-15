@@ -170,6 +170,22 @@ namespace Chimera::CAN
       filterIndex = 0;
       memset( data, 0, MAX_PAYLOAD_LENGTH );
     }
+
+    bool operator==( const BasicFrame &rhs ) const
+    {
+      /* clang-format off */
+      return ( this->id == rhs.id ) &&
+             ( this->idMode == rhs.idMode ) &&
+             ( this->frameType == rhs.frameType ) &&
+             ( this->dataLength == rhs.dataLength ) &&
+             ( memcmp( this->data, rhs.data, this->dataLength ) == 0 );
+      /* clang-format on */
+    }
+
+    bool operator!=( const BasicFrame &rhs ) const
+    {
+      return !( *this == rhs );
+    }
   };
 
 
@@ -187,6 +203,13 @@ namespace Chimera::CAN
     uint32_t id;   /**< ID being filtered on */
     uint32_t mask; /**< Mask bits for the ID  */
     bool extended; /**< Is the CAN ID an extended format? Else standard.*/
+
+    void clear()
+    {
+      id       = 0;
+      mask     = 0;
+      extended = false;
+    }
   };
 
 
