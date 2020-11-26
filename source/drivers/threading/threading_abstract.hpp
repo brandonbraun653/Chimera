@@ -58,6 +58,7 @@ namespace Chimera::Threading
                                      const size_t timeout ) = 0;
   };
 
+
   /**
    *  A generic lock interface that can be attached to objects that need locking
    */
@@ -67,61 +68,38 @@ namespace Chimera::Threading
     virtual ~LockableInterface() = default;
 
     /**
-     *  Attempts to reserve the inheriting object
+     *  Reserve the inheriting object, blocking if not immediately successful.
      *
-     *  @note If not using FreeRTOS, this function will ignore the timeout
      *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
-     *
-     *  @param[in]  timeout_mS    If using FreeRTOS, how long to wait for the object to be reserved
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |                     Explanation                    |
-     *  |:------------:|:--------------------------------------------------:|
-     *  |           OK | The object was reserved before the timeout expired |
-     *  |         FAIL | The object was not reserved                        |
+     *  @return void
      */
     virtual void lock() = 0;
 
     /**
      *  Attempts to reserve the inheriting object, but from an ISR safe execution context.
-     *
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |                     Explanation                    |
-     *  |:------------:|:--------------------------------------------------:|
-     *  |           OK | The object was reserved before the timeout expired |
-     *  |         FAIL | The object was not reserved                        |
+     *  @return void
      */
     virtual void lockFromISR() = 0;
 
+    /**
+     *  Tries to lock the resource for the given amount of time
+     *
+     *  @param[in]  timeout     How long to wait to acquire the lock in milliseconds
+     *  @return bool
+     */
     virtual bool try_lock_for( const size_t timeout ) = 0;
 
     /**
-     *  Attempts to release the inheriting object
+     *  Release the inheriting object, assuming current thread has ownership
      *
-     *  @note If not using FreeRTOS, this function will release the lock regardless of who holds it.
      *  @warning This function can only run from unprivileged code. Do **not** execute in an ISR.
-     *
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |         Explanation          |
-     *  |:------------:|:----------------------------:|
-     *  |           OK | The object was released      |
-     *  |         FAIL | The object was not released  |
+     *  @return void
      */
     virtual void unlock() = 0;
 
     /**
-     *  Attempts to release the inheriting object, but from an ISR safe execution context
-     *
-     *  @note If not using FreeRTOS, this function will release the lock regardless of who holds it.
-     *
-     *  @return Chimera::Status_t
-     *
-     *  | Return Value |         Explanation          |
-     *  |:------------:|:----------------------------:|
-     *  |           OK | The object was released      |
-     *  |         FAIL | The object was not released  |
+     *  Release the inheriting object, but from an ISR safe execution context
+     *  @return void
      */
     virtual void unlockFromISR() = 0;
   };

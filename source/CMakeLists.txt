@@ -21,6 +21,7 @@ target_link_libraries(${CHIMERA_SRC} INTERFACE
   chimera_serial
   chimera_system
   chimera_threading
+  chimera_usb
   chimera_peripheral_can
   chimera_peripheral_clock
   chimera_peripheral_crc
@@ -32,6 +33,7 @@ target_link_libraries(${CHIMERA_SRC} INTERFACE
   chimera_peripheral_timer
   chimera_peripheral_uart
   chimera_peripheral_usart
+  chimera_peripheral_usb
   chimera_peripheral_watchdog
 )
 export(TARGETS ${CHIMERA_SRC} FILE "${PROJECT_BINARY_DIR}/Chimera/${CHIMERA_SRC}.cmake")

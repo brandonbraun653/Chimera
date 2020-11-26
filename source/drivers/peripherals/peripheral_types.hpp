@@ -29,6 +29,7 @@ namespace Chimera::Peripheral
     PERIPH_ADC = 0, /**< Analog to Digital Converter */
     PERIPH_CAN,     /**< Controller Area Network */
     PERIPH_CRC,     /**< Cyclic Redundancy Check */
+    PERIPH_CRS,     /**< Clock Recovery System */
     PERIPH_DAC,     /**< Digital to Analog Converter */
     PERIPH_DMA,     /**< Direct Memory Access */
     PERIPH_FLASH,   /**< System Flash Controller */
@@ -49,9 +50,11 @@ namespace Chimera::Peripheral
     PERIPH_USART,   /**< Universal Synchronous/Asynchronous Receiver Transmitter */
     PERIPH_VIC,     /**< Vector Interrupt Controller */
     PERIPH_WWDG,    /**< Window Watchdog */
+    PERIPH_USB,     /**< Universal Serial Bus */
+    PERIPH_NONE,    /**< Not a peripheral */
 
-    PERIPH_NONE, /**< Not a peripheral */
-    NUM_SUPPORTED_TYPES
+    NUM_OPTIONS,
+    UNKNOWN
   };
 }  // namespace Chimera::Peripheral
 

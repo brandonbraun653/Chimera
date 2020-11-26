@@ -22,6 +22,7 @@
 #include <Chimera/timer>
 #include <Chimera/uart>
 #include <Chimera/usart>
+#include <Chimera/usb>
 #include <Chimera/watchdog>
 
 
@@ -48,6 +49,7 @@ void ChimeraInit()
   Chimera::UART::initialize();
   Chimera::USART::initialize();
   Chimera::Watchdog::initialize();
+  Chimera::USB::Peripheral::initialize();
 }
 
 namespace Chimera
@@ -57,15 +59,34 @@ namespace Chimera
     return Timer::millis();
   }
 
+
   size_t micros()
   {
     return Timer::micros();
   }
 
+
+  void delayUntil( const size_t val )
+  {
+    const size_t currentTick = millis();
+    if ( currentTick < val )
+    {
+      delayMilliseconds( val - currentTick );
+    }
+  }
+
+
   void delayMilliseconds( const size_t val )
   {
     Timer::delayMilliseconds( val );
   }
+
+
+  void delayMilliseconds( const size_t lastTimeWoken, const size_t val )
+  {
+    delayUntil( lastTimeWoken + val );
+  }
+
 
   void delayMicroseconds( const size_t val )
   {
