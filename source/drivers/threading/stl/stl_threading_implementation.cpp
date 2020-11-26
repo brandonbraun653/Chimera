@@ -17,6 +17,7 @@
 #include <chrono>
 #include <thread>
 #include <cstring>
+#include <stdexcept>
 
 /* Chimera Includes */
 #include <Chimera/common>
@@ -302,7 +303,8 @@ namespace Chimera::Threading
   {
   }
 
-  void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth, const std::string_view name)
+  void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+                           const std::string_view name )
   {
     /*------------------------------------------------
       Copy out the string data into the name
@@ -330,6 +332,19 @@ namespace Chimera::Threading
     mThread = std::thread( mFunc, mFuncArg );
   }
 
+
+  void Thread::suspend()
+  {
+    throw std::runtime_error( "Thread suspension not supported" );
+  }
+
+
+  void Thread::resume()
+  {
+    // Not supported since suspend() isn't.
+  }
+
+
   void Thread::join()
   {
     mThread.join();
@@ -342,7 +357,7 @@ namespace Chimera::Threading
 
   Id Thread::get_id()
   {
-    //auto stl_id = mThread.get_id();
+    // auto stl_id = mThread.get_id();
 
     return Id();
   }
@@ -359,7 +374,7 @@ namespace Chimera::Threading
 
   Id this_thread::get_id()
   {
-    //auto stl_id = std::this_thread::get_id();
+    // auto stl_id = std::this_thread::get_id();
 
     return Id();
   }
@@ -378,6 +393,11 @@ namespace Chimera::Threading
   void this_thread::yield()
   {
     std::this_thread::yield();
+  }
+
+  void this_thread::suspend()
+  {
+    throw std::runtime_error( "Thread suspension not supported" );
   }
 
 }  // namespace Chimera::Threading

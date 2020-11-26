@@ -133,6 +133,15 @@ namespace Chimera::System
   }
 
 
+  void softwareReset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.softwareReset )
+    {
+      s_backend_driver.softwareReset();
+    }
+  }
+
+
   namespace Version
   {
     std::string_view asString()

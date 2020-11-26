@@ -1,0 +1,22 @@
+/********************************************************************************
+ *  File Name:
+ *    usb
+ *
+ *  Description:
+ *    Chimera USB Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_USB_INCLUDES
+#define CHIMERA_USB_INCLUDES
+
+#include <Chimera/source/drivers/peripherals/usb/usb_user.hpp>
+#include <Chimera/source/drivers/peripherals/usb/usb_intf.hpp>
+#include <Chimera/source/drivers/peripherals/usb/usb_types.hpp>
+
+#include <Chimera/source/drivers/usb/usb_intf.hpp>
+#include <Chimera/source/drivers/usb/usb_thread.hpp>
+
+#endif /* !CHIMERA_USB_INCLUDES */

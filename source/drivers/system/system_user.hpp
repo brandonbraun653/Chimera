@@ -96,6 +96,14 @@ namespace Chimera::System
    */
   void getSystemInformation( Information *&info );
 
+  /**
+   *  Instructs the processor to issue a reset command. The effect is the
+   *  same as if the hardware RESET pin was asserted.
+   *
+   *  @return void
+   */
+  void softwareReset();
+
 
   namespace Version
   {

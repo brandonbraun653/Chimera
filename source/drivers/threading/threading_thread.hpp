@@ -1,12 +1,12 @@
 /********************************************************************************
-*  File Name:
-*    threading_thread.hpp
-*
-*  Description:
-*    Thread implementation for Chimera that patterns after the C++ STL
-*
-*  2020 | Brandon Braun | brandonbraun653@gmail.com
-********************************************************************************/
+ *  File Name:
+ *    threading_thread.hpp
+ *
+ *  Description:
+ *    Thread implementation for Chimera that patterns after the C++ STL
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREADING_THREAD_HPP
@@ -28,6 +28,21 @@ namespace Chimera::Threading
   -------------------------------------------------------------------------------*/
   static constexpr size_t MAX_NAME_LEN = 16;
 
+  /*-------------------------------------------------------------------------------
+  Forward Declarations
+  -------------------------------------------------------------------------------*/
+  class Thread;
+
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
+  /**
+   *  Gets a pointer to the thread assigned with the given name
+   *
+   *  @param[in]  name      Name given to the thread upon creation
+   *  @return Thread *      Returns nullptr if not found
+   */
+  Thread *getThread( const char *name );
 
   /*-------------------------------------------------------------------------------
   Classes
@@ -53,13 +68,30 @@ namespace Chimera::Threading
      *  @param[in]  stackDepth    How many bytes to allocate from the heap for this thread's stack
      *  @param[in]  name          User friendly name for identification
      */
-    void initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth, const std::string_view name );
+    void initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+                     const std::string_view name );
 
     /**
      *  Starts the thread
      *  @return void
      */
     void start();
+
+    /**
+     *  Suspends the thread, assuming it's supported. This is mostly taken from RTOS's
+     *  which can commonly suspend a single thread from execution.
+     *
+     *  @return void
+     */
+    void suspend();
+
+    /**
+     *  Resumes a previously suspended thread. Does nothing if thread suspension is
+     *  not supported.
+     *
+     *  @return void
+     */
+    void resume();
 
     /**
      *  Waits for the thread to finish execution and return
@@ -95,6 +127,8 @@ namespace Chimera::Threading
     Priority mPriority;
     size_t mStackDepth;
     std::array<char, MAX_NAME_LEN + 1> mThreadName;
+
+    void lookup_handle();
   };
 
 
@@ -125,7 +159,15 @@ namespace Chimera::Threading
      */
     void yield();
 
-  }  // namespace this_thread
-}
+    /**
+     *  Instructs the scheduler to place this thread in the suspended state
+     *
+     *  @warning Once this function is called, another thread must resume this thread
+     *  @return void
+     */
+    void suspend();
 
-#endif	/* !CHIMERA_THREADING_THREAD_HPP */
+  }  // namespace this_thread
+}  // namespace Chimera::Threading
+
+#endif /* !CHIMERA_THREADING_THREAD_HPP */
