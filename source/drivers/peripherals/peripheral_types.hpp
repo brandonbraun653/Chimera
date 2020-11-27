@@ -49,9 +49,11 @@ namespace Chimera::Peripheral
     PERIPH_USART,   /**< Universal Synchronous/Asynchronous Receiver Transmitter */
     PERIPH_VIC,     /**< Vector Interrupt Controller */
     PERIPH_WWDG,    /**< Window Watchdog */
+    PERIPH_USB,     /**< Universal Serial Bus */
+    PERIPH_NONE,    /**< Not a peripheral */
 
-    PERIPH_NONE, /**< Not a peripheral */
-    NUM_SUPPORTED_TYPES
+    NUM_OPTIONS,
+    UNKNOWN
   };
 }  // namespace Chimera::Peripheral
 

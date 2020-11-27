@@ -41,8 +41,8 @@ namespace Chimera::USB
    */
   enum class Channel : uint8_t
   {
-    USB_0,
-    USB_1,
+    USB0,
+    USB1,
 
     NUM_OPTIONS,
     UNKNOWN
@@ -54,14 +54,14 @@ namespace Chimera::USB
    */
   enum class Endpoint : uint8_t
   {
-    EP_0,
-    EP_1,
-    EP_2,
-    EP_3,
-    EP_4,
-    EP_5,
-    EP_6,
-    EP_7,
+    EP0,
+    EP1,
+    EP2,
+    EP3,
+    EP4,
+    EP5,
+    EP6,
+    EP7,
 
     NUM_OPTIONS,
     UNKNOWN
@@ -123,7 +123,18 @@ namespace Chimera::USB
   };
 
 
+  /**
+   *  Used to initialize an Endpoint
+   */
   struct EndpointConfig
+  {
+  };
+
+
+  /**
+   *  Used to initialize the peripheral driver instance
+   */
+  struct PeriphConfig
   {
   };
 

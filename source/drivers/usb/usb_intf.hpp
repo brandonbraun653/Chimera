@@ -38,17 +38,19 @@ namespace Chimera::USB
    *  controller. This is going to attempt to register the USBMain() thread with
    *  the system, so ensure that whatever RTOS in use has been started.
    *
+   *  @param[in]  ch      Which USB peripheral to act on
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t init();
+  Chimera::Status_t init( const Channel ch );
 
   /**
    *  Resets the USB system as if a power cycle has occurred. Will require calling
    *  the init() method again to re-use the driver.
    *
+   *  @param[in]  ch      Which USB peripheral to act on
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t reset();
+  Chimera::Status_t reset( const Channel ch );
 
   /**
    *  Opens an endpoint for use

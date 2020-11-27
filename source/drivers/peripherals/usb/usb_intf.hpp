@@ -45,6 +45,24 @@ namespace Chimera::USB
   {
   public:
     ~HWInterface() = default;
+
+    /**
+     *  Initialize the USB interface. This will turn on the core peripheral
+     *  and configure any control registers, but leave the endpoints in a
+     *  default state.
+     *
+     *  @param[in]  cfg     Peripheral configuration information
+     *  @return Chimera::Status_T
+     */
+    virtual Chimera::Status_t open( const PeriphConfig &cfg ) = 0;
+
+    /**
+     *  Destroys the peripheral configuration, effectively placing it into
+     *  a low power/off mode. Very similar to a hardware reset.
+     *
+     *  @return void
+     */
+    virtual void close();
   };
 
   /**
@@ -70,6 +88,8 @@ namespace Chimera::USB
     /*-------------------------------------------------
     Interface: Hardware
     -------------------------------------------------*/
+    Chimera::Status_t open( const PeriphConfig &cfg );
+    void close();
 
 
     /*-------------------------------------------------

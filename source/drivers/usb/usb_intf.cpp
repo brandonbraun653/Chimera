@@ -18,13 +18,13 @@ namespace Chimera::USB
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  Chimera::Status_t init()
+  Chimera::Status_t init( const Channel ch )
   {
     return Chimera::Status::NOT_SUPPORTED;
   }
 
 
-  Chimera::Status_t reset()
+  Chimera::Status_t reset( const Channel ch )
   {
     return Chimera::Status::NOT_SUPPORTED;
   }
