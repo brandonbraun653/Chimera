@@ -26,23 +26,48 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t MAX_NAME_LEN = 16;
+  static constexpr size_t MAX_NAME_LEN             = 16;
+  static constexpr size_t MAX_REGISTERABLE_THREADS = 5;
+
 
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
   class Thread;
 
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   /**
-   *  Gets a pointer to the thread assigned with the given name
+   *  Registers a thread with the backend such that it can be
+   *  referenced or manipulated later.
+   *
+   *  @param[in]  thread      The thread to copy
+   *  @return Chimera::Status_t
+   */
+  Chimera::Status_t registerThread( Thread &&thread );
+
+  /**
+   *  Removes a thread from the registry
+   *
+   *  @param[in]  name      Name of the thread
+   *  @return Chimera::Status_t
+   */
+  Chimera::Status_t unregisterThread( const char *name );
+
+  /**
+   *  Gets a pointer to the thread assigned with the given name. Must have
+   *  been registered first.
+   *
+   *  @warning Calling unregisterThread() after acquiring a pointer to a
+   *  pointer to a different thread will invalidate that pointer.
    *
    *  @param[in]  name      Name given to the thread upon creation
    *  @return Thread *      Returns nullptr if not found
    */
-  Thread *getThread( const char *name );
+  Thread *findThread( const char *name );
+  Thread *findThread( const std::string_view &name );
 
   /*-------------------------------------------------------------------------------
   Classes
@@ -55,8 +80,9 @@ namespace Chimera::Threading
   {
   public:
     Thread();
+    Thread( const Thread & );
     Thread( Thread &&other );
-    Thread( const Thread & ) = delete;
+    // Thread( const Thread & ) = delete;
     ~Thread();
 
     /**
@@ -106,18 +132,39 @@ namespace Chimera::Threading
     bool joinable();
 
     /**
-     *  Handle to the OS specific thread type. Allows the user to
-     *  execute functions that may be available in the current OS
-     *  but not supported by this class.
+     *  Handle to the OS specific thread type. Allows the user to xecute functions that
+     *  may be available in the current OS but not supported by this class.
      *
      *  @return detail::native_thread_handle_type
      */
     detail::native_thread_handle_type native_handle();
 
+    /**
+     *  Returns the name of the thread
+     *  @return std::string_view
+     */
+    std::string_view name() const;
 
+    /**
+     *  Checks if the thread exists/has been initialized yet
+     *  @return bool
+     */
     explicit operator bool() const
     {
       return ( mThread ) ? true : false;
+    }
+
+    bool operator=( const Thread &rhs )
+    {
+      /* clang-format off */
+      return (
+        ( this->mFunc == rhs.mFunc ) &&
+        ( this->mFuncArg == rhs.mFuncArg ) &&
+        ( this->mPriority == rhs.mPriority ) &&
+        ( this->mStackDepth == rhs.mStackDepth ) &&
+        ( this->name() == rhs.name() )
+      );
+      /* clang-format on */
     }
 
   private:
@@ -129,6 +176,7 @@ namespace Chimera::Threading
     std::array<char, MAX_NAME_LEN + 1> mThreadName;
 
     void lookup_handle();
+    void copy_thread_name( const std::string_view &name );
   };
 
 

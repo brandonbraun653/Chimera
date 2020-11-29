@@ -136,6 +136,7 @@ namespace Chimera::USB
    */
   struct PeriphConfig
   {
+    Channel channel;
   };
 
 

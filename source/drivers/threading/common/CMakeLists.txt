@@ -9,10 +9,9 @@ set(LINK_LIBS
 # ====================================================
 # Interface Library
 # ====================================================
-set(CHIMERA chimera_usb)
+set(CHIMERA chimera_threading_common)
 add_library(${CHIMERA} STATIC
-  usb_intf.cpp
-  usb_thread.cpp
+  threading_thread.cpp
 )
 target_link_libraries(${CHIMERA} PRIVATE ${LINK_LIBS})
 export(TARGETS ${CHIMERA} FILE "${PROJECT_BINARY_DIR}/Chimera/src/${CHIMERA}.cmake")

@@ -39,9 +39,10 @@ namespace Chimera::USB
    *  the system, so ensure that whatever RTOS in use has been started.
    *
    *  @param[in]  ch      Which USB peripheral to act on
+   *  @param[in]  cfg     Configuration details for the USB peripheral
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t init( const Channel ch );
+  Chimera::Status_t init( const Channel ch, const PeriphConfig &cfg );
 
   /**
    *  Resets the USB system as if a power cycle has occurred. Will require calling

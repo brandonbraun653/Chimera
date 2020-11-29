@@ -22,6 +22,7 @@
 #include <Chimera/timer>
 #include <Chimera/uart>
 #include <Chimera/usart>
+#include <Chimera/usb>
 #include <Chimera/watchdog>
 
 
@@ -48,6 +49,7 @@ void ChimeraInit()
   Chimera::UART::initialize();
   Chimera::USART::initialize();
   Chimera::Watchdog::initialize();
+  Chimera::USB::Peripheral::initialize();
 }
 
 namespace Chimera

@@ -18,9 +18,49 @@ namespace Chimera::USB
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  Chimera::Status_t init( const Channel ch )
+  Chimera::Status_t init( const Channel ch, const PeriphConfig &cfg )
   {
-    return Chimera::Status::NOT_SUPPORTED;
+    using namespace Chimera::Threading;
+
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
+    if ( !( ch < Channel::NUM_OPTIONS ) )
+    {
+      return Chimera::Status::INVAL_FUNC_PARAM;
+    }
+
+    /*-------------------------------------------------
+    Start the main thread. All the hardware driver core
+    init sequences should've already been called.
+    -------------------------------------------------*/
+    auto result = Chimera::Status::OK;
+    if ( findThread( USBThreadName ) == nullptr )
+    {
+      Thread usbThread;
+      usbThread.initialize( USBMainThread, nullptr, USBDefaultPriority, USBDefaultStackSize, USBThreadName );
+      usbThread.start();
+      result = registerThread( std::move( usbThread ) );
+
+      if ( result != Chimera::Status::OK )
+      {
+        return result;
+      }
+    }
+
+    /*-------------------------------------------------
+    Initialize the driver associated with the channel
+    -------------------------------------------------*/
+    if ( auto driver = Peripheral::getDriver( ch ); driver != nullptr )
+    {
+      result = driver->open( cfg );
+    }
+    else
+    {
+      result = Chimera::Status::NOT_FOUND;
+    }
+
+    return result;
   }
 
 

@@ -61,9 +61,19 @@ namespace Chimera::Threading
   }
 
 
-  Thread::Thread( Thread &&other ) : mFunc( other.mFunc ), mFuncArg( other.mFuncArg )
+  Thread::Thread( const Thread &other ) :
+      mThread( other.mThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
+      mStackDepth( other.mStackDepth )
   {
-    mThreadName.fill( 0 );
+    copy_thread_name( other.name() );
+  }
+
+
+  Thread::Thread( Thread &&other ) :
+      mThread( other.mThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
+      mStackDepth( other.mStackDepth )
+  {
+    copy_thread_name( other.name() );
   }
 
 
@@ -76,25 +86,14 @@ namespace Chimera::Threading
                            const std::string_view name )
   {
     /*------------------------------------------------
-    Copy out the string data into the name
-    ------------------------------------------------*/
-    size_t copyLen = name.length();
-    if ( copyLen > MAX_NAME_LEN )
-    {
-      copyLen = MAX_NAME_LEN;
-    }
-
-    mThreadName.fill( 0 );
-    memcpy( mThreadName.data(), name.data(), copyLen );
-
-    /*------------------------------------------------
-    Copy the additional parameters
+    Copy the parameters
     ------------------------------------------------*/
     mFunc       = func;
     mFuncArg    = arg;
     mPriority   = priority;
     mStackDepth = stackDepth;
     mThread     = nullptr;
+    copy_thread_name( name );
   }
 
 

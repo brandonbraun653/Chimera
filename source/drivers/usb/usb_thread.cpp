@@ -46,9 +46,10 @@ namespace Chimera::USB
   }
 
 
-  void resetServices()
+  bool resetServices()
   {
     // TODO: Implement me. Might need a thread restart mechanism.
+    return false;
   }
 
 
@@ -82,12 +83,12 @@ namespace Chimera::USB
   static void lock_process()
   {
     s_driver_lock.lock();
-    Chimera::Threading::getThread( ThreadName.cbegin() )->suspend();
+    Chimera::Threading::findThread( USBThreadName.cbegin() )->suspend();
   }
 
-  static void lock_process()
+  static void unlock_process()
   {
     s_driver_lock.unlock();
-    Chimera::Threading::getThread( ThreadName.cbegin() )->resume();
+    Chimera::Threading::findThread( USBThreadName.cbegin() )->resume();
   }
 }  // namespace Chimera::USB
