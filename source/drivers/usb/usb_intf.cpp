@@ -64,9 +64,30 @@ namespace Chimera::USB
   }
 
 
-  Chimera::Status_t reset( const Channel ch )
+  Chimera::Status_t destroy( const Channel ch )
   {
-    return Chimera::Status::NOT_SUPPORTED;
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
+    if ( !( ch < Channel::NUM_OPTIONS ) )
+    {
+      return Chimera::Status::INVAL_FUNC_PARAM;
+    }
+
+    /*-------------------------------------------------
+    Initialize the driver associated with the channel
+    -------------------------------------------------*/
+    auto result = Chimera::Status::OK;
+    if ( auto driver = Peripheral::getDriver( ch ); driver != nullptr )
+    {
+      driver->close();
+    }
+    else
+    {
+      result = Chimera::Status::NOT_FOUND;
+    }
+
+    return result;
   }
 
 

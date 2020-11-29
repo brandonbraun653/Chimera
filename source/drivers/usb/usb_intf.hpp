@@ -51,7 +51,7 @@ namespace Chimera::USB
    *  @param[in]  ch      Which USB peripheral to act on
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t reset( const Channel ch );
+  Chimera::Status_t destroy( const Channel ch );
 
   /**
    *  Opens an endpoint for use

@@ -60,6 +60,7 @@ namespace Chimera::USB
      *  Destroys the peripheral configuration, effectively placing it into
      *  a low power/off mode. Very similar to a hardware reset.
      *
+     *  @note Will require calling open() again to use the hardware.
      *  @return void
      */
     virtual void close();

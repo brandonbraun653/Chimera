@@ -18,6 +18,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/gpio>
 
 namespace Chimera::USB
 {
@@ -132,11 +133,27 @@ namespace Chimera::USB
 
 
   /**
-   *  Used to initialize the peripheral driver instance
+   *  Used to initialize the peripheral driver instance. This is focused
+   *  on providing some very high level behavioral descriptions of what
+   *  features the hardware should provide.
    */
   struct PeriphConfig
   {
-    Channel channel;
+    Channel channel;              /**< Which USB channel is being configured */
+    bool useLPM;                  /**< Enable Low Power Mode support */
+    bool useBattCharge;           /**< Enable battery charging support */
+    Chimera::GPIO::PinInit pinDM; /**< DM pin configuration */
+    Chimera::GPIO::PinInit pinDP; /**< DP pin configuration */
+
+    void clear()
+    {
+      channel       = Channel::UNKNOWN;
+      useLPM        = false;
+      useBattCharge = false;
+
+      pinDM.clear();
+      pinDP.clear();
+    }
   };
 
 
