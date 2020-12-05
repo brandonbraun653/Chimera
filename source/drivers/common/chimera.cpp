@@ -59,15 +59,34 @@ namespace Chimera
     return Timer::millis();
   }
 
+
   size_t micros()
   {
     return Timer::micros();
   }
 
+
+  void delayUntil( const size_t val )
+  {
+    const size_t currentTick = millis();
+    if ( currentTick < val )
+    {
+      delayMilliseconds( val - currentTick );
+    }
+  }
+
+
   void delayMilliseconds( const size_t val )
   {
     Timer::delayMilliseconds( val );
   }
+
+
+  void delayMilliseconds( const size_t lastTimeWoken, const size_t val )
+  {
+    delayUntil( lastTimeWoken + val );
+  }
+
 
   void delayMicroseconds( const size_t val )
   {
