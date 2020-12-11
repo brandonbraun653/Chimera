@@ -9,6 +9,7 @@
  ********************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/adc>
 #include <Chimera/can>
 #include <Chimera/clock>
 #include <Chimera/common>
@@ -38,6 +39,7 @@ void ChimeraInit()
   /*------------------------------------------------
   Initialize peripheral drivers, which hook into the backend
   ------------------------------------------------*/
+  Chimera::ADC::initialize();
   Chimera::CAN::initialize();
   Chimera::Clock::initialize();
   Chimera::EXTI::open();

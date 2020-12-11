@@ -1,0 +1,19 @@
+/********************************************************************************
+ *  File Name:
+ *    adc
+ *
+ *  Description:
+ *    Chimera ADC Includes
+ *
+ *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_ADC_INCLUDES
+#define CHIMERA_ADC_INCLUDES
+
+#include <Chimera/source/drivers/peripherals/adc/adc_user.hpp>
+#include <Chimera/source/drivers/peripherals/adc/adc_intf.hpp>
+#include <Chimera/source/drivers/peripherals/adc/adc_types.hpp>
+
+#endif /* !CHIMERA_ADC_INCLUDES */

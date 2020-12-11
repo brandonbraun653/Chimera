@@ -22,6 +22,8 @@ target_link_libraries(${CHIMERA_SRC} INTERFACE
   chimera_system
   chimera_threading
   chimera_usb
+  chimera_utilities
+  chimera_peripheral_adc
   chimera_peripheral_can
   chimera_peripheral_clock
   chimera_peripheral_crc
