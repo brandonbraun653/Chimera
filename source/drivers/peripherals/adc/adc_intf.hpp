@@ -3,7 +3,14 @@
  *    adc_intf.hpp
  *
  *  Description:
- *    Models the Chimera ADC interface
+ *    Models the Chimera ADC interface. This driver is focused on two primary
+ *    modes of operation, single sample and group sample. The former measures a
+ *    single channel in one-shot mode while the latter queues up a group of
+ *    channels to be sampled in sequence.
+ *
+ *    Conversion results are available to the user either via direct calls in one
+ *    shot mode, or by waiting for a callback event to signal that a group sample
+ *    has completed.
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -51,7 +58,7 @@ namespace Chimera::ADC
      *  @param[in]  init          Settings to be applied
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t open( const HardwareInit &init ) = 0;
+    virtual Chimera::Status_t open( const DriverConfig &init ) = 0;
 
     /**
      *  Closes the driver and resets the hardware back to defaults
@@ -77,12 +84,12 @@ namespace Chimera::ADC
     virtual Sample_t sampleChannel( const Channel ch ) = 0;
 
     /**
-     *  Samples an internal sensor. Not all options may be available.
+     *  Samples an internal/external sensor. Not all options may be available.
      *
      *  @param[in]  sensor        Which sensor to sample
      *  @return Sample_t
      */
-    virtual Sample_t sampleInternal( const InternalSensor sensor ) = 0;
+    virtual Sample_t sampleSensor( const Sensor sensor ) = 0;
 
     /**
      *  Some hardware peripherals support grouping of channels so that they
@@ -106,7 +113,10 @@ namespace Chimera::ADC
     virtual Chimera::Status_t groupStartSample( const SampleGroup grp ) = 0;
 
     /**
-     *  Gets the results of the last group sampling operation
+     *  Gets the results of the last group sampling operation.
+     *
+     *  @note If using this method, the backend should implement some kind of cache
+     *        to store individual channel conversions.
      *
      *  @param[in]  grp           Which group to get samples for
      *  @param[in]  out           Destination buffer for the sample data
@@ -118,6 +128,9 @@ namespace Chimera::ADC
     /**
      *  If using DMA transfers, this method assigns the buffer where DMA will
      *  write conversion data into.
+     *
+     *  @warning Using this method will disable groupGetSample as it effectively replaces
+     *           the internal cache for intermediate conversion results.
      *
      *  @warning As long as the DMA functionality is in use, the buffer MUST
      *           exist or the application code is likely to fault.

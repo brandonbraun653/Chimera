@@ -54,10 +54,10 @@ namespace Chimera::ADC
     REGULAR_SAMPLE_GROUP,  /**< Grouping of channels to be sampled at normal priority */
     PRIORITY_SAMPLE_GROUP, /**< Grouping of channels to be sampled at higher priority */
 
-
     NUM_OPTIONS,
     UNKNOWN
   };
+
 
   /**
    *  Represents a physical ADC hardware peripheral
@@ -72,6 +72,7 @@ namespace Chimera::ADC
     NUM_OPTIONS,
     UNKNOWN
   };
+
 
   /**
    *  Represents the multiplexed channels per peripheral
@@ -104,6 +105,7 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
   /**
    *  Analog hw watchdog devices (not always supported)
    */
@@ -117,24 +119,26 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
   /**
    *  Bit field to enable/disable interupts in the config
    */
   enum class Interrupt : uint16_t
   {
-    HW_READY       = ( 1u << 0 ),
-    EOC_PRI_LO     = ( 1u << 1 ),
-    EOC_PRI_LO_SEQ = ( 1u << 2 ),
-    EOC_PRI_HI     = ( 1u << 3 ),
-    EOC_PRI_HI_SEQ = ( 1u << 4 ),
-    AWD_0_TRIGGER  = ( 1u << 5 ),
-    AWD_1_TRIGGER  = ( 1u << 6 ),
-    AWD_2_TRIGGER  = ( 1u << 7 ),
-    OVERRUN        = ( 1u << 8 ),
+    HW_READY       = ( 1u << 0 ), /**< Physical hardware is ready to start sampling */
+    EOC_PRI_LO     = ( 1u << 1 ), /**< End of conversion single low priority channel */
+    EOC_PRI_LO_SEQ = ( 1u << 2 ), /**< End of conversion low priority group */
+    EOC_PRI_HI     = ( 1u << 3 ), /**< End of conversion single high priority channel */
+    EOC_PRI_HI_SEQ = ( 1u << 4 ), /**< End of conversion high priority group*/
+    AWD_0_TRIGGER  = ( 1u << 5 ), /**< Analog watchdog 0 event */
+    AWD_1_TRIGGER  = ( 1u << 6 ), /**< Analog watchdog 1 event*/
+    AWD_2_TRIGGER  = ( 1u << 7 ), /**< Analog watchdog 2 event*/
+    OVERRUN        = ( 1u << 8 ), /**< New sample overwrote unread old sample */
 
     NUM_OPTIONS = 9,
-    UNKNOWN     = ( 1u << 15 )
+    NONE        = ( 1u << 15 )
   };
+
 
   /**
    *  Describes the sampling behavior of hardware
@@ -147,6 +151,7 @@ namespace Chimera::ADC
     NUM_OPTIONS,
     UNKNOWN
   };
+
 
   /**
    *  Instructs the driver implementation on how data should be moved
@@ -162,10 +167,11 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
   /**
    *  Possible internal sensors connected to the ADC
    */
-  enum class InternalSensor : uint8_t
+  enum class Sensor : uint8_t
   {
     VBAT, /**< Measures an external battery voltage */
     VREF, /**< Internal ADC voltage reference */
@@ -175,15 +181,26 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
   /**
    *  Possible oversampling rates
    */
   enum class Oversampler : uint8_t
   {
+    OS_NONE,
+    OS_2X,
+    OS_4X,
+    OS_8X,
+    OS_16X,
+    OS_32X,
+    OS_64X,
+    OS_128X,
+    OS_256X,
 
     NUM_OPTIONS,
     UNKNOWN
   };
+
 
   /**
    *  ADC sampling resolution in bits
@@ -198,6 +215,7 @@ namespace Chimera::ADC
     NUM_OPTIONS,
     UNKNOWN
   };
+
 
   /**
    *  If supported by hardware, allows for grouping of hardware
@@ -217,23 +235,29 @@ namespace Chimera::ADC
   Structures
   -------------------------------------------------------------------------------*/
   /**
-   *  High level configuration options of an ADC peripheral
+   *  High level configuration options of an ADC peripheral. These
+   *  settings will apply to all configured channels.
    */
-  struct HardwareInit
+  struct DriverConfig
   {
-    Converter periph;
-    Interrupt bmISREnable;
-    Oversampler oversampleRate;
-    SamplingMode sampleMode;
-    TransferMode transferMode;
-
-    uint8_t clockPrescale;
-    Chimera::Clock::Bus clockSource;
+    Converter periph;                /**< Which peripheral instance is being configured */
+    Interrupt bmISREnable;           /**< Bit mask of interrupts to enable */
+    Oversampler oversampleRate;      /**< Over sampling rate, if any */
+    TransferMode transferMode;       /**< Conversion result memory transfer method */
+    uint8_t clockPrescale;           /**< Requested prescaler to drive ADC from system clock [1, 255] */
+    Chimera::Clock::Bus clockSource; /**< Which clock drives the prescaler */
 
     void clear()
     {
+      periph         = Converter::UNKNOWN;
+      bmISREnable    = Interrupt::NONE;
+      oversampleRate = Oversampler::OS_NONE;
+      transferMode   = TransferMode::POLLING;
+      clockPrescale  = 1;
+      clockSource    = Chimera::Clock::Bus::UNKNOWN_BUS;
     }
-  };  // namespace Chimera::ADC
+  };
+
 
   /**
    *  Initializes a group sampling sequence
@@ -244,7 +268,16 @@ namespace Chimera::ADC
     SampleGroup sampleGroup; /**< Priority of the group being configured */
     Channel *groupList;      /**< List of channels (in order) to be sampled */
     size_t groupLength;      /**< Number of elements in groupList */
+
+    void clear()
+    {
+      groupLength = 0;
+      groupList   = nullptr;
+      sampleGroup = SampleGroup::UNKNOWN;
+      sampleMode  = SamplingMode::UNKNOWN;
+    }
   };
+
 
   /**
    *  Some helpful information that is passed into an interrupt
@@ -252,8 +285,14 @@ namespace Chimera::ADC
    */
   struct InterruptDetail
   {
-    Interrupt whichISR;
-    Channel whichChannel;
+    Interrupt whichISR;   /**< ISR type that occurred */
+    Channel whichChannel; /**< Channel the event occured on */
+
+    void clear()
+    {
+      whichChannel = Channel::UNKNOWN;
+      whichISR     = Interrupt::NONE;
+    }
   };
 
 

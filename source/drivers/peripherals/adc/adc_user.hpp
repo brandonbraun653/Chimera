@@ -47,6 +47,18 @@ namespace Chimera::ADC
     /*-------------------------------------------------
     Interface: Hardware
     -------------------------------------------------*/
+    Chimera::Status_t open( const DriverConfig &init );
+    void close();
+    void setPowerState( const bool state );
+    Sample_t sampleChannel( const Channel ch );
+    Sample_t sampleSensor( const Sensor sensor );
+    Chimera::Status_t groupConfig( const GroupInit &cfg );
+    Chimera::Status_t groupStartSample( const SampleGroup grp );
+    Chimera::Status_t groupGetSample( const SampleGroup grp, Sample_t *const out, const size_t len );
+    Chimera::Status_t groupSetDMABuffer( const SampleGroup grp, Sample_t *const out, const size_t len );
+    Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
+    void setWatchdogThreshold( const Watchdog wd, const Sample_t low, const Sample_t high );
+    void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
 
     /*-------------------------------------------------
     Interface: Lockable
