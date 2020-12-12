@@ -78,4 +78,17 @@ namespace Chimera::ADC
       return nullptr;
     }
   }
+
+
+  bool featureSupported( const Converter periph, const Feature feature )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    {
+      return s_backend_driver.featureSupported( periph, feature );
+    }
+    else
+    {
+      return false;
+    }
+  }
 }  // namespace Chimera::ADC

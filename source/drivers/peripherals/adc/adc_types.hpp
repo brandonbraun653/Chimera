@@ -33,7 +33,7 @@ namespace Chimera::ADC
   Aliases
   -------------------------------------------------------------------------------*/
   using Driver_sPtr = std::shared_ptr<Driver>;
-
+  using Sample_t    = uint16_t;
 
   /*-------------------------------------------------------------------------------
   Constants
@@ -43,6 +43,22 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
+  /**
+   *  Hardware implemented features that may or may not be supported
+   *  on all devices. Use the driver's API to check first if a desired
+   *  functionality is supported by your device.
+   */
+  enum class Feature : uint8_t
+  {
+    ANALOG_WATCHDOG,       /**< Hardware monitors for high/low input thresholds */
+    REGULAR_SAMPLE_GROUP,  /**< Grouping of channels to be sampled at normal priority */
+    PRIORITY_SAMPLE_GROUP, /**< Grouping of channels to be sampled at higher priority */
+
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   /**
    *  Represents a physical ADC hardware peripheral
    */
@@ -106,39 +122,41 @@ namespace Chimera::ADC
    */
   enum class Interrupt : uint16_t
   {
-    HW_READY         = ( 1u << 0 ),
-    EOC_REGULAR      = ( 1u << 1 ),
-    EOC_SEQ_REGULAR  = ( 1u << 2 ),
-    EOC_INJECTED     = ( 1u << 3 ),
-    EOC_SEQ_INJECTED = ( 1u << 4 ),
-    AWD_0_TRIGGER    = ( 1u << 5 ),
-    AWD_1_TRIGGER    = ( 1u << 6 ),
-    AWD_2_TRIGGER    = ( 1u << 7 ),
-    OVERRUN          = ( 1u << 8 ),
+    HW_READY       = ( 1u << 0 ),
+    EOC_PRI_LO     = ( 1u << 1 ),
+    EOC_PRI_LO_SEQ = ( 1u << 2 ),
+    EOC_PRI_HI     = ( 1u << 3 ),
+    EOC_PRI_HI_SEQ = ( 1u << 4 ),
+    AWD_0_TRIGGER  = ( 1u << 5 ),
+    AWD_1_TRIGGER  = ( 1u << 6 ),
+    AWD_2_TRIGGER  = ( 1u << 7 ),
+    OVERRUN        = ( 1u << 8 ),
 
     NUM_OPTIONS = 9,
     UNKNOWN     = ( 1u << 15 )
   };
 
   /**
-   *  Output conversion data alignment
+   *  Describes the sampling behavior of hardware
    */
-  enum class Align : uint8_t
+  enum class SamplingMode : uint8_t
   {
-    ALIGN_RIGHT,
-    ALIGN_LEFT,
+    POLLING,    /**< User must start sample. Once sample completes, a manual trigger must start another */
+    CONTINUOUS, /**< The hardware starts a new sample after the last completes */
 
     NUM_OPTIONS,
     UNKNOWN
   };
 
   /**
-   *  Data conversion mode
+   *  Instructs the driver implementation on how data should be moved
+   *  from the ADC registers into user buffers.
    */
-  enum class ConversionMode : uint8_t
+  enum class TransferMode : uint8_t
   {
-    POLLING,
-    CONTINUOUS,
+    POLLING,   /**< User must manually get a sample. ONLY use for single-channel ADC */
+    INTERRUPT, /**< Interrupts on End-of-Conversion will trigger the data transfer */
+    DMA,       /**< DMA is used to trigger data transfers */
 
     NUM_OPTIONS,
     UNKNOWN
@@ -149,14 +167,17 @@ namespace Chimera::ADC
    */
   enum class InternalSensor : uint8_t
   {
-    VBAT,
-    TEMP,
-    BANDGAP,
+    VBAT, /**< Measures an external battery voltage */
+    VREF, /**< Internal ADC voltage reference */
+    TEMP, /**< Internal temperature sensor */
 
     NUM_OPTIONS,
     UNKNOWN
   };
 
+  /**
+   *  Possible oversampling rates
+   */
   enum class Oversampler : uint8_t
   {
 
@@ -164,6 +185,9 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+  /**
+   *  ADC sampling resolution in bits
+   */
   enum class Resolution : uint8_t
   {
     BIT_12,
@@ -175,25 +199,63 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+  /**
+   *  If supported by hardware, allows for grouping of hardware
+   *  channels in to priority structures.
+   */
+  enum class SampleGroup : uint8_t
+  {
+    PRI_LO,
+    PRI_HI,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
 
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
+  /**
+   *  High level configuration options of an ADC peripheral
+   */
   struct HardwareInit
   {
     Converter periph;
     Interrupt bmISREnable;
     Oversampler oversampleRate;
-    bool dmaEnabled;
+    SamplingMode sampleMode;
+    TransferMode transferMode;
 
     uint8_t clockPrescale;
     Chimera::Clock::Bus clockSource;
 
     void clear()
     {
-      dmaEnabled = false;
     }
+  };  // namespace Chimera::ADC
+
+  /**
+   *  Initializes a group sampling sequence
+   */
+  struct GroupInit
+  {
+    SamplingMode sampleMode; /**< How should the user expect sampling to occur? */
+    SampleGroup sampleGroup; /**< Priority of the group being configured */
+    Channel *groupList;      /**< List of channels (in order) to be sampled */
+    size_t groupLength;      /**< Number of elements in groupList */
   };
+
+  /**
+   *  Some helpful information that is passed into an interrupt
+   *  event handler callback function.
+   */
+  struct InterruptDetail
+  {
+    Interrupt whichISR;
+    Channel whichChannel;
+  };
+
 
   namespace Backend
   {
@@ -218,6 +280,11 @@ namespace Chimera::ADC
        *  driver, as long as it conforms to the expected interface.
        */
       Driver_sPtr ( *getDriver )( const Converter periph );
+
+      /**
+       *  Checks if a peripheral instance supports a given feature
+       */
+      bool ( *featureSupported )( const Converter periph, const Feature feature );
     };
   }  // namespace Backend
 
@@ -225,7 +292,7 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Function Pointers
   -------------------------------------------------------------------------------*/
-  using ISRCallback = void ( * )( const Interrupt, const Channel );
+  using ISRCallback = void ( * )( const InterruptDetail &detail );
 
 }  // namespace Chimera::ADC
 

@@ -27,6 +27,7 @@ namespace Chimera::ADC
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
   Driver_sPtr getDriver( const Converter periph );
+  bool featureSupported( const Converter periph, const Feature feature );
 
 
   /*-------------------------------------------------------------------------------
