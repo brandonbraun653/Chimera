@@ -201,6 +201,27 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+  /**
+   *  Input clock prescaler options
+   */
+  enum class Prescaler : uint8_t
+  {
+    DIV_1,
+    DIV_2,
+    DIV_4,
+    DIV_6,
+    DIV_8,
+    DIV_10,
+    DIV_12,
+    DIV_16,
+    DIV_32,
+    DIV_64,
+    DIV_128,
+    DIV_256,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
 
   /**
    *  ADC sampling resolution in bits
@@ -244,7 +265,8 @@ namespace Chimera::ADC
     Interrupt bmISREnable;           /**< Bit mask of interrupts to enable */
     Oversampler oversampleRate;      /**< Over sampling rate, if any */
     TransferMode transferMode;       /**< Conversion result memory transfer method */
-    uint8_t clockPrescale;           /**< Requested prescaler to drive ADC from system clock [1, 255] */
+    Resolution resolution;           /**< Conversion resolution */
+    Prescaler clockPrescale;         /**< Requested prescaler to drive ADC from system clock [1, 255] */
     Chimera::Clock::Bus clockSource; /**< Which clock drives the prescaler */
 
     void clear()
@@ -253,7 +275,7 @@ namespace Chimera::ADC
       bmISREnable    = Interrupt::NONE;
       oversampleRate = Oversampler::OS_NONE;
       transferMode   = TransferMode::POLLING;
-      clockPrescale  = 1;
+      clockPrescale  = Prescaler::DIV_1;
       clockSource    = Chimera::Clock::Bus::UNKNOWN_BUS;
     }
   };
