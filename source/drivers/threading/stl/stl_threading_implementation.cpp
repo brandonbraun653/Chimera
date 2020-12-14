@@ -291,12 +291,12 @@ namespace Chimera::Threading
 
   Thread::Thread() : mFunc( nullptr ), mFuncArg( nullptr )
   {
-    mThreadName.fill( 0 );
+    mName.fill( 0 );
   }
 
   Thread::Thread( Thread &&other ) : mFunc( other.mFunc ), mFuncArg( other.mFuncArg )
   {
-    mThreadName.fill( 0 );
+    mName.fill( 0 );
   }
 
   Thread::~Thread()
@@ -315,8 +315,8 @@ namespace Chimera::Threading
       copyLen = MAX_NAME_LEN;
     }
 
-    mThreadName.fill( 0 );
-    memcpy( mThreadName.data(), name.data(), copyLen );
+    mName.fill( 0 );
+    memcpy( mName.data(), name.data(), copyLen );
 
     /*------------------------------------------------
     Copy the additional parameters
@@ -329,7 +329,7 @@ namespace Chimera::Threading
 
   void Thread::start()
   {
-    mThread = std::thread( mFunc, mFuncArg );
+    mNativeThread = std::thread( mFunc, mFuncArg );
   }
 
 
@@ -347,24 +347,24 @@ namespace Chimera::Threading
 
   void Thread::join()
   {
-    mThread.join();
+    mNativeThread.join();
   }
 
   bool Thread::joinable()
   {
-    return mThread.joinable();
+    return mNativeThread.joinable();
   }
 
   Id Thread::get_id()
   {
-    // auto stl_id = mThread.get_id();
+    // auto stl_id = mNativeThread.get_id();
 
     return Id();
   }
 
   detail::native_thread_handle_type Thread::native_handle()
   {
-    return mThread.native_handle();
+    return mNativeThread.native_handle();
   }
 
   int Thread::hardware_concurrency()

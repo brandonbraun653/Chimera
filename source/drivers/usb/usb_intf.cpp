@@ -35,12 +35,11 @@ namespace Chimera::USB
     init sequences should've already been called.
     -------------------------------------------------*/
     auto result = Chimera::Status::OK;
-    if ( findThread( USBThreadName ) == nullptr )
+    if ( getThread( USBThreadName ) == nullptr )
     {
       Thread usbThread;
       usbThread.initialize( USBMainThread, nullptr, USBDefaultPriority, USBDefaultStackSize, USBThreadName );
       usbThread.start();
-      result = registerThread( std::move( usbThread ) );
 
       if ( result != Chimera::Status::OK )
       {

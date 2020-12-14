@@ -8,80 +8,204 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* STL Includes */
+#include <cstdlib>
+
 /* ETL Includes */
+#include <etl/flat_map.h>
 #include <etl/vector.h>
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/system>
 #include <Chimera/thread>
+#include <Chimera/source/drivers/threading/threading_thread_internal.hpp>
 
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------
+  Constants
+  -------------------------------------------------------------------------------*/
+  static constexpr ThreadId THREAD_ID_REG_MAX = THREAD_ID_INVALID - 1;
+  static constexpr ThreadId THREAD_ID_REG_MIN = THREAD_ID_REG_MAX - 1000;
+  static constexpr ThreadId THREAD_ID_REG_RNG = THREAD_ID_REG_MAX - THREAD_ID_REG_MIN;
+
+  // Arbitrarily chosen to allow random ID generation to find free IDs quickly
+  static_assert( THREAD_ID_REG_RNG > ( 5 * MAX_REGISTERABLE_THREADS ) );
+
+  // Prevent accidental ID range overflow
+  static_assert( ( THREAD_ID_REG_MIN + THREAD_ID_REG_RNG ) < THREAD_ID_INVALID );
+
+  /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
   static RecursiveMutex s_registry_lock;
-  static etl::vector<Thread, MAX_REGISTERABLE_THREADS> s_thread_registry;
+  static etl::flat_map<ThreadId, Thread, MAX_REGISTERABLE_THREADS> s_thread_registry;
 
   /*-------------------------------------------------------------------------------
-  Public Functions
+  Static Functions
   -------------------------------------------------------------------------------*/
-  Chimera::Status_t registerThread( Thread &&thread )
+  /**
+   *  Locks thread resources from thread access and interruption
+   *  from any system interrupts.
+   *  @return Chimera::System::InterruptMask
+   */
+  static Chimera::System::InterruptMask exclusive_lock()
   {
-    if ( s_thread_registry.full() )
-    {
-      return Chimera::Status::FULL;
-    }
-
     s_registry_lock.lock();
-    s_thread_registry.push_back( std::move( thread ) );
-    s_registry_lock.unlock();
-
-    return Chimera::Status::OK;
+    return Chimera::System::disableInterrupts();
   }
 
-
-  Chimera::Status_t unregisterThread( const char *name )
+  /**
+   *  Restores interrupt and thread access to thread resources
+   *  @return void
+   */
+  static void exclusive_unlock( Chimera::System::InterruptMask msk )
   {
-    std::string_view tmpName( name );
-    auto result = Chimera::Status::NOT_FOUND;
+    Chimera::System::enableInterrupts( msk );
+    s_registry_lock.unlock();
+  }
 
+  /**
+   *  Generates a pseudo-random ID for thread identification. Will not
+   *  conflict with any thread IDs that are currently in use.
+   *
+   *  @return ThreadId
+   */
+  static ThreadId generateId()
+  {
+    /*-------------------------------------------------
+    Thread lock is sufficient as no ISR should be able
+    to write to the registry.
+    -------------------------------------------------*/
     s_registry_lock.lock();
-    for ( auto x = 0; x < s_thread_registry.size(); x++ )
+
+    /*-------------------------------------------------
+    Find an id that doesn't exist in the registry yet
+    -------------------------------------------------*/
+    ThreadId id;
+    while ( true )
     {
-      if ( s_thread_registry[ x ].name() == tmpName )
+      id = ( rand() % THREAD_ID_REG_RNG ) + THREAD_ID_REG_MIN;
+      if ( s_thread_registry.find( id ) == s_thread_registry.end() )
       {
-        s_thread_registry.erase( s_thread_registry.begin() + x );
-        result = Chimera::Status::OK;
         break;
       }
     }
+
     s_registry_lock.unlock();
+    return id;
+  }
+
+
+  /*-------------------------------------------------------------------------------
+  Internal Functions
+  -------------------------------------------------------------------------------*/
+  ThreadId registerThread( Thread &&thread )
+  {
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
+    if ( s_thread_registry.full() )
+    {
+      return THREAD_ID_INVALID;
+    }
+
+    /*-------------------------------------------------
+    Insert the new thread object while protecting from
+    all possible interferences.
+    -------------------------------------------------*/
+    ThreadId id = THREAD_ID_INVALID;
+    auto msk    = exclusive_lock();
+    {
+      id = generateId();
+      thread.assignId( id );
+      s_thread_registry.insert( { id, std::move( thread ) } );
+    }
+    exclusive_unlock( msk );
+
+    return id;
+  }
+
+
+  Chimera::Status_t unregisterThread( const ThreadId id )
+  {
+    auto result = Chimera::Status::NOT_FOUND;
+    auto msk    = exclusive_lock();
+    {
+      if ( auto iter = s_thread_registry.find( id ); iter != s_thread_registry.end() )
+      {
+        s_thread_registry.erase( iter );
+        result = Chimera::Status::OK;
+      }
+    }
+    exclusive_unlock( msk );
 
     return result;
   }
 
 
-  Thread *findThread( const char *name )
+  ThreadId getIdFromNativeHandle( detail::native_thread_handle_type handle )
   {
-    return findThread( std::string_view( name ) );
+    ThreadId id = THREAD_ID_INVALID;
+
+    auto msk = exclusive_lock();
+    {
+      for ( auto iter = s_thread_registry.begin(); iter != s_thread_registry.end(); iter++ )
+      {
+        if ( iter->second.native_handle() == handle )
+        {
+          id = iter->second.id();
+          break;
+        }
+      }
+    }
+    exclusive_unlock( msk );
+
+    return id;
   }
 
 
-  Thread *findThread( const std::string_view &name )
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
+  Thread *getThread( const char *name )
+  {
+    return getThread( std::string_view( name ) );
+  }
+
+
+  Thread *getThread( const std::string_view &name )
   {
     Thread *result = nullptr;
-
-    s_registry_lock.lock();
-    for ( auto x = 0; x < s_thread_registry.size(); x++ )
+    auto msk       = exclusive_lock();
     {
-      if ( s_thread_registry[ x ].name() == name )
+      for ( auto iter = s_thread_registry.begin(); iter != s_thread_registry.end(); iter++ )
       {
-        result = &s_thread_registry[ x ];
-        break;
+        if ( iter->second.name() == name )
+        {
+          result = &iter->second;
+          break;
+        }
       }
     }
-    s_registry_lock.unlock();
+    exclusive_unlock( msk );
+
+    return result;
+  }
+
+
+  Thread *getThread( const ThreadId id )
+  {
+    Thread *result = nullptr;
+    auto msk       = exclusive_lock();
+    {
+      if ( auto iter = s_thread_registry.find( id ); iter != s_thread_registry.end() )
+      {
+        result = &iter->second;
+      }
+    }
+    exclusive_unlock( msk );
 
     return result;
   }
@@ -90,10 +214,17 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Class Definition
   -------------------------------------------------------------------------------*/
+  void Thread::assignId( const ThreadId id )
+  {
+    mThreadId = id;
+  }
+
+
   std::string_view Thread::name() const
   {
-    return std::string_view( mThreadName.cbegin() );
+    return std::string_view( mName.cbegin() );
   }
+
 
   void Thread::copy_thread_name( const std::string_view &name )
   {
@@ -106,8 +237,8 @@ namespace Chimera::Threading
       copyLen = MAX_NAME_LEN;
     }
 
-    mThreadName.fill( 0 );
-    memcpy( mThreadName.data(), name.data(), copyLen );
+    mName.fill( 0 );
+    memcpy( mName.data(), name.data(), copyLen );
   }
 
 }  // namespace Chimera::Threading

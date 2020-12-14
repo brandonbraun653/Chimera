@@ -15,6 +15,7 @@
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
+#include <Chimera/source/drivers/threading/threading_thread_internal.hpp>
 
 #if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 
@@ -37,6 +38,7 @@ namespace Chimera::Threading
   void stopScheduler()
   {
     // FreeRTOS doesn't exactly stop once it gets going
+    Chimera::insert_debug_breakpoint();
   }
 
 
@@ -52,26 +54,55 @@ namespace Chimera::Threading
   }
 
 
+  bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout )
+  {
+    /*-------------------------------------------------
+    Does the task exist?
+    -------------------------------------------------*/
+    if ( auto thread = getThread( id ); thread != nullptr )
+    {
+      BaseType_t result;
+      if ( Chimera::System::inISR() )
+      {
+        result = xTaskNotifyFromISR( thread->native_handle(), msg, eSetValueWithOverwrite, nullptr );
+      }
+      else
+      {
+        result = xTaskNotify( thread->native_handle(), msg, eSetValueWithOverwrite );
+      }
+
+      return ( result == pdPASS );
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   /*-------------------------------------------------------------------------------
   Thread Class Implementation
   -------------------------------------------------------------------------------*/
-  Thread::Thread() : mFunc( nullptr ), mFuncArg( nullptr ), mThread( nullptr )
+  /*-------------------------------------------------
+  Ctors/Dtors
+  -------------------------------------------------*/
+  Thread::Thread() :
+      mFunc( nullptr ), mFuncArg( nullptr ), mNativeThread( nullptr ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
   {
-    mThreadName.fill( 0 );
+    mName.fill( 0 );
   }
 
 
   Thread::Thread( const Thread &other ) :
-      mThread( other.mThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth )
+      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
+      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
   }
 
 
   Thread::Thread( Thread &&other ) :
-      mThread( other.mThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth )
+      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
+      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
   }
@@ -82,29 +113,32 @@ namespace Chimera::Threading
   }
 
 
+  /*-------------------------------------------------
+  Public Methods
+  -------------------------------------------------*/
   void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc       = func;
-    mFuncArg    = arg;
-    mPriority   = priority;
-    mStackDepth = stackDepth;
-    mThread     = nullptr;
+    mFunc         = func;
+    mFuncArg      = arg;
+    mPriority     = priority;
+    mStackDepth   = stackDepth;
+    mNativeThread = nullptr;
     copy_thread_name( name );
   }
 
 
-  void Thread::start()
+  ThreadId Thread::start()
   {
     /*------------------------------------------------
     Actually create the thread. If the scheduler is running already, it will
     immediately start. Otherwise it will wait until scheduler executes.
     ------------------------------------------------*/
-    auto result = xTaskCreate( mFunc, mThreadName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFuncArg,
-                               static_cast<UBaseType_t>( mPriority ), &mThread );
+    auto result = xTaskCreate( mFunc, mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFuncArg,
+                               static_cast<UBaseType_t>( mPriority ), &mNativeThread );
 
     /*-------------------------------------------------
     No memory to create the thread is really bad. Make
@@ -115,6 +149,10 @@ namespace Chimera::Threading
       Chimera::insert_debug_breakpoint();
       Chimera::System::softwareReset();
     }
+    else
+    {
+      mRunning = true;
+    }
 
     /*-------------------------------------------------
     Grab the handler assigned to the thread
@@ -123,52 +161,72 @@ namespace Chimera::Threading
     {
       lookup_handle();
     }
+
+    /*-------------------------------------------------
+    Register the thread with the system
+    -------------------------------------------------*/
+    return registerThread( std::move( *this ) );
   }
 
 
   void Thread::suspend()
   {
     lookup_handle();
-    vTaskSuspend( mThread );
+    vTaskSuspend( mNativeThread );
   }
 
 
   void Thread::resume()
   {
     lookup_handle();
-    vTaskResume( mThread );
+    vTaskResume( mNativeThread );
   }
 
 
   void Thread::join()
   {
-    lookup_handle();
-    vTaskDelete( mThread );
+    /*-------------------------------------------------
+    Instruct the thread to exit if it's already running
+    -------------------------------------------------*/
+    if ( joinable() )
+    {
+      lookup_handle();
+      sendTaskMsg( mThreadId, ITCMsg::ITC_EXIT, TIMEOUT_DONT_WAIT );
+      vTaskDelete( mNativeThread );
+    }
+
+    /*-------------------------------------------------
+    Clean up Chimera's notion of the thread's existence
+    -------------------------------------------------*/
+    unregisterThread( mThreadId );
   }
 
 
   bool Thread::joinable()
   {
-    return true;
+    return mRunning && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING );
   }
 
 
   detail::native_thread_handle_type Thread::native_handle()
   {
     lookup_handle();
-    return mThread;
+    return mNativeThread;
   }
 
 
+  /*-------------------------------------------------
+  Private Methods
+  -------------------------------------------------*/
   void Thread::lookup_handle()
   {
     /*-------------------------------------------------
     According to documentation, this operation can take
     a while, so only do it once.
     -------------------------------------------------*/
-    if ( !mThread )
+    if ( !mNativeThread )
     {
-      mThread = xTaskGetHandle( mThreadName.cbegin() );
+      mNativeThread = xTaskGetHandle( mName.cbegin() );
     }
   }
 
@@ -201,6 +259,20 @@ namespace Chimera::Threading
   {
     vTaskSuspend( xTaskGetCurrentTaskHandle() );
   }
+
+
+  ThreadId this_thread::id()
+  {
+    return getIdFromNativeHandle( xTaskGetCurrentTaskHandle() );
+  }
+
+
+  bool this_thread::receiveTaskMsg( ThreadMsg &msg, const size_t timeout )
+  {
+    msg = static_cast<ThreadMsg>( ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) ) );
+    return !( msg == ITCMsg::ITC_NOP );
+  }
+
 }  // namespace Chimera::Threading
 
 #endif /* FREERTOS */

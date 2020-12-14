@@ -24,50 +24,34 @@
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------
-  Constants
-  -------------------------------------------------------------------------------*/
-  static constexpr size_t MAX_NAME_LEN             = 16;
-  static constexpr size_t MAX_REGISTERABLE_THREADS = 5;
-
-
-  /*-------------------------------------------------------------------------------
-  Forward Declarations
-  -------------------------------------------------------------------------------*/
-  class Thread;
-
-
-  /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   /**
-   *  Registers a thread with the backend such that it can be
-   *  referenced or manipulated later.
+   *  Gets a pointer to the thread assigned with the given name
    *
-   *  @param[in]  thread      The thread to copy
-   *  @return Chimera::Status_t
-   */
-  Chimera::Status_t registerThread( Thread &&thread );
-
-  /**
-   *  Removes a thread from the registry
-   *
-   *  @param[in]  name      Name of the thread
-   *  @return Chimera::Status_t
-   */
-  Chimera::Status_t unregisterThread( const char *name );
-
-  /**
-   *  Gets a pointer to the thread assigned with the given name. Must have
-   *  been registered first.
-   *
-   *  @warning Calling unregisterThread() after acquiring a pointer to a
-   *  pointer to a different thread will invalidate that pointer.
+   *  @warning Calling thread.join() after acquiring a pointer to a
+   *  different thread will invalidate that pointer. Do not cache
+   *  the pointer returned from this method.
    *
    *  @param[in]  name      Name given to the thread upon creation
    *  @return Thread *      Returns nullptr if not found
    */
-  Thread *findThread( const char *name );
-  Thread *findThread( const std::string_view &name );
+  Thread *getThread( const char *name );
+  Thread *getThread( const std::string_view &name );
+  Thread *getThread( const ThreadId id );
+
+  /**
+   *  Sends the message to the requested task, unblocking it if sleeping.
+   *
+   *  @note This may be called from any execution context, including ISRs.
+   *
+   *  @param[in]  id        Which task to send to
+   *  @param[in]  msg       The message being sent
+   *  @param[in]  timeout   How long to wait for successful sending
+   *  @return bool
+   */
+  bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout );
+
 
   /*-------------------------------------------------------------------------------
   Classes
@@ -98,10 +82,20 @@ namespace Chimera::Threading
                      const std::string_view name );
 
     /**
-     *  Starts the thread
+     *  Assigns a given ID to this thread.
+     *
+     *  @warning There are no checks for duplication of IDs between threads.
+     *
+     *  @param[in]  id            The ID being assigned
      *  @return void
      */
-    void start();
+    void assignId( const ThreadId id );
+
+    /**
+     *  Starts the thread, returning it's generated id.
+     *  @return ThreadId
+     */
+    ThreadId start();
 
     /**
      *  Suspends the thread, assuming it's supported. This is mostly taken from RTOS's
@@ -120,7 +114,11 @@ namespace Chimera::Threading
     void resume();
 
     /**
-     *  Waits for the thread to finish execution and return
+     *  Sends a termination task message, then unregisters the thread from the system.
+     *
+     *  @warning There is no feedback on termination success, so calling this method
+     *           can leave dangling threads if the termination message is ignored.
+     *
      *  @return void
      */
     void join();
@@ -146,12 +144,18 @@ namespace Chimera::Threading
     std::string_view name() const;
 
     /**
+     *  Returns the ID associated with the thread
+     *  @return ThreadId
+     */
+    ThreadId id() const;
+
+    /**
      *  Checks if the thread exists/has been initialized yet
      *  @return bool
      */
     explicit operator bool() const
     {
-      return ( mThread ) ? true : false;
+      return ( mNativeThread ) ? true : false;
     }
 
     bool operator=( const Thread &rhs )
@@ -168,12 +172,14 @@ namespace Chimera::Threading
     }
 
   private:
-    detail::native_thread mThread;
+    bool mRunning;
+    detail::native_thread mNativeThread;
     ThreadFunctPtr mFunc;
     ThreadArg mFuncArg;
+    ThreadId mThreadId;
     Priority mPriority;
     size_t mStackDepth;
-    std::array<char, MAX_NAME_LEN + 1> mThreadName;
+    std::array<char, MAX_NAME_LEN + 1> mName;
 
     void lookup_handle();
     void copy_thread_name( const std::string_view &name );
@@ -214,6 +220,22 @@ namespace Chimera::Threading
      *  @return void
      */
     void suspend();
+
+    /**
+     *  Gets the system identifier of the current thread
+     *  @return ThreadId
+     */
+    ThreadId id();
+
+    /**
+     *  Receives the latest task message for the thread, optionally blocking
+     *  for a specified amount of time.
+     *
+     *  @param[out] msg         The message received, if valid
+     *  @param[in]  timeout     How long to wait for a new message
+     *  @return bool
+     */
+    bool receiveTaskMsg( ThreadMsg &msg, const size_t timeout );
 
   }  // namespace this_thread
 }  // namespace Chimera::Threading

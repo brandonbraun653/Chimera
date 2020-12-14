@@ -83,12 +83,12 @@ namespace Chimera::USB
   static void lock_process()
   {
     s_driver_lock.lock();
-    Chimera::Threading::findThread( USBThreadName.cbegin() )->suspend();
+    Chimera::Threading::getThread( USBThreadName.cbegin() )->suspend();
   }
 
   static void unlock_process()
   {
     s_driver_lock.unlock();
-    Chimera::Threading::findThread( USBThreadName.cbegin() )->resume();
+    Chimera::Threading::getThread( USBThreadName.cbegin() )->resume();
   }
 }  // namespace Chimera::USB
