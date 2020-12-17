@@ -59,6 +59,8 @@ namespace Chimera::ADC
     Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
     void setWatchdogThreshold( const Watchdog wd, const Sample_t low, const Sample_t high );
     void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
+    float sampleToVoltage( const Sample_t sample );
+    float sampleToJunctionTemperature( const Sample_t sample );
 
     /*-------------------------------------------------
     Interface: Lockable

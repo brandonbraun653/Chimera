@@ -15,6 +15,7 @@
 /* STL Includes */
 #include <cstdint>
 #include <cstring>
+#include <limits>
 #include <memory>
 
 /* Chimera Includes */
@@ -38,7 +39,8 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-
+  static constexpr Sample_t INVALID_SAMPLE = std::numeric_limits<Sample_t>::max();
+  static constexpr float VOLTAGE_OOR       = std::numeric_limits<float>::max();
 
   /*-------------------------------------------------------------------------------
   Enumerations

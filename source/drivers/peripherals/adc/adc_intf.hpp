@@ -55,6 +55,9 @@ namespace Chimera::ADC
      *  that necessary features are supported, or check the return code
      *  of this method.
      *
+     *  @note Usually there are many ADC channels available, so it's left
+     *        up to the application to properly configure GPIO pins.
+     *
      *  @param[in]  init          Settings to be applied
      *  @return Chimera::Status_t
      */
@@ -170,6 +173,24 @@ namespace Chimera::ADC
      *  @return void
      */
     virtual void onInterrupt( const Interrupt bmSignal, ISRCallback cb ) = 0;
+
+    /**
+     *  Converts a raw sample to the equivalent voltage
+     *
+     *  @param[in]  sample        The raw sample value to convert
+     *  @return float
+     */
+    virtual float sampleToVoltage( const Sample_t sample ) = 0;
+
+    /**
+     *  Converts a raw sample into the equivalent temperature for
+     *  the on-chip temperature sensor (if supported). Results are
+     *  reported in celcius.
+     *
+     *  @param[in]  sample        The raw sample value to convert
+     *  @return float
+     */
+    virtual float sampleToJunctionTemperature( const Sample_t sample ) = 0;
   };
 
 
