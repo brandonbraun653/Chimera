@@ -1,18 +1,23 @@
+include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+
 # ====================================================
 # Common
 # ====================================================
 set(LINK_LIBS
   chimera_inc       # Chimera public headers
-  chimera_build_options
 )
 
 # ====================================================
 # Interface Library
 # ====================================================
-set(CHIMERA chimera_threading_stl)
-add_library(${CHIMERA} STATIC
-  stl_threading_implementation.cpp
-  stl_queue_implementation.cpp
-)
-target_link_libraries(${CHIMERA} PRIVATE ${LINK_LIBS})
-export(TARGETS ${CHIMERA} FILE "${PROJECT_BINARY_DIR}/Chimera/src/${CHIMERA}.cmake")
+function(build_library variant)
+  set(CHIMERA chimera_threading_stl${variant})
+  add_library(${CHIMERA} STATIC
+    stl_threading_implementation.cpp
+    stl_queue_implementation.cpp
+  )
+  target_link_libraries(${CHIMERA} PRIVATE ${LINK_LIBS} prj_build_target${variant} prj_device_target)
+  export(TARGETS ${CHIMERA} FILE "${PROJECT_BINARY_DIR}/Chimera/src/${CHIMERA}.cmake")
+endfunction()
+
+add_target_variants(build_library)

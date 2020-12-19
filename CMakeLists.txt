@@ -31,17 +31,3 @@ elseif(Toolchain::REQUIRES_NATIVE_THREADS)
 endif()
 
 export(TARGETS ${PUB_HDR} FILE "${PROJECT_BINARY_DIR}/Chimera/${PUB_HDR}.cmake")
-
-# ====================================================
-# Custom Compiler Options:
-# By default always build release variant
-# ====================================================
-set(BUILD_OPTIONS chimera_build_options)
-add_library(${BUILD_OPTIONS} INTERFACE)
-target_link_libraries(${BUILD_OPTIONS} INTERFACE
-  prj_build_target
-  #prj_build_target_rel
-  #prj_build_target_dbg
-  prj_device_target
-)
-export(TARGETS ${BUILD_OPTIONS} FILE "${PROJECT_BINARY_DIR}/Chimera/${BUILD_OPTIONS}.cmake")

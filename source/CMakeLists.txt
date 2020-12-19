@@ -6,11 +6,9 @@ add_subdirectory("sim")
 
 
 # ====================================================
-# All Drivers
+# Collections of all Chimera drivers
 # ====================================================
-set(CHIMERA_SRC chimera_src)
-add_library(${CHIMERA_SRC} INTERFACE)
-target_link_libraries(${CHIMERA_SRC} INTERFACE
+set(all_libraries
   chimera_algorithm
   chimera_allocator
   chimera_buffer
@@ -38,4 +36,54 @@ target_link_libraries(${CHIMERA_SRC} INTERFACE
   chimera_peripheral_usb
   chimera_peripheral_watchdog
 )
+
+
+# ====================================================
+# This variant follows the CMAKE_BUILD_TYPE specs
+# ====================================================
+set(CHIMERA_SRC chimera_core)
+add_library(${CHIMERA_SRC} INTERFACE)
+target_link_libraries(${CHIMERA_SRC} INTERFACE ${all_libraries})
 export(TARGETS ${CHIMERA_SRC} FILE "${PROJECT_BINARY_DIR}/Chimera/${CHIMERA_SRC}.cmake")
+
+
+# ====================================================
+# Builds all targets as release
+# ====================================================
+set(all_libraries_rel "")
+foreach(lib ${all_libraries})
+  list(APPEND all_libraries_rel ${lib}_rel)
+endforeach()
+
+set(CHIMERA_SRC_REL chimera_core_rel)
+add_library(${CHIMERA_SRC_REL} INTERFACE)
+target_link_libraries(${CHIMERA_SRC_REL} INTERFACE ${all_libraries_rel})
+export(TARGETS ${CHIMERA_SRC_REL} FILE "${PROJECT_BINARY_DIR}/Chimera/${CHIMERA_SRC_REL}.cmake")
+
+
+# ====================================================
+# Builds all targets as release with debug symbols
+# ====================================================
+set(all_libraries_rel_dbg "")
+foreach(lib ${all_libraries})
+  list(APPEND all_libraries_rel_dbg ${lib}_rel_dbg)
+endforeach()
+
+set(CHIMERA_SRC_REL_DBG chimera_core_rel_dbg)
+add_library(${CHIMERA_SRC_REL_DBG} INTERFACE)
+target_link_libraries(${CHIMERA_SRC_REL_DBG} INTERFACE ${all_libraries_rel_dbg})
+export(TARGETS ${CHIMERA_SRC_REL_DBG} FILE "${PROJECT_BINARY_DIR}/Chimera/${CHIMERA_SRC_REL_DBG}.cmake")
+
+
+# ====================================================
+# Builds all targets as debug only
+# ====================================================
+set(all_libraries_dbg "")
+foreach(lib ${all_libraries})
+  list(APPEND all_libraries_dbg ${lib}_dbg)
+endforeach()
+
+set(CHIMERA_SRC_DBG chimera_core_dbg)
+add_library(${CHIMERA_SRC_DBG} INTERFACE)
+target_link_libraries(${CHIMERA_SRC_DBG} INTERFACE ${all_libraries_dbg})
+export(TARGETS ${CHIMERA_SRC_DBG} FILE "${PROJECT_BINARY_DIR}/Chimera/${CHIMERA_SRC_DBG}.cmake")

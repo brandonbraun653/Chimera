@@ -1,3 +1,5 @@
+include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+
 # ====================================================
 # Import sub-projects
 # ====================================================
@@ -9,13 +11,17 @@ add_subdirectory("stl")
 # ====================================================
 # Exports
 # ====================================================
-add_library(chimera_threading INTERFACE)
-target_link_libraries(chimera_threading INTERFACE chimera_threading_common)
+function(build_library variant)
+  add_library(chimera_threading${variant} INTERFACE)
+  target_link_libraries(chimera_threading${variant} INTERFACE chimera_threading_common${variant})
 
-if(Toolchain::REQUIRES_FREERTOS_THREADS)
-  target_link_libraries(chimera_threading INTERFACE chimera_threading_freertos)
-else()
-  target_link_libraries(chimera_threading INTERFACE chimera_threading_stl)
-endif()
+  if(Toolchain::REQUIRES_FREERTOS_THREADS)
+    target_link_libraries(chimera_threading${variant} INTERFACE chimera_threading_freertos${variant})
+  else()
+    target_link_libraries(chimera_threading${variant} INTERFACE chimera_threading_stl${variant})
+  endif()
 
-export(TARGETS chimera_threading FILE "${PROJECT_BINARY_DIR}/Chimera/chimera_threading.cmake")
+  export(TARGETS chimera_threading${variant} FILE "${PROJECT_BINARY_DIR}/Chimera/chimera_threading${variant}.cmake")
+endfunction()
+add_target_variants(build_library)
+
