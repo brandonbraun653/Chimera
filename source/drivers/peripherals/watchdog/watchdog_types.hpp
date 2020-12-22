@@ -24,22 +24,40 @@ namespace Chimera::Watchdog
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class Driver;
+  class IndependentDriver;
+  class WindowDriver;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr = std::shared_ptr<Driver>;
+  using Independent_sPtr = std::shared_ptr<IndependentDriver>;
+  using Window_sPtr = std::shared_ptr<WindowDriver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
-  enum Channel : uint8_t
+  /**
+   *  Channels for the independent watchdog timers
+   */
+  enum IChannel : uint8_t
   {
+    WATCHDOG0,
     WATCHDOG1,
-    WATCHDOG2,
 
-    NUM_OPTIONS
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
+  /**
+   *  Channels for the windowed watchdog timers
+   */
+  enum WChannel : uint8_t
+  {
+    WATCHDOG0,
+    WATCHDOG1,
+
+    NUM_OPTIONS,
+    UNKNOWN
   };
 
   /*-------------------------------------------------------------------------------
@@ -64,10 +82,14 @@ namespace Chimera::Watchdog
       Chimera::Status_t ( *reset )(void );
 
       /**
-       *  Factory function that creates a shared_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
+       *  Gets the driver associated with the independent watchdog channel
        */
-      Driver_sPtr ( *getDriver )( const Channel channel );
+      Independent_sPtr ( *getIndependentDriver )( const IChannel channel );
+
+      /**
+       *  Gets the driver associated with the window watchdog channel
+       */
+      Window_sPtr ( *getWindowDriver )( const WChannel channel );
     };
   }  // namespace Backend
 }  // namespace Chimera

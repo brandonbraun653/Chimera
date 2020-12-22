@@ -3,7 +3,7 @@
 *    watchdog
 *
 *  Description:
-*    Chimera SPI Includes
+*    Chimera Watchdog Includes
 *
 *  2020 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
@@ -12,7 +12,7 @@
 #ifndef CHIMERA_WATCHDOG_INCLUDES
 #define CHIMERA_WATCHDOG_INCLUDES
 
-#include <Chimera/source/drivers/peripherals/watchdog/watchdog.hpp>
+#include <Chimera/source/drivers/peripherals/watchdog/watchdog_user.hpp>
 #include <Chimera/source/drivers/peripherals/watchdog/watchdog_intf.hpp>
 #include <Chimera/source/drivers/peripherals/watchdog/watchdog_types.hpp>
 

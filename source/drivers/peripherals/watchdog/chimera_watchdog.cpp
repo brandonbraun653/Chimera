@@ -18,9 +18,15 @@
 
 namespace Chimera::Watchdog
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverConfig s_backend_driver;
 
 
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -63,11 +69,11 @@ namespace Chimera::Watchdog
   }
 
 
-  Driver_sPtr getDriver( const Channel channel )
+  Independent_sPtr getDriver( const IChannel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    if ( s_backend_driver.isSupported && s_backend_driver.getIndependentDriver )
     {
-      return s_backend_driver.getDriver( channel );
+      return s_backend_driver.getIndependentDriver( channel );
     }
     else
     {
@@ -75,8 +81,23 @@ namespace Chimera::Watchdog
     }
   }
 
+
+  Window_sPtr getDriver( const WChannel channel )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.getWindowDriver )
+    {
+      return s_backend_driver.getWindowDriver( channel );
+    }
+    else
+    {
+      return nullptr;
+    }
+  }
+
+
   void invokeTimeout()
   {
+    // TODO: This method should have no knowledge of FreeRTOS. Redirect to the threading module.
 #if defined( USING_FREERTOS_THREADS )
     vTaskSuspendAll();
 #endif

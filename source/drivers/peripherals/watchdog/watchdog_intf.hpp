@@ -52,18 +52,6 @@ namespace Chimera::Watchdog
     virtual ~HWInterface() = default;
 
     /**
-     *  Initializes the low level hardware needed to configure the watchdog
-     *  peripheral. This does not start the timer.
-     *
-     *  @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
-     *
-     *  @param[in] timeout_mS        How many milliseconds can elapse before watchdog expires
-     *  @param[in] windowPercent     Percentage away from timeout expiring before dog can be kicked
-     *  @return Status::OK if the initialization was a success, Status::FAIL if not
-     */
-    virtual Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent ) = 0;
-
-    /**
      *   Starts the watchdog timer. If successful, Interface::kick() must
      *   be called at regular intervals to prevent the watchdog from firing.
      *
@@ -117,13 +105,61 @@ namespace Chimera::Watchdog
   };
 
 
+  class IndependentInterface
+  {
+  public:
+    virtual ~IndependentInterface() = default;
+
+    /**
+     *  Initializes the low level hardware needed to configure the watchdog
+     *  peripheral. This does not start the timer.
+     *
+     *  @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
+     *
+     *  @param[in]  ch                Which channel the driver is for
+     *  @param[in]  timeout_mS        How many milliseconds can elapse before watchdog expires
+     *  @return Status::OK if the initialization was a success, Status::FAIL if not
+     */
+    virtual Status_t initialize( const IChannel ch, const uint32_t timeout_mS ) = 0;
+  };
+
+
+  class WindowInterface
+  {
+  public:
+    virtual ~WindowInterface() = default;
+
+    /**
+     *  Initializes the low level hardware needed to configure the watchdog
+     *  peripheral. This does not start the timer.
+     *
+     *  @note   Guarantees a minimum resolution of +/- 500uS around the specified timeout
+     *
+     *  @param[in]  ch                Which channel the driver is for
+     *  @param[in]  timeout_mS        How many milliseconds can elapse before watchdog expires
+     *  @param[in]  windowPercent     Percentage away from timeout expiring before dog can be kicked
+     *  @return Status::OK if the initialization was a success, Status::FAIL if not
+     */
+    virtual Status_t initialize( const WChannel ch, const uint32_t timeout_mS, const uint8_t windowPercent ) = 0;
+  };
+
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class IDriver : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class IIndependentDriver : virtual public HWInterface,
+                             virtual public IndependentInterface,
+                             virtual public Chimera::Threading::LockableInterface
   {
   public:
-    virtual ~IDriver() = default;
+    virtual ~IIndependentDriver() = default;
+  };
+
+  class IWindowDriver : virtual public HWInterface,
+                             virtual public WindowInterface,
+                             virtual public Chimera::Threading::LockableInterface
+  {
+  public:
+    virtual ~IWindowDriver() = default;
   };
 
 
@@ -132,16 +168,16 @@ namespace Chimera::Watchdog
    *  avoid paying the memory penalty of a v-table lookup. Implemented project side
    *  using the Bridge pattern.
    */
-  class Driver
+  class IndependentDriver
   {
   public:
-    Driver();
-    ~Driver();
+    IndependentDriver();
+    ~IndependentDriver();
 
     /*-------------------------------------------------
     Hardware Interface
     -------------------------------------------------*/
-    Status_t initialize( const uint32_t timeout_mS, const uint8_t windowPercent );
+    Status_t initialize( const IChannel ch, const uint32_t timeout_mS );
     Status_t start();
     Status_t stop();
     Status_t kick();
@@ -162,6 +198,40 @@ namespace Chimera::Watchdog
   private:
     void *mDriver;
   };
+
+
+  class WindowDriver
+  {
+  public:
+    WindowDriver();
+    ~WindowDriver();
+
+    /*-------------------------------------------------
+    Hardware Interface
+    -------------------------------------------------*/
+    Status_t initialize( const WChannel ch, const uint32_t timeout_mS, const uint8_t windowPercent );
+    Status_t start();
+    Status_t stop();
+    Status_t kick();
+    Status_t pauseOnDebugHalt( const bool enable );
+    size_t getTimeout();
+    size_t maxTimeout();
+    size_t minTimeout();
+
+    /*-------------------------------------------------
+    Lockable Interface
+    -------------------------------------------------*/
+    void lock();
+    void lockFromISR();
+    bool try_lock_for( const size_t timeout );
+    void unlock();
+    void unlockFromISR();
+
+  private:
+    void *mDriver;
+  };
+
+
 }  // namespace Chimera::Watchdog
 
 #endif /* !CHIMERA_WATCHDOG_INTERFACE_HPP */
