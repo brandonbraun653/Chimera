@@ -39,7 +39,7 @@ namespace Chimera::Watchdog
   /**
    *  Channels for the independent watchdog timers
    */
-  enum IChannel : uint8_t
+  enum class IChannel : uint8_t
   {
     WATCHDOG0,
     WATCHDOG1,
@@ -51,7 +51,7 @@ namespace Chimera::Watchdog
   /**
    *  Channels for the windowed watchdog timers
    */
-  enum WChannel : uint8_t
+  enum class WChannel : uint8_t
   {
     WATCHDOG0,
     WATCHDOG1,

@@ -19,7 +19,7 @@ namespace Chimera
 {
   void insert_debug_breakpoint()
   {
-#if defined( DEBUG ) && defined( EMBEDDED )
+#if ( defined( DEBUG ) || defined( DBG_REL ) ) && defined( EMBEDDED )
     __asm( "BKPT #0\n" );
 #endif
   }
