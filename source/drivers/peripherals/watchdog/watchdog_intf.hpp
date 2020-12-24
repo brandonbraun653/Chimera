@@ -82,23 +82,19 @@ namespace Chimera::Watchdog
     virtual Status_t pauseOnDebugHalt( const bool enable ) = 0;
 
     /**
-     *   Gets the actual timeout value achieved by the hardware
-     *
-     *   @param[out] timeout     Timeout value in milliseconds
-     *   @return Chimera::Status_t
+     *   Gets the actual timeout value achieved by the hardware in microseconds
+     *   @return size_t
      */
     virtual size_t getTimeout() = 0;
 
     /**
-     *  Returns the max supported timeout by the hardware in milliseconds
-     *
+     *  Returns the max supported timeout by the hardware in microseconds
      *  @return size_t
      */
     virtual size_t maxTimeout() = 0;
 
     /**
      *  Returns the min supported timeout by the hardware in milliseconds
-     *
      *  @return size_t
      */
     virtual size_t minTimeout() = 0;
