@@ -21,6 +21,9 @@
 #include <Chimera/source/drivers/threading/threading_detail.hpp>
 #include <Chimera/source/drivers/threading/threading_types.hpp>
 
+/* ETL Includes */
+#include <etl/delegate.h>
+
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------
@@ -161,20 +164,34 @@ namespace Chimera::Threading
     bool operator=( const Thread &rhs )
     {
       /* clang-format off */
-      return (
-        ( this->mFunc == rhs.mFunc ) &&
+      bool POD_compare =
+        ( this->mFunc.type == rhs.mFunc.type ) &&
         ( this->mFuncArg == rhs.mFuncArg ) &&
         ( this->mPriority == rhs.mPriority ) &&
         ( this->mStackDepth == rhs.mStackDepth ) &&
-        ( this->name() == rhs.name() )
-      );
+        ( this->name() == rhs.name() );
       /* clang-format on */
+
+      bool FUNC_compare = false;
+      if ( POD_compare )
+      {
+        if ( this->mFunc.type == FunctorType::C_STYLE )
+        {
+          FUNC_compare = ( this->mFunc.function.pointer == rhs.mFunc.function.pointer );
+        }
+        else
+        {
+          FUNC_compare = ( this->mFunc.function.delegate == rhs.mFunc.function.delegate );
+        }
+      }
+
+      return POD_compare && FUNC_compare;
     }
 
   private:
     bool mRunning;
     detail::native_thread mNativeThread;
-    ThreadFunctPtr mFunc;
+    UserFunction mFunc;
     ThreadArg mFuncArg;
     ThreadId mThreadId;
     Priority mPriority;

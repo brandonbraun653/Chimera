@@ -16,8 +16,36 @@
 #include <cstddef>
 #include <limits>
 
+/* ETL Includes */
+#include <etl/delegate.h>
+
 namespace Chimera::Threading
 {
+  /*-------------------------------------------------------------------------------
+  Internal Namespace
+  -------------------------------------------------------------------------------*/
+  namespace Internal
+  {
+    /**
+     *  Helper function that is used to initialize the delegate member
+     *  of the UserFunction structure. The ETL::delegate interface has
+     *  no default constructor (what would it point to?) so one must
+     *  be given.
+     *
+     *  @param[in]  arg     Unused
+     *  @return void
+     */
+    static void delegateInitializer( void *arg )
+    {
+      // Should someone end up calling this, let them know by breaking their system
+      Chimera::insert_debug_breakpoint();
+      while ( 1 )
+      {
+        continue;
+      }
+    }
+  }  // namespace Internal
+
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
@@ -31,6 +59,8 @@ namespace Chimera::Threading
   using ThreadFunctPtr = void ( * )( ThreadArg );
   using ThreadId       = size_t;
   using ThreadMsg      = uint32_t;
+  using ThreadDelegate = etl::delegate<void( void * )>;
+
 
   /*-------------------------------------------------------------------------------
   Constants
@@ -52,9 +82,23 @@ namespace Chimera::Threading
   static constexpr size_t MAX_REGISTERABLE_THREADS = 5;
   static constexpr ThreadId THREAD_ID_INVALID      = std::numeric_limits<ThreadId>::max();
 
+
   /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
+  /**
+   *  Describes the available function calling types that can be
+   *  registered with the Thread class. Internal use only.
+   */
+  enum class FunctorType
+  {
+    C_STYLE,
+    DELEGATE,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   /**
    *  Thread execution priority levels
    */
@@ -92,6 +136,31 @@ namespace Chimera::Threading
     ITC_USR_START = 100 /**< Begin of IDs for user messages */
   };
 
+
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
+  /**
+   *  Wrapper for storing the possible types of function calls
+   *  that can be used to create a thread.
+   */
+  struct UserFunction
+  {
+    union _callable
+    {
+      ThreadFunctPtr pointer;
+      ThreadDelegate delegate;
+
+      /*-------------------------------------------------
+      Delegate has no default constructor, so default
+      initialize to a function stub.
+      -------------------------------------------------*/
+      _callable() : delegate( ThreadDelegate::create<Internal::delegateInitializer>() )
+      {
+      }
+    } function;       /**< User function to be turned into a thread */
+    FunctorType type; /**< What kind of function call it is */
+  };
 }  // namespace Chimera::Threading
 
 #endif /* !CHIMERA_THREADING_COMMON_TYPES_HPP */

@@ -27,6 +27,15 @@
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
+  struct DelegateArgs
+  {
+    ThreadDelegate *pDelegate;
+    void *pArguments;
+  };
+
+  /*-------------------------------------------------------------------------------
   User Interface
   -------------------------------------------------------------------------------*/
   void startScheduler()
@@ -85,8 +94,7 @@ namespace Chimera::Threading
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Thread::Thread() :
-      mFunc( nullptr ), mFuncArg( nullptr ), mNativeThread( nullptr ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
+  Thread::Thread() : mFuncArg( nullptr ), mNativeThread( nullptr ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
   {
     mName.fill( 0 );
   }
@@ -122,7 +130,9 @@ namespace Chimera::Threading
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc         = func;
+    mFunc.type = FunctorType::C_STYLE;
+    mFunc.function.pointer = func;
+
     mFuncArg      = arg;
     mPriority     = priority;
     mStackDepth   = stackDepth;
@@ -137,8 +147,36 @@ namespace Chimera::Threading
     Actually create the thread. If the scheduler is running already, it will
     immediately start. Otherwise it will wait until scheduler executes.
     ------------------------------------------------*/
-    auto result = xTaskCreate( mFunc, mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFuncArg,
-                               static_cast<UBaseType_t>( mPriority ), &mNativeThread );
+    BaseType_t result;
+    if( mFunc.type == FunctorType::C_STYLE )
+    {
+      result = xTaskCreate( mFunc.function.pointer, mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFuncArg,
+                            static_cast<UBaseType_t>( mPriority ), &mNativeThread );
+    }
+    else // FunctorType::DELEGATE
+    {
+      /*-------------------------------------------------
+      Encapsulate the delegate into a helper structure to
+      pass multiple arguments to the lambda below.
+      -------------------------------------------------*/
+      DelegateArgs helperArgs;
+      helperArgs.pArguments = mFuncArg;
+      helperArgs.pDelegate = &mFunc.function.delegate;
+
+      /*-------------------------------------------------
+      Use a lambda as an impromptu C-Style wrapper for
+      calling the delegate function.
+      -------------------------------------------------*/
+      result = xTaskCreate(
+          []( void *o ) {
+            DelegateArgs *proxy = static_cast<DelegateArgs *>( o );
+            ( *proxy->pDelegate )( proxy->pArguments );
+          },
+          mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), &helperArgs, static_cast<UBaseType_t>( mPriority ),
+          &mNativeThread );
+    }
+    // Ensure this function is handling all cases...
+    static_assert( static_cast<size_t>( FunctorType::NUM_OPTIONS ) == 2 );
 
     /*-------------------------------------------------
     No memory to create the thread is really bad. Make
