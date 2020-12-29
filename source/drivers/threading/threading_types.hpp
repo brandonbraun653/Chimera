@@ -160,6 +160,7 @@ namespace Chimera::Threading
       }
     } function;       /**< User function to be turned into a thread */
     FunctorType type; /**< What kind of function call it is */
+    ThreadArg arg;    /**< Arguments to the thread function */
   };
 }  // namespace Chimera::Threading
 

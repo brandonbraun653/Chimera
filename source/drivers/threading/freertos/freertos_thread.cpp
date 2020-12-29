@@ -31,7 +31,7 @@ namespace Chimera::Threading
   -------------------------------------------------------------------------------*/
   struct DelegateArgs
   {
-    ThreadDelegate *pDelegate;
+    ThreadDelegate pDelegate;
     void *pArguments;
   };
 
@@ -94,14 +94,14 @@ namespace Chimera::Threading
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Thread::Thread() : mFuncArg( nullptr ), mNativeThread( nullptr ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
+  Thread::Thread() : mFunc( {} ), mNativeThread( nullptr ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
   {
     mName.fill( 0 );
   }
 
 
   Thread::Thread( const Thread &other ) :
-      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
+      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
       mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
@@ -109,7 +109,7 @@ namespace Chimera::Threading
 
 
   Thread::Thread( Thread &&other ) :
-      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mFuncArg( other.mFuncArg ), mPriority( other.mPriority ),
+      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
       mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
@@ -130,13 +130,28 @@ namespace Chimera::Threading
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc.type = FunctorType::C_STYLE;
+    mFunc.type             = FunctorType::C_STYLE;
     mFunc.function.pointer = func;
+    mFunc.arg              = arg;
+    mPriority              = priority;
+    mStackDepth            = stackDepth;
+    mNativeThread          = nullptr;
+    copy_thread_name( name );
+  }
 
-    mFuncArg      = arg;
-    mPriority     = priority;
-    mStackDepth   = stackDepth;
-    mNativeThread = nullptr;
+
+  void Thread::initialize( ThreadDelegate func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+                           const std::string_view name )
+  {
+    /*------------------------------------------------
+    Copy the parameters
+    ------------------------------------------------*/
+    mFunc.type              = FunctorType::DELEGATE;
+    mFunc.function.delegate = func;
+    mFunc.arg               = arg;
+    mPriority               = priority;
+    mStackDepth             = stackDepth;
+    mNativeThread           = nullptr;
     copy_thread_name( name );
   }
 
@@ -150,7 +165,7 @@ namespace Chimera::Threading
     BaseType_t result;
     if( mFunc.type == FunctorType::C_STYLE )
     {
-      result = xTaskCreate( mFunc.function.pointer, mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFuncArg,
+      result = xTaskCreate( mFunc.function.pointer, mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFunc.arg,
                             static_cast<UBaseType_t>( mPriority ), &mNativeThread );
     }
     else // FunctorType::DELEGATE
@@ -160,8 +175,8 @@ namespace Chimera::Threading
       pass multiple arguments to the lambda below.
       -------------------------------------------------*/
       DelegateArgs helperArgs;
-      helperArgs.pArguments = mFuncArg;
-      helperArgs.pDelegate = &mFunc.function.delegate;
+      helperArgs.pArguments = mFunc.arg;
+      helperArgs.pDelegate = mFunc.function.delegate;
 
       /*-------------------------------------------------
       Use a lambda as an impromptu C-Style wrapper for
@@ -169,10 +184,10 @@ namespace Chimera::Threading
       -------------------------------------------------*/
       result = xTaskCreate(
           []( void *o ) {
-            DelegateArgs *proxy = static_cast<DelegateArgs *>( o );
-            ( *proxy->pDelegate )( proxy->pArguments );
+            UserFunction *proxy = reinterpret_cast<UserFunction *>( o );
+            proxy->function.delegate( proxy->arg );
           },
-          mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), &helperArgs, static_cast<UBaseType_t>( mPriority ),
+          mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), &mFunc, static_cast<UBaseType_t>( mPriority ),
           &mNativeThread );
     }
     // Ensure this function is handling all cases...

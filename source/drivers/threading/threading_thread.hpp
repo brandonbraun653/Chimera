@@ -83,6 +83,8 @@ namespace Chimera::Threading
      */
     void initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
                      const std::string_view name );
+    void initialize( ThreadDelegate func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+                     const std::string_view name );
 
     /**
      *  Assigns a given ID to this thread.
@@ -166,7 +168,7 @@ namespace Chimera::Threading
       /* clang-format off */
       bool POD_compare =
         ( this->mFunc.type == rhs.mFunc.type ) &&
-        ( this->mFuncArg == rhs.mFuncArg ) &&
+        ( this->mFunc.arg == rhs.mFunc.arg ) &&
         ( this->mPriority == rhs.mPriority ) &&
         ( this->mStackDepth == rhs.mStackDepth ) &&
         ( this->name() == rhs.name() );
@@ -192,7 +194,6 @@ namespace Chimera::Threading
     bool mRunning;
     detail::native_thread mNativeThread;
     UserFunction mFunc;
-    ThreadArg mFuncArg;
     ThreadId mThreadId;
     Priority mPriority;
     size_t mStackDepth;
