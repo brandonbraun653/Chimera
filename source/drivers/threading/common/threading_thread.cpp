@@ -108,6 +108,7 @@ namespace Chimera::Threading
     -------------------------------------------------*/
     if ( s_thread_registry.full() )
     {
+      Chimera::insert_debug_breakpoint();
       return THREAD_ID_INVALID;
     }
 

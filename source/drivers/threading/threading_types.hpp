@@ -79,7 +79,7 @@ namespace Chimera::Threading
   static constexpr size_t TIMEOUT_1HR       = 60 * TIMEOUT_1MIN;
 
   static constexpr size_t MAX_NAME_LEN             = 16;
-  static constexpr size_t MAX_REGISTERABLE_THREADS = 5;
+  static constexpr size_t MAX_REGISTERABLE_THREADS = 10;
   static constexpr ThreadId THREAD_ID_INVALID      = std::numeric_limits<ThreadId>::max();
 
 
