@@ -244,7 +244,7 @@ namespace Chimera::Threading
     if ( joinable() )
     {
       lookup_handle();
-      sendTaskMsg( mThreadId, ITCMsg::ITC_EXIT, TIMEOUT_DONT_WAIT );
+      sendTaskMsg( mThreadId, ITCMsg::TSK_MSG_EXIT, TIMEOUT_DONT_WAIT );
       vTaskDelete( mNativeThread );
     }
 
@@ -323,7 +323,7 @@ namespace Chimera::Threading
   bool this_thread::receiveTaskMsg( ThreadMsg &msg, const size_t timeout )
   {
     msg = static_cast<ThreadMsg>( ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) ) );
-    return !( msg == ITCMsg::ITC_NOP );
+    return !( msg == ITCMsg::TSK_MSG_NOP );
   }
 
 }  // namespace Chimera::Threading

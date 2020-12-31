@@ -243,3 +243,22 @@ namespace Chimera::Threading
   }
 
 }  // namespace Chimera::Threading
+
+
+namespace Chimera::Threading::this_thread
+{
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
+  bool pendTaskMsg( ThreadMsg msg )
+  {
+    return pendTaskMsg( msg, Chimera::Threading::TIMEOUT_BLOCK );
+  }
+
+
+  bool pendTaskMsg( ThreadMsg msg, const size_t timeout )
+  {
+    ThreadMsg actMsg = std::numeric_limits<ThreadMsg>::max();
+    return ( receiveTaskMsg( actMsg, timeout ) && ( actMsg == msg ) );
+  }
+}  // namespace Chimera::Threading::this_thread

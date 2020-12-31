@@ -128,12 +128,12 @@ namespace Chimera::Threading
    */
   enum ITCMsg : ThreadMsg
   {
-    ITC_NOP = 0,     /**< Base message that means do nothing */
-    ITC_WAKEUP,      /**< Wake up the thread to do some processing */
-    ITC_EXIT,        /**< Instructs the task to exit */
-    ITC_ISR_HANDLER, /**< Execute the ISR handler */
+    TSK_MSG_NOP = 0,     /**< Base message that means do nothing */
+    TSK_MSG_WAKEUP,      /**< Wake up the thread to do some processing */
+    TSK_MSG_EXIT,        /**< Instructs the task to exit */
+    TSK_MSG_ISR_HANDLER, /**< Execute the ISR handler */
 
-    ITC_USR_START = 100 /**< Begin of IDs for user messages */
+    TSK_MSG_USR_START = 100 /**< Begin of IDs for user messages */
   };
 
 

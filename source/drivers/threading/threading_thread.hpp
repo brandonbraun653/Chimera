@@ -152,7 +152,10 @@ namespace Chimera::Threading
      *  Returns the ID associated with the thread
      *  @return ThreadId
      */
-    ThreadId id() const;
+    ThreadId id() const
+    {
+      return mThreadId;
+    }
 
     /**
      *  Checks if the thread exists/has been initialized yet
@@ -254,6 +257,24 @@ namespace Chimera::Threading
      *  @return bool
      */
     bool receiveTaskMsg( ThreadMsg &msg, const size_t timeout );
+
+    /**
+     *  Blocks the current thread until the requested task message is received
+     *
+     *  @param[in]  msg         The message expected to be received
+     *  @return bool
+     */
+    bool pendTaskMsg( ThreadMsg msg );
+
+    /**
+     *  Blocks the current thread until the requested task message is received
+     *  or a timeout expires.
+     *
+     *  @param[in]  msg         The message expected to be received
+     *  @param[in]  timeout     How long to wait for the message
+     *  @return bool
+     */
+    bool pendTaskMsg( ThreadMsg msg, const size_t timeout );
 
   }  // namespace this_thread
 }  // namespace Chimera::Threading
