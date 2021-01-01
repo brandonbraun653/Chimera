@@ -109,6 +109,22 @@ namespace Chimera
    */
   void delayMicroseconds( const size_t val );
 
+  /**
+   *  Busy-wait delay for a number of milliseconds
+   *
+   *  @param[in]  val     Milliseconds to delay
+   *  @return void
+   */
+  void blockDelayMilliseconds( const size_t val );
+
+  /**
+   *  Busy-wait delay for a number of microseconds.
+   *
+   *  @param[in]  val     Microseconds to delay
+   *  @return void
+   */
+  void blockDelayMicroseconds( const size_t val );
+
 }  // namespace Chimera
 
 #endif

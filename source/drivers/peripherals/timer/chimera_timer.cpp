@@ -86,9 +86,9 @@ namespace Chimera::Timer
 
   size_t micros()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.millis )
+    if ( s_backend_driver.isSupported && s_backend_driver.micros )
     {
-      return s_backend_driver.millis();
+      return s_backend_driver.micros();
     }
     else
     {
@@ -112,6 +112,24 @@ namespace Chimera::Timer
     if ( s_backend_driver.isSupported && s_backend_driver.delayMicroseconds )
     {
       s_backend_driver.delayMicroseconds( val );
+    }
+  }
+
+
+  void blockDelayMilliseconds( const size_t val )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.blockDelayMilliseconds )
+    {
+      s_backend_driver.blockDelayMilliseconds( val );
+    }
+  }
+
+
+  void blockDelayMicroseconds( const size_t val )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.blockDelayMicroseconds )
+    {
+      s_backend_driver.blockDelayMicroseconds( val );
     }
   }
 

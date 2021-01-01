@@ -135,6 +135,11 @@ namespace Chimera::System
 
   void softwareReset()
   {
+    /*-------------------------------------------------
+    Catch reset context in debugger mode
+    -------------------------------------------------*/
+    Chimera::insert_debug_breakpoint();
+
     if ( s_backend_driver.isSupported && s_backend_driver.softwareReset )
     {
       s_backend_driver.softwareReset();

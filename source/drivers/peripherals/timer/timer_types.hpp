@@ -335,6 +335,22 @@ namespace Chimera::Timer
       void ( *delayMicroseconds )( const size_t );
 
       /**
+       *  Busy-wait delay for a number of milliseconds
+       *
+       *  @param[in]  val     Milliseconds to delay
+       *  @return void
+       */
+      void ( *blockDelayMilliseconds )( const size_t );
+
+      /**
+       *  Busy-wait delay for a number of microseconds.
+       *
+       *  @param[in]  val     Microseconds to delay
+       *  @return void
+       */
+      void ( *blockDelayMicroseconds )( const size_t );
+
+      /**
        *  Gets a reference to the driver
        *
        *  @warning Only use this function if you know what you are doing with raw pointers

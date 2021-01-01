@@ -94,4 +94,16 @@ namespace Chimera
   {
     Timer::delayMicroseconds( val );
   }
+
+
+  void blockDelayMilliseconds( const size_t val )
+  {
+    Timer::blockDelayMilliseconds( val );
+  }
+
+
+  void blockDelayMicroseconds( const size_t val )
+  {
+    Timer::blockDelayMicroseconds( val );
+  }
 }  // namespace Chimera

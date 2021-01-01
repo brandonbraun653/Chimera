@@ -27,6 +27,8 @@ namespace Chimera::Timer
   size_t micros();
   void delayMilliseconds( const size_t val );
   void delayMicroseconds( const size_t val );
+  void blockDelayMilliseconds( const size_t val );
+  void blockDelayMicroseconds( const size_t val );
   Driver_sPtr getDriver( const Chimera::Timer::Peripheral peripheral );
 }
 
