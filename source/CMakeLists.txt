@@ -11,6 +11,7 @@ add_subdirectory("sim")
 set(all_libraries
   chimera_algorithm
   chimera_allocator
+  chimera_assert
   chimera_buffer
   chimera_common
   chimera_event
