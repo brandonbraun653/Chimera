@@ -14,11 +14,10 @@
 
 #include <Chimera/common>
 
-
 #if defined( USING_FREERTOS_THREADS )
-void* malloc (size_t size);
+void *malloc( size_t size );
 
-void free (void* ptr);
+void free( void *ptr );
 
 #include "new"
 void *operator new( size_t size );
@@ -28,5 +27,12 @@ void *operator new[]( size_t size );
 void operator delete( void *p ) noexcept;
 
 #endif /* USING_FREERTOS_THREADS */
+
+
+namespace Chimera
+{
+  void *malloc( size_t size );
+  void free( void *ptr );
+}  // namespace Chimera
 
 #endif /* CHIMERA_ALLOCATOR_HPP*/

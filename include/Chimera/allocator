@@ -1,0 +1,17 @@
+/********************************************************************************
+ *  File Name:
+ *    allocator
+ *
+ *  Description:
+ *    Chimera Allocator Includes
+ *
+ *  2021 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_ALLOCATOR_INCLUDES
+#define CHIMERA_ALLOCATOR_INCLUDES
+
+#include <Chimera/source/drivers/allocator/allocator.hpp>
+
+#endif /* !CHIMERA_ALLOCATOR_INCLUDES */

@@ -55,3 +55,26 @@ void operator delete( void *p ) noexcept
 #endif /* !WIN32 && !WIN64 */
 
 #endif /* CHIMERA_CFG_FREERTOS */
+
+
+namespace Chimera
+{
+  void *malloc( size_t size )
+  {
+#if defined( USING_FREERTOS_THREADS )
+    return pvPortMalloc( size );
+#else
+    return malloc( size );
+#endif /* USING_FREERTOS_THREADS */
+  }
+
+
+  void free( void *ptr )
+  {
+#if defined( USING_FREERTOS_THREADS )
+    vPortFree( ptr );
+#else
+    free( ptr );
+#endif /* USING_FREERTOS_THREADS */
+  }
+}  // namespace Chimera
