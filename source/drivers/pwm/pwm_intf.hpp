@@ -86,8 +86,7 @@ namespace Chimera::PWM
   };
 
 
-  class IPWM : virtual public HardwareDriverInterface,
-               virtual public Chimera::Threading::LockableInterface
+  class IPWM : virtual public HardwareDriverInterface
   {
   public:
     virtual ~IPWM() = default;

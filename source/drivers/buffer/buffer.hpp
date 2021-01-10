@@ -35,7 +35,7 @@ namespace Chimera::Buffer
    *  interrupts or DMA, but still allow the user to queue up more data as needed. This helps
    *  with smooth asynchronous operation.
    */
-  class PeripheralBuffer : public Chimera::Threading::Lockable
+  class PeripheralBuffer : public Chimera::Threading::LockableCRTP<PeripheralBuffer>
   {
   public:
     PeripheralBuffer();
@@ -185,6 +185,9 @@ namespace Chimera::Buffer
     size_t linearSize();
 
   private:
+    friend Chimera::Threading::LockableCRTP<PeripheralBuffer>;
+    Chimera::Threading::RecursiveTimedMutex mClsMutex;
+
     bool dynamicData;
     uint8_t *pLinearBuffer;
     size_t linearLength;

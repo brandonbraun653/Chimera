@@ -5,7 +5,7 @@
 *  Description:
 *    Threading extensions that implement some kind of helper objects
 *
-*  2020 | Brandon Braun | brandonbraun653@gmail.com
+*  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
 #pragma once
@@ -105,6 +105,40 @@ namespace Chimera::Threading
 
   private:
     RecursiveTimedMutex mutex;
+  };
+
+  /**
+   *  Variant of the Lockable interface that doesn't depend on inheritence.
+   *  This helps embedded systems to consume less memory for drivers.
+   */
+  template<class T>
+  class LockableCRTP
+  {
+  public:
+    void lock()
+    {
+      static_cast<T *>( this )->mClsMutex.lock();
+    }
+
+    void lockFromISR()
+    {
+      static_cast<T *>( this )->mClsMutex.lock();
+    }
+
+    bool try_lock_for( const size_t timeout )
+    {
+      return static_cast<T *>( this )->mClsMutex.try_lock_for( timeout );
+    }
+
+    void unlock()
+    {
+      static_cast<T *>( this )->mClsMutex.unlock();
+    }
+
+    void unlockFromISR()
+    {
+      static_cast<T *>( this )->mClsMutex.unlock();
+    }
   };
 }
 

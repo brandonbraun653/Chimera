@@ -32,7 +32,7 @@ namespace Chimera::Threading
    *  is performed via pointers. All functions are thread safe and
    *  some are even capable of use inside of ISRs.
    */
-  class Queue : public Chimera::Threading::Lockable
+  class Queue : public Chimera::Threading::LockableCRTP<Queue>
   {
   public:
     Queue();
@@ -176,6 +176,9 @@ namespace Chimera::Threading
     detail::native_queue& getHandle();
 
   private:
+    friend Chimera::Threading::LockableCRTP<Queue>;
+    Chimera::Threading::RecursiveTimedMutex mClsMutex;
+
     size_t mMaxSize;
     detail::native_queue mQueueHandle;
     detail::native_queue_structure mQueueStructure;
