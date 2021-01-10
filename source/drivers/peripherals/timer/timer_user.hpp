@@ -29,7 +29,7 @@ namespace Chimera::Timer
   void delayMicroseconds( const size_t val );
   void blockDelayMilliseconds( const size_t val );
   void blockDelayMicroseconds( const size_t val );
-  Driver_sPtr getDriver( const Chimera::Timer::Peripheral peripheral );
+  Driver_rPtr getDriver( const Chimera::Timer::Peripheral peripheral );
 }
 
 #endif  /* !CHIMERA_TIMER_HPP */

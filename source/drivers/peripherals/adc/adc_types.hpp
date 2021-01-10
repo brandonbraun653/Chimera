@@ -33,7 +33,7 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr = std::shared_ptr<Driver>;
+  using Driver_rPtr = Driver *;
   using Sample_t    = uint16_t;
 
   /*-------------------------------------------------------------------------------
@@ -342,7 +342,7 @@ namespace Chimera::ADC
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      Driver_sPtr ( *getDriver )( const Converter periph );
+      Driver_rPtr ( *getDriver )( const Converter periph );
 
       /**
        *  Checks if a peripheral instance supports a given feature

@@ -71,7 +71,7 @@ namespace Chimera::UART
     }
   }
 
-  Driver_sPtr getDriver( const Chimera::Serial::Channel channel )
+  Driver_rPtr getDriver( const Chimera::Serial::Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

@@ -30,7 +30,7 @@ namespace Chimera::UART
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr = std::shared_ptr<Driver>;
+  using Driver_rPtr = Driver *;
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -70,7 +70,7 @@ namespace Chimera::UART
        *
        *  @return IUSART_sPtr
        */
-      Driver_sPtr ( *getDriver )( const Chimera::Serial::Channel );
+      Driver_rPtr ( *getDriver )( const Chimera::Serial::Channel );
     };
   }  // namespace Backend
 }  // namespace Chimera::UART

@@ -30,7 +30,7 @@ namespace Chimera::DMA
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr        = std::shared_ptr<Driver>;
+  using Driver_rPtr        = std::shared_ptr<Driver>;
   using TransferHandle_t = void *;
 
   /**
@@ -206,7 +206,7 @@ namespace Chimera::DMA
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      Driver_sPtr ( *getDriver )( const Controller channel );
+      Driver_rPtr ( *getDriver )( const Controller channel );
     };
   }  // namespace Backend
 

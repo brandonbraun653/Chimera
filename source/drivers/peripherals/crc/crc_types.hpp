@@ -29,7 +29,7 @@ namespace Chimera::CRC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr = std::shared_ptr<Driver>;
+  using Driver_rPtr = Driver *;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -67,7 +67,7 @@ namespace Chimera::CRC
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      Driver_sPtr ( *getDriver )( const Channel channel );
+      Driver_rPtr ( *getDriver )( const Channel channel );
     };
   }  // namespace Backend
 }  // namespace Chimera::CRC

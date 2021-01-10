@@ -38,7 +38,7 @@ namespace Chimera::SPI
   using ClockFreq    = size_t;
   using TransferMode = Chimera::Hardware::PeripheralMode;
   using Driver_rPtr  = Driver *;
-  using Driver_sPtr  = std::shared_ptr<Driver>;
+  using Driver_rPtr  = Driver *;//std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -227,7 +227,7 @@ namespace Chimera::SPI
       /**
        *  Gets the driver instance associated with the requested channel
        */
-      Driver_sPtr ( *getDriver )( const Channel channel );
+      Driver_rPtr ( *getDriver )( const Channel channel );
     };
   }  // namespace Backend
 

@@ -64,7 +64,7 @@ namespace Chimera::SPI
   }
 
 
-  Driver_sPtr getDriver( const Channel channel )
+  Driver_rPtr getDriver( const Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

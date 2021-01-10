@@ -64,7 +64,7 @@ namespace Chimera::GPIO
   }
 
 
-  Driver_sPtr getDriver( const Port port, const Pin pin )
+  Driver_rPtr getDriver( const Port port, const Pin pin )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

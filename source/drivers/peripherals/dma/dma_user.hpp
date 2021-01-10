@@ -23,7 +23,7 @@ namespace Chimera::DMA
 {
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_sPtr getDriver( const Controller channel );
+  Driver_rPtr getDriver( const Controller channel );
 }  // namespace Chimera::DMA
 
 #endif /* !CHIMERA_DMA_HPP */

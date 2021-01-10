@@ -134,7 +134,7 @@ namespace Chimera::Timer
   }
 
 
-  Driver_sPtr getDriver( const Chimera::Timer::Peripheral peripheral )
+  Driver_rPtr getDriver( const Chimera::Timer::Peripheral peripheral )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

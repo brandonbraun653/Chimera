@@ -22,7 +22,7 @@ namespace Chimera::UART
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
   bool isChannelUART( const Chimera::Serial::Channel channel );
-  Driver_sPtr getDriver( const Chimera::Serial::Channel channel );
+  Driver_rPtr getDriver( const Chimera::Serial::Channel channel );
 }  // namespace Chimera::UART
 
 #endif  /* !CHIMERA_UART_HPP */

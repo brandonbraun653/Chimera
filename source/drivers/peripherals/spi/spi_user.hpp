@@ -25,7 +25,7 @@ namespace Chimera::SPI
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_sPtr getDriver( const Channel channel );
+  Driver_rPtr getDriver( const Channel channel );
 }  // namespace Chimera::SPI
 
 #endif /* !CHIMERA_SPI_HPP */

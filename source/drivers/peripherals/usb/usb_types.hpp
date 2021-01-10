@@ -30,7 +30,7 @@ namespace Chimera::USB
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr = std::shared_ptr<Driver>;
+  using Driver_rPtr = Driver *;
 
 
   /*-------------------------------------------------------------------------------
@@ -182,9 +182,9 @@ namespace Chimera::USB
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        *
-       *  @return Driver_sPtr
+       *  @return Driver_rPtr
        */
-      Driver_sPtr ( *getDriver )( const Chimera::USB::Channel );
+      Driver_rPtr ( *getDriver )( const Chimera::USB::Channel );
     };
   }  // namespace Backend
 }  // namespace Chimera::USB

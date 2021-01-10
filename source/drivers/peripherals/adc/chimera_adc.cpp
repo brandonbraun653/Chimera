@@ -67,7 +67,7 @@ namespace Chimera::ADC
   }
 
 
-  Driver_sPtr getDriver( const Converter periph )
+  Driver_rPtr getDriver( const Converter periph )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

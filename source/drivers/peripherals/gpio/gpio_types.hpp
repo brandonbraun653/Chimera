@@ -32,7 +32,6 @@ namespace Chimera::GPIO
   -------------------------------------------------------------------------------*/
   using Pin = uint8_t;
   using Driver_rPtr = Driver *;
-  using Driver_sPtr = std::shared_ptr<Driver>;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -259,7 +258,7 @@ namespace Chimera::GPIO
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      Driver_sPtr ( *getDriver )( const Port port, const Pin pin );
+      Driver_rPtr ( *getDriver )( const Port port, const Pin pin );
     };
   }  // namespace Backend
 }  // namespace Chimera::GPIO

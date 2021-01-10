@@ -25,7 +25,7 @@ namespace Chimera::GPIO
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_sPtr getDriver( const Port port, const Pin pin );
+  Driver_rPtr getDriver( const Port port, const Pin pin );
 }  // namespace Chimera::GPIO
 
 #endif  /* !CHIMERA_GPIO_HPP */

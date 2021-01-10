@@ -29,9 +29,9 @@ static constexpr size_t NUM_DRIVERS = static_cast<size_t>( Chimera::Serial::Chan
 Variables
 -------------------------------------------------------------------------------*/
 static Chimera::Serial::Driver s_raw_driver[ NUM_DRIVERS ];
-static Chimera::Serial::Driver_sPtr s_shared_driver[ NUM_DRIVERS ];
-static Chimera::UART::Driver_sPtr s_uart_driver[ NUM_DRIVERS ];
-static Chimera::USART::Driver_sPtr s_usart_driver[ NUM_DRIVERS ];
+static Chimera::Serial::Driver_rPtr s_shared_driver[ NUM_DRIVERS ];
+static Chimera::UART::Driver_rPtr s_uart_driver[ NUM_DRIVERS ];
+static Chimera::USART::Driver_rPtr s_usart_driver[ NUM_DRIVERS ];
 
 
 namespace Chimera::Serial
@@ -45,7 +45,7 @@ namespace Chimera::Serial
     {
       if ( !s_shared_driver[ x ] )
       {
-        s_shared_driver[ x ] = Driver_sPtr( &s_raw_driver[ x ] );
+        s_shared_driver[ x ] = Driver_rPtr( &s_raw_driver[ x ] );
       }
     }
 
@@ -57,7 +57,7 @@ namespace Chimera::Serial
     return Chimera::Status::OK;
   }
 
-  Driver_sPtr getDriver( const Channel channel )
+  Driver_rPtr getDriver( const Channel channel )
   {
     /*-------------------------------------------------
     Boundary check the input

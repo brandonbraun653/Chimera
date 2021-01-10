@@ -67,7 +67,7 @@ namespace Chimera::DMA
   }
 
 
-  Driver_sPtr getDriver( const Controller channel )
+  Driver_rPtr getDriver( const Controller channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

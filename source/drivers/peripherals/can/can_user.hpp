@@ -26,7 +26,7 @@ namespace Chimera::CAN
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_sPtr getDriver( const Channel channel );
+  Driver_rPtr getDriver( const Channel channel );
 
 
   /*-------------------------------------------------------------------------------

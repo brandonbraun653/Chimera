@@ -29,7 +29,7 @@ namespace Chimera::Timer
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_sPtr = std::shared_ptr<Driver>;
+  using Driver_rPtr = Driver *;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -361,7 +361,7 @@ namespace Chimera::Timer
        *  @param[in]  peripheral    The peripheral to get the instance for
        *  @return Driver_rPtr
        */
-      Driver_sPtr ( *getDriver )( const Chimera::Timer::Peripheral );
+      Driver_rPtr ( *getDriver )( const Chimera::Timer::Peripheral );
     };
   }  // namespace Backend
 }  // namespace Chimera::Timer

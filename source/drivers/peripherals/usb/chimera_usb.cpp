@@ -65,7 +65,7 @@ namespace Chimera::USB::Peripheral
   }
 
 
-  Driver_sPtr getDriver( const Chimera::USB::Channel channel )
+  Driver_rPtr getDriver( const Chimera::USB::Channel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {

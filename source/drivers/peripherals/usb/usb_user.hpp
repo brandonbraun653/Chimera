@@ -28,7 +28,7 @@ namespace Chimera::USB::Peripheral
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_sPtr getDriver( const Channel channel );
+  Driver_rPtr getDriver( const Channel channel );
 }  // namespace Chimera::USB::Peripheral
 
 #endif /* !CHIMERA_USB_USER_HPP */
