@@ -3,7 +3,7 @@
 #   Primary CMake entry point for building Chimera
 #
 # Exports:
-#   chimera_inc: Interface target for getting public headers and macro defs
+#   chimera_intf_inc: Interface target for getting public headers and macro defs
 #
 # 2020 | Brandon Braun | brandonbraun653@gmail.com
 # =============================================================================
@@ -15,7 +15,7 @@ add_subdirectory("source")
 # ====================================================
 # Public Headers
 # ====================================================
-set(PUB_HDR chimera_inc)
+set(PUB_HDR chimera_intf_inc)
 add_library(${PUB_HDR} INTERFACE)
 target_include_directories(${PUB_HDR} INTERFACE "./../" "./include")
 target_link_libraries(${PUB_HDR} INTERFACE etl_inc  Boost::boost)
