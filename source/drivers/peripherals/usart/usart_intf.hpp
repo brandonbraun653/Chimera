@@ -5,7 +5,7 @@
  *	 Description:
  *    Interface to the USART peripheral
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -77,12 +77,6 @@ namespace Chimera::USART
     Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph );
     bool available( size_t *const bytes = nullptr );
     void postISRProcessing();
-
-    /*-------------------------------------------------
-    Interface: Listener
-    -------------------------------------------------*/
-    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
-    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
 
     /*-------------------------------------------------
     Interface: AsyncIO

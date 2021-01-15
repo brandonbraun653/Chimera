@@ -26,8 +26,8 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr ThreadId THREAD_ID_REG_MAX = THREAD_ID_INVALID - 1;
-  static constexpr ThreadId THREAD_ID_REG_MIN = THREAD_ID_REG_MAX - 1000;
+  static constexpr ThreadId THREAD_ID_REG_MAX = 1000;
+  static constexpr ThreadId THREAD_ID_REG_MIN = 100;
   static constexpr ThreadId THREAD_ID_REG_RNG = THREAD_ID_REG_MAX - THREAD_ID_REG_MIN;
 
   // Arbitrarily chosen to allow random ID generation to find free IDs quickly
@@ -87,7 +87,7 @@ namespace Chimera::Threading
     while ( true )
     {
       id = ( rand() % THREAD_ID_REG_RNG ) + THREAD_ID_REG_MIN;
-      if ( s_thread_registry.find( id ) == s_thread_registry.end() )
+      if ( ( id != THREAD_ID_INVALID ) && ( s_thread_registry.find( id ) == s_thread_registry.end() ) )
       {
         break;
       }

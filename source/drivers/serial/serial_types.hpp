@@ -20,6 +20,7 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/gpio>
+#include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
 
 namespace Chimera::Serial
 {
@@ -157,6 +158,15 @@ namespace Chimera::Serial
 
     NUM_OPTIONS,
     NOT_SUPPORTED
+  };
+
+  enum ISREvent : Interrupt::Signal_t
+  {
+    SIG_TX_COMPLETE,
+    SIG_RX_COMPLETE,
+    SIG_ERROR,
+
+    SIG_NUM_OPTIONS
   };
 
   /*-------------------------------------------------------------------------------

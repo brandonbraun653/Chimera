@@ -2,10 +2,10 @@
  *  File Name:
  *    usart_types.hpp
  *
- *	Description:
+ *  Description:
  *    Types for the Chimera USART
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once

@@ -5,7 +5,7 @@
  *  Description:
  *    Types associated with describing peripherals in general.
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -51,9 +51,9 @@ namespace Chimera::Peripheral
     PERIPH_VIC,     /**< Vector Interrupt Controller */
     PERIPH_WWDG,    /**< Window Watchdog */
     PERIPH_USB,     /**< Universal Serial Bus */
-    PERIPH_NONE,    /**< Not a peripheral */
 
     NUM_OPTIONS,
+    PERIPH_NONE,    /**< Not a peripheral */
     UNKNOWN
   };
 }  // namespace Chimera::Peripheral

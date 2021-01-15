@@ -297,7 +297,6 @@ namespace Chimera::Serial
    *  Virtual class to facilitate easy mocking of the driver
    */
   class ISerial : virtual public Chimera::Serial::HWInterface,
-                  virtual public Chimera::Event::ListenerInterface,
                   virtual public Chimera::Threading::AsyncIOInterface,
                   virtual public Chimera::Threading::LockableInterface
   {
@@ -335,12 +334,6 @@ namespace Chimera::Serial
     Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph );
     bool available( size_t *const bytes = nullptr );
     void postISRProcessing();
-
-    /*-------------------------------------------------
-    Interface: Listener
-    -------------------------------------------------*/
-    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
-    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
 
     /*-------------------------------------------------
     Interface: AsyncIO

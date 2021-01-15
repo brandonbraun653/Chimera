@@ -19,6 +19,7 @@
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/source/drivers/event/event_types.hpp>
+#include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
 
 namespace Chimera::Event
 {

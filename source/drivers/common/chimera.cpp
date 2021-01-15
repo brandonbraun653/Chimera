@@ -15,6 +15,7 @@
 #include <Chimera/common>
 #include <Chimera/exti>
 #include <Chimera/gpio>
+#include <Chimera/interrupt>
 #include <Chimera/pwm>
 #include <Chimera/serial>
 #include <Chimera/spi>
@@ -35,6 +36,12 @@ void ChimeraInit()
   ------------------------------------------------*/
   Chimera::System::initialize();
   Chimera::System::systemStartup();
+
+  /*-------------------------------------------------
+  Init interrupts early on so drivers may register
+  handlers with the system.
+  -------------------------------------------------*/
+  Chimera::Interrupt::initialize();
 
   /*------------------------------------------------
   Initialize peripheral drivers, which hook into the backend

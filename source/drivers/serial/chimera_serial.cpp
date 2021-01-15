@@ -316,36 +316,6 @@ namespace Chimera::Serial
 
 
   /*-------------------------------------------------
-  Interface: Listener
-  -------------------------------------------------*/
-  Chimera::Status_t Driver::registerListener( Chimera::Event::Actionable &listener, const size_t timeout,
-                                              size_t &registrationID )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->registerListener( listener, timeout, registrationID );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->registerListener( listener, timeout, registrationID );
-    }
-  }
-
-
-  Chimera::Status_t Driver::removeListener( const size_t registrationID, const size_t timeout )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->removeListener( registrationID, timeout );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->removeListener( registrationID, timeout );
-    }
-  }
-
-
-  /*-------------------------------------------------
   Interface: AsyncIO
   -------------------------------------------------*/
   Chimera::Status_t Driver::await( const Chimera::Event::Trigger event, const size_t timeout )
