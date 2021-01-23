@@ -69,8 +69,8 @@ namespace Chimera::System
     }
     else
     {
-      auto temp        = InterruptMask();
-      temp.interrupted = false;
+      auto temp  = InterruptMask();
+      temp.count = 0;
       return temp;
     }
   }

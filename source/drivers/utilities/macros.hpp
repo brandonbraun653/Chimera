@@ -15,6 +15,7 @@
 /* STL Includes */
 #include <cstddef>
 #include <cstring>
+#include <type_traits>
 
 /*-------------------------------------------------------------------------------
 Macros to Determine Array Count & Size

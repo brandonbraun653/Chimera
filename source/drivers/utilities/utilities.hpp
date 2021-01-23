@@ -16,6 +16,17 @@
 /* Chimera Includes */
 #include <Chimera/common>
 
+
+
+/**
+ *  Converts an enumerated type into the integral variant
+ */
+template<typename E>
+constexpr auto to_integral(E e) -> typename std::underlying_type<E>::type
+{
+  return static_cast<typename std::underlying_type<E>::type>(e);
+}
+
 namespace Chimera::Utilities
 {
   /*-------------------------------------------------------------------------------

@@ -64,8 +64,8 @@ namespace Chimera::System
    */
   struct InterruptMask
   {
-    bool interrupted;
-    uint32_t mask;
+    uint32_t count; /**< Reference counting for nested calls */
+    uint32_t mask;  /**< Mask flag bits. HW specific. */
   };
 
   /**

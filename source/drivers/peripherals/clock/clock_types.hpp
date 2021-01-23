@@ -5,7 +5,7 @@
  *  Description:
  *    Types used in describing on board clocks
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -32,7 +32,8 @@ namespace Chimera::Clock
     MSI,
     HSI16,
     RC48,
-    PLLCLK,
+    PLLP,
+    PLLR,
     HCLK,
     AHB = HCLK,
     PCLK1,
