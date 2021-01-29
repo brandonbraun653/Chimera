@@ -11,6 +11,7 @@
 # Import sub-projects
 # ====================================================
 add_subdirectory("source")
+add_subdirectory("bsp")
 
 # ====================================================
 # Public Headers
