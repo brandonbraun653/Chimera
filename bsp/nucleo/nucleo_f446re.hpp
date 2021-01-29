@@ -16,6 +16,7 @@
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/spi>
+#include <Chimera/serial>
 
 
 namespace BSP::Nucleo::F446RE
@@ -91,6 +92,29 @@ namespace BSP::Nucleo::F446RE
       static constexpr Chimera::GPIO::Port misoPort = Chimera::GPIO::Port::PORTC;
       static constexpr Chimera::GPIO::Pin csPin     = 2;
       static constexpr Chimera::GPIO::Port csPort   = Chimera::GPIO::Port::PORTD;
+    }
+  }
+
+  /*-------------------------------------------------------------------------------
+  USART Definitions
+  -------------------------------------------------------------------------------*/
+  namespace USART
+  {
+    /*-------------------------------------------------
+    Virtual com port connected to the attached STLink
+    debug module. This will pipe data out over USB to
+    the host PC. Requires proper jumper configuration.
+    -------------------------------------------------*/
+    namespace ComPort
+    {
+      extern const Chimera::Serial::Config config;
+      extern const Chimera::GPIO::PinInit txConfig;
+      extern const Chimera::GPIO::PinInit rxConfig;
+
+      static constexpr Chimera::GPIO::Pin txPin    = 2;
+      static constexpr Chimera::GPIO::Port txPort  = Chimera::GPIO::Port::PORTA;
+      static constexpr Chimera::GPIO::Pin rxPin    = 3;
+      static constexpr Chimera::GPIO::Port rxPort  = Chimera::GPIO::Port::PORTA;
     }
   }
 }  // namespace BSP::Nucleo::F446RE

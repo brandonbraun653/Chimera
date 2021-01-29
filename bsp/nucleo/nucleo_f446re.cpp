@@ -32,5 +32,38 @@ namespace BSP::Nucleo::F446RE
                                               .threaded  = false,
                                               .validity  = true };
     }
-  }    // namespace GPIO
-}    // namespace BSP::Nucleo::F446RE
+  }  // namespace GPIO
+
+  /*-------------------------------------------------------------------------------
+  USART
+  -------------------------------------------------------------------------------*/
+  namespace USART
+  {
+    namespace ComPort
+    {
+      const Chimera::Serial::Config config = { .baud     = 115200,
+                                               .width    = Chimera::Serial::CharWid::CW_8BIT,
+                                               .parity   = Chimera::Serial::Parity::PAR_NONE,
+                                               .stopBits = Chimera::Serial::StopBits::SBITS_ONE,
+                                               .flow     = Chimera::Serial::FlowControl::FCTRL_NONE };
+
+      const Chimera::GPIO::PinInit txConfig = { .alternate = Chimera::GPIO::Alternate::USART2_TX,
+                                                .drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL,
+                                                .pin       = txPin,
+                                                .port      = txPort,
+                                                .pull      = Chimera::GPIO::Pull::NO_PULL,
+                                                .state     = Chimera::GPIO::State::HIGH,
+                                                .threaded  = false,
+                                                .validity  = true };
+
+      const Chimera::GPIO::PinInit rxConfig = { .alternate = Chimera::GPIO::Alternate::USART2_RX,
+                                                .drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL,
+                                                .pin       = rxPin,
+                                                .port      = rxPort,
+                                                .pull      = Chimera::GPIO::Pull::NO_PULL,
+                                                .state     = Chimera::GPIO::State::HIGH,
+                                                .threaded  = false,
+                                                .validity  = true };
+    }  // namespace ComPort
+  }    // namespace USART
+}  // namespace BSP::Nucleo::F446RE
