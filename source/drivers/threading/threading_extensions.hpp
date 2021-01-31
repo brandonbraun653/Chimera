@@ -66,53 +66,12 @@ namespace Chimera::Threading
     bool is_locked;
   };
 
-
-  class Lockable : virtual public LockableInterface
-  {
-  public:
-    Lockable()
-    {
-    }
-
-    ~Lockable()
-    {
-    }
-
-    void lock()
-    {
-      mutex.lock();
-    }
-
-    void lockFromISR()
-    {
-      mutex.lock();
-    }
-
-    bool try_lock_for( const size_t timeout )
-    {
-      return mutex.try_lock_for( timeout );
-    }
-
-    void unlock()
-    {
-      mutex.unlock();
-    }
-
-    void unlockFromISR()
-    {
-      mutex.unlock();
-    }
-
-  private:
-    RecursiveTimedMutex mutex;
-  };
-
   /**
-   *  Variant of the Lockable interface that doesn't depend on inheritence.
+   *  Variant of the Lockable interface that doesn't depend on inheritance.
    *  This helps embedded systems to consume less memory for drivers.
    */
   template<class T>
-  class LockableCRTP
+  class Lockable
   {
   public:
     void lock()
@@ -139,6 +98,9 @@ namespace Chimera::Threading
     {
       static_cast<T *>( this )->mClsMutex.unlock();
     }
+
+  protected:
+    RecursiveTimedMutex mClsMutex;
   };
 }
 
