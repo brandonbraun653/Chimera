@@ -124,7 +124,7 @@ namespace Chimera::Threading
 
   void CountingSemaphore::acquireFromISR()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED )
     {
       BaseType_t xHigherPriorityTaskWoken = pdFALSE;
       xSemaphoreTakeFromISR( semphr, &xHigherPriorityTaskWoken );
@@ -144,7 +144,7 @@ namespace Chimera::Threading
 
   void CountingSemaphore::releaseFromISR()
   {
-    if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    if ( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED )
     {
       BaseType_t xHigherPriorityTaskWoken = pdFALSE;
       xSemaphoreGiveFromISR( semphr, &xHigherPriorityTaskWoken );
