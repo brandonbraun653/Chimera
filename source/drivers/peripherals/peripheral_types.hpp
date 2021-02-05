@@ -32,6 +32,7 @@ namespace Chimera::Peripheral
     PERIPH_CRS,     /**< Clock Recovery System */
     PERIPH_DAC,     /**< Digital to Analog Converter */
     PERIPH_DMA,     /**< Direct Memory Access */
+    PERIPH_EXTI,    /**< External Interrupt */
     PERIPH_FLASH,   /**< System Flash Controller */
     PERIPH_FMC,     /**< Flexible Memory Controller */
     PERIPH_GPIO,    /**< General Purpose Input Output */

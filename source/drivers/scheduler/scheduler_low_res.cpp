@@ -24,7 +24,7 @@ namespace Chimera::Scheduler::LoRes
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t s_ThreadStackBytes = 500;
+  static constexpr size_t s_ThreadStackBytes = 2048;
   static constexpr size_t s_NumTimers        = 15;
 
 
@@ -317,7 +317,7 @@ namespace Chimera::Scheduler::LoRes
             break;
 
           case CallType::PERIODIC_LIMITED:
-            if ( s_registry[ timer ].numCalls >= s_registry[ timer ].maxCalls )
+            if ( s_registry[ timer ].numCalls > s_registry[ timer ].maxCalls )
             {
               s_registry[ timer ].clear();
             }
