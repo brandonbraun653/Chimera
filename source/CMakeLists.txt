@@ -2,7 +2,6 @@
 # Import sub-projects
 # ====================================================
 add_subdirectory("drivers")
-add_subdirectory("sim")
 
 
 # ====================================================

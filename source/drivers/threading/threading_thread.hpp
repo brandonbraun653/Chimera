@@ -163,7 +163,11 @@ namespace Chimera::Threading
      */
     explicit operator bool() const
     {
+#if defined( USING_NATIVE_THREADS )
+      return !( mNativeThread.get_id() == std::thread::id() );
+#elif defined( USING_FREERTOS_THREADS )
       return ( mNativeThread ) ? true : false;
+#endif
     }
 
     bool operator=( const Thread &rhs )

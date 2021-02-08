@@ -32,38 +32,6 @@ namespace Chimera::Threading
   /************************************************************************/
   /*                             EXTENSIONS                               */
   /************************************************************************/
-  Lockable::Lockable()
-  {
-  }
-
-  Lockable::~Lockable()
-  {
-  }
-
-  void Lockable::lock()
-  {
-    mutex.lock();
-  }
-
-  void Lockable::lockFromISR()
-  {
-    mutex.lock();
-  }
-
-  bool Lockable::try_lock_for( const size_t timeout )
-  {
-    return mutex.try_lock_for( timeout );
-  }
-
-  void Lockable::unlock()
-  {
-    mutex.unlock();
-  }
-
-  void Lockable::unlockFromISR()
-  {
-    mutex.unlock();
-  }
 
 
   /************************************************************************/
@@ -289,59 +257,81 @@ namespace Chimera::Threading
     }
   }
 
-  Thread::Thread() : mFunc( nullptr ), mFuncArg( nullptr )
+ /*-------------------------------------------------
+  Ctors/Dtors
+  -------------------------------------------------*/
+  Thread::Thread() : mFunc( {} ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
   {
     mName.fill( 0 );
   }
 
-  Thread::Thread( Thread &&other ) : mFunc( other.mFunc ), mFuncArg( other.mFuncArg )
+
+  Thread::Thread( const Thread &other ) : mFunc( other.mFunc ), mPriority( other.mPriority ),
+      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
   {
-    mName.fill( 0 );
+    copy_thread_name( other.name() );
   }
+
+
+  Thread::Thread( Thread &&other ) : mFunc( other.mFunc ), mPriority( other.mPriority ),
+      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
+  {
+    copy_thread_name( other.name() );
+  }
+
 
   Thread::~Thread()
   {
   }
 
+
+  /*-------------------------------------------------
+  Public Methods
+  -------------------------------------------------*/
   void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
-      Copy out the string data into the name
-      ------------------------------------------------*/
-    size_t copyLen = name.length();
-    if ( copyLen > MAX_NAME_LEN )
-    {
-      copyLen = MAX_NAME_LEN;
-    }
-
-    mName.fill( 0 );
-    memcpy( mName.data(), name.data(), copyLen );
-
-    /*------------------------------------------------
-    Copy the additional parameters
+    Copy the parameters
     ------------------------------------------------*/
-    mFunc       = func;
-    mFuncArg    = arg;
-    mPriority   = priority;
-    mStackDepth = stackDepth;
+    mFunc.type             = FunctorType::C_STYLE;
+    mFunc.function.pointer = func;
+    mFunc.arg              = arg;
+    mPriority              = priority;
+    mStackDepth            = stackDepth;
+    copy_thread_name( name );
   }
 
-  void Thread::start()
+
+  void Thread::initialize( ThreadDelegate func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+                           const std::string_view name )
   {
-    mNativeThread = std::thread( mFunc, mFuncArg );
+    /*------------------------------------------------
+    Copy the parameters
+    ------------------------------------------------*/
+    mFunc.type              = FunctorType::DELEGATE;
+    mFunc.function.delegate = func;
+    mFunc.arg               = arg;
+    mPriority               = priority;
+    mStackDepth             = stackDepth;
+    copy_thread_name( name );
+  }
+
+  ThreadId Thread::start()
+  {
+    return 0;
   }
 
 
   void Thread::suspend()
   {
-    throw std::runtime_error( "Thread suspension not supported" );
+    // Not supported
   }
 
 
   void Thread::resume()
   {
-    // Not supported since suspend() isn't.
+    // Not supported
   }
 
 
@@ -355,28 +345,9 @@ namespace Chimera::Threading
     return mNativeThread.joinable();
   }
 
-  Id Thread::get_id()
-  {
-    // auto stl_id = mNativeThread.get_id();
-
-    return Id();
-  }
-
   detail::native_thread_handle_type Thread::native_handle()
   {
     return mNativeThread.native_handle();
-  }
-
-  int Thread::hardware_concurrency()
-  {
-    return Chimera::System::maxConcurrentThreads();
-  }
-
-  Id this_thread::get_id()
-  {
-    // auto stl_id = std::this_thread::get_id();
-
-    return Id();
   }
 
   void this_thread::sleep_for( const size_t timeout )
@@ -397,7 +368,19 @@ namespace Chimera::Threading
 
   void this_thread::suspend()
   {
-    throw std::runtime_error( "Thread suspension not supported" );
+    // Not Supported
+  }
+
+
+  ThreadId this_thread::id()
+  {
+    return 0;
+  }
+
+
+  bool this_thread::receiveTaskMsg( ThreadMsg &msg, const size_t timeout )
+  {
+    return false;
   }
 
 }  // namespace Chimera::Threading
