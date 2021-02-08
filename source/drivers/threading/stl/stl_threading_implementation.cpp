@@ -257,6 +257,11 @@ namespace Chimera::Threading
     }
   }
 
+  bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout )
+  {
+    return false;
+  }
+
  /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/

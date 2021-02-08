@@ -17,6 +17,7 @@
 #include <cstddef>
 
 /* Chimera Includes */
+#include <Chimera/source/drivers/threading/threading_extensions.hpp>
 #include <Chimera/source/drivers/threading/threading_mutex.hpp>
 #include <Chimera/source/drivers/threading/threading_detail.hpp>
 

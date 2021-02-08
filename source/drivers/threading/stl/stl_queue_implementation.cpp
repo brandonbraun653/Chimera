@@ -29,7 +29,7 @@ namespace Chimera::Threading
 
   }
 
-  bool create( const size_t qLen, const size_t itemSize, void *qBuffer )
+  bool Queue::create( const size_t qLen, const size_t itemSize, void *qBuffer )
   {
     return false;
   }

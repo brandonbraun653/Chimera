@@ -80,7 +80,7 @@ namespace Chimera::Threading
 
   static constexpr size_t MAX_NAME_LEN             = 16;
   static constexpr size_t MAX_REGISTERABLE_THREADS = 10;
-  static constexpr ThreadId THREAD_ID_INVALID      = std::numeric_limits<ThreadId>::max();
+  static constexpr ThreadId THREAD_ID_INVALID      = 0xCCCCCCCC;
 
 
   /*-------------------------------------------------------------------------------
