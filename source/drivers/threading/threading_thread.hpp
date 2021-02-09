@@ -67,9 +67,8 @@ namespace Chimera::Threading
   {
   public:
     Thread();
-    Thread( const Thread & );
     Thread( Thread &&other );
-    // Thread( const Thread & ) = delete;
+    Thread( const Thread & ) = delete;
     ~Thread();
 
     /**
@@ -135,7 +134,7 @@ namespace Chimera::Threading
     bool joinable();
 
     /**
-     *  Handle to the OS specific thread type. Allows the user to xecute functions that
+     *  Handle to the OS specific thread type. Allows the user to execute functions that
      *  may be available in the current OS but not supported by this class.
      *
      *  @return detail::native_thread_handle_type
@@ -198,14 +197,20 @@ namespace Chimera::Threading
     }
 
   private:
-    bool mRunning;
-    detail::native_thread mNativeThread;
-    UserFunction mFunc;
-    ThreadId mThreadId;
-    Priority mPriority;
-    size_t mStackDepth;
-    std::array<char, MAX_NAME_LEN + 1> mName;
+    /*-------------------------------------------------
+    State Data
+    -------------------------------------------------*/
+    bool mRunning;                            /**< Is the thread running? */
+    detail::native_thread mNativeThread;      /**< Default thread storage type */
+    UserFunction mFunc;                       /**< Function the user wants to run as a thread */
+    ThreadId mThreadId;                       /**< Unique thread identifier */
+    Priority mPriority;                       /**< Thread priority level */
+    size_t mStackDepth;                       /**< Thread stack in bytes */
+    std::array<char, MAX_NAME_LEN + 1> mName; /**< User friendly name of the thread */
 
+    /*-------------------------------------------------
+    Private Helper Functions
+    -------------------------------------------------*/
     void lookup_handle();
     void copy_thread_name( const std::string_view &name );
   };

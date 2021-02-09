@@ -1,20 +1,19 @@
 /********************************************************************************
  *  File Name:
- *    stl_queue_implementation.cpp
+ *    stl_queue.cpp
  *
  *  Description:
  *    Queue implementation with STL
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/thread>
 
-#if defined( USING_WINDOWS ) || defined( USING_LINUX ) || defined( USING_NATIVE_THREADS )
+#if defined( USING_NATIVE_THREADS )
 
-#pragma warning("Queue definition exists but isn't functional")
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------

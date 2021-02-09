@@ -19,6 +19,9 @@
 /* ETL Includes */
 #include <etl/delegate.h>
 
+/* Chimera Includes */
+#include <Chimera/common>
+
 namespace Chimera::Threading
 {
   /*-------------------------------------------------------------------------------

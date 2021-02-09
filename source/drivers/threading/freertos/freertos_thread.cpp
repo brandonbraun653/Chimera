@@ -99,15 +99,6 @@ namespace Chimera::Threading
     mName.fill( 0 );
   }
 
-
-  Thread::Thread( const Thread &other ) :
-      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
-  {
-    copy_thread_name( other.name() );
-  }
-
-
   Thread::Thread( Thread &&other ) :
       mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
       mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
