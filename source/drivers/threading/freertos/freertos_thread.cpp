@@ -150,8 +150,9 @@ namespace Chimera::Threading
   ThreadId Thread::start()
   {
     /*------------------------------------------------
-    Actually create the thread. If the scheduler is running already, it will
-    immediately start. Otherwise it will wait until scheduler executes.
+    Actually create the thread. If the scheduler is
+    running, it will immediately start. Otherwise it
+    will wait until scheduler executes.
     ------------------------------------------------*/
     BaseType_t result;
     if( mFunc.type == FunctorType::C_STYLE )

@@ -42,6 +42,11 @@ namespace Chimera::Threading
   static RecursiveMutex s_registry_lock;
   static etl::flat_map<ThreadId, Thread, MAX_REGISTERABLE_THREADS> s_thread_registry;
 
+  // It might be worth it to add a message queue for each thread in some kind of struct?
+  // This would get around the FreeRTOS style queue, but doesn't do a great job of passing
+  // larger amounts of data. It would however unify the message passing interface, which
+  // could be useful I guess.
+
   /*-------------------------------------------------------------------------------
   Static Functions
   -------------------------------------------------------------------------------*/

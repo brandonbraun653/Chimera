@@ -1,14 +1,9 @@
 /********************************************************************************
  *  File Name:
- *    generic_threading_implementation.cpp
+ *    stl_thread.cpp
  *
  *  Description:
- *    Implements all classes used in Chimera::Threading for the Generic system.
- *
- *  Notes:
- *    1. This will require the underlying system to have some idea of how to
- *       enable/disable system level interrupts to simulate blocking access to
- *       resources.
+ *    Implements all classes used in Chimera::Threading for the Generic system
  *
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -23,6 +18,7 @@
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
+#include <Chimera/source/drivers/threading/threading_thread_internal.hpp>
 
 
 #if defined( USING_NATIVE_THREADS )
@@ -37,10 +33,12 @@ namespace Chimera::Threading
     }
   }
 
+
   bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout )
   {
     return false;
   }
+
 
   /*-------------------------------------------------
   Ctors/Dtors
@@ -51,7 +49,8 @@ namespace Chimera::Threading
   }
 
 
-  Thread::Thread( Thread &&other ) : mFunc( other.mFunc ), mPriority( other.mPriority ),
+  Thread::Thread( Thread &&other ) :
+      mNativeThread( std::move( other.mNativeThread ) ), mFunc( other.mFunc ), mPriority( other.mPriority ),
       mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
@@ -97,7 +96,27 @@ namespace Chimera::Threading
 
   ThreadId Thread::start()
   {
-    return 0;
+    /*-------------------------------------------------
+    This annoyingly obtuse registration uses lambda
+    functions as an ad hoc way to inject the calls.
+    -------------------------------------------------*/
+    if( mFunc.type == FunctorType::C_STYLE )
+    {
+      ThreadFunctPtr ptr = mFunc.function.pointer;
+      ThreadArg arg      = mFunc.arg;
+      mNativeThread      = std::move( std::thread( [ ptr, arg ]() { ( *ptr )( arg ); } ) );
+    }
+    else // FunctorType::DELEGATE
+    {
+      ThreadArg arg           = mFunc.arg;
+      ThreadDelegate delegate = mFunc.function.delegate;
+      mNativeThread           = std::move( std::thread( [ delegate, arg ]() { delegate( arg ); } ) );
+    }
+    // Ensure this function is handling all cases...
+    static_assert( static_cast<size_t>( FunctorType::NUM_OPTIONS ) == 2 );
+
+    mRunning = true;
+    return registerThread( std::move( *this ) );
   }
 
 
