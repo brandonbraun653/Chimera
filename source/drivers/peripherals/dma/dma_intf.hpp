@@ -109,7 +109,7 @@ namespace Chimera::DMA
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class IDMA : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class IDMA : virtual public HWInterface, virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~IDMA() = default;

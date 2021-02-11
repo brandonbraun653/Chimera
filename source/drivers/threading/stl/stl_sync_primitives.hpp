@@ -23,7 +23,7 @@ Macros
 -------------------------------------------------------------------------------*/
 #define STACK_BYTES( x ) ( x )
 
-namespace Chimera::Threading::detail
+namespace Chimera::Thread::detail
 {
   /*-------------------------------------------------------------------------------
   Mutex Types
@@ -61,7 +61,7 @@ namespace Chimera::Threading::detail
 
   using native_queue           = void*;
   using native_queue_structure = _DummyQueueStructure;
-}  // namespace Chimera::Threading::detail
+}  // namespace Chimera::Thread::detail
 
 #endif /* USING_NATIVE_THREADS */
 #endif /* !CHIMERA_THREADING_STL_TYPES_HPP */

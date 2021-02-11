@@ -144,7 +144,7 @@ namespace Chimera::Watchdog
    */
   class IIndependentDriver : virtual public HWInterface,
                              virtual public IndependentInterface,
-                             virtual public Chimera::Threading::LockableInterface
+                             virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~IIndependentDriver() = default;
@@ -152,7 +152,7 @@ namespace Chimera::Watchdog
 
   class IWindowDriver : virtual public HWInterface,
                              virtual public WindowInterface,
-                             virtual public Chimera::Threading::LockableInterface
+                             virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~IWindowDriver() = default;

@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera Thread Includes
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -21,5 +21,11 @@
 #include <Chimera/source/drivers/threading/threading_thread.hpp>
 #include <Chimera/source/drivers/threading/threading_types.hpp>
 #include <Chimera/source/drivers/threading/threading_user.hpp>
+
+#if defined( USING_NATIVE_THREADS )
+#include <Chimera/source/drivers/threading/stl/stl_thread.hpp>
+#elif defined( USING_FREERTOS_THREADS )
+#include <Chimera/source/drivers/threading/freertos/freertos_thread.hpp>
+#endif
 
 #endif /* !CHIMERA_THREAD_INCLUDES */

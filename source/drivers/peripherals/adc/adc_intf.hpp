@@ -197,7 +197,7 @@ namespace Chimera::ADC
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class IADC : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class IADC : virtual public HWInterface, virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~IADC() = default;

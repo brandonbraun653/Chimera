@@ -3,7 +3,7 @@
  *    stl_thread.cpp
  *
  *  Description:
- *    Implements all classes used in Chimera::Threading for the Generic system
+ *    Implements all classes used in Chimera::Thread for the Generic system
  *
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
@@ -18,23 +18,23 @@
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
-#include <Chimera/source/drivers/threading/threading_thread_internal.hpp>
+#include <Chimera/source/drivers/threading/common/threading_internal.hpp>
 
 
 #if defined( USING_NATIVE_THREADS )
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   void startScheduler()
   {
     while ( 1 )
     {
-      Chimera::Threading::this_thread::sleep_for( 100 );
+      Chimera::Thread::this_thread::sleep_for( 100 );
     }
   }
 
 
-  bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout )
+  bool sendTaskMsg( const TaskId id, const TaskMsg msg, const size_t timeout )
   {
     return false;
   }
@@ -43,21 +43,21 @@ namespace Chimera::Threading
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Thread::Thread() : mFunc( {} ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
+  Task::Task() : mFunc( {} ), mTaskId( THREAD_ID_INVALID ), mRunning( false )
   {
     mName.fill( 0 );
   }
 
 
-  Thread::Thread( Thread &&other ) :
+  Task::Task( Task &&other ) :
       mNativeThread( std::move( other.mNativeThread ) ), mFunc( other.mFunc ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
+      mStackDepth( other.mStackDepth ), mTaskId( other.mTaskId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
   }
 
 
-  Thread::~Thread()
+  Task::~Task()
   {
   }
 
@@ -65,7 +65,7 @@ namespace Chimera::Threading
   /*-------------------------------------------------
   Public Methods
   -------------------------------------------------*/
-  void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
@@ -80,7 +80,7 @@ namespace Chimera::Threading
   }
 
 
-  void Thread::initialize( ThreadDelegate func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
@@ -94,7 +94,7 @@ namespace Chimera::Threading
     copy_thread_name( name );
   }
 
-  ThreadId Thread::start()
+  TaskId Task::start()
   {
     /*-------------------------------------------------
     This annoyingly obtuse registration uses lambda
@@ -102,14 +102,14 @@ namespace Chimera::Threading
     -------------------------------------------------*/
     if( mFunc.type == FunctorType::C_STYLE )
     {
-      ThreadFunctPtr ptr = mFunc.function.pointer;
-      ThreadArg arg      = mFunc.arg;
+      TaskFuncPtr ptr = mFunc.function.pointer;
+      TaskArg arg      = mFunc.arg;
       mNativeThread      = std::move( std::thread( [ ptr, arg ]() { ( *ptr )( arg ); } ) );
     }
     else // FunctorType::DELEGATE
     {
-      ThreadArg arg           = mFunc.arg;
-      ThreadDelegate delegate = mFunc.function.delegate;
+      TaskArg arg           = mFunc.arg;
+      TaskDelegate delegate = mFunc.function.delegate;
       mNativeThread           = std::move( std::thread( [ delegate, arg ]() { delegate( arg ); } ) );
     }
     // Ensure this function is handling all cases...
@@ -120,29 +120,29 @@ namespace Chimera::Threading
   }
 
 
-  void Thread::suspend()
+  void Task::suspend()
   {
     // Not supported
   }
 
 
-  void Thread::resume()
+  void Task::resume()
   {
     // Not supported
   }
 
 
-  void Thread::join()
+  void Task::join()
   {
     mNativeThread.join();
   }
 
-  bool Thread::joinable()
+  bool Task::joinable()
   {
     return mNativeThread.joinable();
   }
 
-  detail::native_thread_handle_type Thread::native_handle()
+  detail::native_thread_handle_type Task::native_handle()
   {
     return mNativeThread.native_handle();
   }
@@ -169,17 +169,17 @@ namespace Chimera::Threading
   }
 
 
-  ThreadId this_thread::id()
+  TaskId this_thread::id()
   {
     return 0;
   }
 
 
-  bool this_thread::receiveTaskMsg( ThreadMsg &msg, const size_t timeout )
+  bool this_thread::receiveTaskMsg( TaskMsg &msg, const size_t timeout )
   {
     return false;
   }
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* USING_GENERIC_SYSTEM */

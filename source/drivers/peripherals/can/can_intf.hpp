@@ -119,8 +119,8 @@ namespace Chimera::CAN
    */
   class ICAN : virtual public HWInterface,
                virtual public Chimera::Event::ListenerInterface,
-               virtual public Chimera::Threading::AsyncIOInterface,
-               virtual public Chimera::Threading::LockableInterface
+               virtual public Chimera::Thread::AsyncIOInterface,
+               virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~ICAN() = default;

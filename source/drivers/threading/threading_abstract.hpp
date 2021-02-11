@@ -20,7 +20,7 @@
 #include <Chimera/source/drivers/event/event_types.hpp>
 #include <Chimera/source/drivers/threading/threading_semaphore.hpp>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   class AsyncIOInterface
   {
@@ -54,7 +54,7 @@ namespace Chimera::Threading
      *  @param[in]  timeout     How long to wait for the event to occur
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
+    virtual Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Thread::BinarySemaphore &notifier,
                                      const size_t timeout ) = 0;
   };
 
@@ -103,6 +103,6 @@ namespace Chimera::Threading
      */
     virtual void unlockFromISR() = 0;
   };
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_INTERFACE_HPP */

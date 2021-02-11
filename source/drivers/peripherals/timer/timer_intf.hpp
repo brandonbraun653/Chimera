@@ -108,7 +108,7 @@ namespace Chimera::Timer
     virtual ~HWInterface() = default;
   };
 
-  class ITimer : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class ITimer : virtual public HWInterface, virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~ITimer() = default;

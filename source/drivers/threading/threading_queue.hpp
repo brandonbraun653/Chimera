@@ -21,7 +21,7 @@
 #include <Chimera/source/drivers/threading/threading_mutex.hpp>
 #include <Chimera/source/drivers/threading/threading_detail.hpp>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /**
    *  A generic queue implementation that tries to follow the
@@ -33,7 +33,7 @@ namespace Chimera::Threading
    *  is performed via pointers. All functions are thread safe and
    *  some are even capable of use inside of ISRs.
    */
-  class Queue : public Chimera::Threading::Lockable<Queue>
+  class Queue : public Chimera::Thread::Lockable<Queue>
   {
   public:
     Queue();
@@ -177,7 +177,7 @@ namespace Chimera::Threading
     detail::native_queue& getHandle();
 
   private:
-    friend Chimera::Threading::Lockable<Queue>;
+    friend Chimera::Thread::Lockable<Queue>;
 
 
     size_t mMaxSize;
@@ -185,6 +185,6 @@ namespace Chimera::Threading
     detail::native_queue_structure mQueueStructure;
   };
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_QUEUE_HPP */

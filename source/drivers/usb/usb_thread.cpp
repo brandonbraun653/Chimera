@@ -19,7 +19,7 @@ namespace Chimera::USB
   -------------------------------------------------------------------------------*/
   static bool s_usb_online    = false;
   static size_t s_update_rate = 25;
-  static Chimera::Threading::RecursiveMutex s_driver_lock;
+  static Chimera::Thread::RecursiveMutex s_driver_lock;
 
 
   /*-------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace Chimera::USB
     -------------------------------------------------------------------------------*/
     while ( 1 )
     {
-      Chimera::Threading::this_thread::yield();
+      Chimera::Thread::this_thread::yield();
     }
   }
 
@@ -83,12 +83,12 @@ namespace Chimera::USB
   static void lock_process()
   {
     s_driver_lock.lock();
-    Chimera::Threading::getThread( USBThreadName.cbegin() )->suspend();
+    Chimera::Thread::getThread( USBThreadName.cbegin() )->suspend();
   }
 
   static void unlock_process()
   {
     s_driver_lock.unlock();
-    Chimera::Threading::getThread( USBThreadName.cbegin() )->resume();
+    Chimera::Thread::getThread( USBThreadName.cbegin() )->resume();
   }
 }  // namespace Chimera::USB

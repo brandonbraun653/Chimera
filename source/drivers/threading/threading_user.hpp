@@ -15,7 +15,7 @@
 /* STL Includes */
 #include <cstddef>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /**
    *  Starts the scheduler. This primarily only has meaning in the
@@ -47,6 +47,6 @@ namespace Chimera::Threading
    */
   int hardwareConcurrency();
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* CHIMERA_THREADING_HPP */

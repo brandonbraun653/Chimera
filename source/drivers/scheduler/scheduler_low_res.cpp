@@ -41,8 +41,8 @@ namespace Chimera::Scheduler::LoRes
   static bool s_CanExecute = false;
   static bool s_CancelThis = false;
   static size_t s_driver_initialized;
-  static Chimera::Threading::RecursiveMutex s_mtx;
-  static Chimera::Threading::Thread s_TimerThread;
+  static Chimera::Thread::RecursiveMutex s_mtx;
+  static Chimera::Thread::Task s_TimerThread;
   static SoftwareTimerEntry s_registry[ s_NumTimers ];
 
 
@@ -51,7 +51,7 @@ namespace Chimera::Scheduler::LoRes
   -------------------------------------------------------------------------------*/
   Chimera::Status_t open()
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*------------------------------------------------
     Prevent multiple initializations (need reset first)
@@ -108,7 +108,7 @@ namespace Chimera::Scheduler::LoRes
 
   size_t resolution()
   {
-    return Chimera::Threading::schedulerResolution();
+    return Chimera::Thread::schedulerResolution();
   }
 
 
@@ -272,7 +272,7 @@ namespace Chimera::Scheduler::LoRes
   -------------------------------------------------------------------------------*/
   static void TimerThreadFunction( void *arg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     while ( 1 )
     {

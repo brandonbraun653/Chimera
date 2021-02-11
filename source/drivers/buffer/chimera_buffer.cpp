@@ -74,7 +74,7 @@ namespace Chimera::Buffer
   Chimera::Status_t PeripheralBuffer::assign( boost::circular_buffer<uint8_t> *const circularBuffer,
                                               uint8_t *const linearBuffer, const size_t linearSize )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     if ( !circularBuffer || !linearBuffer || !linearSize )
     {
@@ -108,7 +108,7 @@ namespace Chimera::Buffer
   Chimera::Status_t PeripheralBuffer::push( const uint8_t *const buffer, const size_t len, size_t &actual )
   {
     using namespace Chimera::Hardware;
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     auto error          = Chimera::Status::LOCKED;
     size_t bytesWritten = 0;
@@ -152,7 +152,7 @@ namespace Chimera::Buffer
   Chimera::Status_t PeripheralBuffer::pop( uint8_t *const buffer, const size_t len, size_t &actual )
   {
     using namespace Chimera::Hardware;
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     auto error       = Chimera::Status::LOCKED;
     size_t bytesRead = 0;
@@ -196,7 +196,7 @@ namespace Chimera::Buffer
 
   Chimera::Status_t PeripheralBuffer::flush()
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
     auto error = Chimera::Status::LOCKED;
 
     if ( !pLinearBuffer || !pCircularBuffer )
@@ -216,7 +216,7 @@ namespace Chimera::Buffer
 
   Chimera::Status_t PeripheralBuffer::transferInto( const size_t bytes, size_t &actual )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     auto result = Chimera::Status::LOCKED;
     size_t bytesToCopy = 0;
@@ -273,7 +273,7 @@ namespace Chimera::Buffer
 
   Chimera::Status_t PeripheralBuffer::transferOutOf( const size_t bytes, size_t &actual )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     auto result = Chimera::Status::LOCKED;
     size_t bytesToCopy = 0;

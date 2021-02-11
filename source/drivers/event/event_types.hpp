@@ -57,7 +57,7 @@ namespace Chimera::Event
     uint32_t *atomic_listener;
     Chimera::Callback::EventFunction event_callback_listener;
     Chimera::Callback::ISRFunction isr_callback_listener;
-    Chimera::Threading::BinarySemaphore *semaphore_listener;
+    Chimera::Thread::BinarySemaphore *semaphore_listener;
   };
 
   struct Actionable

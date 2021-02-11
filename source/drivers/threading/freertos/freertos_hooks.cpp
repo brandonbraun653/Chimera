@@ -21,22 +21,22 @@ extern "C"
 
   void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
   {
-    Chimera::Threading::FreeRTOS::ApplicationStackOverflowHook( xTask, pcTaskName );
+    Chimera::Thread::FreeRTOS::ApplicationStackOverflowHook( xTask, pcTaskName );
   }
 
   void vApplicationTickHook()
   {
-    Chimera::Threading::FreeRTOS::ApplicationTickHook();
+    Chimera::Thread::FreeRTOS::ApplicationTickHook();
   }
 
   void vApplicationMallocFailedHook()
   {
-    Chimera::Threading::FreeRTOS::ApplicationMallocFailedHook();
+    Chimera::Thread::FreeRTOS::ApplicationMallocFailedHook();
   }
 
   void vApplicationIdleHook()
   {
-    Chimera::Threading::FreeRTOS::ApplicationIdleHook();
+    Chimera::Thread::FreeRTOS::ApplicationIdleHook();
   }
 
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )

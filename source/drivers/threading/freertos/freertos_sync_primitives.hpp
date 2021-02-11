@@ -21,7 +21,7 @@
 #include <FreeRTOS/queue.h>
 #include "portmacro.h"
 
-namespace Chimera::Threading::detail
+namespace Chimera::Thread::detail
 {
   /*-------------------------------------------------------------------------------
   Mutex Types
@@ -49,7 +49,7 @@ namespace Chimera::Threading::detail
   using native_queue           = QueueHandle_t;
   using native_queue_structure = StaticQueue_t;
 
-}  // namespace Chimera::Threading::detail
+}  // namespace Chimera::Thread::detail
 
 #endif /* USING_FREERTOS_THREADS */
 #endif /* !CHIMERA_THREADING_FREERTOS_TYPES_HPP */

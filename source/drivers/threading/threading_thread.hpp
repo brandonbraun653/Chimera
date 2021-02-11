@@ -5,7 +5,7 @@
  *  Description:
  *    Thread implementation for Chimera that patterns after the C++ STL
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -24,7 +24,7 @@
 /* ETL Includes */
 #include <etl/delegate.h>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -39,9 +39,9 @@ namespace Chimera::Threading
    *  @param[in]  name      Name given to the thread upon creation
    *  @return Thread *      Returns nullptr if not found
    */
-  Thread *getThread( const char *name );
-  Thread *getThread( const std::string_view &name );
-  Thread *getThread( const ThreadId id );
+  Task *getThread( const char *name );
+  Task *getThread( const std::string_view &name );
+  Task *getThread( const TaskId id );
 
   /**
    *  Sends the message to the requested task, unblocking it if sleeping.
@@ -53,7 +53,7 @@ namespace Chimera::Threading
    *  @param[in]  timeout   How long to wait for successful sending
    *  @return bool
    */
-  bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout );
+  bool sendTaskMsg( const TaskId id, const TaskMsg msg, const size_t timeout );
 
 
   /*-------------------------------------------------------------------------------
@@ -63,27 +63,34 @@ namespace Chimera::Threading
    *  A mostly C++ STL compatible thread class, but optimized for embedded OS environments
    *  that have more stringent requirements on thread creation due to resource limitations.
    */
-  class Thread
+  class IThread
   {
   public:
-    Thread();
-    Thread( Thread &&other );
-    Thread( const Thread & ) = delete;
-    ~Thread();
+    ~IThread() = default;
 
     /**
-     *  Creates a thread from the given function pointer and assigns it an execution
+     *  Creates a thread from the given function ptr and assigns it an execution
      *  priority level + stack to operate with.
      *
-     *  @param[in]  func          Function pointer defining what the thread executes
+     *  @param[in]  ptr          Function pointer defining what the thread executes
      *  @param[in]  priority      Tells the scheduler where this thread fits in the priority hierarchy
      *  @param[in]  stackDepth    How many bytes to allocate from the heap for this thread's stack
      *  @param[in]  name          User friendly name for identification
      */
-    void initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
-                     const std::string_view name );
-    void initialize( ThreadDelegate func, ThreadArg arg, const Priority priority, const size_t stackDepth,
-                     const std::string_view name );
+    virtual void initialize( TaskFuncPtr ptr, TaskArg arg, const Priority priority, const size_t stackDepth,
+                             const std::string_view name ) = 0;
+
+    /**
+     *  Creates a thread from the given function delegate and assigns it an execution
+     *  priority level + stack to operate with.
+     *
+     *  @param[in]  delegate      Function pointer defining what the thread executes
+     *  @param[in]  priority      Tells the scheduler where this thread fits in the priority hierarchy
+     *  @param[in]  stackDepth    How many bytes to allocate from the heap for this thread's stack
+     *  @param[in]  name          User friendly name for identification
+     */
+    virtual void initialize( TaskDelegate delegate, TaskArg arg, const Priority priority, const size_t stackDepth,
+                             const std::string_view name ) = 0;
 
     /**
      *  Assigns a given ID to this thread.
@@ -93,13 +100,13 @@ namespace Chimera::Threading
      *  @param[in]  id            The ID being assigned
      *  @return void
      */
-    void assignId( const ThreadId id );
+    virtual void assignId( const TaskId id ) = 0;
 
     /**
      *  Starts the thread, returning it's generated id.
-     *  @return ThreadId
+     *  @return TaskId
      */
-    ThreadId start();
+    virtual TaskId start() = 0;
 
     /**
      *  Suspends the thread, assuming it's supported. This is mostly taken from RTOS's
@@ -107,7 +114,7 @@ namespace Chimera::Threading
      *
      *  @return void
      */
-    void suspend();
+    virtual void suspend() = 0;
 
     /**
      *  Resumes a previously suspended thread. Does nothing if thread suspension is
@@ -115,7 +122,7 @@ namespace Chimera::Threading
      *
      *  @return void
      */
-    void resume();
+    virtual void resume() = 0;
 
     /**
      *  Sends a termination task message, then unregisters the thread from the system.
@@ -125,13 +132,13 @@ namespace Chimera::Threading
      *
      *  @return void
      */
-    void join();
+    virtual void join() = 0;
 
     /**
      *  Checks if the thread can be joined
      *  @return bool
      */
-    bool joinable();
+    virtual bool joinable() = 0;
 
     /**
      *  Handle to the OS specific thread type. Allows the user to execute functions that
@@ -139,80 +146,19 @@ namespace Chimera::Threading
      *
      *  @return detail::native_thread_handle_type
      */
-    detail::native_thread_handle_type native_handle();
+    virtual detail::native_thread_handle_type native_handle() = 0;
 
     /**
      *  Returns the name of the thread
      *  @return std::string_view
      */
-    std::string_view name() const;
+    virtual std::string_view name() const = 0;
 
     /**
      *  Returns the ID associated with the thread
-     *  @return ThreadId
+     *  @return TaskId
      */
-    ThreadId id() const
-    {
-      return mThreadId;
-    }
-
-    /**
-     *  Checks if the thread exists/has been initialized yet
-     *  @return bool
-     */
-    explicit operator bool() const
-    {
-#if defined( USING_NATIVE_THREADS )
-      return !( mNativeThread.get_id() == std::thread::id() );
-#elif defined( USING_FREERTOS_THREADS )
-      return ( mNativeThread ) ? true : false;
-#endif
-    }
-
-    bool operator=( const Thread &rhs )
-    {
-      /* clang-format off */
-      bool POD_compare =
-        ( this->mFunc.type == rhs.mFunc.type ) &&
-        ( this->mFunc.arg == rhs.mFunc.arg ) &&
-        ( this->mPriority == rhs.mPriority ) &&
-        ( this->mStackDepth == rhs.mStackDepth ) &&
-        ( this->name() == rhs.name() );
-      /* clang-format on */
-
-      bool FUNC_compare = false;
-      if ( POD_compare )
-      {
-        if ( this->mFunc.type == FunctorType::C_STYLE )
-        {
-          FUNC_compare = ( this->mFunc.function.pointer == rhs.mFunc.function.pointer );
-        }
-        else
-        {
-          FUNC_compare = ( this->mFunc.function.delegate == rhs.mFunc.function.delegate );
-        }
-      }
-
-      return POD_compare && FUNC_compare;
-    }
-
-  private:
-    /*-------------------------------------------------
-    State Data
-    -------------------------------------------------*/
-    bool mRunning;                            /**< Is the thread running? */
-    detail::native_thread mNativeThread;      /**< Default thread storage type */
-    UserFunction mFunc;                       /**< Function the user wants to run as a thread */
-    ThreadId mThreadId;                       /**< Unique thread identifier */
-    Priority mPriority;                       /**< Thread priority level */
-    size_t mStackDepth;                       /**< Thread stack in bytes */
-    std::array<char, MAX_NAME_LEN + 1> mName; /**< User friendly name of the thread */
-
-    /*-------------------------------------------------
-    Private Helper Functions
-    -------------------------------------------------*/
-    void lookup_handle();
-    void copy_thread_name( const std::string_view &name );
+    virtual TaskId id() const = 0;
   };
 
 
@@ -253,9 +199,9 @@ namespace Chimera::Threading
 
     /**
      *  Gets the system identifier of the current thread
-     *  @return ThreadId
+     *  @return TaskId
      */
-    ThreadId id();
+    TaskId id();
 
     /**
      *  Receives the latest task message for the thread, optionally blocking
@@ -265,7 +211,7 @@ namespace Chimera::Threading
      *  @param[in]  timeout     How long to wait for a new message
      *  @return bool
      */
-    bool receiveTaskMsg( ThreadMsg &msg, const size_t timeout );
+    bool receiveTaskMsg( TaskMsg &msg, const size_t timeout );
 
     /**
      *  Blocks the current thread until the requested task message is received
@@ -273,7 +219,7 @@ namespace Chimera::Threading
      *  @param[in]  msg         The message expected to be received
      *  @return bool
      */
-    bool pendTaskMsg( ThreadMsg msg );
+    bool pendTaskMsg( TaskMsg msg );
 
     /**
      *  Blocks the current thread until the requested task message is received
@@ -283,9 +229,9 @@ namespace Chimera::Threading
      *  @param[in]  timeout     How long to wait for the message
      *  @return bool
      */
-    bool pendTaskMsg( ThreadMsg msg, const size_t timeout );
+    bool pendTaskMsg( TaskMsg msg, const size_t timeout );
 
   }  // namespace this_thread
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_THREAD_HPP */

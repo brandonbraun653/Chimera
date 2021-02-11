@@ -14,7 +14,7 @@
 
 #if defined( USING_NATIVE_THREADS )
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Constructor/Destructor
@@ -135,6 +135,6 @@ namespace Chimera::Threading
     return mQueueHandle;
   }
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* USING_FREERTOS || USING_FREERTOS_THREADS */

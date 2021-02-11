@@ -18,7 +18,7 @@
 /* Chimera Includes */
 #include <Chimera/source/drivers/threading/threading_detail.hpp>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   class CountingSemaphore
   {
@@ -55,6 +55,6 @@ namespace Chimera::Threading
 
   using BinarySemaphore = CountingSemaphore;
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_SEMAPHORE_HPP */

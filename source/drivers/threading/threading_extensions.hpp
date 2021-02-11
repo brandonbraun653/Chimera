@@ -16,7 +16,7 @@
 #include <Chimera/source/drivers/threading/threading_mutex.hpp>
 #include <Chimera/source/drivers/threading/threading_abstract.hpp>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   template<class mutex_type>
   class LockGuard

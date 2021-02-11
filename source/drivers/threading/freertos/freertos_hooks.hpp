@@ -22,7 +22,7 @@
 #include <FreeRTOS/FreeRTOS.h>
 #include <FreeRTOS/task.h>
 
-namespace Chimera::Threading::FreeRTOS
+namespace Chimera::Thread::FreeRTOS
 {
   /**
    *  Custom callback that executes when FreeRTOS detects that a stack
@@ -60,7 +60,7 @@ namespace Chimera::Threading::FreeRTOS
    */
   extern void ApplicationIdleHook();
 
-}  // namespace Chimera::Threading::FreeRTOS
+}  // namespace Chimera::Thread::FreeRTOS
 #endif /* CHIMERA_CFG_FREERTOS */
 
 #endif /* !CHIMERA_FREERTOS_HOOKS_PRJ_HPP */

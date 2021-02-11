@@ -109,7 +109,7 @@ namespace Chimera::CRC
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class ICRC : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class ICRC : virtual public HWInterface, virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~ICRC() = default;

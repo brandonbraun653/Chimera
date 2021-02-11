@@ -19,16 +19,16 @@
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
-#include <Chimera/source/drivers/threading/threading_thread_internal.hpp>
+#include <Chimera/source/drivers/threading/common/threading_internal.hpp>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr ThreadId THREAD_ID_REG_MAX = 1000;
-  static constexpr ThreadId THREAD_ID_REG_MIN = 100;
-  static constexpr ThreadId THREAD_ID_REG_RNG = THREAD_ID_REG_MAX - THREAD_ID_REG_MIN;
+  static constexpr TaskId THREAD_ID_REG_MAX = 1000;
+  static constexpr TaskId THREAD_ID_REG_MIN = 100;
+  static constexpr TaskId THREAD_ID_REG_RNG = THREAD_ID_REG_MAX - THREAD_ID_REG_MIN;
 
   // Arbitrarily chosen to allow random ID generation to find free IDs quickly
   static_assert( THREAD_ID_REG_RNG > ( 5 * MAX_REGISTERABLE_THREADS ) );
@@ -40,7 +40,7 @@ namespace Chimera::Threading
   Static Data
   -------------------------------------------------------------------------------*/
   static RecursiveMutex s_registry_lock;
-  static etl::flat_map<ThreadId, Thread, MAX_REGISTERABLE_THREADS> s_thread_registry;
+  static etl::flat_map<TaskId, Task, MAX_REGISTERABLE_THREADS> s_thread_registry;
 
   // It might be worth it to add a message queue for each thread in some kind of struct?
   // This would get around the FreeRTOS style queue, but doesn't do a great job of passing
@@ -75,9 +75,9 @@ namespace Chimera::Threading
    *  Generates a pseudo-random ID for thread identification. Will not
    *  conflict with any thread IDs that are currently in use.
    *
-   *  @return ThreadId
+   *  @return TaskId
    */
-  static ThreadId generateId()
+  static TaskId generateId()
   {
     /*-------------------------------------------------
     Thread lock is sufficient as no ISR should be able
@@ -88,7 +88,7 @@ namespace Chimera::Threading
     /*-------------------------------------------------
     Find an id that doesn't exist in the registry yet
     -------------------------------------------------*/
-    ThreadId id;
+    TaskId id;
     while ( true )
     {
       id = ( rand() % THREAD_ID_REG_RNG ) + THREAD_ID_REG_MIN;
@@ -106,7 +106,7 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Internal Functions
   -------------------------------------------------------------------------------*/
-  ThreadId registerThread( Thread &&thread )
+  TaskId registerThread( Task &&thread )
   {
     /*-------------------------------------------------
     Input protection
@@ -121,7 +121,7 @@ namespace Chimera::Threading
     Insert the new thread object while protecting from
     all possible interferences.
     -------------------------------------------------*/
-    ThreadId id = THREAD_ID_INVALID;
+    TaskId id = THREAD_ID_INVALID;
     auto msk    = exclusive_lock();
     {
       id = generateId();
@@ -134,7 +134,7 @@ namespace Chimera::Threading
   }
 
 
-  Chimera::Status_t unregisterThread( const ThreadId id )
+  Chimera::Status_t unregisterThread( const TaskId id )
   {
     auto result = Chimera::Status::NOT_FOUND;
     auto msk    = exclusive_lock();
@@ -151,9 +151,9 @@ namespace Chimera::Threading
   }
 
 
-  ThreadId getIdFromNativeHandle( detail::native_thread_handle_type handle )
+  TaskId getIdFromNativeHandle( detail::native_thread_handle_type handle )
   {
-    ThreadId id = THREAD_ID_INVALID;
+    TaskId id = THREAD_ID_INVALID;
 
     auto msk = exclusive_lock();
     {
@@ -175,15 +175,15 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  Thread *getThread( const char *name )
+  Task *getThread( const char *name )
   {
     return getThread( std::string_view( name ) );
   }
 
 
-  Thread *getThread( const std::string_view &name )
+  Task *getThread( const std::string_view &name )
   {
-    Thread *result = nullptr;
+    Task *result = nullptr;
     auto msk       = exclusive_lock();
     {
       for ( auto iter = s_thread_registry.begin(); iter != s_thread_registry.end(); iter++ )
@@ -201,9 +201,9 @@ namespace Chimera::Threading
   }
 
 
-  Thread *getThread( const ThreadId id )
+  Task *getThread( const TaskId id )
   {
-    Thread *result = nullptr;
+    Task *result = nullptr;
     auto msk       = exclusive_lock();
     {
       if ( auto iter = s_thread_registry.find( id ); iter != s_thread_registry.end() )
@@ -220,19 +220,19 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Class Definition
   -------------------------------------------------------------------------------*/
-  void Thread::assignId( const ThreadId id )
+  void Task::assignId( const TaskId id )
   {
-    mThreadId = id;
+    mTaskId = id;
   }
 
 
-  std::string_view Thread::name() const
+  std::string_view Task::name() const
   {
     return std::string_view( mName.cbegin() );
   }
 
 
-  void Thread::copy_thread_name( const std::string_view &name )
+  void Task::copy_thread_name( const std::string_view &name )
   {
     /*------------------------------------------------
     Copy out the string data into the name
@@ -247,23 +247,23 @@ namespace Chimera::Threading
     memcpy( mName.data(), name.data(), copyLen );
   }
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 
-namespace Chimera::Threading::this_thread
+namespace Chimera::Thread::this_thread
 {
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  bool pendTaskMsg( ThreadMsg msg )
+  bool pendTaskMsg( TaskMsg msg )
   {
-    return pendTaskMsg( msg, Chimera::Threading::TIMEOUT_BLOCK );
+    return pendTaskMsg( msg, Chimera::Thread::TIMEOUT_BLOCK );
   }
 
 
-  bool pendTaskMsg( ThreadMsg msg, const size_t timeout )
+  bool pendTaskMsg( TaskMsg msg, const size_t timeout )
   {
-    ThreadMsg actMsg = std::numeric_limits<ThreadMsg>::max();
+    TaskMsg actMsg = std::numeric_limits<TaskMsg>::max();
     return ( receiveTaskMsg( actMsg, timeout ) && ( actMsg == msg ) );
   }
-}  // namespace Chimera::Threading::this_thread
+}  // namespace Chimera::Thread::this_thread

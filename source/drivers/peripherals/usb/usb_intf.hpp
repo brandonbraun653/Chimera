@@ -69,7 +69,7 @@ namespace Chimera::USB
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class IUSB : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class IUSB : virtual public HWInterface, virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~IUSB() = default;

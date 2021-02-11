@@ -167,7 +167,7 @@ namespace Chimera::GPIO
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
-  class IGPIO : virtual public HWInterface, virtual public Chimera::Threading::LockableInterface
+  class IGPIO : virtual public HWInterface, virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~IGPIO() = default;

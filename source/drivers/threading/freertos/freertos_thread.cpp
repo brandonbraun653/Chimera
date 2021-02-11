@@ -15,7 +15,7 @@
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
-#include <Chimera/source/drivers/threading/threading_thread_internal.hpp>
+#include <Chimera/source/drivers/threading/common/threading_internal.hpp>
 
 #if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 
@@ -24,14 +24,14 @@
 #include <FreeRTOS/task.h>
 #include <FreeRTOS/semphr.h>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
   struct DelegateArgs
   {
-    ThreadDelegate pDelegate;
+    TaskDelegate pDelegate;
     void *pArguments;
   };
 
@@ -63,7 +63,7 @@ namespace Chimera::Threading
   }
 
 
-  bool sendTaskMsg( const ThreadId id, const ThreadMsg msg, const size_t timeout )
+  bool sendTaskMsg( const TaskId id, const TaskMsg msg, const size_t timeout )
   {
     /*-------------------------------------------------
     Does the task exist?
@@ -94,14 +94,14 @@ namespace Chimera::Threading
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Thread::Thread() : mFunc( {} ), mNativeThread( nullptr ), mThreadId( THREAD_ID_INVALID ), mRunning( false )
+  Thread::Thread() : mFunc( {} ), mNativeThread( nullptr ), mTaskId( THREAD_ID_INVALID ), mRunning( false )
   {
     mName.fill( 0 );
   }
 
   Thread::Thread( Thread &&other ) :
       mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth ), mThreadId( other.mThreadId ), mRunning( mRunning )
+      mStackDepth( other.mStackDepth ), mTaskId( other.mTaskId ), mRunning( mRunning )
   {
     copy_thread_name( other.name() );
   }
@@ -115,7 +115,7 @@ namespace Chimera::Threading
   /*-------------------------------------------------
   Public Methods
   -------------------------------------------------*/
-  void Thread::initialize( ThreadFunctPtr func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+  void Thread::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
@@ -131,7 +131,7 @@ namespace Chimera::Threading
   }
 
 
-  void Thread::initialize( ThreadDelegate func, ThreadArg arg, const Priority priority, const size_t stackDepth,
+  void Thread::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
@@ -147,7 +147,7 @@ namespace Chimera::Threading
   }
 
 
-  ThreadId Thread::start()
+  TaskId Thread::start()
   {
     /*------------------------------------------------
     Actually create the thread. If the scheduler is
@@ -236,14 +236,14 @@ namespace Chimera::Threading
     if ( joinable() )
     {
       lookup_handle();
-      sendTaskMsg( mThreadId, ITCMsg::TSK_MSG_EXIT, TIMEOUT_DONT_WAIT );
+      sendTaskMsg( mTaskId, ITCMsg::TSK_MSG_EXIT, TIMEOUT_DONT_WAIT );
       vTaskDelete( mNativeThread );
     }
 
     /*-------------------------------------------------
     Clean up Chimera's notion of the thread's existence
     -------------------------------------------------*/
-    unregisterThread( mThreadId );
+    unregisterThread( mTaskId );
   }
 
 
@@ -306,18 +306,18 @@ namespace Chimera::Threading
   }
 
 
-  ThreadId this_thread::id()
+  TaskId this_thread::id()
   {
     return getIdFromNativeHandle( xTaskGetCurrentTaskHandle() );
   }
 
 
-  bool this_thread::receiveTaskMsg( ThreadMsg &msg, const size_t timeout )
+  bool this_thread::receiveTaskMsg( TaskMsg &msg, const size_t timeout )
   {
-    msg = static_cast<ThreadMsg>( ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) ) );
+    msg = static_cast<TaskMsg>( ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) ) );
     return !( msg == ITCMsg::TSK_MSG_NOP );
   }
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* FREERTOS */

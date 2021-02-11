@@ -16,7 +16,7 @@
 /* Chimera Includes */
 #include <Chimera/source/drivers/threading/threading_detail.hpp>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   class Mutex
   {
@@ -101,6 +101,6 @@ namespace Chimera::Threading
     native_handle_type _mtx;
   };
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_MUTEX_HPP */

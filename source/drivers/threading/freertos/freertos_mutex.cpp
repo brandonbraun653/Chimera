@@ -31,7 +31,7 @@
 #include <FreeRTOS/task.h>
 #include <FreeRTOS/semphr.h>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Standard Mutex
@@ -269,6 +269,6 @@ namespace Chimera::Threading
       xSemaphoreGiveRecursive( _mtx );
     }
   }
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* FREERTOS */

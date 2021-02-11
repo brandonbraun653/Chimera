@@ -20,7 +20,7 @@ namespace Chimera::USB
   -------------------------------------------------------------------------------*/
   Chimera::Status_t init( const Channel ch, const PeriphConfig &cfg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Input protection
@@ -37,7 +37,7 @@ namespace Chimera::USB
     auto result = Chimera::Status::OK;
     if ( getThread( USBThreadName ) == nullptr )
     {
-      Thread usbThread;
+      Task usbThread;
       usbThread.initialize( USBMainThread, nullptr, USBDefaultPriority, USBDefaultStackSize, USBThreadName );
       usbThread.start();
 

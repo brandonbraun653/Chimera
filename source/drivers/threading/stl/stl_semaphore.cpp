@@ -14,7 +14,7 @@
 
 #if defined( USING_NATIVE_THREADS )
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Counting Semaphore Implementation
@@ -97,6 +97,6 @@ namespace Chimera::Threading
   {
     Chimera::insert_debug_breakpoint();
   }
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* USING_NATIVE_THREADS */

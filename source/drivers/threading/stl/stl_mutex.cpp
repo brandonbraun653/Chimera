@@ -14,7 +14,7 @@
 
 #if defined( USING_NATIVE_THREADS )
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Mutex Implementation
@@ -145,6 +145,6 @@ namespace Chimera::Threading
     _mtx.unlock();
   }
 
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif  /* USING_NATIVE_THREADS */

@@ -5,7 +5,7 @@
  *  Description:
  *    Types used in Chimera Threading
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -22,7 +22,7 @@
 /* Chimera Includes */
 #include <Chimera/common>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Internal Namespace
@@ -52,17 +52,17 @@ namespace Chimera::Threading
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class Thread;
+  class Task;
 
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using ThreadArg      = void *;
-  using ThreadFunctPtr = void ( * )( ThreadArg );
-  using ThreadId       = size_t;
-  using ThreadMsg      = uint32_t;
-  using ThreadDelegate = etl::delegate<void( void * )>;
+  using TaskArg      = void *;
+  using TaskFuncPtr  = void ( * )( TaskArg );
+  using TaskId       = size_t;
+  using TaskMsg      = uint32_t;
+  using TaskDelegate = etl::delegate<void( void * )>;
 
 
   /*-------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace Chimera::Threading
 
   static constexpr size_t MAX_NAME_LEN             = 16;
   static constexpr size_t MAX_REGISTERABLE_THREADS = 10;
-  static constexpr ThreadId THREAD_ID_INVALID      = 0xCCCCCCCC;
+  static constexpr TaskId THREAD_ID_INVALID        = 0xCCCCCCCC;
 
 
   /*-------------------------------------------------------------------------------
@@ -127,9 +127,9 @@ namespace Chimera::Threading
    *  Common inter-thread communication message identifiers.
    *
    *  @note Don't change to enum class type as these values should
-   *        directly compare against ThreadMsg types.
+   *        directly compare against TaskMsg types.
    */
-  enum ITCMsg : ThreadMsg
+  enum ITCMsg : TaskMsg
   {
     TSK_MSG_NOP = 0,     /**< Base message that means do nothing */
     TSK_MSG_WAKEUP,      /**< Wake up the thread to do some processing */
@@ -151,20 +151,20 @@ namespace Chimera::Threading
   {
     union _callable
     {
-      ThreadFunctPtr pointer;
-      ThreadDelegate delegate;
+      TaskFuncPtr pointer;
+      TaskDelegate delegate;
 
       /*-------------------------------------------------
       Delegate has no default constructor, so default
       initialize to a function stub.
       -------------------------------------------------*/
-      _callable() : delegate( ThreadDelegate::create<Internal::delegateInitializer>() )
+      _callable() : delegate( TaskDelegate::create<Internal::delegateInitializer>() )
       {
       }
     } function;       /**< User function to be turned into a thread */
     FunctorType type; /**< What kind of function call it is */
-    ThreadArg arg;    /**< Arguments to the thread function */
+    TaskArg arg;      /**< Arguments to the thread function */
   };
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_COMMON_TYPES_HPP */

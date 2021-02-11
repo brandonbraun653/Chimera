@@ -297,8 +297,8 @@ namespace Chimera::Serial
    *  Virtual class to facilitate easy mocking of the driver
    */
   class ISerial : virtual public Chimera::Serial::HWInterface,
-                  virtual public Chimera::Threading::AsyncIOInterface,
-                  virtual public Chimera::Threading::LockableInterface
+                  virtual public Chimera::Thread::AsyncIOInterface,
+                  virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~ISerial() = default;
@@ -339,7 +339,7 @@ namespace Chimera::Serial
     Interface: AsyncIO
     -------------------------------------------------*/
     Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout );
-    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Threading::BinarySemaphore &notifier,
+    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Thread::BinarySemaphore &notifier,
                              const size_t timeout );
 
     /*-------------------------------------------------

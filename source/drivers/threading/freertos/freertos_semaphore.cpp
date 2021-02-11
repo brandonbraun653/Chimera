@@ -23,7 +23,7 @@
 #include <FreeRTOS/task.h>
 #include <FreeRTOS/semphr.h>
 
-namespace Chimera::Threading
+namespace Chimera::Thread
 {
   /*-------------------------------------------------------------------------------
   Counting Semaphore
@@ -88,7 +88,7 @@ namespace Chimera::Threading
     if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
     {
       size_t _t = pdMS_TO_TICKS( timeout );
-      if ( timeout == Chimera::Threading::TIMEOUT_BLOCK )
+      if ( timeout == Chimera::Thread::TIMEOUT_BLOCK )
       {
         _t = portMAX_DELAY;
       }
@@ -160,6 +160,6 @@ namespace Chimera::Threading
       Chimera::insert_debug_breakpoint();
     }
   }
-}  // namespace Chimera::Threading
+}  // namespace Chimera::Thread
 
 #endif /* FREERTOS */
