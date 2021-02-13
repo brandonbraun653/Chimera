@@ -44,6 +44,14 @@ namespace Chimera::Thread
    */
   TaskId getIdFromNativeHandle( detail::native_thread_handle_type handle );
 
+  /**
+   *  Looks up the appropriate thread id given a native id
+   *
+   *  @param[in]  handle      The native OS id to the thread
+   *  @return TaskId
+   */
+  TaskId getIdFromNativeId( const detail::native_thread_id id );
+
 }  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_INTERNAL_HPP */

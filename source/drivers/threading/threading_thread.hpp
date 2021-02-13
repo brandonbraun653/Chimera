@@ -148,6 +148,8 @@ namespace Chimera::Thread
      */
     virtual detail::native_thread_handle_type native_handle() = 0;
 
+    virtual detail::native_thread_id native_id() = 0;
+
     /**
      *  Returns the name of the thread
      *  @return std::string_view

@@ -19,7 +19,7 @@ namespace Chimera::Thread
   /*-------------------------------------------------------------------------------
   Counting Semaphore Implementation
   -------------------------------------------------------------------------------*/
-  CountingSemaphore::CountingSemaphore() : mMaxCount( 1 ), mCount( 1 )
+  CountingSemaphore::CountingSemaphore() : mMaxCount( 1 ), mCount( 1 ), mSemphr()
   {
   }
 
@@ -33,15 +33,15 @@ namespace Chimera::Thread
 
   void CountingSemaphore::release( const size_t update )
   {
-    semphr.lock();
+    mSemphr.lock();
     auto newVal = mCount + update;
     mCount      = ( newVal <= mMaxCount ) ? newVal : mMaxCount;
-    semphr.unlock();
+    mSemphr.unlock();
   }
 
   void CountingSemaphore::acquire()
   {
-    semphr.lock();
+    mSemphr.lock();
 
     if ( mCount > 0 )
     {
@@ -51,7 +51,7 @@ namespace Chimera::Thread
 
   bool CountingSemaphore::try_acquire()
   {
-    if ( semphr.try_lock() && ( mCount > 0 ) )
+    if ( mSemphr.try_lock() && ( mCount > 0 ) )
     {
       --mCount;
       return true;
@@ -62,7 +62,7 @@ namespace Chimera::Thread
 
   bool CountingSemaphore::try_acquire_for( const size_t timeout )
   {
-    if ( semphr.try_lock_for( std::chrono::milliseconds( timeout ) ) && ( mCount > 0 ) )
+    if ( mSemphr.try_lock_for( std::chrono::milliseconds( timeout ) ) && ( mCount > 0 ) )
     {
       --mCount;
       return true;
@@ -74,7 +74,7 @@ namespace Chimera::Thread
   bool CountingSemaphore::try_acquire_until( const size_t abs_time )
   {
     auto now = std::chrono::steady_clock::now();
-    if ( semphr.try_lock_until( now + std::chrono::milliseconds( abs_time ) ) && ( mCount > 0 ) )
+    if ( mSemphr.try_lock_until( now + std::chrono::milliseconds( abs_time ) ) && ( mCount > 0 ) )
     {
       --mCount;
       return true;

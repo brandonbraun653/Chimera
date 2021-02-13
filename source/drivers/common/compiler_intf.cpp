@@ -5,8 +5,11 @@
  *  Description:
  *    Compiler specific implementations of useful functions
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
+
+/* STL Includes */
+#include <signal.h>
 
 /* Chimera Includes */
 #include <Chimera/source/drivers/common/compiler_intf.hpp>
@@ -19,8 +22,12 @@ namespace Chimera
 {
   void insert_debug_breakpoint()
   {
-#if ( defined( DEBUG ) || defined( DBG_REL ) ) && defined( EMBEDDED )
+#if ( defined( DEBUG ) || defined( DBG_REL ) )
+  #if defined( EMBEDDED )
     asm volatile( "BKPT #0\n" );
+  #else
+    raise( SIGTRAP );
+#endif  /* EMBEDDED */
 #endif
   }
 }  // namespace Chimera

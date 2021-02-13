@@ -16,7 +16,6 @@
 #include <Chimera/source/drivers/threading/threading_detail.hpp>
 #include <Chimera/source/drivers/threading/threading_extensions.hpp>
 #include <Chimera/source/drivers/threading/threading_mutex.hpp>
-#include <Chimera/source/drivers/threading/threading_queue.hpp>
 #include <Chimera/source/drivers/threading/threading_semaphore.hpp>
 #include <Chimera/source/drivers/threading/threading_thread.hpp>
 #include <Chimera/source/drivers/threading/threading_types.hpp>

@@ -16,8 +16,9 @@
 #include <Chimera/common>
 #include <Chimera/thread>
 
-
 #if defined( USING_NATIVE_THREADS )
+#include <mutex>
+#include <condition_variable>
 
 namespace Chimera::Thread
 {
@@ -47,6 +48,8 @@ namespace Chimera::Thread
     void join() final override;
     bool joinable() final override;
     detail::native_thread_handle_type native_handle() final override;
+    detail::native_thread_id native_id() final override;
+    std::string_view name() const final override;
 
     TaskId id() const final override
     {
@@ -89,6 +92,31 @@ namespace Chimera::Thread
       return POD_compare && FUNC_compare;
     }
 
+  protected:
+    friend bool sendTaskMsg( const TaskId, const TaskMsg, const size_t );
+    friend bool this_thread::receiveTaskMsg( TaskMsg &, const size_t );
+    friend TaskId this_thread::id();
+    friend TaskId getIdFromNativeId( const detail::native_thread_id );
+
+    /**
+     *  Accepts a new task message, overwriting the old. This will also wake up
+     *  any threads pending on receiving a message.
+     *
+     *  @param[in]  msg       The message to send
+     *  @param[in]  timeout   How long to wait for the message to be accepted
+     *  @return bool
+     */
+    bool acceptTaskMessage( const TaskMsg msg, const size_t timeout );
+
+    /**
+     *  Blocks the current thread to wait for a task message to arrive.
+     *
+     *  @param[out] msg       The received message data
+     *  @param[in]  timeout   How long to wait for a new message
+     *  @return bool
+     */
+    bool pendTaskMessage( TaskMsg &msg, const size_t timeout );
+
   private:
     /*-------------------------------------------------
     State Data
@@ -100,6 +128,18 @@ namespace Chimera::Thread
     Priority mPriority;                       /**< Thread priority level */
     size_t mStackDepth;                       /**< Thread stack in bytes */
     std::array<char, MAX_NAME_LEN + 1> mName; /**< User friendly name of the thread */
+
+    /*-------------------------------------------------
+    Task Message Data: Kept to a simple POD type as the
+    signaling mechanism must use the lowest common
+    denominator among supported Chimera thread systems,
+    which in this case is FreeRTOS.
+    -------------------------------------------------*/
+    TaskMsg mTaskMsgData;                       /**< Latest task message data */
+    std::mutex *mTaskMsgMutex;                  /**< Exclusive lock to prevent multiple threads sending a message */
+    std::condition_variable *mTaskMsgCondition; /**< Allows pending on task messages */
+    bool mTaskMsgReady;                         /**< Prevent condition variable spurious wakeup */
+
 
     /*-------------------------------------------------
     Private Helper Functions

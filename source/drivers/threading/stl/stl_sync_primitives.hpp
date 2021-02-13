@@ -44,6 +44,7 @@ namespace Chimera::Thread::detail
   Thread Types
   -------------------------------------------------------------------------------*/
   using native_thread             = std::thread;
+  using native_thread_id          = std::thread::id;
   using native_thread_handle_type = std::thread::native_handle_type;
 
   /*-------------------------------------------------------------------------------

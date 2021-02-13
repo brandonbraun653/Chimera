@@ -16,6 +16,7 @@
 #include <etl/vector.h>
 
 /* Chimera Includes */
+#include <Chimera/assert>
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
@@ -122,7 +123,7 @@ namespace Chimera::Thread
     all possible interferences.
     -------------------------------------------------*/
     TaskId id = THREAD_ID_INVALID;
-    auto msk    = exclusive_lock();
+    auto msk  = exclusive_lock();
     {
       id = generateId();
       thread.assignId( id );
@@ -172,6 +173,31 @@ namespace Chimera::Thread
   }
 
 
+  TaskId getIdFromNativeId( const detail::native_thread_id id )
+  {
+    TaskId foundId = THREAD_ID_INVALID;
+
+    auto msk = exclusive_lock();
+    {
+      for ( auto iter = s_thread_registry.begin(); iter != s_thread_registry.end(); iter++ )
+      {
+        if ( iter->second.native_id() == id )
+        {
+          foundId = iter->second.id();
+          break;
+        }
+      }
+    }
+    exclusive_unlock( msk );
+
+#if defined( DEBUG )
+    RT_HARD_ASSERT( foundId != THREAD_ID_INVALID );
+#endif /* DEBUG */
+
+    return foundId;
+  }
+
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
@@ -184,7 +210,7 @@ namespace Chimera::Thread
   Task *getThread( const std::string_view &name )
   {
     Task *result = nullptr;
-    auto msk       = exclusive_lock();
+    auto msk     = exclusive_lock();
     {
       for ( auto iter = s_thread_registry.begin(); iter != s_thread_registry.end(); iter++ )
       {
@@ -204,7 +230,7 @@ namespace Chimera::Thread
   Task *getThread( const TaskId id )
   {
     Task *result = nullptr;
-    auto msk       = exclusive_lock();
+    auto msk     = exclusive_lock();
     {
       if ( auto iter = s_thread_registry.find( id ); iter != s_thread_registry.end() )
       {

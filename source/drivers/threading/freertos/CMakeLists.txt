@@ -6,7 +6,6 @@ gen_static_lib_variants(
   SOURCES
     freertos_hooks.cpp
     freertos_mutex.cpp
-    freertos_queue.cpp
     freertos_semaphore.cpp
     freertos_thread.cpp
   PRV_LIBRARIES

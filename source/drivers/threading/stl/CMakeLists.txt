@@ -5,7 +5,6 @@ gen_static_lib_variants(
     chimera_threading_stl
   SOURCES
     stl_mutex.cpp
-    stl_queue.cpp
     stl_semaphore.cpp
     stl_thread.cpp
   PRV_LIBRARIES

@@ -49,7 +49,7 @@ namespace Chimera::Thread
     const size_t mMaxCount;
     size_t mCount;
 
-    detail::native_counting_semaphore semphr;
+    detail::native_counting_semaphore mSemphr;
   };
 
 
