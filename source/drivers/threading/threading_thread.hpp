@@ -170,6 +170,14 @@ namespace Chimera::Thread
   namespace this_thread
   {
     /**
+     *  Sets the name of the currently executing thread
+     *
+     *  @param[in]  name        Name to be set
+     *  @return void
+     */
+    void set_name( const char *name );
+
+    /**
      *  Sleeps the current thread for a number of milliseconds
      *
      *  @param[in]  timeout     How many milliseconds to wait

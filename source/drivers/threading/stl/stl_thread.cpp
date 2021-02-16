@@ -8,6 +8,10 @@
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
+#if defined( __linux__ )
+#include <sys/prctl.h>
+#endif /* __linux__ */
+
 /* STL Includes */
 #include <chrono>
 #include <thread>
@@ -21,11 +25,13 @@
 #include <Chimera/thread>
 #include <Chimera/source/drivers/threading/common/threading_internal.hpp>
 
-
 #if defined( USING_NATIVE_THREADS )
 
 namespace Chimera::Thread
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   void startScheduler()
   {
     while ( 1 )
@@ -103,6 +109,8 @@ namespace Chimera::Thread
 
   TaskId Task::start()
   {
+    std::string_view name{ mName.data() };
+
     /*-------------------------------------------------
     This annoyingly obtuse registration uses lambda
     functions as an ad hoc way to inject the calls.
@@ -111,13 +119,20 @@ namespace Chimera::Thread
     {
       TaskFuncPtr ptr = mFunc.function.pointer;
       TaskArg arg     = mFunc.arg;
-      mNativeThread   = std::move( std::thread( [ ptr, arg ]() { ( *ptr )( arg ); } ) );
+
+      mNativeThread = std::move( std::thread( [ ptr, arg, name ]() {
+        this_thread::set_name( name.begin() );
+        ( *ptr )( arg );
+      } ) );
     }
     else  // FunctorType::DELEGATE
     {
       TaskArg arg           = mFunc.arg;
       TaskDelegate delegate = mFunc.function.delegate;
-      mNativeThread         = std::move( std::thread( [ delegate, arg ]() { delegate( arg ); } ) );
+      mNativeThread         = std::move( std::thread( [ delegate, arg, name ]() {
+        this_thread::set_name( name.begin() );
+        delegate( arg );
+      } ) );
     }
     // Ensure this function is handling all cases...
     static_assert( static_cast<size_t>( FunctorType::NUM_OPTIONS ) == 2 );
@@ -192,6 +207,15 @@ namespace Chimera::Thread
   /*-------------------------------------------------------------------------------
   Namespace this_thread Implementation
   -------------------------------------------------------------------------------*/
+  void this_thread::set_name( const char *name )
+  {
+#if defined( __linux__ )
+    prctl( PR_SET_NAME, name, 0, 0, 0 );
+#else
+    RT_HARD_ASSERT( false );  // Make noise!
+#endif
+  }
+
   void this_thread::sleep_for( const size_t timeout )
   {
     std::this_thread::sleep_for( std::chrono::milliseconds( timeout ) );
