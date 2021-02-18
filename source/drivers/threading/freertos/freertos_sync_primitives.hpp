@@ -41,6 +41,7 @@ namespace Chimera::Thread::detail
   Thread Types
   -------------------------------------------------------------------------------*/
   using native_thread             = TaskHandle_t;
+  using native_thread_id          = size_t;
   using native_thread_handle_type = TaskHandle_t;
 
   /*-------------------------------------------------------------------------------

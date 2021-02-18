@@ -44,6 +44,8 @@ namespace Chimera::Thread
     void join() final override;
     bool joinable() final override;
     detail::native_thread_handle_type native_handle() final override;
+    detail::native_thread_id native_id() final override;
+    std::string_view name() const final override;
 
     TaskId id() const final override
     {

@@ -94,12 +94,12 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Thread::Thread() : mFunc( {} ), mNativeThread( nullptr ), mTaskId( THREAD_ID_INVALID ), mRunning( false )
+  Task::Task() : mFunc( {} ), mNativeThread( nullptr ), mTaskId( THREAD_ID_INVALID ), mRunning( false )
   {
     mName.fill( 0 );
   }
 
-  Thread::Thread( Thread &&other ) :
+  Task::Task( Task &&other ) :
       mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
       mStackDepth( other.mStackDepth ), mTaskId( other.mTaskId ), mRunning( mRunning )
   {
@@ -107,7 +107,7 @@ namespace Chimera::Thread
   }
 
 
-  Thread::~Thread()
+  Task::~Task()
   {
   }
 
@@ -115,7 +115,7 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Public Methods
   -------------------------------------------------*/
-  void Thread::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackDepth,
+  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
@@ -131,7 +131,7 @@ namespace Chimera::Thread
   }
 
 
-  void Thread::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackDepth,
+  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackDepth,
                            const std::string_view name )
   {
     /*------------------------------------------------
@@ -147,7 +147,7 @@ namespace Chimera::Thread
   }
 
 
-  TaskId Thread::start()
+  TaskId Task::start()
   {
     /*------------------------------------------------
     Actually create the thread. If the scheduler is
@@ -214,21 +214,21 @@ namespace Chimera::Thread
   }
 
 
-  void Thread::suspend()
+  void Task::suspend()
   {
     lookup_handle();
     vTaskSuspend( mNativeThread );
   }
 
 
-  void Thread::resume()
+  void Task::resume()
   {
     lookup_handle();
     vTaskResume( mNativeThread );
   }
 
 
-  void Thread::join()
+  void Task::join()
   {
     /*-------------------------------------------------
     Instruct the thread to exit if it's already running
@@ -247,13 +247,13 @@ namespace Chimera::Thread
   }
 
 
-  bool Thread::joinable()
+  bool Task::joinable()
   {
     return mRunning && ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING );
   }
 
 
-  detail::native_thread_handle_type Thread::native_handle()
+  detail::native_thread_handle_type Task::native_handle()
   {
     lookup_handle();
     return mNativeThread;
@@ -263,7 +263,7 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Private Methods
   -------------------------------------------------*/
-  void Thread::lookup_handle()
+  void Task::lookup_handle()
   {
     /*-------------------------------------------------
     According to documentation, this operation can take
@@ -273,6 +273,12 @@ namespace Chimera::Thread
     {
       mNativeThread = xTaskGetHandle( mName.cbegin() );
     }
+  }
+
+
+  detail::native_thread_id Task::native_id()
+  {
+    return mTaskId;
   }
 
   /*-------------------------------------------------------------------------------

@@ -30,19 +30,19 @@ namespace Chimera::Thread
   -------------------------------------------------------------------------------*/
   CountingSemaphore::CountingSemaphore() : mMaxCount( 1 )
   {
-    semphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
+    mSemphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
   }
 
 
   CountingSemaphore::CountingSemaphore( const size_t maxCounts ) : mMaxCount( maxCounts )
   {
-    semphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
+    mSemphr = xSemaphoreCreateCounting( mMaxCount, mMaxCount );
   }
 
 
   CountingSemaphore::~CountingSemaphore()
   {
-    vSemaphoreDelete( semphr );
+    vSemaphoreDelete( mSemphr );
   }
 
 
@@ -52,7 +52,7 @@ namespace Chimera::Thread
     {
       for ( size_t x = 0; x < update; x++ )
       {
-        if ( xSemaphoreGive( semphr ) != pdPASS )
+        if ( xSemaphoreGive( mSemphr ) != pdPASS )
         {
           break;
         }
@@ -65,7 +65,7 @@ namespace Chimera::Thread
   {
     if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
     {
-      xSemaphoreTake( semphr, portMAX_DELAY );
+      xSemaphoreTake( mSemphr, portMAX_DELAY );
     }
   }
 
@@ -74,7 +74,7 @@ namespace Chimera::Thread
   {
     if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
     {
-      return ( xSemaphoreTake( semphr, 0 ) == pdPASS );
+      return ( xSemaphoreTake( mSemphr, 0 ) == pdPASS );
     }
     else
     {
@@ -93,7 +93,7 @@ namespace Chimera::Thread
         _t = portMAX_DELAY;
       }
 
-      return ( xSemaphoreTake( semphr, _t ) == pdPASS );
+      return ( xSemaphoreTake( mSemphr, _t ) == pdPASS );
     }
     else
     {
@@ -107,7 +107,7 @@ namespace Chimera::Thread
     if ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
     {
       auto const currentTime = Chimera::millis();
-      return ( xSemaphoreTake( semphr, pdMS_TO_TICKS( abs_time + currentTime ) ) == pdPASS );
+      return ( xSemaphoreTake( mSemphr, pdMS_TO_TICKS( abs_time + currentTime ) ) == pdPASS );
     }
     else
     {
@@ -127,7 +127,7 @@ namespace Chimera::Thread
     if ( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED )
     {
       BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-      xSemaphoreTakeFromISR( semphr, &xHigherPriorityTaskWoken );
+      xSemaphoreTakeFromISR( mSemphr, &xHigherPriorityTaskWoken );
       portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
     }
     else
@@ -147,7 +147,7 @@ namespace Chimera::Thread
     if ( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED )
     {
       BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-      xSemaphoreGiveFromISR( semphr, &xHigherPriorityTaskWoken );
+      xSemaphoreGiveFromISR( mSemphr, &xHigherPriorityTaskWoken );
       portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
     }
     else
