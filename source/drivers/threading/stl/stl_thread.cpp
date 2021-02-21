@@ -60,11 +60,11 @@ namespace Chimera::Thread
 
   Task::Task( Task &&other ) : mTaskMsgMutex( other.mTaskMsgMutex ), mTaskMsgCondition( other.mTaskMsgCondition )
   {
-    mRunning      = other.mRunning;
-    mTaskId       = other.mTaskId;
-    mTaskConfig   = other.mTaskConfig;
-    mNativeThread = std::move( other.mNativeThread );
-    copy_thread_name( other.name() );
+    mRunning         = other.mRunning;
+    mTaskId          = other.mTaskId;
+    mTaskConfig      = other.mTaskConfig;
+    mNativeThread    = std::move( other.mNativeThread );
+    mTaskConfig.name = other.mTaskConfig.name;
   }
 
 
