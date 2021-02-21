@@ -284,6 +284,11 @@ namespace Chimera::Thread
   /*-------------------------------------------------------------------------------
   this_thread Namespace
   -------------------------------------------------------------------------------*/
+  void this_thread::set_name( const char *name )
+  {
+
+  }
+
   void this_thread::sleep_for( const size_t timeout )
   {
     vTaskDelay( pdMS_TO_TICKS( timeout ) );
