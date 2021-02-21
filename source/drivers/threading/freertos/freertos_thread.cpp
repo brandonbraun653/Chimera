@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera thread implementation with FreeRTOS
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* STL Includes */
@@ -94,16 +94,19 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Task::Task() : mFunc( {} ), mNativeThread( nullptr ), mTaskId( THREAD_ID_INVALID ), mRunning( false )
+  Task::Task()
   {
-    mName.fill( 0 );
+    mTaskConfig = {};
+    mTaskId     = Chimera::Thread::THREAD_ID_INVALID;
+    mRunning    = false;
   }
 
-  Task::Task( Task &&other ) :
-      mNativeThread( other.mNativeThread ), mFunc( other.mFunc ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth ), mTaskId( other.mTaskId ), mRunning( mRunning )
+  Task::Task( Task &&other )
   {
-    copy_thread_name( other.name() );
+    mRunning      = other.mRunning;
+    mTaskId       = other.mTaskId;
+    mTaskConfig   = other.mTaskConfig;
+    mNativeThread = std::move( other.mNativeThread );
   }
 
 
@@ -115,35 +118,35 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Public Methods
   -------------------------------------------------*/
-  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackDepth,
-                           const std::string_view name )
+  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackWords,
+                         const std::string_view name )
   {
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc.type             = FunctorType::C_STYLE;
-    mFunc.function.pointer = func;
-    mFunc.arg              = arg;
-    mPriority              = priority;
-    mStackDepth            = stackDepth;
-    mNativeThread          = nullptr;
-    copy_thread_name( name );
+    mTaskConfig.type                      = TaskInitType::DYNAMIC;
+    mTaskConfig.function.type             = FunctorType::C_STYLE;
+    mTaskConfig.function.callable.pointer = func;
+    mTaskConfig.arg                       = arg;
+    mTaskConfig.priority                  = priority;
+    mTaskConfig.stackWords                = stackWords;
+    mTaskConfig.name                      = name.cbegin();
   }
 
 
-  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackDepth,
-                           const std::string_view name )
+  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackWords,
+                         const std::string_view name )
   {
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc.type              = FunctorType::DELEGATE;
-    mFunc.function.delegate = func;
-    mFunc.arg               = arg;
-    mPriority               = priority;
-    mStackDepth             = stackDepth;
-    mNativeThread           = nullptr;
-    copy_thread_name( name );
+    mTaskConfig.type                       = TaskInitType::DYNAMIC;
+    mTaskConfig.function.type              = FunctorType::DELEGATE;
+    mTaskConfig.function.callable.delegate = func;
+    mTaskConfig.arg                        = arg;
+    mTaskConfig.priority                   = priority;
+    mTaskConfig.stackWords                 = stackWords;
+    mTaskConfig.name                       = name.cbegin();
   }
 
 
@@ -154,36 +157,26 @@ namespace Chimera::Thread
     running, it will immediately start. Otherwise it
     will wait until scheduler executes.
     ------------------------------------------------*/
-    BaseType_t result;
-    if( mFunc.type == FunctorType::C_STYLE )
-    {
-      result = xTaskCreate( mFunc.function.pointer, mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), mFunc.arg,
-                            static_cast<UBaseType_t>( mPriority ), &mNativeThread );
-    }
-    else // FunctorType::DELEGATE
-    {
-      /*-------------------------------------------------
-      Encapsulate the delegate into a helper structure to
-      pass multiple arguments to the lambda below.
-      -------------------------------------------------*/
-      DelegateArgs helperArgs;
-      helperArgs.pArguments = mFunc.arg;
-      helperArgs.pDelegate = mFunc.function.delegate;
+    BaseType_t result = 0;
 
-      /*-------------------------------------------------
-      Use a lambda as an impromptu C-Style wrapper for
-      calling the delegate function.
-      -------------------------------------------------*/
-      result = xTaskCreate(
-          []( void *o ) {
-            UserFunction *proxy = reinterpret_cast<UserFunction *>( o );
-            proxy->function.delegate( proxy->arg );
-          },
-          mName.data(), static_cast<configSTACK_DEPTH_TYPE>( mStackDepth ), &mFunc, static_cast<UBaseType_t>( mPriority ),
-          &mNativeThread );
+    switch ( mTaskConfig.type )
+    {
+      case TaskInitType::DYNAMIC:
+        result = this->startDynamic();
+        break;
+
+      case TaskInitType::STATIC:
+        result = this->startStatic();
+        break;
+
+      case TaskInitType::RESTRICTED:
+        result = this->startRestricted();
+        break;
+
+      default:
+        RT_HARD_ASSERT( false );
+        break;
     }
-    // Ensure this function is handling all cases...
-    static_assert( static_cast<size_t>( FunctorType::NUM_OPTIONS ) == 2 );
 
     /*-------------------------------------------------
     No memory to create the thread is really bad. Make
@@ -259,10 +252,15 @@ namespace Chimera::Thread
     return mNativeThread;
   }
 
+  detail::native_thread_id Task::native_id()
+  {
+    return mTaskId;
+  }
 
-  /*-------------------------------------------------
-  Private Methods
-  -------------------------------------------------*/
+
+  /*-------------------------------------------------------------------------------
+  Task: Private Methods
+  -------------------------------------------------------------------------------*/
   void Task::lookup_handle()
   {
     /*-------------------------------------------------
@@ -271,40 +269,118 @@ namespace Chimera::Thread
     -------------------------------------------------*/
     if ( !mNativeThread )
     {
-      mNativeThread = xTaskGetHandle( mName.cbegin() );
+      mNativeThread = xTaskGetHandle( mTaskConfig.name.cbegin() );
     }
   }
 
 
-  detail::native_thread_id Task::native_id()
+  int Task::startStatic()
   {
-    return mTaskId;
+    /*-------------------------------------------------
+    Entrance checks
+    -------------------------------------------------*/
+    static_assert( sizeof( StaticTask_t ) % sizeof( portSTACK_TYPE ) == 0 );
+    RT_HARD_ASSERT( mTaskConfig.specialization.staticTask.stackBuffer );
+    RT_HARD_ASSERT( mTaskConfig.specialization.staticTask.stackSize > sizeof( StaticTask_t ) );
+
+    /*-------------------------------------------------
+    Create a StaticTask_t control block on the heap
+    -------------------------------------------------*/
+    size_t allocByteSize  = sizeof( StaticTask_t );
+    void *rawBuffer       = mTaskConfig.specialization.staticTask.stackBuffer;
+    StaticTask_t *taskCB  = new ( rawBuffer ) StaticTask_t();
+    StackType_t *taskBuff = reinterpret_cast<StackType_t*>( reinterpret_cast<uint8_t *>( rawBuffer ) + allocByteSize );
+
+    /*-------------------------------------------------
+    Adjust the sizing. Stack depth at this point is the
+    number of words in the stack, not number of bytes.
+    -------------------------------------------------*/
+    mTaskConfig.stackWords -= ( allocByteSize / sizeof( portSTACK_TYPE ) );
+    mTaskConfig.specialization.staticTask.stackSize -= allocByteSize;
+
+    /*-------------------------------------------------
+    Create the tasks
+    -------------------------------------------------*/
+    if ( mTaskConfig.function.type == FunctorType::C_STYLE )
+    {
+      mNativeThread = xTaskCreateStatic( mTaskConfig.function.callable.pointer, mTaskConfig.name.data(),
+                                         static_cast<configSTACK_DEPTH_TYPE>( mTaskConfig.stackWords ), mTaskConfig.arg,
+                                         static_cast<UBaseType_t>( mTaskConfig.priority ), taskBuff, taskCB );
+    }
+    else  // FunctorType::DELEGATE
+    {
+      /*-------------------------------------------------
+      Encapsulate the delegate into a helper structure to
+      pass multiple arguments to the lambda below.
+      -------------------------------------------------*/
+      DelegateArgs helperArgs;
+      helperArgs.pArguments = mTaskConfig.arg;
+      helperArgs.pDelegate  = mTaskConfig.function.callable.delegate;
+
+      /*-------------------------------------------------
+      Use a lambda as an impromptu C-Style wrapper for
+      calling the delegate function.
+      -------------------------------------------------*/
+      mNativeThread = xTaskCreateStatic(
+          []( void *o ) {
+            TaskConfig *proxy = reinterpret_cast<TaskConfig *>( o );
+            proxy->function.callable.delegate( proxy->arg );
+          },
+          mTaskConfig.name.data(), static_cast<configSTACK_DEPTH_TYPE>( mTaskConfig.stackWords ), &helperArgs,
+          static_cast<UBaseType_t>( mTaskConfig.priority ), taskBuff, taskCB );
+    }
+
+    return ( mNativeThread ? pdPASS : errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY );
+  }
+
+
+  int Task::startDynamic()
+  {
+    BaseType_t result = 0;
+
+    if ( mTaskConfig.function.type == FunctorType::C_STYLE )
+    {
+      result = xTaskCreate( mTaskConfig.function.callable.pointer, mTaskConfig.name.data(),
+                            static_cast<configSTACK_DEPTH_TYPE>( mTaskConfig.stackWords ), mTaskConfig.arg,
+                            static_cast<UBaseType_t>( mTaskConfig.priority ), &mNativeThread );
+    }
+    else  // FunctorType::DELEGATE
+    {
+      /*-------------------------------------------------
+      Encapsulate the delegate into a helper structure to
+      pass multiple arguments to the lambda below.
+      -------------------------------------------------*/
+      DelegateArgs helperArgs;
+      helperArgs.pArguments = mTaskConfig.arg;
+      helperArgs.pDelegate  = mTaskConfig.function.callable.delegate;
+
+      /*-------------------------------------------------
+      Use a lambda as an impromptu C-Style wrapper for
+      calling the delegate function.
+      -------------------------------------------------*/
+      result = xTaskCreate(
+          []( void *o ) {
+            TaskConfig *proxy = reinterpret_cast<TaskConfig *>( o );
+            proxy->function.callable.delegate( proxy->arg );
+          },
+          mTaskConfig.name.data(), static_cast<configSTACK_DEPTH_TYPE>( mTaskConfig.stackWords ), &mTaskConfig,
+          static_cast<UBaseType_t>( mTaskConfig.priority ), &mNativeThread );
+    }
+
+    return result;
+  }
+
+
+  int Task::startRestricted()
+  {
+    // Not supported yet
+    RT_HARD_ASSERT( false );
+    return errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY;
   }
 
   /*-------------------------------------------------------------------------------
   this_thread Namespace
   -------------------------------------------------------------------------------*/
-  void this_thread::set_name( const char *name )
-  {
-
-  }
-
-  void this_thread::sleep_for( const size_t timeout )
-  {
-    vTaskDelay( pdMS_TO_TICKS( timeout ) );
-  }
-
-
-  void this_thread::sleep_until( const size_t timeout )
-  {
-    auto now = Chimera::millis();
-    if ( timeout > now )
-    {
-      vTaskDelay( pdMS_TO_TICKS( timeout - now ) );
-    }
-  }
-
-
   void this_thread::yield()
   {
     taskYIELD();

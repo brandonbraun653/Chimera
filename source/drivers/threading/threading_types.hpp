@@ -18,8 +18,10 @@
 
 /* ETL Includes */
 #include <etl/delegate.h>
+#include <etl/cstring.h>
 
 /* Chimera Includes */
+#include <Chimera/assert>
 #include <Chimera/common>
 
 namespace Chimera::Thread
@@ -103,6 +105,19 @@ namespace Chimera::Thread
   };
 
   /**
+   *  Describes the type of task that can be created. Internal use only.
+   */
+  enum class TaskInitType
+  {
+    DYNAMIC,
+    STATIC,
+    RESTRICTED,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
+  /**
    *  Thread execution priority levels
    */
   enum class Priority
@@ -161,10 +176,151 @@ namespace Chimera::Thread
       _callable() : delegate( TaskDelegate::create<Internal::delegateInitializer>() )
       {
       }
-    } function;       /**< User function to be turned into a thread */
+    } callable;       /**< User function to be turned into a thread */
     FunctorType type; /**< What kind of function call it is */
-    TaskArg arg;      /**< Arguments to the thread function */
+
+
+    UserFunction() : type( FunctorType::UNKNOWN ), callable( {} )
+    {
+    }
+
+    UserFunction( const TaskDelegate &func )
+    {
+      type              = FunctorType::DELEGATE;
+      callable.delegate = func;
+    }
+
+    UserFunction( const TaskFuncPtr &func )
+    {
+      type             = FunctorType::C_STYLE;
+      callable.pointer = func;
+    }
   };
+
+  /**
+   *  Properties that are shared among all task configuration types
+   */
+  struct CommonTaskCfg
+  {
+    UserFunction function;                   /**< Function pointer defining what the thread executes */
+    TaskArg arg;                             /**< Any arguments to pass to the function */
+    Priority priority;                       /**< Tells the scheduler where this thread fits in the priority hierarchy */
+    size_t stackWords;                       /**< How many bytes to allocate from the heap for this thread's stack */
+    etl::string<MAX_NAME_LEN> name;          /**< User friendly name for identification */
+
+    CommonTaskCfg() : function( {} ), arg( nullptr ), priority( Priority::LOW ), stackWords( 0 )
+    {
+      name.clear();
+    }
+  };
+
+  /**
+   *  Arguments to create a task using dynamically allocated memory off the heap
+   */
+  struct DynamicTask : CommonTaskCfg
+  {
+    // Not much to do here
+  };
+
+  /**
+   *  Special parameters that apply only to static tasks
+   */
+  struct _StaticTaskParams
+  {
+    void *stackBuffer;    /**< Buffer to use as the real stack */
+    size_t stackSize;     /**< Size of the stack buffer */
+
+    _StaticTaskParams() : stackBuffer( nullptr ), stackSize( 0 )
+    {
+    }
+  };
+
+  /**
+   *  Arguments to create a task using statically allocated memory
+   */
+  struct StaticTask : CommonTaskCfg
+  {
+    _StaticTaskParams cfg;
+  };
+
+  /**
+   *  Special parameters that apply only to static tasks
+   */
+  struct _RestrictedTaskParams
+  {
+    _RestrictedTaskParams()
+    {
+    }
+  };
+
+  /**
+   *  Arguments to create a restricted task for running with an MPU
+   */
+  struct RestrictedTask : CommonTaskCfg
+  {
+    _RestrictedTaskParams cfg;
+  };
+
+  /**
+   *  Stores all possible task configuration types. Internal use only.
+   */
+  struct TaskConfig : CommonTaskCfg
+  {
+    TaskInitType type; /**< What kind of init structure is stored */
+
+    union _xTaskConfig
+    {
+      _StaticTaskParams staticTask;         /**< Statically allocated task */
+      _RestrictedTaskParams restrictedTask; /**< MPU protected task */
+
+      _xTaskConfig()
+      {
+      }
+    } specialization;
+
+    TaskConfig() : type( TaskInitType::UNKNOWN )
+    {
+    }
+
+    TaskConfig( const DynamicTask &cfg )
+    {
+      function   = cfg.function;
+      arg        = cfg.arg;
+      priority   = cfg.priority;
+      stackWords = cfg.stackWords;
+      name       = cfg.name;
+
+      type = TaskInitType::DYNAMIC;
+      memset( &specialization, 0, sizeof( specialization ) );
+    }
+
+    TaskConfig( const StaticTask &cfg )
+    {
+      function   = cfg.function;
+      arg        = cfg.arg;
+      priority   = cfg.priority;
+      stackWords = cfg.stackWords;
+      name       = cfg.name;
+
+      type                                  = TaskInitType::STATIC;
+      specialization.staticTask.stackBuffer = cfg.cfg.stackBuffer;
+      specialization.staticTask.stackSize   = cfg.cfg.stackSize;
+    }
+
+    TaskConfig( const RestrictedTask &cfg )
+    {
+      function   = cfg.function;
+      arg        = cfg.arg;
+      priority   = cfg.priority;
+      stackWords = cfg.stackWords;
+      name       = cfg.name;
+
+      type = TaskInitType::RESTRICTED;
+      RT_HARD_ASSERT( false ); // Need to copy over data for restricted type
+    }
+  };
+
+
 }  // namespace Chimera::Thread
 
 #endif /* !CHIMERA_THREADING_COMMON_TYPES_HPP */

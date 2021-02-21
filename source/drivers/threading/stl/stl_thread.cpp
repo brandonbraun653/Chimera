@@ -8,10 +8,6 @@
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
-#if defined( __linux__ )
-#include <sys/prctl.h>
-#endif /* __linux__ */
-
 /* STL Includes */
 #include <chrono>
 #include <thread>
@@ -52,19 +48,22 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Ctors/Dtors
   -------------------------------------------------*/
-  Task::Task() : mFunc( {} ), mTaskId( THREAD_ID_INVALID ), mRunning( false )
+  Task::Task()
   {
-    mName.fill( 0 );
+    mTaskConfig       = {};
+    mTaskId           = Chimera::Thread::THREAD_ID_INVALID;
+    mRunning          = false;
     mTaskMsgMutex     = new std::mutex();
     mTaskMsgCondition = new std::condition_variable();
   }
 
 
-  Task::Task( Task &&other ) :
-      mNativeThread( std::move( other.mNativeThread ) ), mFunc( other.mFunc ), mPriority( other.mPriority ),
-      mStackDepth( other.mStackDepth ), mTaskId( other.mTaskId ), mRunning( mRunning ), mTaskMsgMutex( other.mTaskMsgMutex ),
-      mTaskMsgCondition( other.mTaskMsgCondition )
+  Task::Task( Task &&other ) : mTaskMsgMutex( other.mTaskMsgMutex ), mTaskMsgCondition( other.mTaskMsgCondition )
   {
+    mRunning      = other.mRunning;
+    mTaskId       = other.mTaskId;
+    mTaskConfig   = other.mTaskConfig;
+    mNativeThread = std::move( other.mNativeThread );
     copy_thread_name( other.name() );
   }
 
@@ -77,48 +76,55 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Public Methods
   -------------------------------------------------*/
-  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackDepth,
+  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackWords,
                          const std::string_view name )
   {
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc.type             = FunctorType::C_STYLE;
-    mFunc.function.pointer = func;
-    mFunc.arg              = arg;
-    mPriority              = priority;
-    mStackDepth            = stackDepth;
-    copy_thread_name( name );
+    mTaskConfig.function.type             = FunctorType::C_STYLE;
+    mTaskConfig.function.callable.pointer = func;
+    mTaskConfig.arg                       = arg;
+    mTaskConfig.priority                  = priority;
+    mTaskConfig.stackWords                = stackWords;
+    mTaskConfig.name                      = name.cbegin();
   }
 
 
-  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackDepth,
+  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackWords,
                          const std::string_view name )
   {
     /*------------------------------------------------
     Copy the parameters
     ------------------------------------------------*/
-    mFunc.type              = FunctorType::DELEGATE;
-    mFunc.function.delegate = func;
-    mFunc.arg               = arg;
-    mPriority               = priority;
-    mStackDepth             = stackDepth;
-    copy_thread_name( name );
+    mTaskConfig.function.type              = FunctorType::DELEGATE;
+    mTaskConfig.function.callable.delegate = func;
+    mTaskConfig.arg                        = arg;
+    mTaskConfig.priority                   = priority;
+    mTaskConfig.stackWords                 = stackWords;
+    mTaskConfig.name                       = name.cbegin();
   }
 
 
   TaskId Task::start()
   {
-    std::string_view name{ mName.data() };
+    /*-------------------------------------------------
+    ***Developer Note***
+    The STL threading implementation does not care
+    about static/dynamic/restricted task types, so they
+    are not handled here
+    -------------------------------------------------*/
 
     /*-------------------------------------------------
     This annoyingly obtuse registration uses lambda
     functions as an ad hoc way to inject the calls.
     -------------------------------------------------*/
-    if ( mFunc.type == FunctorType::C_STYLE )
+    std::string_view name{ mTaskConfig.name.data() };
+
+    if ( mTaskConfig.function.type == FunctorType::C_STYLE )
     {
-      TaskFuncPtr ptr = mFunc.function.pointer;
-      TaskArg arg     = mFunc.arg;
+      TaskFuncPtr ptr = mTaskConfig.function.callable.pointer;
+      TaskArg arg     = mTaskConfig.arg;
 
       mNativeThread = std::move( std::thread( [ ptr, arg, name ]() {
         this_thread::set_name( name.begin() );
@@ -127,8 +133,8 @@ namespace Chimera::Thread
     }
     else  // FunctorType::DELEGATE
     {
-      TaskArg arg           = mFunc.arg;
-      TaskDelegate delegate = mFunc.function.delegate;
+      TaskArg arg           = mTaskConfig.arg;
+      TaskDelegate delegate = mTaskConfig.function.callable.delegate;
       mNativeThread         = std::move( std::thread( [ delegate, arg, name ]() {
         this_thread::set_name( name.begin() );
         delegate( arg );
@@ -207,28 +213,6 @@ namespace Chimera::Thread
   /*-------------------------------------------------------------------------------
   Namespace this_thread Implementation
   -------------------------------------------------------------------------------*/
-  void this_thread::set_name( const char *name )
-  {
-#if defined( __linux__ )
-    prctl( PR_SET_NAME, name, 0, 0, 0 );
-#else
-    RT_HARD_ASSERT( false );  // Make noise!
-#endif
-  }
-
-  void this_thread::sleep_for( const size_t timeout )
-  {
-    std::this_thread::sleep_for( std::chrono::milliseconds( timeout ) );
-  }
-
-
-  void this_thread::sleep_until( const size_t timeout )
-  {
-    auto now = std::chrono::steady_clock::now();
-    std::this_thread::sleep_until( now + std::chrono::milliseconds( timeout ) );
-  }
-
-
   void this_thread::yield()
   {
     std::this_thread::yield();

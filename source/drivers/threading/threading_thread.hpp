@@ -63,21 +63,25 @@ namespace Chimera::Thread
    *  A mostly C++ STL compatible thread class, but optimized for embedded OS environments
    *  that have more stringent requirements on thread creation due to resource limitations.
    */
-  class IThread
+  class ITask
   {
   public:
-    ~IThread() = default;
+    ~ITask() = default;
 
+    /*-------------------------------------------------------------------------------
+    Pure Virtual Methods
+    -------------------------------------------------------------------------------*/
     /**
      *  Creates a thread from the given function ptr and assigns it an execution
      *  priority level + stack to operate with.
      *
-     *  @param[in]  ptr          Function pointer defining what the thread executes
+     *  @param[in]  ptr           Function pointer defining what the thread executes
      *  @param[in]  priority      Tells the scheduler where this thread fits in the priority hierarchy
-     *  @param[in]  stackDepth    How many bytes to allocate from the heap for this thread's stack
+     *  @param[in]  stackWords    How many bytes to allocate from the heap for this thread's stack
      *  @param[in]  name          User friendly name for identification
      */
-    virtual void initialize( TaskFuncPtr ptr, TaskArg arg, const Priority priority, const size_t stackDepth,
+    [[deprecated]]
+    virtual void initialize( TaskFuncPtr ptr, TaskArg arg, const Priority priority, const size_t stackWords,
                              const std::string_view name ) = 0;
 
     /**
@@ -86,21 +90,12 @@ namespace Chimera::Thread
      *
      *  @param[in]  delegate      Function pointer defining what the thread executes
      *  @param[in]  priority      Tells the scheduler where this thread fits in the priority hierarchy
-     *  @param[in]  stackDepth    How many bytes to allocate from the heap for this thread's stack
+     *  @param[in]  stackWords    How many bytes to allocate from the heap for this thread's stack
      *  @param[in]  name          User friendly name for identification
      */
-    virtual void initialize( TaskDelegate delegate, TaskArg arg, const Priority priority, const size_t stackDepth,
+    [[deprecated]]
+    virtual void initialize( TaskDelegate delegate, TaskArg arg, const Priority priority, const size_t stackWords,
                              const std::string_view name ) = 0;
-
-    /**
-     *  Assigns a given ID to this thread.
-     *
-     *  @warning There are no checks for duplication of IDs between threads.
-     *
-     *  @param[in]  id            The ID being assigned
-     *  @return void
-     */
-    virtual void assignId( const TaskId id ) = 0;
 
     /**
      *  Starts the thread, returning it's generated id.
@@ -109,8 +104,9 @@ namespace Chimera::Thread
     virtual TaskId start() = 0;
 
     /**
-     *  Suspends the thread, assuming it's supported. This is mostly taken from RTOS's
-     *  which can commonly suspend a single thread from execution.
+     *  Suspends the thread, assuming it's supported. This is mostly taken from real
+     *  time operating systems (FreeRTOS) which can commonly suspend a single thread
+     *  from execution.
      *
      *  @return void
      */
@@ -148,19 +144,100 @@ namespace Chimera::Thread
      */
     virtual detail::native_thread_handle_type native_handle() = 0;
 
+    /**
+     *  Gets the native thread identifier
+     *  @return detail::native_thread_id
+     */
     virtual detail::native_thread_id native_id() = 0;
+
+
+    /*-------------------------------------------------------------------------------
+    Concrete Methods
+    -------------------------------------------------------------------------------*/
+    /**
+     *  Registers a task configuration
+     *
+     *  @param[in]  cfg           Task configuration
+     *  @return void
+     */
+    void create( const TaskConfig &cfg );
 
     /**
      *  Returns the name of the thread
      *  @return std::string_view
      */
-    virtual std::string_view name() const = 0;
+    std::string_view name() const;
 
     /**
      *  Returns the ID associated with the thread
      *  @return TaskId
      */
-    virtual TaskId id() const = 0;
+    TaskId id() const;
+
+    /**
+     *  Assigns a given ID to this thread.
+     *
+     *  @warning There are no checks for duplication of IDs between threads.
+     *
+     *  @param[in]  id            The ID being assigned
+     *  @return void
+     */
+    void assignId( const TaskId id );
+
+    /**
+     *  Checks to see if this thread and another thread are equal
+     *
+     *  @param[in]  rhs     The thread being compared against
+     *  @return bool
+     */
+    bool operator=( const ITask &rhs )
+    {
+      /* clang-format off */
+      bool POD_compare =
+        ( mTaskConfig.function.type == rhs.mTaskConfig.function.type  ) &&
+        ( mTaskConfig.arg           == rhs.mTaskConfig.arg            ) &&
+        ( mTaskConfig.priority      == rhs.mTaskConfig.priority       ) &&
+        ( mTaskConfig.stackWords    == rhs.mTaskConfig.stackWords     ) &&
+        ( this->name()              == rhs.name()                     );
+      /* clang-format on */
+
+      bool FUNC_compare = false;
+      if ( POD_compare )
+      {
+        if ( mTaskConfig.function.type == FunctorType::C_STYLE )
+        {
+          FUNC_compare = ( mTaskConfig.function.callable.pointer == rhs.mTaskConfig.function.callable.pointer );
+        }
+        else
+        {
+          FUNC_compare = ( mTaskConfig.function.callable.delegate == rhs.mTaskConfig.function.callable.delegate );
+        }
+      }
+
+      return POD_compare && FUNC_compare;
+    }
+
+    /**
+     *  Checks if the thread exists/has been initialized yet
+     *  @return bool
+     */
+    explicit operator bool() const
+    {
+#if defined( USING_NATIVE_THREADS )
+      return !( mNativeThread.get_id() == std::thread::id() );
+#elif defined( USING_FREERTOS_THREADS )
+      return ( mNativeThread ) ? true : false;
+#endif
+    }
+
+  protected:
+    /*-------------------------------------------------
+    Shared State Data
+    -------------------------------------------------*/
+    bool mRunning;                       /**< Is the thread running? */
+    TaskId mTaskId;                      /**< Chimera task identifier */
+    TaskConfig mTaskConfig;              /**< Stores settings for how the task was initialized */
+    detail::native_thread mNativeThread; /**< Default thread storage type */
   };
 
 

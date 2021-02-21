@@ -5,8 +5,12 @@
  *  Description:
  *    Common threading implementation
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
+
+#if defined( __linux__ )
+#include <sys/prctl.h>
+#endif /* __linux__ */
 
 /* STL Includes */
 #include <cstdlib>
@@ -246,31 +250,27 @@ namespace Chimera::Thread
   /*-------------------------------------------------------------------------------
   Class Definition
   -------------------------------------------------------------------------------*/
-  void Task::assignId( const TaskId id )
+  void ITask::create( const TaskConfig &cfg )
+  {
+    mTaskConfig = cfg;
+  }
+
+
+  TaskId ITask::id() const
+  {
+    return mTaskId;
+  }
+
+
+  void ITask::assignId( const TaskId id )
   {
     mTaskId = id;
   }
 
 
-  std::string_view Task::name() const
+  std::string_view ITask::name() const
   {
-    return std::string_view( mName.cbegin() );
-  }
-
-
-  void Task::copy_thread_name( const std::string_view &name )
-  {
-    /*------------------------------------------------
-    Copy out the string data into the name
-    ------------------------------------------------*/
-    size_t copyLen = name.length();
-    if ( copyLen > MAX_NAME_LEN )
-    {
-      copyLen = MAX_NAME_LEN;
-    }
-
-    mName.fill( 0 );
-    memcpy( mName.data(), name.data(), copyLen );
+    return std::string_view( mTaskConfig.name.cbegin() );
   }
 
 }  // namespace Chimera::Thread
@@ -281,6 +281,13 @@ namespace Chimera::Thread::this_thread
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  void set_name( const char *name )
+  {
+#if defined( __linux__ )
+    prctl( PR_SET_NAME, name, 0, 0, 0 );
+#endif
+  }
+
   bool pendTaskMsg( TaskMsg msg )
   {
     return pendTaskMsg( msg, Chimera::Thread::TIMEOUT_BLOCK );
@@ -292,4 +299,21 @@ namespace Chimera::Thread::this_thread
     TaskMsg actMsg = std::numeric_limits<TaskMsg>::max();
     return ( receiveTaskMsg( actMsg, timeout ) && ( actMsg == msg ) );
   }
+
+
+  void sleep_for( const size_t timeout )
+  {
+    Chimera::delayMilliseconds( timeout );
+  }
+
+
+  void sleep_until( const size_t timeout )
+  {
+    auto now = Chimera::millis();
+    if ( timeout > now )
+    {
+      Chimera::delayMilliseconds( timeout - now );
+    }
+  }
+
 }  // namespace Chimera::Thread::this_thread
