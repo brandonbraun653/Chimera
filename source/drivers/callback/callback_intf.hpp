@@ -29,7 +29,7 @@ namespace Chimera::Callback
   /*-------------------------------------------------------------------------------
   Class Definitions
   -------------------------------------------------------------------------------*/
-  template<typename CRTPClass, typename CBType>
+  template<typename CRTPClass, typename CBType, typename WhatHappenedType = void*>
   class DelegateService
   {
   public:
@@ -68,7 +68,13 @@ namespace Chimera::Callback
       return Chimera::Status::OK;
     }
 
+    const WhatHappenedType &whatHappened()
+    {
+      return mDelegateWhatHappened;
+    }
+
   protected:
+    WhatHappenedType mDelegateWhatHappened;
     etl::delegate_service<CBType::CB_NUM_OPTIONS> mDelegateRegistry;
   };
 }  // namespace Chimera::Callback
