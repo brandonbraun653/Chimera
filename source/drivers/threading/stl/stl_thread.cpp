@@ -197,11 +197,15 @@ namespace Chimera::Thread
   bool Task::pendTaskMessage( TaskMsg &msg, const size_t timeout )
   {
     std::unique_lock<std::mutex> lk( *mTaskMsgMutex, std::adopt_lock_t() );
-    mTaskMsgCondition->wait( lk, [ this ] { return this->mTaskMsgReady; } );
+    bool received = mTaskMsgCondition->wait_for( lk, std::chrono::milliseconds( timeout ), [ this ] { return this->mTaskMsgReady; } );
 
-    msg           = mTaskMsgData;
-    mTaskMsgReady = false;
-    return true;
+    if( received )
+    {
+      msg           = mTaskMsgData;
+      mTaskMsgReady = false;
+    }
+
+    return received;
   }
 
   detail::native_thread_id Task::native_id()
