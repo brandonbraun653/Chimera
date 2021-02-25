@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera UTILITY Includes
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -13,6 +13,7 @@
 #define CHIMERA_UTILITY_INCLUDES
 
 #include <Chimera/source/drivers/utilities/macros.hpp>
+#include <Chimera/source/drivers/utilities/register_accessor.hpp>
 #include <Chimera/source/drivers/utilities/utilities.hpp>
 
 #endif /* !CHIMERA_UTILITY_INCLUDES */
