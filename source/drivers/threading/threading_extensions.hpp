@@ -1,12 +1,12 @@
 /********************************************************************************
-*  File Name:
-*    extensions.hpp
-*
-*  Description:
-*    Threading extensions that implement some kind of helper objects
-*
-*  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
-********************************************************************************/
+ *  File Name:
+ *    extensions.hpp
+ *
+ *  Description:
+ *    Threading extensions that implement some kind of helper objects
+ *
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREADING_EXTENSIONS_HPP
@@ -22,8 +22,7 @@ namespace Chimera::Thread
   class LockGuard
   {
   public:
-    explicit LockGuard( mutex_type &mutex ) :
-        mtx( mutex )
+    explicit LockGuard( mutex_type &mutex ) : mtx( mutex )
     {
       mtx.lock();
     }
@@ -102,6 +101,6 @@ namespace Chimera::Thread
   protected:
     RecursiveTimedMutex mClsMutex;
   };
-}
+}  // namespace Chimera::Thread
 
-#endif	/* !CHIMERA_THREADING_EXTENSIONS_HPP */
+#endif /* !CHIMERA_THREADING_EXTENSIONS_HPP */

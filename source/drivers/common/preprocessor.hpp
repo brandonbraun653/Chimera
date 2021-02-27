@@ -21,13 +21,6 @@ https://clang.llvm.org/docs/LanguageExtensions.html
 #endif
 
 /*------------------------------------------------
-Target CPU
-------------------------------------------------*/
-#if !defined( CHIMERA_LITTLE_ENDIAN ) && !defined( CHIMERA_BIG_ENDIAN )
-#error Please define the target CPU endianness: CHIMERA_LITTLE_ENDIAN or CHIMERA_BIG_ENDIAN
-#endif
-
-/*------------------------------------------------
 FreeRTOS
 ------------------------------------------------*/
 #if __has_include( "FreeRTOS.h" ) && __has_include( "tasks.c" )
@@ -66,9 +59,9 @@ Composite System Configuration
 ------------------------------------------------*/
 #if defined( USING_WINDOWS ) || ( USING_LINUX )
 /* Indicates to the code it can use the full C++ STL without the memory concerns of embedded systems */
-#define FULL_CPP_STL_AVAILABLE 
+#define FULL_CPP_STL_AVAILABLE
 #else
 #define USING_GENERIC_SYSTEM
-#endif 
+#endif
 
 #endif /* !CHIMERA_PREPROCESSOR_HPP */

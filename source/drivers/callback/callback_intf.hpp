@@ -29,7 +29,7 @@ namespace Chimera::Callback
   /*-------------------------------------------------------------------------------
   Class Definitions
   -------------------------------------------------------------------------------*/
-  template<typename CRTPClass, typename CBType, typename WhatHappenedType = void*>
+  template<typename CRTPClass, typename CBType, typename EventDataType = void*>
   class DelegateService
   {
   public:
@@ -57,25 +57,38 @@ namespace Chimera::Callback
       static_cast<CRTPClass *>( this )->lock();
       if ( id == CBType::CB_UNHANDLED )
       {
-        mDelegateRegistry.register_unhandled_delegate( func );
+        mCBService_registry.register_unhandled_delegate( func );
       }
       else
       {
-        mDelegateRegistry.register_delegate( id, func );
+        mCBService_registry.register_delegate( id, func );
       }
 
       static_cast<CRTPClass *>( this )->unlock();
       return Chimera::Status::OK;
     }
 
-    const WhatHappenedType &whatHappened()
+    /**
+     *  Gets the last known data that happened in a given callback event
+     *
+     *  @param[in]  id          The callback id to get info on
+     *  @return const EventDataType *
+     */
+    const EventDataType * whatHappened( const CBType id )
     {
-      return mDelegateWhatHappened;
+      if( id < CBType::CB_NUM_OPTIONS )
+      {
+        return &mCBService_data[ id ];
+      }
+      else
+      {
+        return nullptr;
+      }
     }
 
   protected:
-    WhatHappenedType mDelegateWhatHappened;
-    etl::delegate_service<CBType::CB_NUM_OPTIONS> mDelegateRegistry;
+    etl::array<EventDataType, CBType::CB_NUM_OPTIONS> mCBService_data;
+    etl::delegate_service<CBType::CB_NUM_OPTIONS> mCBService_registry;
   };
 }  // namespace Chimera::Callback
 
