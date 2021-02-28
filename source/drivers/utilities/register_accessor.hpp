@@ -30,19 +30,20 @@ namespace Chimera::Gen
   /*-------------------------------------------------------------------------------
   Helpers for defining a peripheral memory mapped region
   -------------------------------------------------------------------------------*/
-  template<const size_t StartAddr, const size_t EndAddr>
-  struct MemRegion
+  template<typename T, const T StartAddr, const T EndAddr>
+  class MemRegion
   {
-    constexpr size_t StartAddress = StartAddr;
-    constexpr size_t EndAddress = EndAddr;
-    constexpr size_t MemoryRange = EndAddr - StartAddr;
+  public:
+    static constexpr T StartAddress = StartAddr;
+    static constexpr T EndAddress = EndAddr;
+    static constexpr T MemoryRange = EndAddr - StartAddr;
 
-    static_assert( StartAddr % sizeof( size_t) == 0 );
-    static_assert( EndAddr % sizeof( size_t ) == 0 );
+    static_assert( StartAddr % sizeof( T) == 0 );
+    static_assert( EndAddr % sizeof( T ) == 0 );
   };
 
   /*-------------------------------------------------------------------------------
-  Helpers for generating register/field access structures
+  Helpers for generating register/field access classes
   -------------------------------------------------------------------------------*/
   /**
    *  Register descriptor. This can apply to either an entire register or
@@ -58,8 +59,9 @@ namespace Chimera::Gen
    *  @param[in]  Offset    Bit position that the register starts at (default 0)
    */
   template<typename T, const T Addr, const T Mask = std::numeric_limits<T>::max(), const T Reset = 0, const T Offset = 0>
-  struct RegDecl
+  class RegDecl
   {
+  public:
     /*-------------------------------------------------
     Assumptions & Checks
     -------------------------------------------------*/
@@ -92,8 +94,9 @@ namespace Chimera::Gen
    */
   template<typename T, const T Addr, const T Mask = std::numeric_limits<T>::max(), const T Reset = 0,
            const T Offset = 0>
-  struct RegAccess : public RegDecl<T, Addr, Mask, Reset, Offset>
+  class RegAccess : public RegDecl<T, Addr, Mask, Reset, Offset>
   {
+  public:
     /*-------------------------------------------------------------------------------
     Public Functions
     -------------------------------------------------------------------------------*/
@@ -172,7 +175,7 @@ namespace Chimera::Gen
    */
   template<typename Base, const size_t Mask = std::numeric_limits<decltype( Base::_address )>::max(),
            const decltype( Base::_address ) Reset = 0, decltype( Base::_address ) Offset = 0>
-  struct FieldAccess : public RegAccess<decltype( Base::_address ), Base::_address, Mask, Reset, Offset>
+  class FieldAccess : public RegAccess<decltype( Base::_address ), Base::_address, Mask, Reset, Offset>
   {
   };
 
