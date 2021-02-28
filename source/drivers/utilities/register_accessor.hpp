@@ -27,6 +27,23 @@
 
 namespace Chimera::Gen
 {
+  /*-------------------------------------------------------------------------------
+  Helpers for defining a peripheral memory mapped region
+  -------------------------------------------------------------------------------*/
+  template<const size_t StartAddr, const size_t EndAddr>
+  struct MemRegion
+  {
+    constexpr size_t StartAddress = StartAddr;
+    constexpr size_t EndAddress = EndAddr;
+    constexpr size_t MemoryRange = EndAddr - StartAddr;
+
+    static_assert( StartAddr % sizeof( size_t) == 0 );
+    static_assert( EndAddr % sizeof( size_t ) == 0 );
+  };
+
+  /*-------------------------------------------------------------------------------
+  Helpers for generating register/field access structures
+  -------------------------------------------------------------------------------*/
   /**
    *  Register descriptor. This can apply to either an entire register or
    *  a field inside a register.
