@@ -84,7 +84,7 @@ namespace Chimera::Thread
   static constexpr size_t TIMEOUT_1HR       = 60 * TIMEOUT_1MIN;
 
   static constexpr size_t MAX_NAME_LEN             = 16;
-  static constexpr size_t MAX_REGISTERABLE_THREADS = 10;
+  static constexpr size_t MAX_REGISTERABLE_THREADS = 15;
   static constexpr TaskId THREAD_ID_INVALID        = 0xCCCCCCCC;
 
 
