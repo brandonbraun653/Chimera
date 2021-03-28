@@ -29,7 +29,7 @@ namespace Chimera::Watchdog
   -------------------------------------------------------------------------------*/
   namespace Backend
   {
-    Chimera::Status_t registerDriver( Chimera::Watchdog::Backend::DriverConfig &registry )
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::Watchdog::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
