@@ -16,7 +16,23 @@
 
 namespace Chimera::PWM
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverRegistration s_backend_driver;
+
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
+  namespace Backend
+  {
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( DriverRegistration &registry )
+    {
+      registry.isSupported = false;
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }  // namespace Backend
+
 
   Chimera::Status_t initialize()
   {
@@ -77,4 +93,4 @@ namespace Chimera::PWM
       return 0;
     }
   }
-}
+}  // namespace Chimera::PWM

@@ -5,7 +5,7 @@
  *  Description:
  *    Implements Chimera's SPI functionality.
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 /* STL Includes */
@@ -17,11 +17,23 @@
 
 namespace Chimera::SPI
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverConfig s_backend_driver;
 
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  namespace Backend
+  {
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::SPI::Backend::DriverConfig &registry )
+    {
+      registry.isSupported = false;
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }  // namespace Backend
+
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );

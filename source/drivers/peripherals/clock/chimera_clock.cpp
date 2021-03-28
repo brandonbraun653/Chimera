@@ -13,7 +13,24 @@
 
 namespace Chimera::Clock
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverConfig s_backend_driver;
+
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
+  namespace Backend
+  {
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::Clock::Backend::DriverConfig &registry )
+    {
+      registry.isSupported = false;
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+
+  }  // namespace Backend
+
 
   Chimera::Status_t initialize()
   {

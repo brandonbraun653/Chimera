@@ -5,7 +5,7 @@
  *  Description:
  *    Implementation of Chimera side details for the External Interrupt driver
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* STL Includes */
@@ -16,11 +16,23 @@
 
 namespace Chimera::EXTI
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
   static Backend::DriverConfig s_backend_driver;
 
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  namespace Backend
+  {
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::EXTI::Backend::DriverConfig &registry )
+    {
+      registry.isSupported = false;
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }  // namespace Backend
+
   Chimera::Status_t open()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
