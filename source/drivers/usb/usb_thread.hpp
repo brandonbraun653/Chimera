@@ -19,7 +19,6 @@
 /* Chimera Includes */
 #include <Chimera/thread>
 
-
 namespace Chimera::USB
 {
   /*-------------------------------------------------------------------------------

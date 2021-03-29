@@ -23,6 +23,7 @@
 
 #if defined( USING_NATIVE_THREADS )
 #include <Chimera/source/drivers/threading/stl/stl_thread.hpp>
+#include <Chimera/source/drivers/threading/stl/stl_sync_primitives.hpp>
 #elif defined( USING_FREERTOS_THREADS )
 #include <Chimera/source/drivers/threading/freertos/freertos_thread.hpp>
 #endif
