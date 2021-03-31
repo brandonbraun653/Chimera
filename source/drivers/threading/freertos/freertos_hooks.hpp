@@ -19,8 +19,8 @@
 #if defined( USING_FREERTOS ) || defined( USING_FREERTOS_THREADS )
 
 /* FreeRTOS Includes */
-#include <FreeRTOS/FreeRTOS.h>
-#include <FreeRTOS/task.h>
+#include "FreeRTOS.h"
+#include "task.h"
 
 namespace Chimera::Thread::FreeRTOS
 {

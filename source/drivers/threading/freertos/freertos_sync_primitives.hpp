@@ -15,10 +15,10 @@
 #if defined( USING_FREERTOS_THREADS )
 
 /* FreeRTOS Includes */
-#include <FreeRTOS/FreeRTOS.h>
-#include <FreeRTOS/semphr.h>
-#include <FreeRTOS/task.h>
-#include <FreeRTOS/queue.h>
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "task.h"
+#include "queue.h"
 #include "portmacro.h"
 
 namespace Chimera::Thread::detail
