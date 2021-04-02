@@ -10,6 +10,7 @@
 
 /* Chimera Includes */
 #include <Chimera/clock>
+#include <Chimera/peripheral>
 
 namespace Chimera::Clock
 {

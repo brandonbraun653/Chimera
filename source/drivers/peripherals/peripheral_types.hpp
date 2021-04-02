@@ -17,6 +17,9 @@
 
 namespace Chimera::Peripheral
 {
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
   /**
    *  Identifies various kinds of hardware peripherals that could be
    *  supported by Chimera drivers.
@@ -56,6 +59,23 @@ namespace Chimera::Peripheral
     NUM_OPTIONS,
     PERIPH_NONE,    /**< Not a peripheral */
     UNKNOWN
+  };
+
+  /*-------------------------------------------------------------------------------
+  Structures
+  -------------------------------------------------------------------------------*/
+  /**
+   * @brief Describes a connection to a peripheral
+   *
+   * Mostly this is intended to inform drivers that consume a peripheral
+   * which type and instance to consume. For example, an IMU driver may
+   * likely operate off of I2C or SPI and may need to know which to select
+   * at runtime.
+   */
+  struct Connection
+  {
+    Type periphType;  /**< Which peripheral is being described */
+    size_t channel;   /**< Hardware channel on the peripheral */
   };
 }  // namespace Chimera::Peripheral
 

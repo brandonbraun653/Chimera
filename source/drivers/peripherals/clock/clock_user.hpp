@@ -14,6 +14,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/peripheral>
 #include <Chimera/source/drivers/peripherals/clock/clock_types.hpp>
 
 namespace Chimera::Clock

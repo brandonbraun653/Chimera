@@ -17,6 +17,4 @@
 #include <Chimera/source/drivers/common/compiler_intf.hpp>
 #include <Chimera/source/drivers/common/preprocessor.hpp>
 
-#include <Chimera/source/drivers/peripherals/peripheral_types.hpp>
-
 #endif /* !CHIMERA_COMMON_INCLUDES */

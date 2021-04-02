@@ -17,6 +17,7 @@
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/peripheral>
 
 /* ETL Includes */
 #include <etl/delegate.h>
