@@ -106,7 +106,7 @@ namespace Chimera::Gen
      */
     inline T read() const
     {
-      return ( *_accessor ) & _bitMask;
+      return ( *( this->_accessor ) ) & this->_bitMask;
     }
 
     /**
@@ -117,7 +117,7 @@ namespace Chimera::Gen
      */
     inline void write( const T val )
     {
-      *_accessor = val & _bitMask;
+      *( this->_accessor ) = val & this->_bitMask;
     }
 
     /**
@@ -135,7 +135,7 @@ namespace Chimera::Gen
      */
     inline void reset()
     {
-      write( _resetValue );
+      write( this->_resetValue );
     }
 
     /**
@@ -147,7 +147,7 @@ namespace Chimera::Gen
      */
     inline void bitwiseSet( const T val )
     {
-      *_accessor |= val & _bitMask;
+      *( this->_accessor ) |= val & this->_bitMask;
     }
 
     /**
@@ -159,7 +159,7 @@ namespace Chimera::Gen
      */
     inline void bitwiseClear( const T val )
     {
-      *_accessor &= ~( val & _bitMask );
+      *( this->_accessor ) &= ~( val & this->_bitMask );
     }
   };
 
