@@ -5,7 +5,7 @@
  *  Description:
  *    Implements the high level USB driver interface
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */
@@ -38,7 +38,16 @@ namespace Chimera::USB
     if ( getThread( USBThreadName ) == nullptr )
     {
       Task usbThread;
-      usbThread.initialize( USBMainThread, nullptr, USBDefaultPriority, USBDefaultStackSize, USBThreadName );
+      TaskConfig cfg;
+
+      cfg.arg        = nullptr;
+      cfg.function   = USBMainThread;
+      cfg.priority   = USBDefaultPriority;
+      cfg.stackWords = USBDefaultStackSize;
+      cfg.type       = TaskInitType::DYNAMIC;
+      cfg.name       = USBThreadName.data();
+
+      usbThread.create( cfg );
       usbThread.start();
 
       if ( result != Chimera::Status::OK )

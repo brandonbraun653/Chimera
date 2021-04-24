@@ -66,7 +66,7 @@ namespace Chimera::Scheduler::LoRes
     /*-------------------------------------------------
     Initialize the registry
     -------------------------------------------------*/
-    for ( auto x = 0; x < s_NumTimers; x++ )
+    for ( size_t x = 0; x < s_NumTimers; x++ )
     {
       s_registry[ x ].clear();
     }
@@ -82,7 +82,16 @@ namespace Chimera::Scheduler::LoRes
     -------------------------------------------------*/
     if ( !s_TimerThread )
     {
-      s_TimerThread.initialize( TimerThreadFunction, nullptr, Priority::LOW, STACK_BYTES( s_ThreadStackBytes ), "SWTimer" );
+      TaskConfig cfg;
+
+      cfg.arg        = nullptr;
+      cfg.function   = TimerThreadFunction;
+      cfg.priority   = Priority::LOW;
+      cfg.stackWords = STACK_BYTES( s_ThreadStackBytes );
+      cfg.type       = TaskInitType::DYNAMIC;
+      cfg.name       = "SWTimer";
+
+      s_TimerThread.create( cfg );
       s_TimerThread.start();
     }
 
@@ -246,7 +255,7 @@ namespace Chimera::Scheduler::LoRes
     auto result = Chimera::Status::NOT_FOUND;
     s_mtx.lock();
 
-    for ( auto timer = 0; timer < s_NumTimers; timer++ )
+    for ( size_t timer = 0; timer < s_NumTimers; timer++ )
     {
       if ( s_registry[ timer ].func == method )
       {
@@ -289,7 +298,7 @@ namespace Chimera::Scheduler::LoRes
       -------------------------------------------------*/
       s_mtx.lock();
 
-      for ( auto timer = 0; timer < s_NumTimers; timer++ )
+      for ( size_t timer = 0; timer < s_NumTimers; timer++ )
       {
         size_t currentTick = Chimera::millis();
 
@@ -355,7 +364,7 @@ namespace Chimera::Scheduler::LoRes
 
   static SoftwareTimerEntry *findNextSlot()
   {
-    for ( auto timer = 0; timer < s_NumTimers; timer++ )
+    for ( size_t timer = 0; timer < s_NumTimers; timer++ )
     {
       if ( s_registry[ timer ].func )
       {

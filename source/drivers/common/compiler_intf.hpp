@@ -30,26 +30,18 @@ GCC
 #define WEAKDECL __attribute__( ( weak ) )
 #endif
 
+#ifdef __GNUC__
+#define UNUSED( x ) UNUSED_##x __attribute__( ( __unused__ ) )
+#else
+#define UNUSED( x ) UNUSED_##x
+#endif
+
+#ifdef __GNUC__
+#define UNUSED_FUNCTION( x ) __attribute__( ( __unused__ ) ) UNUSED_##x
+#else
+#define UNUSED_FUNCTION( x ) UNUSED_##x
+#endif
+
 #endif /* __GNUC__ */
 
-/*------------------------------------------------
-WIN32
-------------------------------------------------*/
-#if defined( WIN32 )
-#ifndef WEAKDECL
-#define WEAKDECL
-#endif
-
-#endif /* WIN32 */
-
-/*------------------------------------------------
-WIN64
-------------------------------------------------*/
-#if defined( WIN64 )
-#ifndef WEAKDECL
-#define WEAKDECL ()
-#endif
-
-#endif /* WIN64 */
-
-#endif  // ! CHIMERA_COMPILER_INTERFACE_HPP
+#endif  /* CHIMERA_COMPILER_INTERFACE_HPP */

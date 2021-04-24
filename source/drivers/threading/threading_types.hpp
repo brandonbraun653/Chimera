@@ -180,7 +180,7 @@ namespace Chimera::Thread
     FunctorType type; /**< What kind of function call it is */
 
 
-    UserFunction() : type( FunctorType::UNKNOWN ), callable( {} )
+    UserFunction() : callable( {} ), type( FunctorType::UNKNOWN )
     {
     }
 
@@ -291,7 +291,7 @@ namespace Chimera::Thread
       name       = cfg.name;
 
       type = TaskInitType::DYNAMIC;
-      memset( &specialization, 0, sizeof( specialization ) );
+      specialization = {};
     }
 
     TaskConfig( const StaticTask &cfg )

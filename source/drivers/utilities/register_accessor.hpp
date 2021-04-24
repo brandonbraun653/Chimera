@@ -66,7 +66,8 @@ namespace Chimera::Gen
     Assumptions & Checks
     -------------------------------------------------*/
     /* clang-format off */
-    static_assert( std::is_pod<T>::value,                   "Register type must be P.O.D" );
+    static_assert( std::is_trivial<T>::value,               "Register type must be trivial" );
+    static_assert( std::is_standard_layout<T>::value,       "Register type must be standard layout" );
     static_assert( Addr != static_cast<T>( 0 ),             "Register assigned to NULL. This is probably not true." );
     static_assert( Addr % sizeof( T ) == 0,                 "Register address is not aligned to its underlying type." );
     static_assert( Offset < std::numeric_limits<T>::digits, "Bit offset larger than what type can contain." );

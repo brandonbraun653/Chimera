@@ -41,7 +41,7 @@ namespace Chimera::Serial
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
-    for ( auto x = 0; x < NUM_DRIVERS; x++ )
+    for ( size_t x = 0; x < NUM_DRIVERS; x++ )
     {
       if ( !s_shared_driver[ x ] )
       {
