@@ -18,7 +18,7 @@
 
 /* ETL Includes */
 #include <etl/delegate.h>
-#include <etl/cstring.h>
+#include <etl/string.h>
 
 /* Chimera Includes */
 #include <Chimera/assert>
