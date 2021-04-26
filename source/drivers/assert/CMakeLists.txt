@@ -5,7 +5,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # ====================================================
 set(LINK_LIBS
   aurora_intf_inc        # Aurora public headers
-  Boost::boost      # Boost public headers
+        # Boost public headers
   chimera_intf_inc       # Chimera public headers
 )
 

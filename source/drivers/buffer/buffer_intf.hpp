@@ -5,18 +5,16 @@
  *  Description:
  *    Models the Chimera Bufferable interface
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_BUFFERABLE_INTERFACE_HPP
 #define CHIMERA_BUFFERABLE_INTERFACE_HPP
 
-/* Boost Includes */
-#include <boost/circular_buffer_fwd.hpp>
-
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/serial>
 
 namespace Chimera::Buffer
 {
@@ -137,7 +135,7 @@ namespace Chimera::Buffer
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
     virtual Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph,
-                                                    boost::circular_buffer<uint8_t> *const buffer ) = 0;
+                                                    Chimera::Serial::CircularBuffer & buffer ) = 0;
 
     virtual Chimera::Status_t bufferFlush( const Chimera::Hardware::SubPeripheral periph ) = 0;
   };

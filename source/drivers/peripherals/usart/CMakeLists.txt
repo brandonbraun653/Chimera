@@ -4,7 +4,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # Common
 # ====================================================
 set(LINK_LIBS
-  Boost::boost
+
   chimera_intf_inc       # Chimera public headers
 )
 

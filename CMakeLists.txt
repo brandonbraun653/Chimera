@@ -19,7 +19,7 @@ add_subdirectory("bsp")
 set(PUB_HDR chimera_intf_inc)
 add_library(${PUB_HDR} INTERFACE)
 target_include_directories(${PUB_HDR} INTERFACE "./../" "./include")
-target_link_libraries(${PUB_HDR} INTERFACE etl_inc  Boost::boost)
+target_link_libraries(${PUB_HDR} INTERFACE etl_inc  )
 
 # Select the appropriate threading interface (if any)
 if(Toolchain::REQUIRES_FREERTOS_THREADS)

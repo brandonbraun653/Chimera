@@ -5,7 +5,7 @@
  *  Description:
  *    Models Chimera buffer related interfaces
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -16,11 +16,9 @@
 #include <cstring>
 #include <memory>
 
-/* Boost Includes */
-#include <boost/circular_buffer_fwd.hpp>
-
 /* Chimera Includes */
 #include <Chimera/source/drivers/buffer/buffer_intf.hpp>
+#include <Chimera/serial>
 #include <Chimera/thread>
 
 namespace Chimera::Buffer
@@ -50,21 +48,6 @@ namespace Chimera::Buffer
     bool initialized();
 
     /**
-     *  Dynamically allocates memory for the double buffer
-     *
-     *  @param[in]  circularSize    Number of bytes for the circular buffer
-     *  @param[in]  linearSize      Number of bytes for the linear buffer
-     *  @return Chimera::Status_t
-     *
-     *  |   Return Value   |              Explanation             |
-     *  |:----------------:|:------------------------------------:|
-     *  |               OK | The memory was assigned successfully |
-     *  | INVAL_FUNC_PARAM | An invalid parameter was passed in   |
-     *  |           LOCKED | The buffers are currently locked     |
-     */
-    Chimera::Status_t assign( const size_t circularSize, const size_t linearSize );
-
-    /**
      *  Assigns the double buffer using external memory
      *
      *  @param[in]  circularBuffer    The circular buffer to be managed
@@ -78,7 +61,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | An invalid parameter was passed in   |
      *  |           LOCKED | The buffers are currently locked     |
      */
-    Chimera::Status_t assign( boost::circular_buffer<uint8_t> *const circularBuffer, uint8_t *const linearBuffer,
+    Chimera::Status_t assign( Chimera::Serial::CircularBuffer &circularBuffer, uint8_t *const linearBuffer,
                               const size_t linearSize );
 
     /**
@@ -166,9 +149,9 @@ namespace Chimera::Buffer
     /**
      *  Gets the internal pointer to the circular buffer
      *
-     *  @return boost::circular_buffer<uint8_t> *const
+     *  @return Chimera::Serial::CircularBuffer *
      */
-    boost::circular_buffer<uint8_t> *const circularBuffer();
+    Chimera::Serial::CircularBuffer *circularBuffer();
 
     /**
      *  Gets the internal pointer to the linear buffer
@@ -187,13 +170,9 @@ namespace Chimera::Buffer
   private:
     friend Chimera::Thread::Lockable<PeripheralBuffer>;
 
-
-    bool dynamicData;
     uint8_t *pLinearBuffer;
     size_t linearLength;
-    boost::circular_buffer<uint8_t> *pCircularBuffer;
-
-    void freeDynamicData();
+    Chimera::Serial::CircularBuffer *pCircularBuffer;
   };
 
 }  // namespace Chimera::Buffer

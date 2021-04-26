@@ -17,6 +17,9 @@
 #include <memory>
 #include <type_traits>
 
+/* ETL Includes */
+#include <etl/circular_buffer.h>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/gpio>
@@ -33,6 +36,7 @@ namespace Chimera::Serial
   Aliases
   -------------------------------------------------------------------------------*/
   using Driver_rPtr = Driver *;
+  using CircularBuffer = etl::icircular_buffer<uint8_t>;
 
   /*-------------------------------------------------------------------------------
   Constants

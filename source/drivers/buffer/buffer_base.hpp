@@ -53,7 +53,7 @@ namespace Chimera::Buffer
     }
 
     Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph,
-                                            boost::circular_buffer<uint8_t> *const buffer )
+                                            Chimera::Serial::CircularBuffer & buffer )
     {
       return Chimera::Status::NOT_SUPPORTED;
     }

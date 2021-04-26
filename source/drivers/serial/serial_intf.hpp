@@ -5,7 +5,7 @@
  *  Description:
  *    Models the Chimera Serial interface
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -14,9 +14,6 @@
 
 /* STL Includes */
 #include <cstdint>
-
-/* Boost Includes */
-#include <boost/circular_buffer_fwd.hpp>
 
 /* Chimera Includes */
 #include <Chimera/callback>
@@ -260,7 +257,7 @@ namespace Chimera::Serial
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
     virtual Chimera::Status_t enableBuffering( const Chimera::Hardware::SubPeripheral periph,
-                                               boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
+                                               Chimera::Serial::CircularBuffer &userBuffer, uint8_t *const hwBuffer,
                                                const size_t hwBufferSize ) = 0;
 
     /**
@@ -329,7 +326,7 @@ namespace Chimera::Serial
     Chimera::Status_t toggleAsyncListening( const bool state );
     Chimera::Status_t readAsync( uint8_t *const buffer, const size_t len );
     Chimera::Status_t enableBuffering( const Chimera::Hardware::SubPeripheral periph,
-                                       boost::circular_buffer<uint8_t> *const userBuffer, uint8_t *const hwBuffer,
+                                       Chimera::Serial::CircularBuffer &userBuffer, uint8_t *const hwBuffer,
                                        const size_t hwBufferSize );
     Chimera::Status_t disableBuffering( const Chimera::Hardware::SubPeripheral periph );
     bool available( size_t *const bytes = nullptr );
