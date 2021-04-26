@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera version information
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -17,7 +17,7 @@
 
 namespace Chimera
 {
-  static constexpr std::string_view version = "1.3.0";
+  static constexpr std::string_view version = "1.4.0";
 }
 
 #endif /* !CHIMERA_VERSION_HPP */
