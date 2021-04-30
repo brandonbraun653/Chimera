@@ -18,6 +18,12 @@
 #include <limits>
 #include <memory>
 
+/* ETL Includes */
+#include <etl/delegate.h>
+
+/* Aurora Includes */
+#include <Aurora/utility>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/clock>
@@ -28,7 +34,7 @@ namespace Chimera::ADC
   Forward Declarations
   -------------------------------------------------------------------------------*/
   class Driver;
-
+  struct InterruptDetail;
 
   /*-------------------------------------------------------------------------------
   Aliases
@@ -64,7 +70,7 @@ namespace Chimera::ADC
   /**
    *  Represents a physical ADC hardware peripheral
    */
-  enum class Converter : uint8_t
+  enum class Peripheral : uint8_t
   {
     ADC_0,
     ADC_1,
@@ -127,17 +133,13 @@ namespace Chimera::ADC
    */
   enum class Interrupt : uint16_t
   {
-    HW_READY       = ( 1u << 0 ), /**< Physical hardware is ready to start sampling */
-    EOC_PRI_LO     = ( 1u << 1 ), /**< End of conversion single low priority channel */
-    EOC_PRI_LO_SEQ = ( 1u << 2 ), /**< End of conversion low priority group */
-    EOC_PRI_HI     = ( 1u << 3 ), /**< End of conversion single high priority channel */
-    EOC_PRI_HI_SEQ = ( 1u << 4 ), /**< End of conversion high priority group*/
-    AWD_0_TRIGGER  = ( 1u << 5 ), /**< Analog watchdog 0 event */
-    AWD_1_TRIGGER  = ( 1u << 6 ), /**< Analog watchdog 1 event*/
-    AWD_2_TRIGGER  = ( 1u << 7 ), /**< Analog watchdog 2 event*/
-    OVERRUN        = ( 1u << 8 ), /**< New sample overwrote unread old sample */
+    HW_READY     = ( 1u << 0 ), /**< Physical hardware is ready to start sampling */
+    EOC_SINGLE   = ( 1u << 1 ), /**< End of conversion single channel */
+    EOC_SEQUENCE = ( 1u << 2 ), /**< End of conversion sequence sample */
+    ANALOG_WD    = ( 1u << 3 ), /**< Analog watchdog event */
+    OVERRUN      = ( 1u << 4 ), /**< New sample overwrote unread old sample */
 
-    NUM_OPTIONS = 9,
+    NUM_OPTIONS = 5,
     NONE        = ( 1u << 15 )
   };
 
@@ -147,8 +149,9 @@ namespace Chimera::ADC
    */
   enum class SamplingMode : uint8_t
   {
-    POLLING,    /**< User must start sample. Once sample completes, a manual trigger must start another */
+    ONE_SHOT,   /**< User must start sample. Once sample completes, a manual trigger must start another */
     CONTINUOUS, /**< The hardware starts a new sample after the last completes */
+    TRIGGER,    /**< External/internal signal can trigger the sample */
 
     NUM_OPTIONS,
     UNKNOWN
@@ -161,7 +164,7 @@ namespace Chimera::ADC
    */
   enum class TransferMode : uint8_t
   {
-    POLLING,   /**< User must manually get a sample. ONLY use for single-channel ADC */
+    ONE_SHOT,  /**< User must manually get a sample. ONLY use for single-channel ADC */
     INTERRUPT, /**< Interrupts on End-of-Conversion will trigger the data transfer */
     DMA,       /**< DMA is used to trigger data transfers */
 
@@ -203,6 +206,7 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
   /**
    *  Input clock prescaler options
    */
@@ -225,6 +229,7 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
   /**
    *  ADC sampling resolution in bits
    */
@@ -239,20 +244,12 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
-
-  /**
-   *  If supported by hardware, allows for grouping of hardware
-   *  channels in to priority structures.
-   */
-  enum class SampleGroup : uint8_t
-  {
-    PRI_LO,
-    PRI_HI,
-
-    NUM_OPTIONS,
-    UNKNOWN
-  };
-
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using SampleList  = std::array<Sample_t, 32>;
+  using ChannelList = std::array<Channel, 32>;
+  using ISRCallback = etl::delegate<void( const InterruptDetail & )>;
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -263,22 +260,24 @@ namespace Chimera::ADC
    */
   struct DriverConfig
   {
-    Converter periph;                /**< Which peripheral instance is being configured */
+    Peripheral periph;               /**< Which peripheral instance is being configured */
     Interrupt bmISREnable;           /**< Bit mask of interrupts to enable */
     Oversampler oversampleRate;      /**< Over sampling rate, if any */
     TransferMode transferMode;       /**< Conversion result memory transfer method */
     Resolution resolution;           /**< Conversion resolution */
     Prescaler clockPrescale;         /**< Requested prescaler to drive ADC from system clock [1, 255] */
     Chimera::Clock::Bus clockSource; /**< Which clock drives the prescaler */
+    size_t defaultSampleCycles;      /**< Default number of clock cycles each channel will sample for */
 
     void clear()
     {
-      periph         = Converter::UNKNOWN;
-      bmISREnable    = Interrupt::NONE;
-      oversampleRate = Oversampler::OS_NONE;
-      transferMode   = TransferMode::POLLING;
-      clockPrescale  = Prescaler::DIV_1;
-      clockSource    = Chimera::Clock::Bus::UNKNOWN_BUS;
+      periph              = Peripheral::UNKNOWN;
+      bmISREnable         = Interrupt::NONE;
+      oversampleRate      = Oversampler::OS_NONE;
+      transferMode        = TransferMode::ONE_SHOT;
+      clockPrescale       = Prescaler::DIV_1;
+      clockSource         = Chimera::Clock::Bus::UNKNOWN_BUS;
+      defaultSampleCycles = 100;
     }
   };
 
@@ -286,19 +285,24 @@ namespace Chimera::ADC
   /**
    *  Initializes a group sampling sequence
    */
-  struct GroupInit
+  struct SequenceInit
   {
-    SamplingMode sampleMode; /**< How should the user expect sampling to occur? */
-    SampleGroup sampleGroup; /**< Priority of the group being configured */
-    Channel *groupList;      /**< List of channels (in order) to be sampled */
-    size_t groupLength;      /**< Number of elements in groupList */
+    SamplingMode mode;     /**< How should the user expect sampling to occur? */
+    ChannelList *channels; /**< List of channels (in order) to be sampled */
+    SampleList *data;      /**< Memory to store sampled data into */
 
     void clear()
     {
-      groupLength = 0;
-      groupList   = nullptr;
-      sampleGroup = SampleGroup::UNKNOWN;
-      sampleMode  = SamplingMode::UNKNOWN;
+      mode = SamplingMode::UNKNOWN;
+      if ( channels )
+      {
+        channels->fill( Channel::UNKNOWN );
+      }
+
+      if ( data )
+      {
+        data->fill( 0 );
+      }
     }
   };
 
@@ -309,17 +313,25 @@ namespace Chimera::ADC
    */
   struct InterruptDetail
   {
-    Interrupt whichISR;   /**< ISR type that occurred */
-    Channel whichChannel; /**< Channel the event occured on */
+    Interrupt isr;    /**< ISR type that occurred */
+    Channel channel;  /**< Channel the event occurred on */
+    SampleList *data; /**< Data that was sampled */
 
     void clear()
     {
-      whichChannel = Channel::UNKNOWN;
-      whichISR     = Interrupt::NONE;
+      channel = Channel::UNKNOWN;
+      isr     = Interrupt::NONE;
     }
   };
 
+  /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  using CallbackArray = std::array<ISRCallback, EnumValue( Interrupt::NUM_OPTIONS )>;
 
+  /*-------------------------------------------------------------------------------
+  Backend Driver Namespace
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
     struct DriverConfig
@@ -342,20 +354,14 @@ namespace Chimera::ADC
        *  Factory function that creates a shared_ptr instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
-      Driver_rPtr ( *getDriver )( const Converter periph );
+      Driver_rPtr ( *getDriver )( const Peripheral periph );
 
       /**
        *  Checks if a peripheral instance supports a given feature
        */
-      bool ( *featureSupported )( const Converter periph, const Feature feature );
+      bool ( *featureSupported )( const Peripheral periph, const Feature feature );
     };
   }  // namespace Backend
-
-
-  /*-------------------------------------------------------------------------------
-  Function Pointers
-  -------------------------------------------------------------------------------*/
-  using ISRCallback = void ( * )( const InterruptDetail &detail );
 
 }  // namespace Chimera::ADC
 

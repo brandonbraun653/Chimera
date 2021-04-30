@@ -70,13 +70,13 @@ namespace Chimera::ADC
     virtual void close() = 0;
 
     /**
-     *  Manually controls the power state (on/off) of the hardware to
-     *  reduce power consumption without deconfiguring the device.
+     *  Assigns a number of sampling cycles to a channel. The actual number of
+     *  cycles will get rounded to the closes supported value by the hardware.
      *
-     *  @param[in]  state         What state to place the HW in (on/off)
-     *  @return void
+     *  @param[in]  ch            Which channel to configure
+     *  @param[in]  cycles        Number of cycles
      */
-    virtual void setPowerState( const bool state ) = 0;
+    virtual Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles ) = 0;
 
     /**
      *  Samples a single hardware channel in one-shot mode
@@ -87,86 +87,29 @@ namespace Chimera::ADC
     virtual Sample_t sampleChannel( const Channel ch ) = 0;
 
     /**
-     *  Samples an internal/external sensor. Not all options may be available.
-     *
-     *  @param[in]  sensor        Which sensor to sample
-     *  @return Sample_t
-     */
-    virtual Sample_t sampleSensor( const Sensor sensor ) = 0;
-
-    /**
      *  Some hardware peripherals support grouping of channels so that they
-     *  may all be sampled in sequence with a single command. This function
-     *  initializes the hardware with the necessary information.
+     *  may all be sampled in sequence with a single command.
      *
      *  @param[in]  cfg           Group configuration data
      *  @return Chimera::Status_t
      */
-    virtual Chimera::Status_t groupConfig( const GroupInit &cfg ) = 0;
+    virtual Chimera::Status_t configSequence( const SequenceInit &cfg ) = 0;
 
     /**
-     *  Start a sampling sequence for the given grouping. Must have been
-     *  pre-configured already.
-     *
-     *  @see groupConfig
-     *
-     *  @param[in]  grp           Which group to trigger a sample for
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t groupStartSample( const SampleGroup grp ) = 0;
-
-    /**
-     *  Gets the results of the last group sampling operation.
-     *
-     *  @note If using this method, the backend should implement some kind of cache
-     *        to store individual channel conversions.
-     *
-     *  @param[in]  grp           Which group to get samples for
-     *  @param[in]  out           Destination buffer for the sample data
-     *  @param[in]  len           Length of the destination buffer in number of Sample_t elements
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t groupGetSample( const SampleGroup grp, Sample_t *const out, const size_t len ) = 0;
-
-    /**
-     *  If using DMA transfers, this method assigns the buffer where DMA will
-     *  write conversion data into.
-     *
-     *  @warning Using this method will disable groupGetSample as it effectively replaces
-     *           the internal cache for intermediate conversion results.
-     *
-     *  @warning As long as the DMA functionality is in use, the buffer MUST
-     *           exist or the application code is likely to fault.
-     *
-     *  @param[in]  grp           Which group the buffer is intended for
-     *  @param[in]  out           Destination buffer for the sample data
-     *  @param[in]  len           Length of the destination buffer in number of Sample_t elements
-     *  @return Chimera::Status_t
-     */
-    virtual Chimera::Status_t groupSetDMABuffer( const SampleGroup grp, Sample_t *const out, const size_t len ) = 0;
-
-    /**
-     *  Assigns a number of sampling cycles to a channel. The actual number of
-     *  cycles will get rounded to the closes supported value by the hardware.
-     *
-     *  @param[in]  ch            Which channel to configure
-     *  @param[in]  cycles        Number of cycles
-     */
-    virtual Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles ) = 0;
-
-    /**
-     *  Sets the watchdog interrupt thresholds, assuming the hardware supports
-     *  this feature.
-     *
-     *  @param[in]  wd            Which watchdog to configure
-     *  @param[in]  low           Low trigger threshold, set to zero to disable
-     *  @param[in]  high          High trigger threshold, set to max to disable
+     *  Starts the sequence conversions
      *  @return void
      */
-    virtual void setWatchdogThreshold( const Watchdog wd, const Sample_t low, const Sample_t high ) = 0;
+    virtual void startSequence() = 0;
 
     /**
-     *  When an interrupt event happens, execute some callback function
+     *  Starts the sequence conversions
+     *  @return void
+     */
+    virtual void stopSequence() = 0;
+
+    /**
+     *  When an interrupt event happens, execute some callback function. This is
+     *  how the driver expects data to get out to the user.
      *
      *  @param[in]  bmSignal      Which events the callback applies to (bit mask)
      *  @param[in]  cb            The callback function
@@ -181,16 +124,6 @@ namespace Chimera::ADC
      *  @return float
      */
     virtual float sampleToVoltage( const Sample_t sample ) = 0;
-
-    /**
-     *  Converts a raw sample into the equivalent temperature for
-     *  the on-chip temperature sensor (if supported). Results are
-     *  reported in celcius.
-     *
-     *  @param[in]  sample        The raw sample value to convert
-     *  @return float
-     */
-    virtual float sampleToJunctionTemperature( const Sample_t sample ) = 0;
   };
 
 

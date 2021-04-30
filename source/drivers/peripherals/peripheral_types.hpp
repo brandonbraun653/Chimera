@@ -29,11 +29,11 @@ namespace Chimera::Peripheral
    */
   enum class Type : uint8_t
   {
-    PERIPH_ADC = 0, /**< Analog to Digital Converter */
+    PERIPH_ADC = 0, /**< Analog to Digital Peripheral */
     PERIPH_CAN,     /**< Controller Area Network */
     PERIPH_CRC,     /**< Cyclic Redundancy Check */
     PERIPH_CRS,     /**< Clock Recovery System */
-    PERIPH_DAC,     /**< Digital to Analog Converter */
+    PERIPH_DAC,     /**< Digital to Analog Peripheral */
     PERIPH_DMA,     /**< Direct Memory Access */
     PERIPH_EXTI,    /**< External Interrupt */
     PERIPH_FLASH,   /**< System Flash Controller */

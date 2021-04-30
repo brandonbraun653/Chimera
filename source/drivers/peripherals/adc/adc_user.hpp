@@ -26,8 +26,8 @@ namespace Chimera::ADC
   -------------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_rPtr getDriver( const Converter periph );
-  bool featureSupported( const Converter periph, const Feature feature );
+  Driver_rPtr getDriver( const Peripheral periph );
+  bool featureSupported( const Peripheral periph, const Feature feature );
 
 
   /*-------------------------------------------------------------------------------
@@ -49,18 +49,13 @@ namespace Chimera::ADC
     -------------------------------------------------*/
     Chimera::Status_t open( const DriverConfig &init );
     void close();
-    void setPowerState( const bool state );
-    Sample_t sampleChannel( const Channel ch );
-    Sample_t sampleSensor( const Sensor sensor );
-    Chimera::Status_t groupConfig( const GroupInit &cfg );
-    Chimera::Status_t groupStartSample( const SampleGroup grp );
-    Chimera::Status_t groupGetSample( const SampleGroup grp, Sample_t *const out, const size_t len );
-    Chimera::Status_t groupSetDMABuffer( const SampleGroup grp, Sample_t *const out, const size_t len );
     Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
-    void setWatchdogThreshold( const Watchdog wd, const Sample_t low, const Sample_t high );
+    Sample_t sampleChannel( const Channel ch );
+    Chimera::Status_t configSequence( const SequenceInit &cfg );
+    void startSequence();
+    void stopSequence();
     void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
     float sampleToVoltage( const Sample_t sample );
-    float sampleToJunctionTemperature( const Sample_t sample );
 
     /*-------------------------------------------------
     Interface: Lockable
