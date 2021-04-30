@@ -34,19 +34,18 @@ namespace Chimera::ADC
   Forward Declarations
   -------------------------------------------------------------------------------*/
   class Driver;
+  struct Sample;
   struct InterruptDetail;
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
   using Driver_rPtr = Driver *;
-  using Sample_t    = uint16_t;
 
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr Sample_t INVALID_SAMPLE = std::numeric_limits<Sample_t>::max();
-  static constexpr float VOLTAGE_OOR       = std::numeric_limits<float>::max();
+  static constexpr float VOLTAGE_OOR = std::numeric_limits<float>::max();
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -142,7 +141,8 @@ namespace Chimera::ADC
     NUM_OPTIONS = 5,
     NONE        = ( 1u << 15 )
   };
-
+  ENUM_CLS_BITWISE_OPERATOR( Interrupt, & );
+  ENUM_CLS_BITWISE_OPERATOR( Interrupt, | );
 
   /**
    *  Describes the sampling behavior of hardware
@@ -247,13 +247,18 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using SampleList  = std::array<Sample_t, 32>;
-  using ChannelList = std::array<Channel, 32>;
-  using ISRCallback = etl::delegate<void( const InterruptDetail & )>;
+  using SampleList  = std::array<Sample, 19>;
+  using ChannelList = std::array<Channel, 19>;
 
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
+  struct Sample
+  {
+    size_t us;      /**< Timestamp in microseconds */
+    size_t counts;  /**< Measured ADC counts */
+  };
+
   /**
    *  High level configuration options of an ADC peripheral. These
    *  settings will apply to all configured channels.
@@ -301,7 +306,7 @@ namespace Chimera::ADC
 
       if ( data )
       {
-        data->fill( 0 );
+        data->fill( {} );
       }
     }
   };
@@ -315,7 +320,7 @@ namespace Chimera::ADC
   {
     Interrupt isr;    /**< ISR type that occurred */
     Channel channel;  /**< Channel the event occurred on */
-    SampleList *data; /**< Data that was sampled */
+    Sample data;      /**< Data that was sampled */
 
     void clear()
     {
@@ -324,9 +329,11 @@ namespace Chimera::ADC
     }
   };
 
+
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
+  using ISRCallback = etl::delegate<void( const InterruptDetail & )>;
   using CallbackArray = std::array<ISRCallback, EnumValue( Interrupt::NUM_OPTIONS )>;
 
   /*-------------------------------------------------------------------------------

@@ -82,9 +82,9 @@ namespace Chimera::ADC
      *  Samples a single hardware channel in one-shot mode
      *
      *  @param[in]  ch            Which channel to sample
-     *  @return Sample_t
+     *  @return Sample
      */
-    virtual Sample_t sampleChannel( const Channel ch ) = 0;
+    virtual Sample sampleChannel( const Channel ch ) = 0;
 
     /**
      *  Some hardware peripherals support grouping of channels so that they
@@ -108,6 +108,19 @@ namespace Chimera::ADC
     virtual void stopSequence() = 0;
 
     /**
+     * @brief Grab the next sample from the ADC channel
+     *
+     * This does not perform an immediate sample, but rather queries the
+     * hardware driver queues for any new data.
+     *
+     * @param ch        Which channel to request
+     * @param sample    Where to write the sample data
+     * @return true     Retrieval was successful
+     * @return false    Retrieval failed (nothing available)
+     */
+    virtual bool nextSample( const Channel ch, Sample &sample ) = 0;
+
+    /**
      *  When an interrupt event happens, execute some callback function. This is
      *  how the driver expects data to get out to the user.
      *
@@ -123,7 +136,7 @@ namespace Chimera::ADC
      *  @param[in]  sample        The raw sample value to convert
      *  @return float
      */
-    virtual float sampleToVoltage( const Sample_t sample ) = 0;
+    virtual float sampleToVoltage( const Sample &sample ) = 0;
   };
 
 

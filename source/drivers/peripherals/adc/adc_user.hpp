@@ -50,12 +50,13 @@ namespace Chimera::ADC
     Chimera::Status_t open( const DriverConfig &init );
     void close();
     Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
-    Sample_t sampleChannel( const Channel ch );
+    Sample sampleChannel( const Channel ch );
     Chimera::Status_t configSequence( const SequenceInit &cfg );
     void startSequence();
     void stopSequence();
+    bool nextSample( const Channel ch, Sample &sample );
     void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
-    float sampleToVoltage( const Sample_t sample );
+    float sampleToVoltage( const Sample sample );
 
     /*-------------------------------------------------
     Interface: Lockable
