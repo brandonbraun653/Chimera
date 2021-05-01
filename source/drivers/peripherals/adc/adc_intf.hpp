@@ -136,7 +136,7 @@ namespace Chimera::ADC
      *  @param[in]  sample        The raw sample value to convert
      *  @return float
      */
-    virtual float sampleToVoltage( const Sample &sample ) = 0;
+    virtual float toVoltage( const Sample &sample ) = 0;
   };
 
 

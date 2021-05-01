@@ -56,7 +56,7 @@ namespace Chimera::ADC
     void stopSequence();
     bool nextSample( const Channel ch, Sample &sample );
     void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
-    float sampleToVoltage( const Sample sample );
+    float toVoltage( const Sample sample );
 
     /*-------------------------------------------------
     Interface: Lockable
