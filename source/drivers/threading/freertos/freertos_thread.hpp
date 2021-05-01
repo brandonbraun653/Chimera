@@ -33,10 +33,6 @@ namespace Chimera::Thread
     Task( const Task & ) = delete;
     ~Task();
 
-    [[deprecated]] void initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackWords,
-                                    const std::string_view name ) final override;
-    [[deprecated]] void initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackWords,
-                                    const std::string_view name ) final override;
     TaskId start() final override;
     void suspend() final override;
     void resume() final override;

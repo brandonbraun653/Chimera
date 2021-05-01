@@ -72,32 +72,6 @@ namespace Chimera::Thread
     Pure Virtual Methods
     -------------------------------------------------------------------------------*/
     /**
-     *  Creates a thread from the given function ptr and assigns it an execution
-     *  priority level + stack to operate with.
-     *
-     *  @param[in]  ptr           Function pointer defining what the thread executes
-     *  @param[in]  priority      Tells the scheduler where this thread fits in the priority hierarchy
-     *  @param[in]  stackWords    How many bytes to allocate from the heap for this thread's stack
-     *  @param[in]  name          User friendly name for identification
-     */
-    [[deprecated]]
-    virtual void initialize( TaskFuncPtr ptr, TaskArg arg, const Priority priority, const size_t stackWords,
-                             const std::string_view name ) = 0;
-
-    /**
-     *  Creates a thread from the given function delegate and assigns it an execution
-     *  priority level + stack to operate with.
-     *
-     *  @param[in]  delegate      Function pointer defining what the thread executes
-     *  @param[in]  priority      Tells the scheduler where this thread fits in the priority hierarchy
-     *  @param[in]  stackWords    How many bytes to allocate from the heap for this thread's stack
-     *  @param[in]  name          User friendly name for identification
-     */
-    [[deprecated]]
-    virtual void initialize( TaskDelegate delegate, TaskArg arg, const Priority priority, const size_t stackWords,
-                             const std::string_view name ) = 0;
-
-    /**
      *  Starts the thread, returning it's generated id.
      *  @return TaskId
      */

@@ -296,6 +296,10 @@ namespace Chimera::ADC
     ChannelList *channels; /**< List of channels (in order) to be sampled */
     SampleList *data;      /**< Memory to store sampled data into */
 
+    SequenceInit() : mode( SamplingMode::UNKNOWN ), channels( nullptr ), data( nullptr )
+    {
+    }
+
     void clear()
     {
       mode = SamplingMode::UNKNOWN;

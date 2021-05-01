@@ -118,38 +118,6 @@ namespace Chimera::Thread
   /*-------------------------------------------------
   Public Methods
   -------------------------------------------------*/
-  void Task::initialize( TaskFuncPtr func, TaskArg arg, const Priority priority, const size_t stackWords,
-                         const std::string_view name )
-  {
-    /*------------------------------------------------
-    Copy the parameters
-    ------------------------------------------------*/
-    mTaskConfig.type                      = TaskInitType::DYNAMIC;
-    mTaskConfig.function.type             = FunctorType::C_STYLE;
-    mTaskConfig.function.callable.pointer = func;
-    mTaskConfig.arg                       = arg;
-    mTaskConfig.priority                  = priority;
-    mTaskConfig.stackWords                = stackWords;
-    mTaskConfig.name                      = name.cbegin();
-  }
-
-
-  void Task::initialize( TaskDelegate func, TaskArg arg, const Priority priority, const size_t stackWords,
-                         const std::string_view name )
-  {
-    /*------------------------------------------------
-    Copy the parameters
-    ------------------------------------------------*/
-    mTaskConfig.type                       = TaskInitType::DYNAMIC;
-    mTaskConfig.function.type              = FunctorType::DELEGATE;
-    mTaskConfig.function.callable.delegate = func;
-    mTaskConfig.arg                        = arg;
-    mTaskConfig.priority                   = priority;
-    mTaskConfig.stackWords                 = stackWords;
-    mTaskConfig.name                       = name.cbegin();
-  }
-
-
   TaskId Task::start()
   {
     /*------------------------------------------------
