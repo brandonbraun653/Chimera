@@ -5,6 +5,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # ====================================================
 set(LINK_LIBS
   chimera_intf_inc       # Chimera public headers
+  aurora_intf_inc
 )
 
 # ====================================================

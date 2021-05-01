@@ -132,14 +132,14 @@ namespace Chimera::ADC
    */
   enum class Interrupt : uint16_t
   {
-    HW_READY     = ( 1u << 0 ), /**< Physical hardware is ready to start sampling */
-    EOC_SINGLE   = ( 1u << 1 ), /**< End of conversion single channel */
-    EOC_SEQUENCE = ( 1u << 2 ), /**< End of conversion sequence sample */
-    ANALOG_WD    = ( 1u << 3 ), /**< Analog watchdog event */
-    OVERRUN      = ( 1u << 4 ), /**< New sample overwrote unread old sample */
+    HW_READY,     /**< Physical hardware is ready to start sampling */
+    EOC_SINGLE,   /**< End of conversion single channel */
+    EOC_SEQUENCE, /**< End of conversion sequence sample */
+    ANALOG_WD,    /**< Analog watchdog event */
+    OVERRUN,      /**< New sample overwrote unread old sample */
 
-    NUM_OPTIONS = 5,
-    NONE        = ( 1u << 15 )
+    NUM_OPTIONS,
+    NONE
   };
   ENUM_CLS_BITWISE_OPERATOR( Interrupt, & );
   ENUM_CLS_BITWISE_OPERATOR( Interrupt, | );
@@ -255,8 +255,8 @@ namespace Chimera::ADC
   -------------------------------------------------------------------------------*/
   struct Sample
   {
-    size_t us;      /**< Timestamp in microseconds */
-    size_t counts;  /**< Measured ADC counts */
+    size_t us;     /**< Timestamp in microseconds */
+    size_t counts; /**< Measured ADC counts */
   };
 
   /**
@@ -294,23 +294,19 @@ namespace Chimera::ADC
   {
     SamplingMode mode;     /**< How should the user expect sampling to occur? */
     ChannelList *channels; /**< List of channels (in order) to be sampled */
-    SampleList *data;      /**< Memory to store sampled data into */
+    size_t numChannels;    /**< How many channels are in the sequence */
 
-    SequenceInit() : mode( SamplingMode::UNKNOWN ), channels( nullptr ), data( nullptr )
+    SequenceInit() : mode( SamplingMode::UNKNOWN ), channels( nullptr )
     {
     }
 
     void clear()
     {
-      mode = SamplingMode::UNKNOWN;
+      numChannels = 0;
+      mode        = SamplingMode::UNKNOWN;
       if ( channels )
       {
         channels->fill( Channel::UNKNOWN );
-      }
-
-      if ( data )
-      {
-        data->fill( {} );
       }
     }
   };
@@ -322,9 +318,9 @@ namespace Chimera::ADC
    */
   struct InterruptDetail
   {
-    Interrupt isr;    /**< ISR type that occurred */
-    Channel channel;  /**< Channel the event occurred on */
-    Sample data;      /**< Data that was sampled */
+    Interrupt isr;   /**< ISR type that occurred */
+    Channel channel; /**< Channel the event occurred on */
+    Sample data;     /**< Data that was sampled */
 
     void clear()
     {
@@ -337,7 +333,7 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using ISRCallback = etl::delegate<void( const InterruptDetail & )>;
+  using ISRCallback   = etl::delegate<void( const InterruptDetail & )>;
   using CallbackArray = std::array<ISRCallback, EnumValue( Interrupt::NUM_OPTIONS )>;
 
   /*-------------------------------------------------------------------------------

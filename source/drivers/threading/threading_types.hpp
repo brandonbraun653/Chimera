@@ -20,6 +20,9 @@
 #include <etl/delegate.h>
 #include <etl/string.h>
 
+/* Aurora Includes */
+#include <Aurora/utility>
+
 /* Chimera Includes */
 #include <Chimera/assert>
 #include <Chimera/common>
@@ -146,13 +149,16 @@ namespace Chimera::Thread
    */
   enum ITCMsg : TaskMsg
   {
-    TSK_MSG_NOP = 0,     /**< Base message that means do nothing */
-    TSK_MSG_WAKEUP,      /**< Wake up the thread to do some processing */
-    TSK_MSG_EXIT,        /**< Instructs the task to exit */
-    TSK_MSG_ISR_HANDLER, /**< Execute the ISR handler */
-
-    TSK_MSG_USR_START = 100 /**< Begin of IDs for user messages */
+    TSK_MSG_NOP            = 0,           /**< Base message that means do nothing */
+    TSK_MSG_WAKEUP         = ( 1u << 0 ), /**< Wake up the thread to do some processing */
+    TSK_MSG_EXIT           = ( 1u << 1 ), /**< Instructs the task to exit */
+    TSK_MSG_ISR_HANDLER    = ( 1u << 2 ), /**< Execute the general ISR handler */
+    TSK_MSG_ISR_DATA_READY = ( 1u << 3 ), /**< Execute ISR handler that consumes data */
+    TSK_MSG_ISR_ERROR      = ( 1u << 4 ), /**< Execute ISR handler that manages errors */
   };
+
+  ENUM_CLS_BITWISE_OPERATOR( ITCMsg, | );
+  ENUM_CLS_BITWISE_OPERATOR( ITCMsg, & );
 
 
   /*-------------------------------------------------------------------------------
