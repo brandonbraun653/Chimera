@@ -22,20 +22,20 @@ namespace Chimera::Thread
   class LockGuard
   {
   public:
-    explicit LockGuard( mutex_type &mutex ) : mtx( mutex )
+    explicit LockGuard( mutex_type &mutex ) : mtx( &mutex )
     {
-      mtx.lock();
+      mtx->lock();
     }
 
     ~LockGuard()
     {
-      mtx.unlock();
+      mtx->unlock();
     }
 
     LockGuard( const LockGuard & ) = delete;
 
   private:
-    mutex_type &mtx;
+    mutex_type *mtx;
   };
 
   template<class mutex_type>

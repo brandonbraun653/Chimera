@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera DMA types
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -15,51 +15,55 @@
 /* STL Includes */
 #include <cstdint>
 #include <cstring>
-#include <memory>
+#include <limits>
+
+/* ETL Includes */
+#include <etl/delegate.h>
 
 /* Chimera Includes */
 #include <Chimera/common>
+#include <Chimera/peripheral>
 
 namespace Chimera::DMA
 {
   /*-------------------------------------------------------------------------------
   Forward Declarations
   -------------------------------------------------------------------------------*/
-  class Driver;
+  struct TransferStats;
+
 
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Driver_rPtr        = std::shared_ptr<Driver>;
-  using TransferHandle_t = void *;
+  /**
+   * @brief Unique identifier for an immediate or queued transfer
+   *
+   * Only relevant to non-permanent requests and does not correlate with any
+   * internal DMA channels or streams. Mainly used for reporting and tracking.
+   */
+  using RequestId = uint32_t;
 
   /**
-   *  Options for which channel to use on the DMA transfer. Usually
-   *  these are called streams.
+   * @brief Generic callback type for DMA events
    *
-   *  @note These values are used to index arrays! Do not change their order or value!
+   * @param TransferStats   Information about the transfer
    */
-  using RequestID = uint32_t;
+  using TransferCallback = etl::delegate<void( const TransferStats & )>;
+
+  /*-------------------------------------------------------------------------------
+  Constants
+  -------------------------------------------------------------------------------*/
+  static constexpr RequestId INVALID_REQUEST = std::numeric_limits<RequestId>::max();
 
   /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
-  enum class Controller : uint8_t
-  {
-    CHANNEL1,
-    CHANNEL2,
-
-    NUM_OPTIONS
-  };
-
   /**
-   *  Options for the memory transfer direction
-   *
-   *  @note These values are used to index arrays! Do not change their order or value!
+   * @brief Supported memory transfer directions
    */
-  enum class TransferDirection : uint8_t
+  enum class Direction : uint8_t
   {
-    PERIPH_TO_MEMORY = 0,
+    PERIPH_TO_MEMORY,
     MEMORY_TO_PERIPH,
     MEMORY_TO_MEMORY,
     PERIPH_TO_PERIPH,
@@ -68,79 +72,35 @@ namespace Chimera::DMA
   };
 
   /**
-   *  Options for the DMA hardware operational mode
+   * @brief Options for the DMA transfer mode
    *
-   *  @note These values are used to index arrays! Do not change their order or value!
+   * Note that depending on the transfer direction and who the flow controller
+   * is, a particular Mode may not be available. Check your device datasheet
+   * for details.
    */
   enum class Mode : uint8_t
   {
-    NORMAL = 0,
-    CIRCULAR,
-    PERIPH_CONTROL,
-
-    NUM_OPTIONS
-  };
-
-  /**
-   *  Selects whether or not to automatically increment the selected peripheral
-   *  address when the transfer completes.
-   *
-   *  @note These values are used to index arrays! Do not change their order or value!
-   */
-  enum class PeripheralIncrement : uint8_t
-  {
-    ENABLED = 0,
-    DISABLED,
-
-    NUM_OPTIONS
-  };
-
-  /**
-   *  Selects whether or not to automatically increment the selected memory
-   *  address when the transfer completes.
-   *
-   *  @note These values are used to index arrays! Do not change their order or value!
-   */
-  enum class MemoryIncrement : uint8_t
-  {
-    ENABLED = 0,
-    DISABLED,
-
-    NUM_OPTIONS
-  };
-
-  /**
-   *  Selects the alignment for memory to memory transfers
-   *
-   *  @note These values are used to index arrays! Do not change their order or value!
-   */
-  enum class MemoryAlignment : uint8_t
-  {
-    ALIGN_BYTE = 0,
-    ALIGN_HALF_WORD,
-    ALIGN_WORD,
+    DIRECT,        /**< Memory is written directly */
+    CIRCULAR,      /**< Uses circular buffering */
+    DOUBLE_BUFFER, /**< Uses double buffering */
 
     NUM_OPTIONS
   };
 
   /**
    *  Selects the alignment for peripheral to memory transfers
-   *
-   *  @note These values are used to index arrays! Do not change their order or value!
    */
-  enum class PeripheralAlignment : uint8_t
+  enum class Alignment : uint8_t
   {
-    ALIGN_BYTE = 0,
-    ALIGN_HALF_WORD,
-    ALIGN_WORD,
+    BYTE = 0,
+    HALF_WORD,
+    WORD,
 
     NUM_OPTIONS
   };
 
   /**
    *  Selects the transfer priority
-   *
-   *  @note These values are used to index arrays! Do not change their order or value!
    */
   enum class Priority : uint8_t
   {
@@ -152,61 +112,113 @@ namespace Chimera::DMA
     NUM_OPTIONS
   };
 
+  enum class Error : uint8_t
+  {
+    ERR_OK,
+
+    NUM_OPTIONS
+  };
+
+
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
-  struct Init
+  /**
+   * @brief Periph <-> Memory pipe configuration descriptor
+   *
+   * Used when the user wants to transfer data between a peripheral and
+   * physical memory. Can be configured to go either direction. This assumes
+   * all memory that isn't a peripheral is contiguous and that the peripheral
+   * has been properly configured to accept/control DMA transactions.
+   *
+   * --- Configuration Notes ---
+   * Direction: Periph -> Memory
+   *    - Assumes contiguous regions in destination memory
+   *    - Memory address must exist permanently (statically allocated).
+   *
+   * Direction: Memory -> Periph
+   *    - Memory address must exist while the DMA transaction is in progress
+   *    - Take care that the peripheral can accept the data alignment
+   *
+   * Direction: Memory -> Memory
+   *    - Assumes contiguous regions
+   *    - Assumes regions are not modified by user/ISR while DMA in progress
+   */
+  struct PipeConfig
   {
-    TransferDirection direction; /**< What direction the transfer will be occuring */
-    Mode mode;                   /**< The style of memory transfer */
-    RequestID request;           /**< MCU specific identifier of who generated the request */
-    PeripheralIncrement pInc;    /**< Should the peripheral address auto-increment? */
-    PeripheralAlignment pAlign;  /**< Byte alignment of the peripheral transfer */
-    MemoryIncrement mInc;        /**< Should the memory address auto-increment? */
-    MemoryAlignment mAlign;      /**< Byte alignment of the memory transfer */
-    Priority priority;           /**< Priority level of the transfer */
-
-    Init()
-    {
-      memset( this, 0, sizeof( Init ) );
-    }
+    std::uintptr_t memAddr;    /**< Memory src/dst address */
+    size_t memSize;            /**< Number of bytes in the memory backed address */
+    std::uintptr_t periphAddr; /**< Peripheral src/dst address */
+    Priority priority;         /**< Priority level of the transfer */
+    Alignment alignment;       /**< Transfer data alignment */
+    Direction direction;       /**< What direction is the data flowing? */
+    Mode mode;                 /**< What mode is the transfer using */
+    Peripheral::Type periph;   /**< Which peripheral to set up the transfer with */
+    TransferCallback callback; /**< Optional callback to be invoked on completion or error */
   };
 
-  struct TCB
-  {
-    uint32_t srcAddress; /**< Location where data will be copied from */
-    uint32_t dstAddress; /**< Location where data will be copied into */
-    size_t transferSize; /**< How many bytes to transfer */
 
-    TCB()
-    {
-      memset( this, 0, sizeof( TCB ) );
-    }
+  /**
+   * @brief Manually transfers memory on a pre-constructed DMA pipe
+   *
+   * Realistically, this is for transfers from Memory -> Peripheral. Going the
+   * other way from Peripheral -> Memory would be handled by the peripheral and
+   * notify the user via a registered callback.
+   */
+  struct PipeTransfer
+  {
+    RequestId pipe;            /**< Which pipe this is destined for */
+    std::uintptr_t src;        /**< Source memory address */
+    size_t size;               /**< Number of bytes to transfer */
+    TransferCallback callback; /**< Optional callback to be invoked on completion or error */
   };
 
+
+  /**
+   * @brief Memory <-> Memory transfer request descriptor
+   *
+   * Used when the user wants to perform a DMA transfer between two contiguous
+   * locations in physical memory. This defaults to a DIRECT transfer mode.
+   */
+  struct MemTransfer
+  {
+    RequestId id;              /**< UUID for the transfer */
+    std::uintptr_t src;        /**< Source address */
+    std::uintptr_t dst;        /**< Destination address */
+    size_t size;               /**< Number of bytes */
+    Priority priority;         /**< Priority level of the transfer */
+    Alignment alignment;       /**< Transfer data alignment */
+    TransferCallback callback; /**< Optional callback to be invoked on completion or error */
+  };
+
+
+  /**
+   * @brief Transfer statistics for reporting to callbacks
+   */
+  struct TransferStats
+  {
+    Error errorCode;     /**< Error status of the transfer */
+    RequestId requestId; /**< Which request this occurred on */
+    size_t size;         /**< Number of bytes transferred */
+  };
+
+
+  /*-------------------------------------------------------------------------------
+  Backend Namespace
+  -------------------------------------------------------------------------------*/
   namespace Backend
   {
+    /**
+     * @brief Driver registration structure
+     */
     struct DriverConfig
     {
-      bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
-
-      /**
-       *  Function pointer that initializes the backend driver's
-       *  memory. Should really only call once for initial set up.
-       */
+      bool isSupported;
       Chimera::Status_t ( *initialize )( void );
-
-      /**
-       *  Resets the backend driver hardware to default configuration
-       *  settings, but does not wipe out any memory.
-       */
       Chimera::Status_t ( *reset )( void );
-
-      /**
-       *  Factory function that creates a shared_ptr instance of the backend
-       *  driver, as long as it conforms to the expected interface.
-       */
-      Driver_rPtr ( *getDriver )( const Controller channel );
+      RequestId ( *constructPipe )( const PipeConfig & );
+      RequestId ( *memTransfer )( const MemTransfer & );
+      RequestId ( *pipeTransfer )( const PipeTransfer & );
     };
   }  // namespace Backend
 

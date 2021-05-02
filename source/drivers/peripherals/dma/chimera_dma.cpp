@@ -5,7 +5,7 @@
  *  Description:
  *    Implements Chimera DMA
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 /* STL Includes */
@@ -25,9 +25,23 @@ namespace Chimera::DMA
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  namespace Backend
+  {
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::DMA::Backend::DriverConfig &registry )
+    {
+      registry.isSupported = false;
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }  // namespace Backend
+
+
   Chimera::Status_t initialize()
   {
+    /*-------------------------------------------------
+    Initialize Chimera
+    -------------------------------------------------*/
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
+    Util::initializeQueues();
 
     /*------------------------------------------------
     Register the backend interface with Chimera
@@ -49,8 +63,6 @@ namespace Chimera::DMA
     {
       return Chimera::Status::NOT_SUPPORTED;
     }
-
-    return result;
   }
 
 
@@ -67,15 +79,42 @@ namespace Chimera::DMA
   }
 
 
-  Driver_rPtr getDriver( const Controller channel )
+  RequestId constructPipe( const PipeConfig &config )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    if ( s_backend_driver.isSupported && s_backend_driver.constructPipe )
     {
-      return s_backend_driver.getDriver( channel );
+      return s_backend_driver.constructPipe( config );
     }
     else
     {
-      return nullptr;
+      return INVALID_REQUEST;
     }
   }
+
+
+  RequestId transfer( const MemTransfer &transfer )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.memTransfer )
+    {
+      return s_backend_driver.memTransfer( transfer );
+    }
+    else
+    {
+      return INVALID_REQUEST;
+    }
+  }
+
+
+  RequestId transfer( const PipeTransfer &transfer )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.pipeTransfer )
+    {
+      return s_backend_driver.pipeTransfer( transfer );
+    }
+    else
+    {
+      return INVALID_REQUEST;
+    }
+  }
+
 }  // namespace Chimera::DMA

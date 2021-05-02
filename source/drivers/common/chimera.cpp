@@ -5,7 +5,7 @@
  *  Description:
  *      Implements common Chimera functions
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 /* Chimera Includes */
@@ -13,6 +13,7 @@
 #include <Chimera/can>
 #include <Chimera/clock>
 #include <Chimera/common>
+#include <Chimera/dma>
 #include <Chimera/exti>
 #include <Chimera/gpio>
 #include <Chimera/interrupt>
@@ -49,6 +50,7 @@ void ChimeraInit()
   Chimera::ADC::initialize();
   Chimera::CAN::initialize();
   Chimera::Clock::initialize();
+  Chimera::DMA::initialize();
   Chimera::EXTI::open();
   Chimera::GPIO::initialize();
   Chimera::PWM::initialize();
