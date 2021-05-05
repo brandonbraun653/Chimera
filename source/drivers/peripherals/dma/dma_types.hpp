@@ -100,6 +100,19 @@ namespace Chimera::DMA
   };
 
   /**
+   * @brief Selects the number of data bursts per transfer
+   */
+  enum class BurstSize : uint8_t
+  {
+    BURST_SIZE_1,
+    BURST_SIZE_4,
+    BURST_SIZE_8,
+    BURST_SIZE_16,
+
+    NUM_OPTIONS
+  };
+
+  /**
    *  Selects the transfer priority
    */
   enum class Priority : uint8_t
