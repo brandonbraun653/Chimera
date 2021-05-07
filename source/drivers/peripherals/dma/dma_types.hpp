@@ -83,6 +83,7 @@ namespace Chimera::DMA
     DIRECT,        /**< Memory is written directly */
     CIRCULAR,      /**< Uses circular buffering */
     DOUBLE_BUFFER, /**< Uses double buffering */
+    PERIPHERAL,    /**< Peripheral is the flow controller */
 
     NUM_OPTIONS
   };
