@@ -126,13 +126,6 @@ namespace Chimera::DMA
     NUM_OPTIONS
   };
 
-  enum class Error : uint8_t
-  {
-    ERR_OK,
-
-    NUM_OPTIONS
-  };
-
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -211,7 +204,7 @@ namespace Chimera::DMA
    */
   struct TransferStats
   {
-    Error errorCode;     /**< Error status of the transfer */
+    bool error;           /**< Error status of the transfer */
     RequestId requestId; /**< Which request this occurred on */
     size_t size;         /**< Number of bytes transferred */
   };
