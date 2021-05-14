@@ -20,6 +20,9 @@
 /* ETL Includes */
 #include <etl/delegate.h>
 
+/* Aurora Includes */
+#include <Aurora/utility>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/peripheral>
@@ -114,6 +117,20 @@ namespace Chimera::DMA
   };
 
   /**
+   * @brief Selects the threshold which will flush the FIFO
+   */
+  enum class FifoThreshold : uint8_t
+  {
+    QUARTER_FULL,
+    HALF_FULL,
+    THREE_QUARTER_FULL,
+    FULL,
+
+    NUM_OPTIONS,
+    NONE
+  };
+
+  /**
    *  Selects the transfer priority
    */
   enum class Priority : uint8_t
@@ -126,6 +143,20 @@ namespace Chimera::DMA
     NUM_OPTIONS
   };
 
+
+  /**
+   * @brief Kinds of errors that the hardware could throw
+   */
+  enum class Errors : uint32_t
+  {
+    NONE     = 0,
+    FIFO     = 1u << 0, /**< A HW FIFO buffering error occurred */
+    TRANSFER = 1u << 1, /**< Some kind of transfer error */
+    DIRECT   = 1u << 2, /**< Error when FIFO is operating in direct mode */
+  };
+
+  ENUM_CLS_BITWISE_OPERATOR( Errors, & );
+  ENUM_CLS_BITWISE_OPERATOR( Errors, | );
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -153,15 +184,16 @@ namespace Chimera::DMA
    */
   struct PipeConfig
   {
-    std::uintptr_t memAddr;    /**< Memory src/dst address */
-    size_t memSize;            /**< Number of bytes in the memory backed address */
+    Alignment alignment;       /**< Transfer data alignment */
+    BurstSize burstSize;       /**< Burst size of the transfer */
+    Direction direction;       /**< What direction is the data flowing? */
+    FifoThreshold threshold;   /**< FIFO threshold, if supported. */
+    Errors errorsToIgnore;     /**< Any errors that should be ignored in the transfer */
     std::uintptr_t periphAddr; /**< Peripheral src/dst address */
     Priority priority;         /**< Priority level of the transfer */
-    Alignment alignment;       /**< Transfer data alignment */
-    Direction direction;       /**< What direction is the data flowing? */
     Mode mode;                 /**< What mode is the transfer using */
-    Peripheral::Type periph;   /**< Which peripheral to set up the transfer with */
-    TransferCallback callback; /**< Optional callback to be invoked on completion or error */
+    size_t resourceIndex;      /**< HW specific software resource index for the pipe */
+    size_t channel;            /**< HW specific DMA request signal */
   };
 
 
@@ -175,7 +207,7 @@ namespace Chimera::DMA
   struct PipeTransfer
   {
     RequestId pipe;            /**< Which pipe this is destined for */
-    std::uintptr_t src;        /**< Source memory address */
+    std::uintptr_t addr;       /**< Source/destination memory address */
     size_t size;               /**< Number of bytes to transfer */
     TransferCallback callback; /**< Optional callback to be invoked on completion or error */
   };
