@@ -355,9 +355,15 @@ namespace Chimera::Scheduler::LoRes
       s_mtx.unlock();
 
       /*-------------------------------------------------
-      Yield execution as there is nothing left to do
+      Delay for a bit if there is nothing to do.
+
+      NOTE:
+      Originally this was a yield() call, but it generated
+      too many events in Segger SysView. Given this is a
+      low priority task, a 1 ms delay time is still an
+      effective resolution for a software timer.
       -------------------------------------------------*/
-      this_thread::yield();
+      Chimera::delayMilliseconds( 1 );
     }
   }
 
