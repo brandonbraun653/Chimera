@@ -68,6 +68,7 @@ namespace Chimera::Thread
   using TaskId       = size_t;
   using TaskMsg      = uint32_t;
   using TaskDelegate = etl::delegate<void( void * )>;
+  using TaskName     = etl::string<32>;
 
 
   /*-------------------------------------------------------------------------------

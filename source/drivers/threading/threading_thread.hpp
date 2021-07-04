@@ -229,6 +229,13 @@ namespace Chimera::Thread
     void set_name( const char *name );
 
     /**
+     * @brief Get the name of the currently executing thread
+     *
+     * @return TaskName
+     */
+    TaskName get_name();
+
+    /**
      *  Sleeps the current thread for a number of milliseconds
      *
      *  @param[in]  timeout     How many milliseconds to wait

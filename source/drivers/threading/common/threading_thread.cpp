@@ -283,10 +283,25 @@ namespace Chimera::Thread::this_thread
   -------------------------------------------------------------------------------*/
   void set_name( const char *name )
   {
+    /*-------------------------------------------------
+    Only need to handle Linux here. The FreeRTOS version
+    will pick up the name from the task creation.
+    -------------------------------------------------*/
 #if defined( __linux__ )
     prctl( PR_SET_NAME, name, 0, 0, 0 );
 #endif
   }
+
+
+  TaskName get_name()
+  {
+    /*-------------------------------------------------
+    Need a way to pull the current task context in a
+    generic fashion...hmm...
+    -------------------------------------------------*/
+    Chimera::insert_debug_breakpoint();
+  }
+
 
   bool pendTaskMsg( TaskMsg msg )
   {
