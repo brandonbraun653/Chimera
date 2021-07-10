@@ -116,7 +116,7 @@ namespace Chimera::DMA::Util
         attempts++;
       }
     }
-    LOG_IF_ERROR( attempts != 3, "DMA failed to generate UUID\r\n" );
+    LOG_ERROR_IF( attempts != 3, "DMA failed to generate UUID\r\n" );
 
     return result;
   }
