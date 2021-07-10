@@ -33,6 +33,7 @@ namespace Chimera::Clock
     HSI16,
     RC48,
     PLLP,
+    PLLQ,
     PLLR,
     HCLK,
     AHB = HCLK,
