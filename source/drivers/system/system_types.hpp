@@ -103,6 +103,7 @@ namespace Chimera::System
       bool ( *inISR )( void );
       void ( *getSystemInformation )( Information *&info );
       void ( *softwareReset )( void );
+      bool ( *isDebuggerAttached )( void );
       std::string_view ( *version_AsString )( void );
       size_t ( *version_Major )( void );
       size_t ( *version_Minor )( void );

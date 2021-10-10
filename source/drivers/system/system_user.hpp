@@ -104,6 +104,14 @@ namespace Chimera::System
    */
   void softwareReset();
 
+  /**
+   * @brief Checks if a debugger is attached
+   *
+   * @return true
+   * @return false
+   */
+  bool isDebuggerAttached();
+
 
   namespace Version
   {

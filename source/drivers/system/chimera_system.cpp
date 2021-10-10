@@ -145,6 +145,17 @@ namespace Chimera::System
   }
 
 
+  bool isDebuggerAttached()
+  {
+    if( s_backend_driver.isSupported && s_backend_driver.isDebuggerAttached )
+    {
+      return s_backend_driver.isDebuggerAttached();
+    }
+
+    return false;
+  }
+
+
   void softwareReset()
   {
     /*-------------------------------------------------
