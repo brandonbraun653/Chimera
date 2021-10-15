@@ -325,10 +325,19 @@ namespace Chimera::Thread
       /*-------------------------------------------------
       Use a lambda as an impromptu C-Style wrapper for
       calling the delegate function.
+
+      ******************* WARNING ***********************
+      The lifetime of mTaskConfig must exist long enough
+      to start the function. It's possible for its scope
+      to dissappear, which will cause unexpected effects.
       -------------------------------------------------*/
       result = xTaskCreate(
           []( void *o ) {
             TaskConfig *proxy = reinterpret_cast<TaskConfig *>( o );
+
+            RT_HARD_ASSERT( proxy );
+            RT_HARD_ASSERT( proxy->function.callable.delegate );
+
             proxy->function.callable.delegate( proxy->arg );
           },
           mTaskConfig.name.data(), static_cast<configSTACK_DEPTH_TYPE>( mTaskConfig.stackWords ), &mTaskConfig,
