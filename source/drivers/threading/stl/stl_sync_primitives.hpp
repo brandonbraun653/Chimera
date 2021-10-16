@@ -14,6 +14,8 @@
 #if defined( USING_NATIVE_THREADS )
 
 /* STL Includes */
+#include <cstdint>
+#include <limits>
 #include <mutex>
 #include <thread>
 #include <queue>
@@ -25,6 +27,12 @@ Macros
 
 namespace Chimera::Thread::detail
 {
+  /*---------------------------------------------------------------------------
+  Constants
+  ---------------------------------------------------------------------------*/
+  static constexpr uint32_t THREAD_MAX_PRIORITY = std::numeric_limits<uint32_t>::max();
+  static constexpr uint32_t THREAD_MIN_PRIORITY = std::numeric_limits<uint32_t>::min();
+
   /*-------------------------------------------------------------------------------
   Mutex Types
   -------------------------------------------------------------------------------*/

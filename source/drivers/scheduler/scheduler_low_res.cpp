@@ -86,7 +86,7 @@ namespace Chimera::Scheduler::LoRes
 
       cfg.arg        = nullptr;
       cfg.function   = TimerThreadFunction;
-      cfg.priority   = Priority::LOW;
+      cfg.priority   = Priority::MINIMUM + 1u;
       cfg.stackWords = STACK_BYTES( s_ThreadStackBytes );
       cfg.type       = TaskInitType::DYNAMIC;
       cfg.name       = "SWTimer";

@@ -24,10 +24,9 @@ namespace Chimera::USB
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static const std::string_view USBThreadName                  = "USBMain";
-  static const size_t USBDefaultStackSize                      = STACK_BYTES( 2048 );
-  static const Chimera::Thread::Priority USBDefaultPriority = Chimera::Thread::Priority::LEVEL_3;
-
+  static const std::string_view USBThreadName                   = "USBMain";
+  static const size_t USBDefaultStackSize                       = STACK_BYTES( 2048 );
+  static const Chimera::Thread::TaskPriority USBDefaultPriority = 3;
 
   /*-------------------------------------------------------------------------------
   Public Functions

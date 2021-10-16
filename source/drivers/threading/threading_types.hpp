@@ -14,6 +14,7 @@
 
 /* STL Includes */
 #include <cstddef>
+#include <cstdint>
 #include <limits>
 
 /* ETL Includes */
@@ -69,6 +70,7 @@ namespace Chimera::Thread
   using TaskMsg      = uint32_t;
   using TaskDelegate = etl::delegate<void( void * )>;
   using TaskName     = etl::string<32>;
+  using TaskPriority = uint32_t;
 
 
   /*-------------------------------------------------------------------------------
@@ -119,27 +121,6 @@ namespace Chimera::Thread
 
     NUM_OPTIONS,
     UNKNOWN
-  };
-
-  /**
-   *  Thread execution priority levels
-   */
-  enum class Priority
-  {
-    LEVEL_0, /**< Lowest priority, indicating a task that doesn't care if it runs */
-    LEVEL_1,
-    LEVEL_2,
-    LEVEL_3,
-    LEVEL_4,
-    LEVEL_5, /**< Highest priority, must "always" run when requested */
-
-    CRITICAL  = LEVEL_5,
-    IMPORTANT = LEVEL_3,
-    NORMAL    = LEVEL_2,
-    LOW       = LEVEL_0,
-
-    MINIMUM = LEVEL_0,
-    MAXIMUM = LEVEL_5
   };
 
   /**
@@ -211,11 +192,11 @@ namespace Chimera::Thread
   {
     UserFunction function;                   /**< Function pointer defining what the thread executes */
     TaskArg arg;                             /**< Any arguments to pass to the function */
-    Priority priority;                       /**< Tells the scheduler where this thread fits in the priority hierarchy */
+    TaskPriority priority;                   /**< Tells the scheduler where this thread fits in the priority hierarchy */
     size_t stackWords;                       /**< How many bytes to allocate from the heap for this thread's stack */
     etl::string<MAX_NAME_LEN> name;          /**< User friendly name for identification */
 
-    CommonTaskCfg() : function( {} ), arg( nullptr ), priority( Priority::LOW ), stackWords( 0 )
+    CommonTaskCfg() : function( {} ), arg( nullptr ), priority( 0 ), stackWords( 0 )
     {
       name.clear();
     }

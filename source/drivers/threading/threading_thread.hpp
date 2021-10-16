@@ -26,6 +26,18 @@
 
 namespace Chimera::Thread
 {
+  /*---------------------------------------------------------------------------
+  Enumerations
+  ---------------------------------------------------------------------------*/
+  /**
+   *  Thread execution priority levels
+   */
+  enum Priority : TaskPriority
+  {
+    MINIMUM = Chimera::Thread::detail::THREAD_MIN_PRIORITY,
+    MAXIMUM = Chimera::Thread::detail::THREAD_MAX_PRIORITY
+  };
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/

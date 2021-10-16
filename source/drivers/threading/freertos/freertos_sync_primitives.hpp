@@ -23,6 +23,12 @@
 
 namespace Chimera::Thread::detail
 {
+  /*---------------------------------------------------------------------------
+  Constants
+  ---------------------------------------------------------------------------*/
+  static constexpr uint32_t THREAD_MAX_PRIORITY = configMAX_PRIORITIES;
+  static constexpr uint32_t THREAD_MIN_PRIORITY = tskIDLE_PRIORITY;
+
   /*-------------------------------------------------------------------------------
   Mutex Types
   -------------------------------------------------------------------------------*/
