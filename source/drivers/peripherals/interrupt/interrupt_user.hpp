@@ -24,7 +24,8 @@ namespace Chimera::Interrupt
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
   Chimera::Status_t registerISRHandler( const Peripheral::Type type, const Signal_t signal, const SignalCallback &callback );
-
+  Chimera::Status_t disableISR( const Signal_t signal );
+  Chimera::Status_t enableISR( const Signal_t signal );
 }  // namespace Chimera::Interrupt
 
 #endif /* !CHIMERA_INTERRUPT_USER_HPP */

@@ -54,4 +54,9 @@ Macros for Memory Initialization
 -------------------------------------------------------------------------------*/
 #define CLEAR_ARRAY( arr ) ( memset( arr, 0, ARRAY_BYTES( arr ) ) )
 
+/*-----------------------------------------------------------------------------
+Check for double pointer validity
+-----------------------------------------------------------------------------*/
+#define DPTR_EXISTS( double_ptr ) ( static_cast<bool>( double_ptr && *double_ptr ) )
+
 #endif  /* !CHIMERA_MACROS_HPP */

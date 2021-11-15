@@ -14,6 +14,7 @@
 
 /* STL Includes */
 #include <cstdint>
+#include <limits>
 
 /* Chimera Includes */
 #include <Chimera/common>
@@ -32,9 +33,14 @@ namespace Chimera::Interrupt
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Signal_t = uint16_t;
+  using Signal_t = int16_t;
   using ISRCallback = etl::delegate<void(void)>;
   using UserCallback = etl::delegate<void(const SignalCallback *const event)>;
+
+  /*-------------------------------------------------------------------------------
+  Constants
+  -------------------------------------------------------------------------------*/
+  static constexpr Signal_t SIGNAL_INVALID = std::numeric_limits<Signal_t>::min();
 
   /*-------------------------------------------------------------------------------
   Structures
