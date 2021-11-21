@@ -85,4 +85,30 @@ namespace Chimera::Interrupt
     }
   }
 
+
+  Chimera::Status_t disableISR( const Signal_t signal )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.disableISR )
+    {
+      return s_backend_driver.disableISR( signal );
+    }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }
+
+
+  Chimera::Status_t enableISR( const Signal_t signal )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.enableISR )
+    {
+      return s_backend_driver.enableISR( signal );
+    }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }
+
 }  // namespace Chimera::Interrupt

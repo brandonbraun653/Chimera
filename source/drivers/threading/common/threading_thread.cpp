@@ -300,6 +300,8 @@ namespace Chimera::Thread::this_thread
     generic fashion...hmm...
     -------------------------------------------------*/
     Chimera::insert_debug_breakpoint();
+
+    return TaskName();
   }
 
 
