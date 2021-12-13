@@ -22,6 +22,7 @@
 
 namespace Chimera::Assert
 {
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
@@ -31,7 +32,7 @@ namespace Chimera::Assert
    *  @param[in]  assertion         The assertion to check
    *  @return void
    */
-  void hardAssert( const bool assertion );
+  void hardAssert( const bool assertion, const char *file, const uint32_t line );
 
   /**
    *  Verifies that an assertion is true at runtime, with the option of also
@@ -45,15 +46,36 @@ namespace Chimera::Assert
    */
   void logRuntimeAssert( const bool assertion, const uint8_t flags, const size_t line, const std::string_view file );
 
-}  // namespace Chimera
+}  // namespace Chimera::Assert
 
 
 /*-------------------------------------------------------------------------------
 Macros
 -------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------
+Create the __SHORT_FILE__ macro, which returns just the file name instead of the
+whole path from __FILE__ https://blog.galowicz.de/2016/02/20/short_file_macro/
+-------------------------------------------------------------------------------*/
+using ccstr = const char *const;
+static constexpr ccstr chimera_past_last_slash( ccstr str, ccstr last_slash )
+{
+  return *str == '\0' ? last_slash : *str == '/' ? chimera_past_last_slash( str + 1, str + 1 ) : chimera_past_last_slash( str + 1, last_slash );
+}
+
+static constexpr ccstr chimera_past_last_slash( ccstr str )
+{
+  return chimera_past_last_slash( str, str );
+}
+#define __SHORTFILE__                                   \
+  ( {                                                   \
+    constexpr ccstr sf__{ chimera_past_last_slash( __FILE__ ) }; \
+    sf__;                                               \
+  } )
+
+
 /**
  *  Runtime assertion that will produce a system reset if the assertion fails
  */
-#define RT_HARD_ASSERT( statement )  ::Chimera::Assert::hardAssert( ( statement ) )
+#define RT_HARD_ASSERT( statement ) ::Chimera::Assert::hardAssert( ( statement ), __SHORTFILE__, __LINE__ )
 
-#endif  /* !CHIMERA_ASSERT_HPP */
+#endif /* !CHIMERA_ASSERT_HPP */

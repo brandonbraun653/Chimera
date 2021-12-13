@@ -26,9 +26,7 @@ GCC
 ------------------------------------------------*/
 #if defined( __GNUC__ )
 
-#if !defined( WEAKDECL )
-#define WEAKDECL __attribute__( ( weak ) )
-#endif
+#define __weak __attribute__( ( weak ) )
 
 #ifdef __GNUC__
 #define UNUSED( x ) UNUSED_##x __attribute__( ( __unused__ ) )
@@ -41,6 +39,11 @@ GCC
 #else
 #define UNUSED_FUNCTION( x ) UNUSED_##x
 #endif
+
+#else
+
+#define __weak
+#define __packed
 
 #endif /* __GNUC__ */
 
