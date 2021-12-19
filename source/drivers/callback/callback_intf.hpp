@@ -69,6 +69,20 @@ namespace Chimera::Callback
     }
 
     /**
+     * Sets the data associated with a particular callback event
+     *
+     * @param id                Which event to post data against
+     * @param data              The actual data
+     */
+    void setCallbackData( const CBType id, EventDataType &data )
+    {
+      if( id < CBType::CB_NUM_OPTIONS )
+      {
+        mCBService_data[ id ] = data;
+      }
+    }
+
+    /**
      *  Gets the last known data that happened in a given callback event
      *
      *  @param[in]  id          The callback id to get info on
