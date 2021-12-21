@@ -69,6 +69,7 @@ namespace Chimera
     static constexpr Status_t FAILED_ERASE   = 36; /**< Failed some kind of erase operation */
     static constexpr Status_t FAILED_OPEN    = 37; /**< Failed some kind of open operation */
     static constexpr Status_t FAILED_CLOSE   = 38; /**< Failed to close some resource */
+    static constexpr Status_t CRC_ERROR      = 39; /**< CRC calculation/comparison failed */
 
     /*------------------------------------------------
     Offsets to identify particular Chimera modules
