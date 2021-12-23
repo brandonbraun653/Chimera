@@ -14,6 +14,7 @@
 
 /* STL Includes */
 #include <cstdint>
+#include <cstddef>
 
 namespace Chimera::Peripheral
 {
