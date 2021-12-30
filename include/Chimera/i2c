@@ -1,0 +1,19 @@
+/********************************************************************************
+ *  File Name:
+ *    i2c
+ *
+ *  Description:
+ *    Chimera I2C Includes
+ *
+ *  2021 | Brandon Braun | brandonbraun653@gmail.com
+ ********************************************************************************/
+
+#pragma once
+#ifndef CHIMERA_I2C_INCLUDES
+#define CHIMERA_I2C_INCLUDES
+
+#include <Chimera/source/drivers/peripherals/i2c/i2c_user.hpp>
+#include <Chimera/source/drivers/peripherals/i2c/i2c_intf.hpp>
+#include <Chimera/source/drivers/peripherals/i2c/i2c_types.hpp>
+
+#endif /* !CHIMERA_I2C_INCLUDES */

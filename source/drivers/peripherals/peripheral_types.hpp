@@ -62,6 +62,20 @@ namespace Chimera::Peripheral
     UNKNOWN
   };
 
+  /**
+   * Most peripherals make some kind of data transfer internally or with the outside
+   * world. This gives a generic way to specify how this is accomplished.
+   */
+  enum class TransferMode : uint8_t
+  {
+    BLOCKING,   /**< Traditional blocking style transfers */
+    INTERRUPT,  /**< Interrupt driven style transfers */
+    DMA,        /**< DMA driven transfers */
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
