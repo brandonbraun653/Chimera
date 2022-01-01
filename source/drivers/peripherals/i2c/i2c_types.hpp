@@ -74,13 +74,11 @@ namespace Chimera::I2C
   {
     Channel channel;                   /**< Hardware channel to configure */
     Frequency frequency;               /**< Communication frequency */
-    Peripheral::TransferMode dataMode; /**< Data communication mode */
 
     void clear()
     {
       channel   = Channel::NOT_SUPPORTED;
       frequency = Frequency::F100KHZ;
-      dataMode  = Peripheral::TransferMode::BLOCKING;
     }
   };
 
