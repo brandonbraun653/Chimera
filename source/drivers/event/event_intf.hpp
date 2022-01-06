@@ -25,7 +25,7 @@ namespace Chimera::Event
 {
   /**
    *  Interface describing a methodology for asynchronously notifying other sections
-   *  of code that some kind of event has occured. Most of the thread safety is left
+   *  of code that some kind of event has occurred. Most of the thread safety is left
    *  up to the back end driver, should it be needed.
    */
   class ListenerInterface
