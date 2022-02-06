@@ -66,10 +66,10 @@ static constexpr ccstr chimera_past_last_slash( ccstr str )
 {
   return chimera_past_last_slash( str, str );
 }
-#define __SHORTFILE__                                   \
-  ( {                                                   \
+#define __SHORTFILE__                                            \
+  ( {                                                            \
     constexpr ccstr sf__{ chimera_past_last_slash( __FILE__ ) }; \
-    sf__;                                               \
+    sf__;                                                        \
   } )
 
 

@@ -47,6 +47,7 @@ namespace Chimera::Thread
     static void delegateInitializer( void *arg )
     {
       // Should someone end up calling this, let them know by breaking their system
+      ( void )arg;
       Chimera::insert_debug_breakpoint();
       while ( 1 )
       {
