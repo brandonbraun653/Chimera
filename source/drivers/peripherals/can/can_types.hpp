@@ -235,8 +235,9 @@ namespace Chimera::CAN
       rxElements         = 0;
       timeQuanta         = 16;
       resyncJumpWidth    = 1;
-      samplePointPercent = 0.875;
+      samplePointPercent = 0.875f;
       baudRate           = 100000;
+      maxBaudError       = 0.0f;
     }
   };
 
