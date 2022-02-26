@@ -70,7 +70,7 @@ namespace Chimera::Thread
   using TaskId       = size_t;
   using TaskMsg      = uint32_t;
   using TaskDelegate = etl::delegate<void( void * )>;
-  using TaskName     = etl::string<32>;
+  using TaskName     = etl::string<16>;
   using TaskPriority = uint32_t;
 
 
@@ -90,7 +90,7 @@ namespace Chimera::Thread
   static constexpr size_t TIMEOUT_1MIN      = 60 * TIMEOUT_1S;
   static constexpr size_t TIMEOUT_1HR       = 60 * TIMEOUT_1MIN;
 
-  static constexpr size_t MAX_NAME_LEN             = 16;
+  static constexpr size_t MAX_NAME_LEN             = TaskName::MAX_SIZE;
   static constexpr size_t MAX_REGISTERABLE_THREADS = 32;
   static constexpr TaskId THREAD_ID_INVALID        = 0xCCCCCCCC;
 
