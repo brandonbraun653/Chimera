@@ -119,6 +119,65 @@ namespace Chimera::Scheduler
   {
     // TODO: This will use hardware timers to provide exact timing. Much more complicated.
   }
+
+
+  /*---------------------------------------------------------------------------
+  Polling Based Scheduler
+
+  Runs a function at some interval, but the accuracy depends on how often the
+  polling method is evaluated. Useful for operations that need periodicity but
+  may require special contexts or resources not accessible to the other timers
+  in this module.
+  ---------------------------------------------------------------------------*/
+  class Polled
+  {
+  public:
+    Polled();
+    ~Polled();
+
+    /**
+     * @brief Executes the scheduled functionality if enough time has elapsed
+     *
+     * If the function is not ready to execute, returns the negative offset in milliseconds
+     * else it returns the positive offset. This will help calculate how tight the call
+     * margins are, should that be something the user is interested in.
+     *
+     * @return int  Offset from execution time
+     */
+    int poll();
+
+    /**
+     *  Schedules a function to execute once at some point in the future
+     *
+     *  @param[in]  method      The function to be executed
+     *  @param[in]  when        Absolute time to run the function, in milliseconds
+     *  @param[in]  relation    Whether to use absolute or relative timing
+     *  @return Chimera::Status_t
+     */
+    Chimera::Status_t oneShot( Chimera::Function::Opaque method, const size_t when, const TimingType relation );
+
+    /**
+     *  Schedules a function to execute periodically
+     *
+     *  @param[in]  methdod     The function to be executed
+     *  @param[in]  rate        How often to run the function, in milliseconds
+     */
+    Chimera::Status_t periodic( Chimera::Function::Opaque method, const size_t rate );
+
+    /**
+     *  Schedules a function to execute periodically, but only a number of times
+     *  before it expires.
+     *
+     *  @param[in]  method      The function to be executed
+     *  @param[in]  rate        How often to run the function, in milliseconds
+     *  @param[in]  numTimes    Number of times to run the function before expiring
+     *  @return Chimera::Status_t
+     */
+    Chimera::Status_t periodic( Chimera::Function::Opaque method, const size_t rate, const size_t numTimes );
+
+  private:
+    SoftwareTimerEntry mCB;
+  };
 }  // namespace Chimera::Scheduler
 
 #endif /* !CHIMERA_SCHEDULER_USER_HPP */

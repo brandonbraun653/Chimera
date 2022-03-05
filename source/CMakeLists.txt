@@ -15,7 +15,7 @@ set(all_libraries
   chimera_common
   chimera_event
   chimera_pwm
-  chimera_scheduler_low_res
+  chimera_scheduler
   chimera_serial
   chimera_system
   chimera_threading

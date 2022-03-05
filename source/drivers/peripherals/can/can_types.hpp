@@ -201,7 +201,7 @@ namespace Chimera::CAN
   struct Filter
   {
     uint32_t id;   /**< ID being filtered on */
-    uint32_t mask; /**< Mask bits for the ID  */
+    uint32_t mask; /**< Mask bits for the ID. 0 is don't care, 1 is must match */
     bool extended; /**< Is the CAN ID an extended format? Else standard.*/
 
     void clear()
