@@ -194,22 +194,54 @@ namespace Chimera::DMA
     Mode mode;                 /**< What mode is the transfer using */
     size_t resourceIndex;      /**< HW specific software resource index for the pipe */
     size_t channel;            /**< HW specific DMA request signal */
+    bool persistent;           /**< Should the DMA pipe be left enabled after transfer? */
+    bool wakeUserOnComplete;   /**< Wake the user thread to handle results? */
+
+    /**
+     * @brief Resets the structure back to defaults
+     */
+    void clear()
+    {
+      alignment          = Alignment::BYTE;
+      burstSize          = BurstSize::BURST_SIZE_1;
+      direction          = Direction::MEMORY_TO_MEMORY;
+      threshold          = FifoThreshold::HALF_FULL;
+      errorsToIgnore     = Errors::NONE;
+      periphAddr         = 0;
+      priority           = Priority::LOW;
+      mode               = Mode::DIRECT;
+      resourceIndex      = std::numeric_limits<size_t>::max();
+      channel            = std::numeric_limits<size_t>::max();
+      persistent         = false;
+      wakeUserOnComplete = false;
+    }
   };
 
 
   /**
-   * @brief Manually transfers memory on a pre-constructed DMA pipe
+   * @brief Memory <-> Peripheral transfer request descriptor
    *
-   * Realistically, this is for transfers from Memory -> Peripheral. Going the
-   * other way from Peripheral -> Memory would be handled by the peripheral and
-   * notify the user via a registered callback.
+   * Used when the user wants to transfer between memory and peripherals.
    */
   struct PipeTransfer
   {
-    RequestId pipe;            /**< Which pipe this is destined for */
-    std::uintptr_t addr;       /**< Source/destination memory address */
-    size_t size;               /**< Number of bytes to transfer */
-    TransferCallback callback; /**< Optional callback to be invoked on completion or error */
+    RequestId pipe;                /**< Which pipe this is destined for */
+    std::uintptr_t addr;           /**< Source/destination memory address */
+    size_t size;                   /**< Number of bytes to transfer */
+    TransferCallback userCallback; /**< Callback to invoke from high priority DMA manager thread */
+    TransferCallback isrCallback;  /**< Callback to invoke inside ISR handler */
+
+    /**
+     * @brief Resets the structure back to defaults
+     */
+    void clear()
+    {
+      pipe         = 0;
+      addr         = 0;
+      size         = 0;
+      userCallback = {};
+      isrCallback  = {};
+    }
   };
 
 
@@ -228,6 +260,20 @@ namespace Chimera::DMA
     Priority priority;         /**< Priority level of the transfer */
     Alignment alignment;       /**< Transfer data alignment */
     TransferCallback callback; /**< Optional callback to be invoked on completion or error */
+
+    /**
+     * @brief Resets the structure back to defaults
+     */
+    void clear()
+    {
+      id        = 0;
+      src       = 0;
+      dst       = 0;
+      size      = 0;
+      priority  = Priority::LOW;
+      alignment = Alignment::BYTE;
+      callback  = {};
+    }
   };
 
 
@@ -236,9 +282,19 @@ namespace Chimera::DMA
    */
   struct TransferStats
   {
-    bool error;           /**< Error status of the transfer */
+    bool error;          /**< Error status of the transfer */
     RequestId requestId; /**< Which request this occurred on */
     size_t size;         /**< Number of bytes transferred */
+
+    /**
+     * @brief Resets the structure back to defaults
+     */
+    void clear()
+    {
+      error     = false;
+      requestId = 0;
+      size      = 0;
+    }
   };
 
 
