@@ -141,16 +141,18 @@ namespace Chimera::Timer
     }
   }
 
-
-  Driver_rPtr getDriver( const Chimera::Timer::Peripheral peripheral )
+  namespace Factory
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    ITimer *build( const TimerInterface type, const Instance periph )
     {
-      return s_backend_driver.getDriver( peripheral );
-    }
-    else
-    {
-      return nullptr;
+      if ( s_backend_driver.isSupported && s_backend_driver.build )
+      {
+        return s_backend_driver.build( type, periph );
+      }
+      else
+      {
+        return nullptr;
+      }
     }
   }
 

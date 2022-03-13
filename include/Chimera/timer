@@ -5,15 +5,16 @@
  *  Description:
  *    Chimera Timer Includes
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_TIMER_INCLUDES
 #define CHIMERA_TIMER_INCLUDES
 
+#include <Chimera/source/drivers/peripherals/timer/timer_common_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_intf.hpp>
-#include <Chimera/source/drivers/peripherals/timer/timer_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_user.hpp>
+#include <Chimera/source/drivers/peripherals/timer/views/timer_base_intf.hpp>
 
 #endif /* !CHIMERA_TIMER_INCLUDES */

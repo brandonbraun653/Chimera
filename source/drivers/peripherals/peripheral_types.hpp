@@ -5,7 +5,7 @@
  *  Description:
  *    Types associated with describing peripherals in general.
  *
- *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -50,7 +50,7 @@ namespace Chimera::Peripheral
     PERIPH_SDIO,    /**< Secure Digital Input Output */
     PERIPH_SPI,     /**< Serial Peripheral Interface */
     PERIPH_SYSCFG,  /**< System Configuration */
-    PERIPH_TIM,     /**< Timer */
+    PERIPH_TIMER,   /**< Timer */
     PERIPH_UART,    /**< Universal Asynchronous Receiver Transmitter */
     PERIPH_USART,   /**< Universal Synchronous/Asynchronous Receiver Transmitter */
     PERIPH_VIC,     /**< Vector Interrupt Controller */

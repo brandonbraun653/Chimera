@@ -5,35 +5,42 @@
  *	 Description:
  *    Types for the Chimera Timer module
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_TIMER_TYPES_HPP
 #define CHIMERA_TIMER_TYPES_HPP
 
-/* STL Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <cstdlib>
 #include <memory>
-
-/* Chimera Includes */
 #include <Chimera/common>
 
 namespace Chimera::Timer
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Forward Declarations
-  -------------------------------------------------------------------------------*/
-  class Driver;
+  ---------------------------------------------------------------------------*/
+  class ITimer;
 
-  /*-------------------------------------------------------------------------------
-  Aliases
-  -------------------------------------------------------------------------------*/
-  using Driver_rPtr = Driver *;
-
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Enumerations
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
+  /**
+   * @brief Lists the supported class interfaces available to a timer resource
+   */
+  enum class TimerInterface : uint8_t
+  {
+    SOFTWARE_EVENT,
+    HARDWARE_TRIGGER,
+
+    NUM_OPTIONS,
+    INVALID
+  };
+
   enum class CoreFeature : uint8_t
   {
     BASE_TIMER,
@@ -110,7 +117,7 @@ namespace Chimera::Timer
     NUM_OPTIONS
   };
 
-  enum class Peripheral : uint8_t
+  enum class Instance : uint8_t
   {
     TIMER1,
     TIMER2,
@@ -210,7 +217,7 @@ namespace Chimera::Timer
 
     struct Config
     {
-      Chimera::Timer::Peripheral peripheral; /**< Timer peripheral in use */
+      Chimera::Timer::Instance peripheral; /**< Timer peripheral in use */
       Chimera::Timer::Channel outputChannel; /**< Channel to configure the PWM output on */
       Mode mode;                             /**< The PWM mode to operate as */
       size_t compareMatch;                   /**< Value to compare/match to that generates an event */
@@ -221,15 +228,14 @@ namespace Chimera::Timer
     };
   }  // namespace PWM
 
-
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Structures
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   struct DriverConfig
   {
     bool validity;  /**< Decides if the configuration settings are valid */
     bool overwrite; /**< Allows the config to update the entire timer peripheral (multiple channels share one peripheral) */
-    Peripheral peripheral;    /**< Which peripheral to configure */
+    Instance peripheral;    /**< Which peripheral to configure */
     Direction countDirection; /**< Which direction the free-running counter should count */
     size_t reloadValue;       /**< Value to load when the counter overflows */
     size_t prescaler;         /**< Divides the peripheral source clock to provide the tick clock */
@@ -272,10 +278,6 @@ namespace Chimera::Timer
     size_t dutyCycle; /**< The new duty cycle to be set */
   };
 
-
-  struct Descriptor
-  {
-  };
 
   namespace Backend
   {
@@ -351,17 +353,12 @@ namespace Chimera::Timer
       void ( *blockDelayMicroseconds )( const size_t );
 
       /**
-       *  Gets a reference to the driver
+       * Factory function to build an instance of a timer type on the given peripheral
        *
-       *  @warning Only use this function if you know what you are doing with raw pointers
-       *
-       *  @note This function is disabled unless the CHIMERA_DRIVER_INF_LIFETIME configuration
-       *        option has been enabled.
-       *
-       *  @param[in]  peripheral    The peripheral to get the instance for
-       *  @return Driver_rPtr
+       * @param type    What type of timer interface is desired
+       * @param periph  Which peripheral instance to build the interface on
        */
-      Driver_rPtr ( *getDriver )( const Chimera::Timer::Peripheral );
+      ITimer *( *build )( const TimerInterface, const Instance );
     };
   }  // namespace Backend
 }  // namespace Chimera::Timer
