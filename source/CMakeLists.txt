@@ -14,7 +14,6 @@ set(all_libraries
   chimera_buffer
   chimera_common
   chimera_event
-  chimera_pwm
   chimera_scheduler
   chimera_serial
   chimera_system

@@ -36,6 +36,7 @@ namespace Chimera::Timer
   {
     SOFTWARE_EVENT,
     HARDWARE_TRIGGER,
+    PWM_GENERATION,
 
     NUM_OPTIONS,
     INVALID
@@ -54,32 +55,6 @@ namespace Chimera::Timer
     INVALID
   };
 
-  enum class DriverAction : size_t
-  {
-    PWM_ACTION_BEGIN,
-    PWM_DISABLE_CHANNEL = PWM_ACTION_BEGIN, /**< Disables a PWM channel output */
-    PWM_ENABLE_CHANNEL,                     /**< Enables a PWM channel output */
-    PWM_SET_DUTY_CYCLE,                     /**< Updates the duty cycle of a PWM channel */
-    PWM_SET_FREQUENCY,                      /**< Updates the frequency of a PWM channel */
-    PWM_ACTION_END,
-
-    NUM_OPTIONS,
-    INVALID
-  };
-
-  enum class Switchable : uint8_t
-  {
-    NUM_OPTIONS,
-    INVALID
-  };
-
-  enum class SwitchableState : uint8_t
-  {
-    ON,
-    OFF,
-    NUM_OPTIONS,
-    INVALID
-  };
 
   enum class DriverData : size_t
   {
@@ -154,130 +129,6 @@ namespace Chimera::Timer
     NUM_OPTIONS,
     INVALID
   };
-
-
-  /*-------------------------------------------------------------------------------
-  Namespaces
-  -------------------------------------------------------------------------------*/
-  namespace Encoder
-  {
-    struct Config
-    {
-      // Currently not used
-    };
-  }  // namespace Encoder
-
-
-  namespace InputCapture
-  {
-    struct Config
-    {
-      // Currently not used
-    };
-  }  // namespace InputCapture
-
-
-  namespace OnePulse
-  {
-    struct Config
-    {
-      // Currently not used
-    };
-  }  // namespace OnePulse
-
-
-  namespace OutputCompare
-  {
-    struct Config
-    {
-      // Currently not used
-    };
-  }  // namespace OutputCompare
-
-
-  namespace PWM
-  {
-    enum class Polarity
-    {
-      ACTIVE_HIGH,
-      ACTIVE_LOW,
-
-      NUM_OPTIONS
-    };
-
-    enum class Mode
-    {
-      EDGE_ALIGNED,
-      CENTER_ALIGNED,
-      ASYMMETRIC,
-      COMBINED,
-
-      NUM_OPTIONS,
-    };
-
-    struct Config
-    {
-      Chimera::Timer::Instance peripheral; /**< Timer peripheral in use */
-      Chimera::Timer::Channel outputChannel; /**< Channel to configure the PWM output on */
-      Mode mode;                             /**< The PWM mode to operate as */
-      size_t compareMatch;                   /**< Value to compare/match to that generates an event */
-      Polarity polarity;                     /**< Idle state when signal not asserted */
-      size_t frequency;                      /**< Desired frequency of the PWM output */
-      uint8_t dutyCycle;                     /**< Desired duty cycle of the PWM output */
-      bool validity;
-    };
-  }  // namespace PWM
-
-  /*---------------------------------------------------------------------------
-  Structures
-  ---------------------------------------------------------------------------*/
-  struct DriverConfig
-  {
-    bool validity;  /**< Decides if the configuration settings are valid */
-    bool overwrite; /**< Allows the config to update the entire timer peripheral (multiple channels share one peripheral) */
-    Instance peripheral;    /**< Which peripheral to configure */
-    Direction countDirection; /**< Which direction the free-running counter should count */
-    size_t reloadValue;       /**< Value to load when the counter overflows */
-    size_t prescaler;         /**< Divides the peripheral source clock to provide the tick clock */
-  };
-
-  union CoreFeatureInit
-  {
-    DriverConfig base;
-    Encoder::Config encoder;
-    InputCapture::Config inputCapture;
-    OnePulse::Config onePulse;
-    OutputCompare::Config outputCompare;
-    PWM::Config pwm;
-  };
-
-
-  /*-------------------------------------------------
-  Structures associated with DriverData
-  -------------------------------------------------*/
-  struct DataRequest_ChannelConfig_t
-  {
-    Channel channel;         /**< Which channel to request the data for */
-    CoreFeatureInit cfgData; /**< Memory to place config data into */
-    bool validity;           /**< Whether or not the data is valid */
-  };
-
-  struct DataRequest_DriverConfig_t
-  {
-    CoreFeatureInit cfgData; /**< Memory to place config data into */
-    bool validity;           /**< Whether or not the data is valid */
-  };
-
-
-  /*-------------------------------------------------
-  Structures associated with DriverAction
-  -------------------------------------------------*/
-  struct DriverAction_PWMDutyCycle_t
-  {
-    Channel channel;  /**< The channel to update */
-    size_t dutyCycle; /**< The new duty cycle to be set */
-  };
-
 
   namespace Backend
   {

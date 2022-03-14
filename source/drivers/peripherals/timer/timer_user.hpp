@@ -26,12 +26,12 @@ namespace Chimera::Timer
   ---------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  size_t millis();
-  size_t micros();
-  void delayMilliseconds( const size_t val );
-  void delayMicroseconds( const size_t val );
-  void blockDelayMilliseconds( const size_t val );
-  void blockDelayMicroseconds( const size_t val );
+  size_t            millis();
+  size_t            micros();
+  void              delayMilliseconds( const size_t val );
+  void              delayMicroseconds( const size_t val );
+  void              blockDelayMilliseconds( const size_t val );
+  void              blockDelayMicroseconds( const size_t val );
 
 
   namespace Factory
@@ -42,19 +42,22 @@ namespace Chimera::Timer
   /**
    * @brief Get a view of a timer with the given Interface
    *
-   * @tparam TimerFuncType    Interface class to present a timer as
+   * @tparam TimerClassType    Interface class to present a timer as
    * @param type              Enumerated type of the interface class
    * @param periph            Peripheral instance to attach against
-   * @return TimerFuncType*
+   * @return TimerClassType*
    */
-  template<class TimerFuncType>
-  TimerFuncType *getDriver( const TimerInterface type, const Instance periph )
+  template<class TimerClassType>
+  TimerClassType *getDriver( const Instance periph )
   {
-    ITimer *base       = Factory::build( type, periph );
-    TimerFuncType *obj = dynamic_cast<TimerFuncType *>( base );
+    /*-------------------------------------------------------------------------
+    Convert the
+    -------------------------------------------------------------------------*/
+    ITimer         *base = Factory::build( TimerClassType::getClassType(), periph );
+    TimerClassType *obj  = reinterpret_cast<TimerClassType *>( base );
 
     return obj;
   }
-}
+}  // namespace Chimera::Timer
 
-#endif  /* !CHIMERA_TIMER_HPP */
+#endif /* !CHIMERA_TIMER_HPP */

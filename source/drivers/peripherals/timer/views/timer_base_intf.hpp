@@ -20,7 +20,7 @@ Includes
 
 namespace Chimera::Timer
 {
- class SoftwareEvent : Introspection<SoftwareEvent, CoreFeature::BASE_TIMER, TimerInterface::SOFTWARE_EVENT>
+ class SoftwareEvent
   {
   public:
 
@@ -31,7 +31,7 @@ namespace Chimera::Timer
   };
 
 
-  class HardwareTrigger : Introspection<SoftwareEvent, CoreFeature::BASE_TIMER, TimerInterface::HARDWARE_TRIGGER>
+  class HardwareTrigger
   {
   public:
 

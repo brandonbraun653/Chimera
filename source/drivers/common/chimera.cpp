@@ -18,7 +18,6 @@
 #include <Chimera/gpio>
 #include <Chimera/i2c>
 #include <Chimera/interrupt>
-#include <Chimera/pwm>
 #include <Chimera/serial>
 #include <Chimera/spi>
 #include <Chimera/system>
@@ -55,7 +54,6 @@ void ChimeraInit()
   Chimera::EXTI::open();
   Chimera::GPIO::initialize();
   Chimera::I2C::initialize();
-  Chimera::PWM::initialize();
   Chimera::Serial::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();

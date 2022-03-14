@@ -2,7 +2,7 @@
 AccessModifierOffset: '-2'
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: 'true'
-AlignConsecutiveDeclarations: 'false'
+AlignConsecutiveDeclarations: 'true'
 AlignEscapedNewlines: Left
 AlignOperands: 'true'
 AlignTrailingComments: 'true'
@@ -19,7 +19,7 @@ BinPackArguments: 'true'
 BinPackParameters: 'true'
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterClass: true 
+  AfterClass: true
   AfterControlStatement: true
   AfterEnum: true
   AfterNamespace: true
@@ -47,7 +47,7 @@ DisableFormat: 'false'
 FixNamespaceComments: 'true'
 IncludeBlocks: Preserve
 IndentCaseLabels: 'true'
-IndentPPDirectives: None 
+IndentPPDirectives: None
 IndentWidth: '2'
 IndentWrappedFunctionNames: 'true'
 KeepEmptyLinesAtTheStartOfBlocks: 'false'

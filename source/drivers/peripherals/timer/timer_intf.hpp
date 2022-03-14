@@ -54,32 +54,6 @@ namespace Chimera::Timer
     virtual void stop() = 0;
   };
 
-  /**
-   * @brief CRTP interface expected by all timer based functionality
-   *
-   * @tparam Derived    Class type being extended
-   * @tparam ifType     Enum of timer hardware interface type
-   * @tparam clsType    Enum of timer class object type
-   */
-  template<class Derived, CoreFeature ifType, TimerInterface clsType>
-  class Introspection
-  {
-  public:
-
-    constexpr CoreFeature getInterfaceType()
-    {
-      return ifType;
-    }
-
-    constexpr TimerInterface getClassType()
-    {
-      return clsType;
-    }
-
-  protected:
-    // Shared data here? What's common to all timers?
-  };
-
 }  // namespace Chimera::Timer
 
 #endif /* !CHIMERA_TIMER_INTERFACE_HPP */
