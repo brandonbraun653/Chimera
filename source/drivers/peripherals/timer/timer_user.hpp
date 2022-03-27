@@ -36,7 +36,7 @@ namespace Chimera::Timer
 
   namespace Factory
   {
-    ITimer *build( const TimerInterface type, const Instance periph );
+    void *build( const TimerInterface type, const Instance periph );
   }
 
   /**
@@ -53,7 +53,7 @@ namespace Chimera::Timer
     /*-------------------------------------------------------------------------
     Convert the
     -------------------------------------------------------------------------*/
-    ITimer         *base = Factory::build( TimerClassType::getClassType(), periph );
+    void           *base = Factory::build( TimerClassType::getClassType(), periph );
     TimerClassType *obj  = reinterpret_cast<TimerClassType *>( base );
 
     return obj;

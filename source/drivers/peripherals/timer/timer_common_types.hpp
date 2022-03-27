@@ -202,14 +202,6 @@ namespace Chimera::Timer
        *  @return void
        */
       void ( *blockDelayMicroseconds )( const size_t );
-
-      /**
-       * Factory function to build an instance of a timer type on the given peripheral
-       *
-       * @param type    What type of timer interface is desired
-       * @param periph  Which peripheral instance to build the interface on
-       */
-      ITimer *( *build )( const TimerInterface, const Instance );
     };
   }  // namespace Backend
 }  // namespace Chimera::Timer

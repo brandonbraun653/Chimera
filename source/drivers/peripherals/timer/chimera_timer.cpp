@@ -2,7 +2,7 @@
  *  File Name:
  *    chimera_timer.cpp
  *
- *	 Description:
+ *  Description:
  *    Chimera timer implementation
  *
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
@@ -36,6 +36,8 @@ namespace Chimera::Timer
       return Chimera::Status::NOT_SUPPORTED;
     }
   }  // namespace Backend
+
+
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -138,21 +140,6 @@ namespace Chimera::Timer
     if ( s_backend_driver.isSupported && s_backend_driver.blockDelayMicroseconds )
     {
       s_backend_driver.blockDelayMicroseconds( val );
-    }
-  }
-
-  namespace Factory
-  {
-    ITimer *build( const TimerInterface type, const Instance periph )
-    {
-      if ( s_backend_driver.isSupported && s_backend_driver.build )
-      {
-        return s_backend_driver.build( type, periph );
-      }
-      else
-      {
-        return nullptr;
-      }
     }
   }
 

@@ -34,26 +34,6 @@ namespace Chimera::Timer
     extern Chimera::Status_t registerDriver( DriverConfig &registry );
   }  // namespace Backend
 
-  /*---------------------------------------------------------------------------
-  Interface Classes
-  ---------------------------------------------------------------------------*/
-  /**
-   * @brief Generic interface to a timer instance
-   *
-   */
-  class ITimer
-  {
-  public:
-    /**
-     * @brief Virtual destructor to allow the use of dynamic_cast
-     */
-    virtual ~ITimer() = default;
-
-    virtual void start() = 0;
-
-    virtual void stop() = 0;
-  };
-
 }  // namespace Chimera::Timer
 
 #endif /* !CHIMERA_TIMER_INTERFACE_HPP */
