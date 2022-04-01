@@ -39,6 +39,8 @@ namespace Chimera::Timer::Factory
     // Create a new object at runtime on the heap
     // Insert into the list
     // Return the view
+    return nullptr;
+    ( void )s_timer_views;
   }
 
 }  // namespace Chimera::Timer

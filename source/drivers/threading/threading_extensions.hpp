@@ -199,6 +199,8 @@ namespace Chimera::Thread
         lastWake = Chimera::millis();
         waitTimeRemaining -= timeElapsed;
       }
+
+      return Chimera::Status::OK;
     }
 
 
