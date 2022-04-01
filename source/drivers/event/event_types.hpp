@@ -35,10 +35,13 @@ namespace Chimera::Event
     TRIGGER_TRANSFER_COMPLETE, /**< A transfer of some sort completed (bi-directional) */
     TRIGGER_SYSTEM_ERROR,      /**< Catch all error case */
     TRIGGER_DATA_AVAILABLE,    /**< Some kind of data is ready for processing */
+    TRIGGER_ACK,               /**< Acknowledgement event */
+    TRIGGER_NACK,              /**< Not-Acknowledged event */
 
     NUM_OPTIONS,
     UNKNOWN
   };
+  static_assert( static_cast<size_t>( Trigger::NUM_OPTIONS ) < 32 );
 
   enum class ListenerType : size_t
   {
