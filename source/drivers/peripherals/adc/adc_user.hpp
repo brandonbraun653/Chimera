@@ -54,7 +54,8 @@ namespace Chimera::ADC
     Chimera::Status_t configSequence( const SequenceInit &cfg );
     void startSequence();
     void stopSequence();
-    bool nextSample( const Channel ch, Sample &sample );
+    bool nextSeqSample( const Channel ch, Sample &sample );
+    size_t multiSeqSample( const Channel *ch_arr, Sample *sample_arr, const size_t size );
     void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
     float toVoltage( const Sample sample );
 

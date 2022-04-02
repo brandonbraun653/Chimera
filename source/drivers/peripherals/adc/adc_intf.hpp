@@ -118,7 +118,21 @@ namespace Chimera::ADC
      * @return true     Retrieval was successful
      * @return false    Retrieval failed (nothing available)
      */
-    virtual bool nextSample( const Channel ch, Sample &sample ) = 0;
+    virtual bool nextSeqSample( const Channel ch, Sample &sample ) = 0;
+
+    /**
+     * @brief Retrieves pending data for multiple channels at a time
+     * @note Channels do not need to be unique
+     *
+     * If a channel's data is unable to be retrieved, the associated index in the
+     * sample array will be cleared to defaults.
+     *
+     * @param ch_arr      Array of channels to get data for
+     * @param sample_arr  Array of sample entries to write data into
+     * @param size        Number of elements in both arrays
+     * @return size_t     Number of elements successfully retrieved
+     */
+    virtual size_t multiSeqSample( const Channel *ch_arr, Sample *sample_arr, const size_t size ) = 0;
 
     /**
      *  When an interrupt event happens, execute some callback function. This is

@@ -20,24 +20,18 @@ Includes
 
 namespace Chimera::Timer
 {
- class SoftwareEvent
+  /*---------------------------------------------------------------------------
+  Classes
+  ---------------------------------------------------------------------------*/
+  /**
+   * @brief Core class that allows control of common basic timer attributes
+   */
+  class Core
   {
   public:
 
+    Chimera::Status setTickFreq( const float freq );
 
-
-  private:
-    void *mDriver; /**< Opaque pointer to the implementer's driver */
-  };
-
-
-  class HardwareTrigger
-  {
-  public:
-
-
-  private:
-    void *mDriver; /**< Opaque pointer to the implementer's driver */
   };
 }  // namespace Chimera::Timer
 

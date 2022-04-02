@@ -172,6 +172,19 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+  /**
+   * @brief Determines edge detection for a hardware trigger
+   */
+  enum class TriggerMode : uint8_t
+  {
+    RISING_EDGE,
+    FALLING_EDGE,
+    BOTH_EDGE,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
 
   /**
    *  Possible internal sensors connected to the ADC
@@ -257,6 +270,17 @@ namespace Chimera::ADC
   {
     size_t us;     /**< Timestamp in microseconds */
     size_t counts; /**< Measured ADC counts */
+
+    void clear()
+    {
+      us     = 0;
+      counts = 0;
+    }
+
+    bool inline isCleared()
+    {
+      return ( !us && !counts );
+    }
   };
 
   /**
@@ -265,14 +289,14 @@ namespace Chimera::ADC
    */
   struct DriverConfig
   {
-    Peripheral periph;               /**< Which peripheral instance is being configured */
-    Interrupt bmISREnable;           /**< Bit mask of interrupts to enable */
-    Oversampler oversampleRate;      /**< Over sampling rate, if any */
-    TransferMode transferMode;       /**< Conversion result memory transfer method */
-    Resolution resolution;           /**< Conversion resolution */
-    Prescaler clockPrescale;         /**< Requested prescaler to drive ADC from system clock [1, 255] */
-    Chimera::Clock::Bus clockSource; /**< Which clock drives the prescaler */
-    size_t defaultSampleCycles;      /**< Default number of clock cycles each channel will sample for */
+    Peripheral          periph;              /**< Which peripheral instance is being configured */
+    Interrupt           bmISREnable;         /**< Bit mask of interrupts to enable */
+    Oversampler         oversampleRate;      /**< Over sampling rate, if any */
+    TransferMode        transferMode;        /**< Conversion result memory transfer method */
+    Resolution          resolution;          /**< Conversion resolution */
+    Prescaler           clockPrescale;       /**< Requested prescaler to drive ADC from system clock [1, 255] */
+    Chimera::Clock::Bus clockSource;         /**< Which clock drives the prescaler */
+    size_t              defaultSampleCycles; /**< Default number of clock cycles each channel will sample for */
 
     void clear()
     {
@@ -292,18 +316,25 @@ namespace Chimera::ADC
    */
   struct SequenceInit
   {
-    SamplingMode mode;     /**< How should the user expect sampling to occur? */
-    ChannelList *channels; /**< List of channels (in order) to be sampled */
-    size_t numChannels;    /**< How many channels are in the sequence */
+    SamplingMode seqMode;     /**< How should the user expect sampling to occur? */
+    TriggerMode  trigMode;    /**< Hardware trigger mode, if SamplingMode == TRIGGER */
+    ChannelList *channels;    /**< List of channels (in order) to be sampled */
+    size_t       numChannels; /**< How many channels are in the sequence */
+    size_t       trigChannel; /**< Which trigger channel to use. HW target specific. */
 
-    SequenceInit() : mode( SamplingMode::UNKNOWN ), channels( nullptr )
+    SequenceInit() :
+        seqMode( SamplingMode::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ), channels( nullptr ), numChannels( 0 ),
+        trigChannel( 0 )
     {
     }
 
     void clear()
     {
+      seqMode     = SamplingMode::UNKNOWN;
+      trigMode    = TriggerMode::UNKNOWN;
       numChannels = 0;
-      mode        = SamplingMode::UNKNOWN;
+      trigChannel = 0;
+
       if ( channels )
       {
         channels->fill( Channel::UNKNOWN );
@@ -318,9 +349,9 @@ namespace Chimera::ADC
    */
   struct InterruptDetail
   {
-    Interrupt isr;   /**< ISR type that occurred */
-    Channel channel; /**< Channel the event occurred on */
-    Sample data;     /**< Data that was sampled */
+    Interrupt isr;     /**< ISR type that occurred */
+    Channel   channel; /**< Channel the event occurred on */
+    Sample    data;    /**< Data that was sampled */
 
     void clear()
     {
@@ -333,7 +364,7 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using ISRCallback   = etl::delegate<void( const InterruptDetail & )>;
+  using ISRCallback   = etl::delegate<void( const InterruptDetail   &)>;
   using CallbackArray = std::array<ISRCallback, EnumValue( Interrupt::NUM_OPTIONS )>;
 
   /*-------------------------------------------------------------------------------

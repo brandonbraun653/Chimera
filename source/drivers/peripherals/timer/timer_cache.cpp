@@ -21,17 +21,17 @@ namespace Chimera::Timer::Factory
   /*---------------------------------------------------------------------------
   Structures
   ---------------------------------------------------------------------------*/
-  struct TimerView
-  {
-    Aurora::Container::List list;
-    void                   *view; /**< Instance of the timer interface */
-    TimerInterface          type; /**< What type of interface is instantiated */
-  };
+  // struct TimerView
+  // {
+  //   Aurora::Container::List list;
+  //   void                   *view; /**< Instance of the timer interface */
+  //   TimerInterface          type; /**< What type of interface is instantiated */
+  // };
 
   /*---------------------------------------------------------------------------
   Static Data
   ---------------------------------------------------------------------------*/
-  static Aurora::Container::List s_timer_views[ EnumValue( Instance::NUM_OPTIONS ) ];
+  // static Aurora::Container::List s_timer_views[ EnumValue( Instance::NUM_OPTIONS ) ];
 
   void *build( const TimerInterface type, const Instance periph )
   {
@@ -40,7 +40,7 @@ namespace Chimera::Timer::Factory
     // Insert into the list
     // Return the view
     return nullptr;
-    ( void )s_timer_views;
+    //( void )s_timer_views;
   }
 
 }  // namespace Chimera::Timer
