@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera I2C types
  *
- *  2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2021-2022 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -37,10 +37,10 @@ namespace Chimera::I2C
   ---------------------------------------------------------------------------*/
   enum class Channel : uint8_t
   {
-    I2C0,
     I2C1,
     I2C2,
     I2C3,
+    I2C4,
 
     NUM_OPTIONS,
     NOT_SUPPORTED

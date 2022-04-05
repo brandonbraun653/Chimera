@@ -55,43 +55,6 @@ namespace Chimera::Timer
     INVALID
   };
 
-
-  enum class DriverData : size_t
-  {
-    IS_CONFIGURED,
-    DRIVER_CONFIG,
-    CHANNEL_CONFIG,
-    NUM_OPTIONS,
-    INVALID
-  };
-
-  enum class Direction : uint8_t
-  {
-    COUNT_UP, /**< Counts up from min, overflows, then starts counting up again */
-    COUNT_DN, /**< Counts down from max, underflows, then starts counting down again */
-
-    NUM_OPTIONS
-  };
-
-  enum class Function : uint8_t
-  {
-    INVALID,
-    INPUT_CAPTURE,
-    OUTPUT_COMPARE,
-    PWM_OUTPUT,
-    ONE_PULSE_OUTPUT,
-    ENCODER,
-
-    NUM_OPTIONS
-  };
-
-  enum class Event : uint8_t
-  {
-    INVALID,
-    // Fill in when needed
-    NUM_OPTIONS
-  };
-
   enum class Instance : uint8_t
   {
     TIMER1,
