@@ -5,13 +5,14 @@
  *  Description:
  *    Chimera peripheral Includes
  *
- *  2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2021-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_PERIPHERAL_INCLUDES
 #define CHIMERA_PERIPHERAL_INCLUDES
 
+#include <Chimera/source/drivers/peripherals/peripheral_manager.hpp>
 #include <Chimera/source/drivers/peripherals/peripheral_types.hpp>
 
 #endif /* !CHIMERA_PERIPHERAL_INCLUDES */

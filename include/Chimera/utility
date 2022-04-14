@@ -12,7 +12,6 @@
 #ifndef CHIMERA_UTILITY_INCLUDES
 #define CHIMERA_UTILITY_INCLUDES
 
-#include <Chimera/source/drivers/utilities/instance_manager.hpp>
 #include <Chimera/source/drivers/utilities/macros.hpp>
 #include <Chimera/source/drivers/utilities/register_accessor.hpp>
 #include <Chimera/source/drivers/utilities/utilities.hpp>
