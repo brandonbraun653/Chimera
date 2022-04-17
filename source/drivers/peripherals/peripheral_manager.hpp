@@ -17,7 +17,7 @@ Includes
 -----------------------------------------------------------------------------*/
 #include <Chimera/source/drivers/threading/threading_extensions.hpp>
 #include <cstddef>
-#include <etl/intrusive_list.h>
+#include <etl/intrusive_forward_list.h>
 
 namespace Chimera
 {
@@ -38,7 +38,7 @@ namespace Chimera
     -------------------------------------------------------------------------*/
     using DevicePtr = DriverType *;
     using LinkType  = etl::bidirectional_link<0>;
-    using ListType  = etl::intrusive_list<ListNode, LinkType>;
+    using ListType  = etl::intrusive_forward_list<ListNode, LinkType>;
 
     /*-------------------------------------------------------------------------
     Structures
@@ -123,7 +123,7 @@ namespace Chimera
       -----------------------------------------------------------------------*/
       ListNode *node = new ( raw_mem ) ListNode();
       node->instance = instance;
-      mDeviceList.push_back( *node );
+      mDeviceList.push_front( *node );
       return true;
     }
 
