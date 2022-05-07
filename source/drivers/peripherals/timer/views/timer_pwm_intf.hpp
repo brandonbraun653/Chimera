@@ -15,6 +15,7 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
+#include <memory>
 #include <Chimera/source/drivers/peripherals/gpio/gpio_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_common_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_intf.hpp>
@@ -144,7 +145,7 @@ namespace Chimera::Timer::PWM
     }
 
   private:
-    Chimera::Timer::Core mCoreDriver;
+    std::shared_ptr<void*> mTimerImpl;
   };
 
 }  // namespace Chimera::Timer::PWM
