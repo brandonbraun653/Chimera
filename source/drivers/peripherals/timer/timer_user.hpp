@@ -33,31 +33,6 @@ namespace Chimera::Timer
   void              blockDelayMilliseconds( const size_t val );
   void              blockDelayMicroseconds( const size_t val );
 
-
-  namespace Factory
-  {
-    void *build( const TimerInterface type, const Instance periph );
-  }
-
-  /**
-   * @brief Get a view of a timer with the given Interface
-   *
-   * @tparam TimerClassType    Interface class to present a timer as
-   * @param type              Enumerated type of the interface class
-   * @param periph            Peripheral instance to attach against
-   * @return TimerClassType*
-   */
-  template<class TimerClassType>
-  TimerClassType *getDriver( const Instance periph )
-  {
-    /*-------------------------------------------------------------------------
-    Convert the
-    -------------------------------------------------------------------------*/
-    void           *base = Factory::build( TimerClassType::getClassType(), periph );
-    TimerClassType *obj  = reinterpret_cast<TimerClassType *>( base );
-
-    return obj;
-  }
 }  // namespace Chimera::Timer
 
 #endif /* !CHIMERA_TIMER_HPP */

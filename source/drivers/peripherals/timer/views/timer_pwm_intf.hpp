@@ -111,7 +111,7 @@ namespace Chimera::Timer::PWM
      * @param freq    The new frequency to be set in Hz
      * @return Chimera::Status_t
      */
-    Chimera::Status_t setFrequency( const size_t freq );
+    Chimera::Status_t setFrequency( const float freq );
 
     /**
      * @brief Sets the output duty cycle of the PWM signal
@@ -121,7 +121,7 @@ namespace Chimera::Timer::PWM
      * @param freq    The new duty cycle to be set from 0-100
      * @return Chimera::Status_t
      */
-    Chimera::Status_t setDutyCycle( const size_t dutyCycle );
+    Chimera::Status_t setDutyCycle( const float dutyCycle );
 
     /**
      * @brief Sets the output polarity of the PWM signal

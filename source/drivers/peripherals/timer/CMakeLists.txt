@@ -5,7 +5,6 @@ gen_static_lib_variants(
     chimera_peripheral_timer
   SOURCES
     chimera_timer.cpp
-    timer_cache.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc
