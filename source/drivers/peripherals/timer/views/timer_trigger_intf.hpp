@@ -15,36 +15,92 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
+#include <memory>
 #include <Chimera/source/drivers/peripherals/timer/timer_common_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_intf.hpp>
+#include <Chimera/source/drivers/peripherals/timer/views/timer_base_intf.hpp>
 
 
-namespace Chimera::Timer
+namespace Chimera::Timer::Trigger
 {
-  /*-----------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Enumerations
-  -----------------------------------------------------------------------------*/
-  enum TriggerOutput : uint8_t
+  ---------------------------------------------------------------------------*/
+  /**
+   * @brief Available trigger signals to use as a reference
+   *
+   * In a Master timer, this indicates what signal controls updating TRGO
+   * while in a Slave timer this will indicate what signal acts as an input.
+   *
+   * @note The mapping of these signals is target device dependent.
+   */
+  enum class Signal : uint8_t
   {
-    TRIG_OUT_1,
-    TRIG_OUT_2,
-    TRIG_OUT_3,
-    TRIG_OUT_4,
-    TRIG_OUT_5,
-    TRIG_OUT_6,
+    TRIG_SIG_1,
+    TRIG_SIG_2,
+    TRIG_SIG_3,
+    TRIG_SIG_4,
+    TRIG_SIG_5,
+    TRIG_SIG_6,
 
-    TRIG_OUT_NUM_OPTIONS,
-    TRIG_OUT_INVALID
+    TRIG_SIG_NUM_OPTIONS,
+    TRIG_SIG_INVALID
   };
 
+  /*---------------------------------------------------------------------------
+  Structures
+  ---------------------------------------------------------------------------*/
+  struct MasterConfig
+  {
+    Chimera::Timer::CoreConfig coreConfig; /**< Core timer configuration */
+    float                      trigFreq;   /**< Trigger frequency in Hz */
 
-  class HardwareTrigger // Really just a time base interface with an option to control the HW output line
+    void clear()
+    {
+      coreConfig.clear();
+      trigFreq   = -1.0f;
+    }
+  };
+
+  /*---------------------------------------------------------------------------
+  Classes
+  ---------------------------------------------------------------------------*/
+  /**
+   * @brief Configures a Timer for generating a trigger signal on TRGO
+   * @warning Consumes the entire timer, erasing any previous configuration.
+   *
+   * The timer is initialized as a Master device that generates a reference
+   * clock or event pulse for other peripherals in the system to consume as
+   * a synchronization input.
+   */
+  class Master
   {
   public:
+    Master();
+    ~Master();
 
+    /**
+     * @brief Initializes the driver
+     *
+     * @param cfg   The driver configuration settings
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t init( const MasterConfig &cfg );
+
+    /**
+     * @brief Enables the timer
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t enable();
+
+    /**
+     * @brief Disables the timer
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t disable();
 
   private:
-    void *mDriver; /**< Opaque pointer to the implementer's driver */
+    std::shared_ptr<void*> mTimerImpl; /**< Opaque pointer to the implementer's driver */
   };
 }  // namespace Chimera::Timer
 

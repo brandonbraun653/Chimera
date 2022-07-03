@@ -97,7 +97,7 @@ namespace Chimera::Timer::PWM
     Chimera::Status_t enableOutput();
 
     /**
-     * @brief Enables the PWM output signal on the configured GPIO pin
+     * @brief Disables the PWM output signal on the configured GPIO pin
      * @return Chimera::Status_t
      */
     Chimera::Status_t disableOutput();

@@ -157,7 +157,6 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
-
   /**
    *  Instructs the driver implementation on how data should be moved
    *  from the ADC registers into user buffers.
@@ -184,7 +183,6 @@ namespace Chimera::ADC
     NUM_OPTIONS,
     UNKNOWN
   };
-
 
   /**
    *  Possible internal sensors connected to the ADC
@@ -318,13 +316,14 @@ namespace Chimera::ADC
   {
     SamplingMode seqMode;     /**< How should the user expect sampling to occur? */
     TriggerMode  trigMode;    /**< Hardware trigger mode, if SamplingMode == TRIGGER */
+    size_t       trigChannel; /**< Which trigger channel to use. HW target specific. */
     ChannelList *channels;    /**< List of channels (in order) to be sampled */
     size_t       numChannels; /**< How many channels are in the sequence */
-    size_t       trigChannel; /**< Which trigger channel to use. HW target specific. */
 
     SequenceInit() :
-        seqMode( SamplingMode::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ), channels( nullptr ), numChannels( 0 ),
-        trigChannel( 0 )
+        seqMode( SamplingMode::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ), trigChannel( 0 ), channels( nullptr ),
+        numChannels( 0 )
+
     {
     }
 

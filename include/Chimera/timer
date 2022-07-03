@@ -17,5 +17,6 @@
 #include <Chimera/source/drivers/peripherals/timer/timer_user.hpp>
 #include <Chimera/source/drivers/peripherals/timer/views/timer_base_intf.hpp>
 #include <Chimera/source/drivers/peripherals/timer/views/timer_pwm_intf.hpp>
+#include <Chimera/source/drivers/peripherals/timer/views/timer_trigger_intf.hpp>
 
 #endif /* !CHIMERA_TIMER_INCLUDES */
