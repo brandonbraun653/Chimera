@@ -56,7 +56,7 @@ namespace Chimera::ADC
     void stopSequence();
     bool nextSeqSample( const Channel ch, Sample &sample );
     size_t multiSeqSample( const Channel *ch_arr, Sample *sample_arr, const size_t size );
-    void onInterrupt( const Interrupt bmSignal, ISRCallback cb );
+    void onInterrupt( const Interrupt signal, ISRCallback cb );
     float toVoltage( const Sample sample );
 
     /*-------------------------------------------------

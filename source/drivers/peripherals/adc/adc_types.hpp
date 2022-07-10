@@ -348,14 +348,17 @@ namespace Chimera::ADC
    */
   struct InterruptDetail
   {
-    Interrupt isr;     /**< ISR type that occurred */
-    Channel   channel; /**< Channel the event occurred on */
-    Sample    data;    /**< Data that was sampled */
+    Interrupt isr;         /**< ISR type that occurred */
+    Channel   channel;     /**< Channel the event occurred on (single conversion only) */
+    uint16_t *samples;     /**< Data that was sampled */
+    uint16_t  num_samples; /**< How many samples are available */
 
     void clear()
     {
-      channel = Channel::UNKNOWN;
-      isr     = Interrupt::NONE;
+      channel     = Channel::UNKNOWN;
+      isr         = Interrupt::NONE;
+      samples     = nullptr;
+      num_samples = 0;
     }
   };
 
@@ -363,7 +366,7 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using ISRCallback   = etl::delegate<void( const InterruptDetail   &)>;
+  using ISRCallback   = etl::delegate<void( const InterruptDetail &)>;
   using CallbackArray = std::array<ISRCallback, EnumValue( Interrupt::NUM_OPTIONS )>;
 
   /*-------------------------------------------------------------------------------

@@ -138,11 +138,11 @@ namespace Chimera::ADC
      *  When an interrupt event happens, execute some callback function. This is
      *  how the driver expects data to get out to the user.
      *
-     *  @param[in]  bmSignal      Which events the callback applies to (bit mask)
+     *  @param[in]  signal      Which events the callback applies to (bit mask)
      *  @param[in]  cb            The callback function
      *  @return void
      */
-    virtual void onInterrupt( const Interrupt bmSignal, ISRCallback cb ) = 0;
+    virtual void onInterrupt( const Interrupt signal, ISRCallback cb ) = 0;
 
     /**
      *  Converts a raw sample to the equivalent voltage

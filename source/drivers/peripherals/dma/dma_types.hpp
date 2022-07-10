@@ -184,7 +184,8 @@ namespace Chimera::DMA
    */
   struct PipeConfig
   {
-    Alignment alignment;       /**< Transfer data alignment */
+    Alignment srcAlignment;    /**< Source data alignment */
+    Alignment dstAlignment;    /**< Destination data alignment */
     BurstSize burstSize;       /**< Burst size of the transfer */
     Direction direction;       /**< What direction is the data flowing? */
     FifoThreshold threshold;   /**< FIFO threshold, if supported. */
@@ -202,7 +203,8 @@ namespace Chimera::DMA
      */
     void clear()
     {
-      alignment          = Alignment::BYTE;
+      srcAlignment       = Alignment::BYTE;
+      dstAlignment       = Alignment::BYTE;
       burstSize          = BurstSize::BURST_SIZE_1;
       direction          = Direction::MEMORY_TO_MEMORY;
       threshold          = FifoThreshold::HALF_FULL;
