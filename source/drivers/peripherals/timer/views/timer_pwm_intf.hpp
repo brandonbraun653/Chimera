@@ -45,24 +45,26 @@ namespace Chimera::Timer::PWM
    */
   struct DriverConfig
   {
-    Chimera::Timer::CoreConfig coreCfg;       /**< Core timer configuration */
-    float                      dutyCycle;     /**< Desired duty cycle 0-100% */
-    float                      frequency;     /**< Desired frequency of the PWM output */
-    Channel                    outputChannel; /**< Timer channel to configure the PWM output on */
-    Chimera::GPIO::PinInit     outputPin;     /**< GPIO output pin configuration */
-    Polarity                   polarity;      /**< Idle state when signal not asserted */
-    Chimera::GPIO::State       safeIOLevel;   /**< What output level to configure the GPIO to when disabling the I/O */
+    Chimera::Timer::CoreConfig coreCfg;     /**< Core timer configuration */
+    float                      dutyCycle;   /**< Desired duty cycle 0-100% */
+    float                      frequency;   /**< Desired frequency of the PWM output */
+    Channel                    channel;     /**< Timer channel to configure the PWM output on */
+    Output                     output;      /**< Timer output selection */
+    Chimera::GPIO::PinInit     gpioPin;     /**< GPIO output pin configuration */
+    Polarity                   polarity;    /**< Idle state when signal not asserted */
+    Chimera::GPIO::State       safeIOLevel; /**< What output level to configure the GPIO to when disabling the I/O */
 
     void clear()
     {
-      dutyCycle     = 50.0f;
-      frequency     = 0.0f;
-      outputChannel = Channel::INVALID;
-      polarity      = Polarity::ACTIVE_HIGH;
-      safeIOLevel   = Chimera::GPIO::State::LOW;
+      dutyCycle   = 50.0f;
+      frequency   = 0.0f;
+      channel     = Channel::INVALID;
+      output      = Output::INVALID;
+      polarity    = Polarity::ACTIVE_HIGH;
+      safeIOLevel = Chimera::GPIO::State::LOW;
 
       coreCfg.clear();
-      outputPin.clear();
+      gpioPin.clear();
     }
   };
 
@@ -145,7 +147,7 @@ namespace Chimera::Timer::PWM
     }
 
   private:
-    std::shared_ptr<void*> mTimerImpl;
+    std::shared_ptr<void *> mTimerImpl;
   };
 
 }  // namespace Chimera::Timer::PWM

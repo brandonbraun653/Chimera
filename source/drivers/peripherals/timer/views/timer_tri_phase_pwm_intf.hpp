@@ -21,6 +21,7 @@ Includes
 #include <Chimera/source/drivers/peripherals/timer/timer_common_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_intf.hpp>
 #include <Chimera/source/drivers/peripherals/timer/views/timer_base_intf.hpp>
+#include <Chimera/source/drivers/peripherals/timer/views/timer_trigger_intf.hpp>
 
 namespace Chimera::Timer::Inverter
 {
@@ -69,10 +70,10 @@ namespace Chimera::Timer::Inverter
   struct DriverConfig
   {
     Chimera::Timer::CoreConfig      coreCfg;                      /**< Core timer configuration */
+    Chimera::Timer::Output          pinMap[ NUM_SWITCHES ];       /**< Which channel each pin maps to */
     Chimera::Timer::Trigger::Signal adcTriggerSignal;             /**< Which signal the ADC is listening for a trigger on */
     Chimera::ADC::Peripheral        adcPeripheral;                /**< Which ADC to trigger for sampling */
-    Chimera::GPIO::PinInit          outputPins[ NUM_SWITCHES ];   /**< Output pin configuration */
-    Chimera::GPIO::State            breakIOLevel[ NUM_SWITCHES ]; /**< Safe level for IO on break */
+    Chimera::GPIO::State            breakIOLevel;                 /**< Safe level for all IO on break */
     float                           pwmFrequency;                 /**< Desired frequency of the PWM output */
     float                           deadTimeNs;                   /**< Dead time between hi/lo complementary PWM */
     float                           adcTriggerOffsetNs;           /**< Offset from center of PWM ramp (center-aligned mode) */
@@ -86,10 +87,9 @@ namespace Chimera::Timer::Inverter
       deadTimeNs         = 1.0f;
       pwmFrequency       = 1.0f;
 
-      for ( auto idx = 0; idx < NUM_SWITCHES; idx++ )
+      for ( size_t idx = 0; idx < NUM_SWITCHES; idx++ )
       {
-        outputPins[ idx ].clear();
-        breakIOLevel[ idx ] = Chimera::GPIO::State::LOW;
+        pinMap[ idx ] = Chimera::Timer::Output::INVALID;
       }
     }
   };
@@ -113,13 +113,29 @@ namespace Chimera::Timer::Inverter
   class Driver
   {
   public:
+    Driver();
+    ~Driver();
+
     /**
      * @brief Configures the timer to drive 3-phase PWM output
+     * @note Assumes GPIO alternate functions remapped to TIMER externally
      *
      * @param cfg   Configuration settings
      * @return Chimera::Status_t
      */
     Chimera::Status_t init( const DriverConfig &cfg );
+
+    /**
+     * @brief Enables the PWM output signals on the configured GPIO pins
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t enableOutput();
+
+    /**
+     * @brief Disables the PWM output signals on the configured GPIO pins
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t disableOutput();
 
     /**
      * @brief Sets the core PWM frequency driving each output phase

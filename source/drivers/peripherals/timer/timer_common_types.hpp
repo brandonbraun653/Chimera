@@ -93,6 +93,25 @@ namespace Chimera::Timer
     INVALID
   };
 
+  enum class Output : uint8_t
+  {
+    OUTPUT_1P,  /* Positive logic output */
+    OUTPUT_1N,  /* Negative (complementary) output */
+    OUTPUT_2P,
+    OUTPUT_2N,
+    OUTPUT_3P,
+    OUTPUT_3N,
+    OUTPUT_4P,
+    OUTPUT_4N,
+    OUTPUT_5P,
+    OUTPUT_5N,
+    OUTPUT_6P,
+    OUTPUT_6N,
+
+    NUM_OPTIONS,
+    INVALID
+  };
+
   namespace Backend
   {
     struct DriverConfig
