@@ -29,6 +29,7 @@ namespace Chimera::Timer
     Instance            instance;    /**< Peripheral instance being configured */
     Chimera::Clock::Bus clockSource; /**< Clock source driving the timer */
     float               baseFreq;    /**< Base frequency of the timer in Hz */
+    float               tolerance;   /**< Percent error allowed in base frequency: 0.0f-100.0f */
 
     void clear()
     {
