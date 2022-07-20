@@ -171,7 +171,7 @@ namespace Chimera::Timer::Inverter
      * @param states  State of the inverter IO pins
      * @return Chimera::Status_t
      */
-    Chimera::Status_t setSwitchGating( const SwitchStates &states );
+    Chimera::Status_t setForwardCommState( const uint8_t phase );
 
     /**
      * @brief Quickly sets the output pins into a safe state
