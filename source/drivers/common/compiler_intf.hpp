@@ -6,7 +6,7 @@
  *    Contains macros for various functionality that must be portable between
  *    compilers.
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -21,29 +21,26 @@ namespace Chimera
   void insert_debug_breakpoint();
 }  // namespace Chimera
 
-/*------------------------------------------------
+/*-----------------------------------------------------------------------------
 GCC
-------------------------------------------------*/
+-----------------------------------------------------------------------------*/
 #if defined( __GNUC__ )
+#include <sys/cdefs.h>
 
 #define __weak __attribute__( ( weak ) )
-
-#ifdef __GNUC__
+#define __packed_struct struct __attribute__( ( packed ) )
 #define UNUSED( x ) UNUSED_##x __attribute__( ( __unused__ ) )
-#else
-#define UNUSED( x ) UNUSED_##x
-#endif
-
-#ifdef __GNUC__
 #define UNUSED_FUNCTION( x ) __attribute__( ( __unused__ ) ) UNUSED_##x
-#else
-#define UNUSED_FUNCTION( x ) UNUSED_##x
-#endif
 
+/*-----------------------------------------------------------------------------
+Unknown Compiler
+-----------------------------------------------------------------------------*/
 #else
 
 #define __weak
 #define __packed
+#define UNUSED( x ) UNUSED_##x
+#define UNUSED_FUNCTION( x ) UNUSED_##x
 
 #endif /* __GNUC__ */
 

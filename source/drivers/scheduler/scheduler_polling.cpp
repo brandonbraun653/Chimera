@@ -91,7 +91,7 @@ namespace Chimera::Scheduler
   }
 
 
-  Chimera::Status_t Polled::oneShot( Chimera::Function::Opaque method, const size_t when, const TimingType relation )
+  Chimera::Status_t Polled::oneShot( Chimera::Function::Opaque &method, const size_t when, const TimingType relation )
   {
     mCB.clear();
     mCB.callType = CallType::ONE_SHOT;
@@ -110,7 +110,7 @@ namespace Chimera::Scheduler
   }
 
 
-  Chimera::Status_t Polled::periodic( Chimera::Function::Opaque method, const size_t rate )
+  Chimera::Status_t Polled::periodic( Chimera::Function::Opaque &method, const size_t rate )
   {
     mCB.clear();
     mCB.callType     = CallType::PERIODIC;
@@ -121,7 +121,7 @@ namespace Chimera::Scheduler
   }
 
 
-  Chimera::Status_t Polled::periodic( Chimera::Function::Opaque method, const size_t rate, const size_t numTimes )
+  Chimera::Status_t Polled::periodic( Chimera::Function::Opaque &method, const size_t rate, const size_t numTimes )
   {
     mCB.clear();
     mCB.callType     = CallType::PERIODIC_LIMITED;
