@@ -16,6 +16,7 @@
 Includes
 -----------------------------------------------------------------------------*/
 #include <memory>
+#include <Chimera/source/drivers/function/function_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_common_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_intf.hpp>
 #include <Chimera/source/drivers/peripherals/timer/views/timer_base_intf.hpp>
@@ -98,6 +99,19 @@ namespace Chimera::Timer::Trigger
      * @return Chimera::Status_t
      */
     Chimera::Status_t disable();
+
+    /**
+     * @brief Sets a function to be called on a trigger event
+     *
+     * @param func  Function to be called
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t attachISR( Chimera::Function::Opaque func );
+
+    /**
+     * @brief Detaches an ISR from the timer, if one is attached
+     */
+    void detachISR();
 
   private:
     std::shared_ptr<void*> mTimerImpl; /**< Opaque pointer to the implementer's driver */

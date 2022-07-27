@@ -78,10 +78,10 @@ static constexpr ccstr chimera_past_last_slash( ccstr str )
  */
 #define RT_HARD_ASSERT( statement ) ::Chimera::Assert::hardAssert( ( statement ), __SHORTFILE__, __LINE__ )
 
-#define RT_DBG_ASSERT( statement ) \
-  if constexpr ( DEBUG == 1 )      \
-  {                                \
-    RT_HARD_ASSERT( statement );   \
-  }
+#if defined( DEBUG ) && ( DEBUG == 1 )
+#define RT_DBG_ASSERT( statement ) RT_HARD_ASSERT( statement )
+#else
+#define RT_DBG_ASSERT( statement )
+#endif /* DEBUG */
 
 #endif /* !CHIMERA_ASSERT_HPP */
