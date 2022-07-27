@@ -104,7 +104,7 @@ namespace Chimera
       /*-----------------------------------------------------------------------
       Check for size limits
       -----------------------------------------------------------------------*/
-      if ( mDeviceList.size() + 1 >= MaxSize )
+      if ( mDeviceList.size() >= MaxSize )
       {
         return false;
       }
