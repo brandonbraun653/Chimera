@@ -36,6 +36,7 @@ namespace Chimera::Timer
       instance    = Instance::NOT_SUPPORTED;
       clockSource = Chimera::Clock::Bus::MAX_NUM_CLOCKS;
       baseFreq    = std::numeric_limits<float>::max();
+      tolerance   = 5.0f;
     }
   };
 

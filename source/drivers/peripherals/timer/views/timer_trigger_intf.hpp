@@ -53,13 +53,15 @@ namespace Chimera::Timer::Trigger
   ---------------------------------------------------------------------------*/
   struct MasterConfig
   {
-    Chimera::Timer::CoreConfig coreConfig; /**< Core timer configuration */
-    float                      trigFreq;   /**< Trigger frequency in Hz */
+    Chimera::Timer::CoreConfig coreConfig;  /**< Core timer configuration */
+    Chimera::Function::Opaque  isrCallback; /**< Optional callback to call when the trigger fires */
+    float                      trigFreq;    /**< Trigger frequency in Hz */
 
     void clear()
     {
       coreConfig.clear();
-      trigFreq   = -1.0f;
+      isrCallback = {};
+      trigFreq    = -1.0f;
     }
   };
 
@@ -112,6 +114,12 @@ namespace Chimera::Timer::Trigger
      * @brief Detaches an ISR from the timer, if one is attached
      */
     void detachISR();
+
+    /**
+     * @brief Acknowledge the ISR event
+     * @note This must be called inside the ISR handler to clear the interrupt
+     */
+    void ackISR();
 
   private:
     std::shared_ptr<void*> mTimerImpl; /**< Opaque pointer to the implementer's driver */
