@@ -122,7 +122,7 @@ namespace Chimera::Timer::Trigger
     void ackISR();
 
   private:
-    std::shared_ptr<void*> mTimerImpl; /**< Opaque pointer to the implementer's driver */
+    void *mTimerImpl; /**< Opaque pointer to the implementer's driver */
   };
 }  // namespace Chimera::Timer
 

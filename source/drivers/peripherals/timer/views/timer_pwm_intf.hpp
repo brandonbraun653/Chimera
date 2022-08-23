@@ -147,7 +147,7 @@ namespace Chimera::Timer::PWM
     }
 
   private:
-    std::shared_ptr<void *> mTimerImpl;
+    void *mTimerImpl;
   };
 
 }  // namespace Chimera::Timer::PWM

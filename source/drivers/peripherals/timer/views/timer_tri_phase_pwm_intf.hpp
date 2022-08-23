@@ -181,7 +181,7 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t emergencyBreak();
 
   private:
-    std::shared_ptr<void*> mTimerImpl;
+    void *mTimerImpl;
   };
 
 }  // namespace Chimera::Timer
