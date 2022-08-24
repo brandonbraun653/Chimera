@@ -94,23 +94,66 @@ namespace Chimera::Timer
     INVALID
   };
 
-  enum class Output : uint8_t
-  {
-    OUTPUT_1P,  /* Positive logic output */
-    OUTPUT_1N,  /* Negative (complementary) output */
-    OUTPUT_2P,
-    OUTPUT_2N,
-    OUTPUT_3P,
-    OUTPUT_3N,
-    OUTPUT_4P,
-    OUTPUT_4N,
-    OUTPUT_5P,
-    OUTPUT_5N,
-    OUTPUT_6P,
-    OUTPUT_6N,
 
-    NUM_OPTIONS,
-    INVALID
+
+  template<typename Base, typename EnumType>
+  class EnumBitUtility
+  {
+  public:
+    using BaseType = EnumType;
+
+    static constexpr bool isPowerOfTwo( size_t n )
+    {
+      return n && ( !( n & ( n - 1 ) ) );
+    }
+
+    // Returns position of the only set bit in 'n'
+    static constexpr int findPosition( size_t n )
+    {
+      if ( !isPowerOfTwo( n ) )
+        return -1;
+
+      size_t count = 0;
+
+      // One by one move the only set bit to right till it reaches end
+      while ( n )
+      {
+        n = n >> 1;
+
+        // increment count of shifts
+        ++count;
+      }
+
+      return count;
+    }
+  };
+
+  class Output : public EnumBitUtility<Output, uint32_t>
+  {
+  public:
+    enum : BaseType
+    {
+      OUTPUT_1P = ( 1u << 0 ),  /* Positive logic output */
+      OUTPUT_1N = ( 1u << 1 ),  /* Negative (complementary) output */
+      OUTPUT_2P = ( 1u << 2 ),
+      OUTPUT_2N = ( 1u << 3 ),
+      OUTPUT_3P = ( 1u << 4 ),
+      OUTPUT_3N = ( 1u << 5 ),
+      OUTPUT_4P = ( 1u << 6 ),
+      OUTPUT_4N = ( 1u << 7 ),
+      OUTPUT_5P = ( 1u << 8 ),
+      OUTPUT_5N = ( 1u << 9 ),
+      OUTPUT_6P = ( 1u << 10 ),
+      OUTPUT_6N = ( 1u << 11 ),
+
+      NUM_OPTIONS = findPosition( OUTPUT_6N ),
+      INVALID
+    };
+
+    // TODO BMB: Move this into the bit utility
+    constexpr BaseType value = INVALID;
+
+    Output( BaseType x ) : value( x ) {}
   };
 
   namespace Backend
