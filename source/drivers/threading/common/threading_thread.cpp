@@ -84,26 +84,15 @@ namespace Chimera::Thread
    */
   static TaskId generateId()
   {
-    /*-------------------------------------------------
-    Thread lock is sufficient as no ISR should be able
-    to write to the registry.
-    -------------------------------------------------*/
+    static TaskId s_registry_id_index = THREAD_ID_REG_MIN;
+
+    /*-------------------------------------------------------------------------
+    The best ID for a thread is the next one!
+    -------------------------------------------------------------------------*/
     s_registry_lock.lock();
-
-    /*-------------------------------------------------
-    Find an id that doesn't exist in the registry yet
-    -------------------------------------------------*/
-    TaskId id;
-    while ( true )
-    {
-      id = ( rand() % THREAD_ID_REG_RNG ) + THREAD_ID_REG_MIN;
-      if ( ( id != THREAD_ID_INVALID ) && ( s_thread_registry.find( id ) == s_thread_registry.end() ) )
-      {
-        break;
-      }
-    }
-
+    TaskId id = s_registry_id_index++;
     s_registry_lock.unlock();
+
     return id;
   }
 

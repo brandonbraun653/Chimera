@@ -467,7 +467,7 @@ namespace Chimera::GPIO
       Chimera::Status_t ( *reset )();
 
       /**
-       *  Factory function that creates a shared_ptr instance of the backend
+       *  Factory function that gets a pointer to an instance of the backend
        *  driver, as long as it conforms to the expected interface.
        */
       Driver_rPtr ( *getDriver )( const Port port, const Pin pin );

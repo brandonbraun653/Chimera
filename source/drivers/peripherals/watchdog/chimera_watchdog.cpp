@@ -78,7 +78,7 @@ namespace Chimera::Watchdog
   }
 
 
-  Independent_sPtr getDriver( const IChannel channel )
+  Independent_rPtr getDriver( const IChannel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getIndependentDriver )
     {
@@ -91,7 +91,7 @@ namespace Chimera::Watchdog
   }
 
 
-  Window_sPtr getDriver( const WChannel channel )
+  Window_rPtr getDriver( const WChannel channel )
   {
     if ( s_backend_driver.isSupported && s_backend_driver.getWindowDriver )
     {

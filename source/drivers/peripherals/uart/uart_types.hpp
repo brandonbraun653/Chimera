@@ -65,7 +65,7 @@ namespace Chimera::UART
       bool ( *isChannelUART )( const Chimera::Serial::Channel );
 
       /**
-       *  Factory function that creates a shared_ptr instance of the backend
+       *  Factory function that gets a pointer to an instance of the backend
        *  driver, as long as it conforms to the expected interface.
        *
        *  @return IUSART_sPtr

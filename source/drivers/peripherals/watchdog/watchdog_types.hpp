@@ -5,19 +5,18 @@
  *  Description:
  *    Chimera Watchdog types
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_WATCHDOG_TYPES_HPP
 #define CHIMERA_WATCHDOG_TYPES_HPP
 
-/* STL Includes */
-#include <cstdint>
-#include <memory>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/common>
+#include <cstdint>
 
 namespace Chimera::Watchdog
 {
@@ -30,8 +29,8 @@ namespace Chimera::Watchdog
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using Independent_sPtr = std::shared_ptr<IndependentDriver>;
-  using Window_sPtr = std::shared_ptr<WindowDriver>;
+  using Independent_rPtr = IndependentDriver *;
+  using Window_rPtr      = WindowDriver *;
 
   /*-------------------------------------------------------------------------------
   Enumerations
@@ -79,19 +78,19 @@ namespace Chimera::Watchdog
        *  Resets the backend driver hardware to default configuration
        *  settings, but does not wipe out any memory.
        */
-      Chimera::Status_t ( *reset )(void );
+      Chimera::Status_t ( *reset )( void );
 
       /**
        *  Gets the driver associated with the independent watchdog channel
        */
-      Independent_sPtr ( *getIndependentDriver )( const IChannel channel );
+      Independent_rPtr ( *getIndependentDriver )( const IChannel channel );
 
       /**
        *  Gets the driver associated with the window watchdog channel
        */
-      Window_sPtr ( *getWindowDriver )( const WChannel channel );
+      Window_rPtr ( *getWindowDriver )( const WChannel channel );
     };
   }  // namespace Backend
-}  // namespace Chimera
+}  // namespace Chimera::Watchdog
 
 #endif /* !CHIMERA_WATCHDOG_TYPES_HPP */
