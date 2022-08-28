@@ -5,71 +5,146 @@
  *  Description:
  *    Implements an interface to create a Chimera ADC peripheral
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_ADC_HPP
 #define CHIMERA_ADC_HPP
 
-/* STL Includes */
-#include <memory>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/source/drivers/peripherals/adc/adc_intf.hpp>
 #include <Chimera/source/drivers/peripherals/adc/adc_types.hpp>
+#include <Chimera/source/drivers/threading/threading_extensions.hpp>
+#include <memory>
 
 namespace Chimera::ADC
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
   Chimera::Status_t reset();
-  Driver_rPtr getDriver( const Peripheral periph );
-  bool featureSupported( const Peripheral periph, const Feature feature );
+  Driver_rPtr       getDriver( const Peripheral periph );
+  bool              featureSupported( const Peripheral periph, const Feature feature );
 
-
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Classes
-  -------------------------------------------------------------------------------*/
-  /**
-   *  Concrete class declaration that promises to implement the virtual one, to
-   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
-   *  using the Bridge pattern.
-   */
-  class Driver
+  ---------------------------------------------------------------------------*/
+  class Driver : public Thread::Lockable<Driver>, public IADC
   {
   public:
     Driver();
     ~Driver();
 
-    /*-------------------------------------------------
-    Interface: Hardware
-    -------------------------------------------------*/
+    /**
+     *  Initializes the driver with high level settings. Note that not
+     *  all hardware may support a config option, so either pre-check
+     *  that necessary features are supported, or check the return code
+     *  of this method.
+     *
+     *  @note Usually there are many ADC channels available, so it's left
+     *        up to the application to properly configure GPIO pins.
+     *
+     *  @param[in]  init          Settings to be applied
+     *  @return Chimera::Status_t
+     */
     Chimera::Status_t open( const DriverConfig &init );
-    void close();
-    Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
-    Sample sampleChannel( const Channel ch );
-    Chimera::Status_t configSequence( const SequenceInit &cfg );
-    void startSequence();
-    void stopSequence();
-    bool nextSeqSample( const Channel ch, Sample &sample );
-    size_t multiSeqSample( const Channel *ch_arr, Sample *sample_arr, const size_t size );
-    void onInterrupt( const Interrupt signal, ISRCallback cb );
-    float toVoltage( const Sample sample );
 
-    /*-------------------------------------------------
-    Interface: Lockable
-    -------------------------------------------------*/
-    void lock();
-    void lockFromISR();
-    bool try_lock_for( const size_t timeout );
-    void unlock();
-    void unlockFromISR();
+    /**
+     *  Closes the driver and resets the hardware back to defaults
+     *  @return void
+     */
+    void close();
+
+    /**
+     *  Assigns a number of sampling cycles to a channel. The actual number of
+     *  cycles will get rounded to the closes supported value by the hardware.
+     *
+     *  @param[in]  ch            Which channel to configure
+     *  @param[in]  cycles        Number of cycles
+     */
+    Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
+
+    /**
+     *  Samples a single hardware channel in one-shot mode
+     *
+     *  @param[in]  ch            Which channel to sample
+     *  @return Sample
+     */
+    Sample sampleChannel( const Channel ch );
+
+    /**
+     *  Some hardware peripherals support grouping of channels so that they
+     *  may all be sampled in sequence with a single command.
+     *
+     *  @param[in]  cfg           Group configuration data
+     *  @return Chimera::Status_t
+     */
+    Chimera::Status_t configSequence( const SequenceInit &cfg );
+
+    /**
+     *  Starts the sequence conversions
+     *  @return void
+     */
+    void startSequence();
+
+    /**
+     *  Starts the sequence conversions
+     *  @return void
+     */
+    void stopSequence();
+
+    /**
+     * @brief Grab the next sample from the ADC channel
+     *
+     * This does not perform an immediate sample, but rather queries the
+     * hardware driver queues for any new data.
+     *
+     * @param ch        Which channel to request
+     * @param sample    Where to write the sample data
+     * @return true     Retrieval was successful
+     * @return false    Retrieval failed (nothing available)
+     */
+    bool nextSeqSample( const Channel ch, Sample &sample );
+
+    /**
+     * @brief Retrieves pending data for multiple channels at a time
+     * @note Channels do not need to be unique
+     *
+     * If a channel's data is unable to be retrieved, the associated index in the
+     * sample array will be cleared to defaults.
+     *
+     * @param ch_arr      Array of channels to get data for
+     * @param sample_arr  Array of sample entries to write data into
+     * @param size        Number of elements in both arrays
+     * @return size_t     Number of elements successfully retrieved
+     */
+    size_t multiSeqSample( const Channel *ch_arr, Sample *sample_arr, const size_t size );
+
+    /**
+     *  When an interrupt event happens, execute some callback function. This is
+     *  how the driver expects data to get out to the user.
+     *
+     *  @param[in]  signal      Which events the callback applies to (bit mask)
+     *  @param[in]  cb            The callback function
+     *  @return void
+     */
+    void onInterrupt( const Interrupt signal, ISRCallback cb );
+
+    /**
+     *  Converts a raw sample to the equivalent voltage
+     *
+     *  @param[in]  sample        The raw sample value to convert
+     *  @return float
+     */
+    float toVoltage( const Sample &sample );
 
   private:
-    void *mDriver; /**< Instance of the implementer's ADC driver */
+    friend Chimera::Thread::Lockable<Driver>;
+    void *mImpl; /**< Implementation details of the driver */
   };
 }  // namespace Chimera::ADC
 

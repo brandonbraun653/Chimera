@@ -217,4 +217,4 @@ namespace Chimera::Thread
 
 }  // namespace Chimera::Thread
 
-#endif /* USING_GENERIC_SYSTEM */
+#endif /* USING_NATIVE_THREADS */
