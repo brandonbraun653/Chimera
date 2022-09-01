@@ -79,7 +79,7 @@ namespace Chimera::Thread
 
   private:
     mutex_type &mtx;
-    bool is_locked;
+    bool        is_locked;
   };
 
   /**
@@ -135,8 +135,7 @@ namespace Chimera::Thread
   class AsyncIO  // : public virtual AsyncIOInterface
   {
   public:
-    AsyncIO() :
-        mAIOAllowedEvents( 0xFFFFFFFF ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN ), mAIOSignal( 1 )
+    AsyncIO() : mAIOAllowedEvents( 0xFFFFFFFF ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN ), mAIOSignal( 1 )
     {
     }
 
@@ -216,8 +215,19 @@ namespace Chimera::Thread
       return result;
     }
 
+    /**
+     * @brief Lets the AsyncIO interface know an event has happened
+     *
+     * @param trigger
+     */
+    void signalAIO( const Chimera::Event::Trigger trigger )
+    {
+      mAIOEvent = trigger;
+      mAIOSignal.release();
+    }
+
   protected:
-    uint32_t mAIOAllowedEvents;                   /**< Bit mask of events supported */
+    uint32_t mAIOAllowedEvents; /**< Bit mask of events supported */
 
     /**
      * @brief Initialize the AsyncIO runtime
@@ -231,20 +241,9 @@ namespace Chimera::Thread
       mAIOSignal.try_acquire();
     }
 
-    /**
-     * @brief Lets the AsyncIO interface know an event has happened
-     *
-     * @param trigger
-     */
-    void signalAIO( const Chimera::Event::Trigger trigger )
-    {
-      mAIOEvent = trigger;
-      mAIOSignal.release();
-    }
-
   private:
-    Chimera::Event::Trigger mAIOEvent;            /**< Which event was triggered by the class */
-    Chimera::Thread::BinarySemaphore mAIOSignal;  /**< Lightweight semaphore to block on */
+    Chimera::Event::Trigger          mAIOEvent;  /**< Which event was triggered by the class */
+    Chimera::Thread::BinarySemaphore mAIOSignal; /**< Lightweight semaphore to block on */
   };
 }  // namespace Chimera::Thread
 
