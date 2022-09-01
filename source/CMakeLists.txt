@@ -18,7 +18,6 @@ set(all_libraries
   chimera_serial
   chimera_system
   chimera_threading
-  chimera_usb
   chimera_utilities
   chimera_peripheral_adc
   chimera_peripheral_can
@@ -34,7 +33,6 @@ set(all_libraries
   chimera_peripheral_timer
   chimera_peripheral_uart
   chimera_peripheral_usart
-  chimera_peripheral_usb
   chimera_peripheral_watchdog
 )
 
