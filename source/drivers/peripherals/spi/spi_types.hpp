@@ -38,7 +38,6 @@ namespace Chimera::SPI
   using ClockFreq    = size_t;
   using TransferMode = Chimera::Hardware::PeripheralMode;
   using Driver_rPtr  = Driver *;
-  using Driver_rPtr  = Driver *;
 
   /*-------------------------------------------------------------------------------
   Enumerations

@@ -5,22 +5,22 @@
  *  Description:
  *    Models the Chimera SPI interface
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SPI_INTERFACE_HPP
 #define CHIMERA_SPI_INTERFACE_HPP
 
-/* STL Includes */
-#include <cstdint>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/buffer>
 #include <Chimera/common>
 #include <Chimera/event>
-#include <Chimera/thread>
 #include <Chimera/source/drivers/peripherals/spi/spi_types.hpp>
+#include <Chimera/thread>
+#include <cstdint>
 
 namespace Chimera::SPI
 {
@@ -213,67 +213,19 @@ namespace Chimera::SPI
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
+#if defined( CHIMERA_VIRTUAL )
   class ISPI : virtual public HWInterface,
-               virtual public Chimera::Event::ListenerInterface,
                virtual public Chimera::Thread::AsyncIOInterface,
                virtual public Chimera::Thread::LockableInterface
   {
   public:
     virtual ~ISPI() = default;
   };
-
-
-  /**
-   *  Concrete class declaration that promises to implement the virtual one, to
-   *  avoid paying the memory penalty of a v-table lookup. Implemented project side
-   *  using the Bridge pattern.
-   */
-  class Driver
+#else
+  class ISPI
   {
-  public:
-    Driver();
-    ~Driver();
-
-    /*-------------------------------------------------
-    Interface: Hardware
-    -------------------------------------------------*/
-    Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct );
-    Chimera::SPI::DriverConfig getInit();
-    Chimera::Status_t deInit();
-    Chimera::Status_t setChipSelect( const Chimera::GPIO::State value );
-    Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::CSMode mode );
-    Chimera::Status_t writeBytes( const void *const txBuffer, const size_t length );
-    Chimera::Status_t readBytes( void *const rxBuffer, const size_t length );
-    Chimera::Status_t readWriteBytes( const void *const txBuffer, void *const rxBuffer, const size_t length );
-    Chimera::Status_t setPeripheralMode( const Chimera::Hardware::PeripheralMode mode );
-    Chimera::Status_t setClockFrequency( const size_t freq, const size_t tolerance );
-    size_t getClockFrequency();
-
-    /*-------------------------------------------------
-    Interface: Listener
-    -------------------------------------------------*/
-    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
-    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
-
-    /*-------------------------------------------------
-    Interface: AsyncIO
-    -------------------------------------------------*/
-    Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout );
-    Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Thread::BinarySemaphore &notifier,
-                             const size_t timeout );
-
-    /*-------------------------------------------------
-    Interface: Lockable
-    -------------------------------------------------*/
-    void lock();
-    void lockFromISR();
-    bool try_lock_for( const size_t timeout );
-    void unlock();
-    void unlockFromISR();
-
-  private:
-    void *mDriver;
   };
+#endif /* CHIMERA_VIRTUAL */
 
 }  // namespace Chimera::SPI
 
