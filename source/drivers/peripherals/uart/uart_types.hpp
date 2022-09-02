@@ -68,7 +68,7 @@ namespace Chimera::UART
        *  Factory function that gets a pointer to an instance of the backend
        *  driver, as long as it conforms to the expected interface.
        *
-       *  @return IUSART_sPtr
+       *  @return IUART_sPtr
        */
       Driver_rPtr ( *getDriver )( const Chimera::Serial::Channel );
     };

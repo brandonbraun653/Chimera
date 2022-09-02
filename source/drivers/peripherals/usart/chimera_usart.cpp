@@ -33,6 +33,8 @@ namespace Chimera::USART
       return Chimera::Status::NOT_SUPPORTED;
     }
   }  // namespace Backend
+
+
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );

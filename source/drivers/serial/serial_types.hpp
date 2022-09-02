@@ -5,26 +5,24 @@
  *  Description:
  *    Chimera Serial types
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SERIAL_TYPES_HPP
 #define CHIMERA_SERIAL_TYPES_HPP
 
-/* STL Includes */
-#include <cstdint>
-#include <cstddef>
-#include <memory>
-#include <type_traits>
-
-/* ETL Includes */
-#include <etl/circular_buffer.h>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
+#include <cstddef>
+#include <cstdint>
+#include <etl/circular_buffer.h>
+#include <memory>
+#include <type_traits>
 
 namespace Chimera::Serial
 {

@@ -1,409 +1,227 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    chimera_serial.cpp
  *
- *	 Description:
- *    Implements the serial driver. Note that because virtual inheritance is
- *    frowned upon for memory consumption reasons, the interface is forced to
- *    choose which driver it executes at runtime.
+ *  Description:
+ *    Wrapper around UART/USART peripherals to provide a seamless serial driver
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
- *******************************************************************************/
+ *  2022 | Brandon Braun | brandonbraun653@protonmail.com
+ *****************************************************************************/
 
-/* STL Includes */
-#include <array>
-#include <memory>
-
-/* Chimera Includes */
-#include <Chimera/common>
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/serial>
-#include <Chimera/uart>
+#include <Chimera/common>
 #include <Chimera/usart>
-
-/*-------------------------------------------------------------------------------
-Constants
--------------------------------------------------------------------------------*/
-static constexpr size_t NUM_DRIVERS = static_cast<size_t>( Chimera::Serial::Channel::NUM_OPTIONS );
-
-/*-------------------------------------------------------------------------------
-Variables
--------------------------------------------------------------------------------*/
-static Chimera::Serial::Driver s_raw_driver[ NUM_DRIVERS ];
-static Chimera::Serial::Driver_rPtr s_shared_driver[ NUM_DRIVERS ];
-static Chimera::UART::Driver_rPtr s_uart_driver[ NUM_DRIVERS ];
-static Chimera::USART::Driver_rPtr s_usart_driver[ NUM_DRIVERS ];
-
+#include <Chimera/uart>
 
 namespace Chimera::Serial
 {
-  /*-------------------------------------------------------------------------------
+  struct Impl
+  {
+    Chimera::UART::Driver_rPtr uartDriver;
+    Chimera::USART::Driver_rPtr usartDriver;
+  };
+
+  static DeviceManager<Impl, Channel, EnumValue( Channel::NUM_OPTIONS )> s_impl_drivers;
+  static DeviceManager<Driver, Channel, EnumValue( Channel::NUM_OPTIONS )> s_raw_drivers;
+
+
+    // sink->lock();
+    // hwResult |= sink->write( message, length );
+    // hwResult |= sink->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
+    // sink->unlock();
+
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   Chimera::Status_t initialize()
   {
-    for ( size_t x = 0; x < NUM_DRIVERS; x++ )
+    return Chimera::Status::OK;
+  }
+
+
+  Chimera::Status_t attach( const Chimera::Peripheral::Type type, const Channel channel )
+  {
+    auto impl = s_impl_drivers.getOrCreate( channel );
+    auto raw  = s_raw_drivers.getOrCreate( channel );
+    RT_DBG_ASSERT( impl && raw );
+
+    if ( type == Peripheral::Type::PERIPH_USART )
     {
-      if ( !s_shared_driver[ x ] )
-      {
-        s_shared_driver[ x ] = Driver_rPtr( &s_raw_driver[ x ] );
-      }
+      impl->usartDriver = USART::getDriver( channel );
+      RT_DBG_ASSERT( impl->usartDriver );
+    }
+    else
+    {
+      impl->uartDriver = UART::getDriver( channel );
+      RT_DBG_ASSERT( impl->uartDriver );
     }
 
     return Chimera::Status::OK;
   }
 
-  Chimera::Status_t reset()
-  {
-    return Chimera::Status::OK;
-  }
 
   Driver_rPtr getDriver( const Channel channel )
   {
-    /*-------------------------------------------------
-    Boundary check the input
-    -------------------------------------------------*/
-    auto idx = static_cast<size_t>( channel );
-    if ( channel >= Channel::NUM_OPTIONS )
+    /*-------------------------------------------------------------------------
+    Driver must be attached first before this will succeed
+    -------------------------------------------------------------------------*/
+    auto impl = s_impl_drivers.get( channel );
+    if ( !impl )
     {
       return nullptr;
     }
 
-    return s_shared_driver[ idx ];
+    /*-------------------------------------------------------------------------
+    Return the driver
+    -------------------------------------------------------------------------*/
+    auto raw = s_raw_drivers.getOrCreate( channel );
+    raw->mImpl = reinterpret_cast<void*>( impl );
+
+    return raw;
   }
 
-  /*-------------------------------------------------------------------------------
-  Driver Implementation
-  -------------------------------------------------------------------------------*/
-  Driver::Driver() : mUsart( false ), mChannel( Chimera::Serial::Channel::NOT_SUPPORTED )
+
+  /*---------------------------------------------------------------------------
+  Classes
+  ---------------------------------------------------------------------------*/
+  Driver::Driver()
   {
+
   }
+
 
   Driver::~Driver()
   {
+
   }
 
-  /*-------------------------------------------------
-  Interface: Hardware
-  -------------------------------------------------*/
-  Chimera::Status_t Driver::assignHW( const Chimera::Serial::Channel channel, const Chimera::Serial::IOPins &pins )
+
+  Chimera::Status_t Driver::open( const Config &config )
   {
-    mChannel = channel;
-    auto idx = static_cast<size_t>( channel );
+    /*-------------------------------------------------------------------------
+    Grab the implementation
+    -------------------------------------------------------------------------*/
+    RT_DBG_ASSERT( mImpl );
+    auto impl = reinterpret_cast<Impl*>( mImpl );
+    auto result = Chimera::Status::OK;
 
-    if ( Chimera::USART::isChannelUSART( channel ) )
+    /*-------------------------------------------------------------------------
+    Invoke the correct driver
+    -------------------------------------------------------------------------*/
+    if( impl->uartDriver )
     {
-      /*-------------------------------------------------
-      Register the driver if no one has yet
-      -------------------------------------------------*/
-      mUsart = true;
-      if ( !s_usart_driver[ idx ] )
-      {
-        s_usart_driver[ idx ] = Chimera::USART::getDriver( channel );
-      }
-
-      /*-------------------------------------------------
-      Invoke the expected method
-      -------------------------------------------------*/
-      return s_usart_driver[ idx ]->assignHW( channel, pins );
-    }
-    else if ( Chimera::UART::isChannelUART( channel ) )
-    {
-      /*-------------------------------------------------
-      Register the driver if no one has yet
-      -------------------------------------------------*/
-      mUsart = false;
-      if ( !s_uart_driver[ idx ] )
-      {
-        s_uart_driver[ idx ] = Chimera::UART::getDriver( channel );
-      }
-
-      /*-------------------------------------------------
-      Invoke the expected method
-      -------------------------------------------------*/
-      return s_uart_driver[ idx ]->assignHW( channel, pins );
+      result |= impl->uartDriver->configure( config );
     }
     else
     {
-      return Chimera::Status::FAIL;
+      result |= impl->usartDriver->configure( config );
     }
   }
 
 
-  Chimera::Status_t Driver::begin( const Chimera::Hardware::PeripheralMode txMode,
-                                   const Chimera::Hardware::PeripheralMode rxMode )
+  Chimera::Status_t Driver::close()
   {
-    if ( mUsart )
+    /*-------------------------------------------------------------------------
+    Grab the implementation
+    -------------------------------------------------------------------------*/
+    RT_DBG_ASSERT( mImpl );
+    auto impl = reinterpret_cast<Impl*>( mImpl );
+    auto result = Chimera::Status::OK;
+
+    /*-------------------------------------------------------------------------
+    Invoke the correct driver
+    -------------------------------------------------------------------------*/
+    if( impl->uartDriver )
     {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->begin( txMode, rxMode );
+      result |= impl->uartDriver->end();
     }
     else
     {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->begin( txMode, rxMode );
+      result |= impl->usartDriver->end();
     }
-  }
 
-
-  Chimera::Status_t Driver::end()
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->end();
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->end();
-    }
-  }
-
-
-  Chimera::Status_t Driver::configure( const Chimera::Serial::Config &config )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->configure( config );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->configure( config );
-    }
-  }
-
-
-  Chimera::Status_t Driver::setBaud( const uint32_t baud )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->setBaud( baud );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->setBaud( baud );
-    }
-  }
-
-
-  Chimera::Status_t Driver::setMode( const Chimera::Hardware::SubPeripheral periph,
-                                     const Chimera::Hardware::PeripheralMode mode )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->setMode( periph, mode );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->setMode( periph, mode );
-    }
-  }
-
-
-  Chimera::Status_t Driver::write( const void *const buffer, const size_t length )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->write( buffer, length );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->write( buffer, length );
-    }
-  }
-
-
-  Chimera::Status_t Driver::read( void *const buffer, const size_t length )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->read( buffer, length );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->read( buffer, length );
-    }
   }
 
 
   Chimera::Status_t Driver::flush( const Chimera::Hardware::SubPeripheral periph )
   {
-    if ( mUsart )
+    /*-------------------------------------------------------------------------
+    Grab the implementation
+    -------------------------------------------------------------------------*/
+    RT_DBG_ASSERT( mImpl );
+    auto impl = reinterpret_cast<Impl*>( mImpl );
+    auto result = Chimera::Status::OK;
+
+    /*-------------------------------------------------------------------------
+    Invoke the correct driver
+    -------------------------------------------------------------------------*/
+    if( impl->uartDriver )
     {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->flush( periph );
+      result |= impl->uartDriver->flush( periph );
     }
     else
     {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->flush( periph );
+      result |= impl->usartDriver->flush( periph );
     }
   }
 
 
-  Chimera::Status_t Driver::toggleAsyncListening( const bool state )
+  int Driver::write( const void *const buffer, const size_t length )
   {
-    if ( mUsart )
+    /*-------------------------------------------------------------------------
+    Grab the implementation
+    -------------------------------------------------------------------------*/
+    RT_DBG_ASSERT( mImpl );
+    auto impl = reinterpret_cast<Impl*>( mImpl );
+    auto result = Chimera::Status::OK;
+
+    /*-------------------------------------------------------------------------
+    Invoke the correct driver
+    -------------------------------------------------------------------------*/
+    if( impl->uartDriver )
     {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->toggleAsyncListening( state );
+      result |= impl->uartDriver->write( buffer, length );
+      result |= impl->uartDriver->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
     else
     {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->toggleAsyncListening( state );
+      result |= impl->usartDriver->write( buffer, length );
+      result |= impl->usartDriver->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
+
+    // TODO BMB: Need to return number of bytes actually read
+    return 0;
   }
 
 
-  Chimera::Status_t Driver::readAsync( uint8_t *const buffer, const size_t len )
+  int Driver::read( void *const buffer, const size_t length )
   {
-    if ( mUsart )
+    /*-------------------------------------------------------------------------
+    Grab the implementation
+    -------------------------------------------------------------------------*/
+    RT_DBG_ASSERT( mImpl );
+    auto impl = reinterpret_cast<Impl*>( mImpl );
+    auto result = Chimera::Status::OK;
+
+    /*-------------------------------------------------------------------------
+    Invoke the correct driver
+    -------------------------------------------------------------------------*/
+    if( impl->uartDriver )
     {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->readAsync( buffer, len );
+      result |= impl->uartDriver->read( buffer, length );
+      result |= impl->uartDriver->await( Chimera::Event::Trigger::TRIGGER_READ_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
     else
     {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->readAsync( buffer, len );
+      result |= impl->usartDriver->read( buffer, length );
+      result |= impl->usartDriver->await( Chimera::Event::Trigger::TRIGGER_READ_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
+
+    // TODO BMB: Need to return number of bytes actually read
+    return 0;
   }
 
-
-  Chimera::Status_t Driver::enableBuffering( const Chimera::Hardware::SubPeripheral periph,
-                                             Chimera::Serial::CircularBuffer &userBuffer, uint8_t *const hwBuffer,
-                                             const size_t hwBufferSize )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->enableBuffering( periph, userBuffer, hwBuffer, hwBufferSize );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->enableBuffering( periph, userBuffer, hwBuffer, hwBufferSize );
-    }
-  }
-
-
-  Chimera::Status_t Driver::disableBuffering( const Chimera::Hardware::SubPeripheral periph )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->disableBuffering( periph );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->disableBuffering( periph );
-    }
-  }
-
-
-  bool Driver::available( size_t *const bytes )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->available( bytes );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->available( bytes );
-    }
-  }
-
-
-  void Driver::postISRProcessing()
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->postISRProcessing();
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->postISRProcessing();
-    }
-  }
-
-
-  /*-------------------------------------------------
-  Interface: AsyncIO
-  -------------------------------------------------*/
-  Chimera::Status_t Driver::await( const Chimera::Event::Trigger event, const size_t timeout )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->await( event, timeout );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->await( event, timeout );
-    }
-  }
-
-
-  Chimera::Status_t Driver::await( const Chimera::Event::Trigger event, Chimera::Thread::BinarySemaphore &notifier,
-                                   const size_t timeout )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->await( event, notifier, timeout );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->await( event, notifier, timeout );
-    }
-  }
-
-  /*-------------------------------------------------
-  Interface: Lockable
-  -------------------------------------------------*/
-  void Driver::lock()
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->lock();
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->lock();
-    }
-  }
-
-  void Driver::lockFromISR()
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->lockFromISR();
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->lockFromISR();
-    }
-  }
-
-  bool Driver::try_lock_for( const size_t timeout )
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->try_lock_for( timeout );
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->try_lock_for( timeout );
-    }
-  }
-
-  void Driver::unlock()
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->unlock();
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->unlock();
-    }
-  }
-
-  void Driver::unlockFromISR()
-  {
-    if ( mUsart )
-    {
-      return s_usart_driver[ static_cast<size_t>( mChannel ) ]->unlockFromISR();
-    }
-    else
-    {
-      return s_uart_driver[ static_cast<size_t>( mChannel ) ]->unlockFromISR();
-    }
-  }
-}  // namespace Chimera::Serial
+}  // namespace
