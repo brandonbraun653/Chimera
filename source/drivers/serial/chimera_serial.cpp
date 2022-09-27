@@ -45,8 +45,7 @@ namespace Chimera::Serial
   Chimera::Status_t attach( const Chimera::Peripheral::Type type, const Channel channel )
   {
     auto impl = s_impl_drivers.getOrCreate( channel );
-    auto raw  = s_raw_drivers.getOrCreate( channel );
-    RT_DBG_ASSERT( impl && raw );
+    RT_DBG_ASSERT( impl );
 
     if ( type == Peripheral::Type::PERIPH_USART )
     {
@@ -78,6 +77,8 @@ namespace Chimera::Serial
     Return the driver
     -------------------------------------------------------------------------*/
     auto raw = s_raw_drivers.getOrCreate( channel );
+    RT_DBG_ASSERT( raw );
+
     raw->mImpl = reinterpret_cast<void*>( impl );
 
     return raw;
@@ -119,6 +120,8 @@ namespace Chimera::Serial
     {
       result |= impl->usartDriver->configure( config );
     }
+
+    return result;
   }
 
 
@@ -143,6 +146,7 @@ namespace Chimera::Serial
       result |= impl->usartDriver->end();
     }
 
+    return result;
   }
 
 
@@ -166,6 +170,8 @@ namespace Chimera::Serial
     {
       result |= impl->usartDriver->flush( periph );
     }
+
+    return result;
   }
 
 
