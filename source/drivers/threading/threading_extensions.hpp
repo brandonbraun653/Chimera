@@ -93,7 +93,11 @@ namespace Chimera::Thread
    * @tparam T  Base class needing a lock interface
    */
   template<class T>
+#if defined( CHIMERA_VIRTUAL )
+  class Lockable : public virtual LockableInterface
+#else
   class Lockable
+#endif
   {
   public:
     void lock()
@@ -131,8 +135,13 @@ namespace Chimera::Thread
    *
    * @tparam T  Base class being extended
    */
+
   template<class T>
-  class AsyncIO  // : public virtual AsyncIOInterface
+#if defined( CHIMERA_VIRTUAL )
+  class AsyncIO : public virtual AsyncIOInterface
+#else
+  class AsyncIO
+#endif
   {
   public:
     AsyncIO() : mAIOAllowedEvents( 0xFFFFFFFF ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN ), mAIOSignal( 1 )

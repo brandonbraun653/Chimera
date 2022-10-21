@@ -67,7 +67,7 @@ namespace Chimera::I2C
                virtual public Chimera::Thread::LockableInterface
   {
   public:
-    virtual ~II2C() = default;
+    virtual ~II2C() = 0;
   };
 #else
   class II2C

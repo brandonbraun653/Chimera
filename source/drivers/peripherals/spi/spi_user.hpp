@@ -34,7 +34,7 @@ namespace Chimera::SPI
   ---------------------------------------------------------------------------*/
   class Driver: public Chimera::Thread::Lockable<Driver>,
                 public Chimera::Thread::AsyncIO<Driver>,
-                public ISPI
+                public virtual ISPI
   {
   public:
     using Chimera::Thread::AsyncIO<Driver>::AsyncIO;

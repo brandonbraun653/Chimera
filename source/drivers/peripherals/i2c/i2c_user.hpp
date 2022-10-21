@@ -34,7 +34,7 @@ namespace Chimera::I2C
   ---------------------------------------------------------------------------*/
   class Driver : public Chimera::Thread::Lockable<Driver>,
                  public Chimera::Thread::AsyncIO<Driver>,
-                 public II2C
+                 public virtual II2C
   {
   public:
     using Chimera::Thread::AsyncIO<Driver>::AsyncIO;

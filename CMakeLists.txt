@@ -29,6 +29,7 @@ if(Toolchain::REQUIRES_FREERTOS_THREADS)
   target_link_libraries(${PUB_HDR} INTERFACE freertos_cfg)
 elseif(Toolchain::REQUIRES_NATIVE_THREADS)
   target_compile_definitions(${PUB_HDR} INTERFACE USING_NATIVE_THREADS)
+  target_compile_definitions(${PUB_HDR} INTERFACE CHIMERA_VIRTUAL)
 endif()
 
 export(TARGETS ${PUB_HDR} FILE "${PROJECT_BINARY_DIR}/Chimera/${PUB_HDR}.cmake")
