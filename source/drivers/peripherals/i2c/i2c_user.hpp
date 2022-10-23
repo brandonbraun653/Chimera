@@ -102,12 +102,6 @@ namespace Chimera::I2C
      */
     Chimera::Status_t start();
 
-    /*-------------------------------------------------------------------------
-    Interface: Listener
-    -------------------------------------------------------------------------*/
-    Chimera::Status_t registerListener( Chimera::Event::Actionable &listener, const size_t timeout, size_t &registrationID );
-    Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout );
-
   private:
     friend Chimera::Thread::Lockable<Driver>;
     friend Chimera::Thread::AsyncIO<Driver>;

@@ -44,6 +44,7 @@ namespace Chimera::I2C
   ---------------------------------------------------------------------------*/
   class HWInterface
   {
+  public:
     virtual ~HWInterface() = default;
 
     virtual Chimera::Status_t open( const DriverConfig &cfg )                                              = 0;
@@ -62,12 +63,11 @@ namespace Chimera::I2C
  */
 #if defined( CHIMERA_VIRTUAL )
   class II2C : virtual public HWInterface,
-               virtual public Chimera::Event::ListenerInterface,
                virtual public Chimera::Thread::AsyncIOInterface,
                virtual public Chimera::Thread::LockableInterface
   {
   public:
-    virtual ~II2C() = 0;
+    virtual ~II2C() = default;
   };
 #else
   class II2C
