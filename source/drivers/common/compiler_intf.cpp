@@ -22,13 +22,13 @@ namespace Chimera
 {
   void insert_debug_breakpoint()
   {
-#if ( defined( DEBUG ) || defined( DBG_REL ) )
+#if !defined( DISABLE_DEBUG_BREAK )
   #if defined( EMBEDDED )
     asm volatile( "BKPT #0\n" );
   #else
     raise( SIGTRAP );
 #endif  /* EMBEDDED */
-#endif
+#endif  /* !DISABLE_DEBUG_BREAK */
   }
 }  // namespace Chimera
 
