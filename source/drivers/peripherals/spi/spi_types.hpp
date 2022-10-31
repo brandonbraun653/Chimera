@@ -9,7 +9,7 @@
  *    Don't change the order or numbering of the various enum classes as they
  *    are allowed to be used as array indexes. Only append to the end.
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
@@ -155,15 +155,15 @@ namespace Chimera::SPI
    */
   struct HardwareInit
   {
-    BitOrder bitOrder;       /**< Sets LSB or MSB ordering of the transfers */
-    ControlMode controlMode; /**< The primary arbitration method for the peripheral */
-    ClockFreq clockFreq;     /**< The desired approximate clock frequency */
-    ClockMode clockMode;     /**< Sets the clock phase and polarity options */
-    CSMode csMode;           /**< Chip select control mode */
-    DataSize dataSize;       /**< How wide each transfer should minimally be */
-    Channel hwChannel;       /**< Hardware channel to be configured */
-    TransferMode txfrMode;   /**< Transfer controller mode */
-    bool validity;           /**< Structure validity */
+    BitOrder     bitOrder;    /**< Sets LSB or MSB ordering of the transfers */
+    ControlMode  controlMode; /**< The primary arbitration method for the peripheral */
+    ClockFreq    clockFreq;   /**< The desired approximate clock frequency */
+    ClockMode    clockMode;   /**< Sets the clock phase and polarity options */
+    CSMode       csMode;      /**< Chip select control mode */
+    DataSize     dataSize;    /**< How wide each transfer should minimally be */
+    Channel      hwChannel;   /**< Hardware channel to be configured */
+    TransferMode txfrMode;    /**< Transfer controller mode */
+    bool         validity;    /**< Structure validity */
 
     void clear()
     {
@@ -189,9 +189,8 @@ namespace Chimera::SPI
     GPIO::PinInit MOSIInit; /**< The GPIO pin settings used for MOSI */
     GPIO::PinInit MISOInit; /**< The GPIO pin settings used for MISO */
     GPIO::PinInit CSInit;   /**< The GPIO pin settings used for CS */
-    HardwareInit HWInit;    /**< Hardware driver configuration options */
-    bool externalCS;        /**< Indicates if an external chip select is used */
-    bool validity;          /**< Defines if the configuration is valid */
+    HardwareInit  HWInit;   /**< Hardware driver configuration options */
+    bool          validity; /**< Defines if the configuration is valid */
 
     void clear()
     {
@@ -200,8 +199,7 @@ namespace Chimera::SPI
       MISOInit.clear();
       CSInit.clear();
       HWInit.clear();
-      externalCS = false;
-      validity   = false;
+      validity = false;
     }
   };
 

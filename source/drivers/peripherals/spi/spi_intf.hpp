@@ -69,7 +69,7 @@ namespace Chimera::SPI
      *
      *  @return Chimera::SPI::DriverConfig
      */
-    virtual Chimera::SPI::DriverConfig getInit() = 0;
+    virtual Chimera::SPI::HardwareInit getInit() = 0;
 
     /**
      *	Destroys all previous hardware setup (virtually or physically), which requires
@@ -83,6 +83,15 @@ namespace Chimera::SPI
      *  |         FAIL | The operation failed                 |
      */
     virtual Chimera::Status_t deInit() = 0;
+
+    /**
+     * @brief Assigns a chip select pin to use for the current transaction
+     * @note This only works if the chip select control mode is **not** manual
+     *
+     * @param cs    Which pin to assign
+     * @return Chimera::Status_t
+     */
+    virtual Chimera::Status_t assignChipSelect( const Chimera::GPIO::Driver_rPtr cs ) = 0;
 
     /**
      *  Sets the chip select GPIO to a logical state

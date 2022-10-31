@@ -43,8 +43,9 @@ namespace Chimera::SPI
     ~Driver();
 
     Chimera::Status_t init( const Chimera::SPI::DriverConfig &setupStruct );
-    Chimera::SPI::DriverConfig getInit();
+    Chimera::SPI::HardwareInit getInit();
     Chimera::Status_t deInit();
+    Chimera::Status_t assignChipSelect( const Chimera::GPIO::Driver_rPtr cs );
     Chimera::Status_t setChipSelect( const Chimera::GPIO::State value );
     Chimera::Status_t setChipSelectControlMode( const Chimera::SPI::CSMode mode );
     Chimera::Status_t writeBytes( const void *const txBuffer, const size_t length );
