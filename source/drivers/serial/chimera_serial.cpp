@@ -164,10 +164,12 @@ namespace Chimera::Serial
     -------------------------------------------------------------------------*/
     if( impl->uartDriver )
     {
+      Chimera::Thread::LockGuard _lck( *impl->uartDriver );
       result |= impl->uartDriver->flush( periph );
     }
     else
     {
+      Chimera::Thread::LockGuard _lck( *impl->usartDriver );
       result |= impl->usartDriver->flush( periph );
     }
 
@@ -189,11 +191,13 @@ namespace Chimera::Serial
     -------------------------------------------------------------------------*/
     if( impl->uartDriver )
     {
+      Chimera::Thread::LockGuard _lck( *impl->uartDriver );
       result |= impl->uartDriver->write( buffer, length );
       result |= impl->uartDriver->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
     else
     {
+      Chimera::Thread::LockGuard _lck( *impl->usartDriver );
       result |= impl->usartDriver->write( buffer, length );
       result |= impl->usartDriver->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
@@ -217,11 +221,13 @@ namespace Chimera::Serial
     -------------------------------------------------------------------------*/
     if( impl->uartDriver )
     {
+      Chimera::Thread::LockGuard _lck( *impl->uartDriver );
       result |= impl->uartDriver->read( buffer, length );
       result |= impl->uartDriver->await( Chimera::Event::Trigger::TRIGGER_READ_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
     else
     {
+      Chimera::Thread::LockGuard _lck( *impl->usartDriver );
       result |= impl->usartDriver->read( buffer, length );
       result |= impl->usartDriver->await( Chimera::Event::Trigger::TRIGGER_READ_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
     }
