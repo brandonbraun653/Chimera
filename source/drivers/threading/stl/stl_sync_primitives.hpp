@@ -45,8 +45,8 @@ namespace Chimera::Thread::detail
   Semaphore Types
   -------------------------------------------------------------------------------*/
   /* Use mutex until compiler supports the C++20 semaphore */
-  using native_binary_semaphore   = std::timed_mutex;
-  using native_counting_semaphore = std::timed_mutex;
+  using native_binary_semaphore   = std::recursive_timed_mutex;
+  using native_counting_semaphore = std::recursive_timed_mutex;
 
   /*-------------------------------------------------------------------------------
   Thread Types
