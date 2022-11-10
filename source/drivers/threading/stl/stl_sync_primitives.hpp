@@ -5,7 +5,7 @@
  *  Description:
  *    STL specific thread primitive native types
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #ifndef CHIMERA_THREADING_STL_TYPES_HPP
@@ -13,16 +13,19 @@
 
 #if defined( USING_NATIVE_THREADS )
 
-/* STL Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
+#include <condition_variable>
 #include <cstdint>
 #include <limits>
 #include <mutex>
-#include <thread>
 #include <queue>
+#include <thread>
 
-/*-------------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------
 Macros
--------------------------------------------------------------------------------*/
+-----------------------------------------------------------------------------*/
 #define STACK_BYTES( x ) ( x )
 
 namespace Chimera::Thread::detail
@@ -44,9 +47,7 @@ namespace Chimera::Thread::detail
   /*-------------------------------------------------------------------------------
   Semaphore Types
   -------------------------------------------------------------------------------*/
-  /* Use mutex until compiler supports the C++20 semaphore */
-  using native_binary_semaphore   = std::recursive_timed_mutex;
-  using native_counting_semaphore = std::recursive_timed_mutex;
+  using native_binary_semaphore   = std::binary_semaphore;
 
   /*-------------------------------------------------------------------------------
   Thread Types

@@ -15,6 +15,7 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
+#include <Chimera/source/drivers/assert/assert_driver.hpp>
 #include <Chimera/source/drivers/common/chimera.hpp>
 #include <Chimera/source/drivers/event/event_types.hpp>
 #include <Chimera/source/drivers/threading/threading_abstract.hpp>
@@ -25,9 +26,11 @@ Includes
 
 namespace Chimera::Thread
 {
+  /*---------------------------------------------------------------------------
+  LockGuard
+  ---------------------------------------------------------------------------*/
   /**
    * @brief Analog to the std::lock_guard
-   *
    * @tparam mutex_type
    */
   template<class mutex_type>
@@ -50,9 +53,12 @@ namespace Chimera::Thread
     mutex_type *mtx;
   };
 
+
+  /*---------------------------------------------------------------------------
+  TimedLockGuard
+  ---------------------------------------------------------------------------*/
   /**
    * @brief Analog to the std::lock_guard, but with a timeout interface
-   *
    * @tparam mutex_type
    */
   template<class mutex_type>
@@ -82,14 +88,12 @@ namespace Chimera::Thread
     bool        is_locked;
   };
 
-  /**
-   *  Variant of the Lockable interface that doesn't depend on inheritance.
-   *  This helps embedded systems to consume less memory for drivers.
-   */
 
+  /*---------------------------------------------------------------------------
+  Lockable
+  ---------------------------------------------------------------------------*/
   /**
    * @brief CRTP interface to add a lock functionality to a class.
-   *
    * @tparam T  Base class needing a lock interface
    */
   template<class T>
@@ -130,12 +134,13 @@ namespace Chimera::Thread
   };
 
 
+  /*---------------------------------------------------------------------------
+  AsyncIO
+  ---------------------------------------------------------------------------*/
   /**
    * @brief CRTP interface to add AsyncIO notification functionality to a class
-   *
    * @tparam T  Base class being extended
    */
-
   template<class T>
 #if defined( CHIMERA_VIRTUAL )
   class AsyncIO : public virtual AsyncIOInterface
@@ -144,7 +149,7 @@ namespace Chimera::Thread
 #endif
   {
   public:
-    AsyncIO() : mAIOAllowedEvents( 0xFFFFFFFF ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN ), mAIOSignal( 1 )
+    AsyncIO() : mAIOAllowedEvents( 0xFFFFFFFF ), mInitialized( ~DRIVER_INITIALIZED_KEY ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN )
     {
     }
 
@@ -155,6 +160,8 @@ namespace Chimera::Thread
 
     Chimera::Status_t await( const Chimera::Event::Trigger event, const size_t timeout )
     {
+      RT_DBG_ASSERT( mInitialized == DRIVER_INITIALIZED_KEY );
+
       /*-----------------------------------------------------------------------
       Check for event support
       -----------------------------------------------------------------------*/
@@ -215,6 +222,11 @@ namespace Chimera::Thread
     Chimera::Status_t await( const Chimera::Event::Trigger event, Chimera::Thread::BinarySemaphore &notifier,
                              const size_t timeout )
     {
+      RT_DBG_ASSERT( mInitialized == DRIVER_INITIALIZED_KEY );
+
+      /*-----------------------------------------------------------------------
+      Block on the internal semaphore, then notify the user when appropriate
+      -----------------------------------------------------------------------*/
       auto result = await( event, timeout );
       if ( result == Chimera::Status::OK )
       {
@@ -224,13 +236,11 @@ namespace Chimera::Thread
       return result;
     }
 
-    /**
-     * @brief Lets the AsyncIO interface know an event has happened
-     *
-     * @param trigger
-     */
+
     void signalAIO( const Chimera::Event::Trigger trigger )
     {
+      RT_DBG_ASSERT( mInitialized == DRIVER_INITIALIZED_KEY );
+
       mAIOEvent = trigger;
       mAIOSignal.release();
     }
@@ -248,11 +258,13 @@ namespace Chimera::Thread
     {
       mAIOEvent = Chimera::Event::Trigger::UNKNOWN;
       mAIOSignal.try_acquire();
+      mInitialized = DRIVER_INITIALIZED_KEY;
     }
 
   private:
-    Chimera::Event::Trigger          mAIOEvent;  /**< Which event was triggered by the class */
-    Chimera::Thread::BinarySemaphore mAIOSignal; /**< Lightweight semaphore to block on */
+    size_t                           mInitialized; /**< Indicates if the class is initialized */
+    Chimera::Event::Trigger          mAIOEvent;    /**< Which event was triggered by the class */
+    Chimera::Thread::BinarySemaphore mAIOSignal;   /**< Lightweight semaphore to block on */
   };
 }  // namespace Chimera::Thread
 

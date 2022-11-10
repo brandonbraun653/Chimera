@@ -5,14 +5,16 @@
  *  Description:
  *    Generic header for frequently used Chimera functionality
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_HPP
 #define CHIMERA_HPP
 
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/source/drivers/common/common_types.hpp>
 #include <Chimera/utility>
 
@@ -26,6 +28,11 @@ extern void ChimeraInit();
 
 namespace Chimera
 {
+  /*---------------------------------------------------------------------------
+  Constants
+  ---------------------------------------------------------------------------*/
+  static constexpr size_t DRIVER_INITIALIZED_KEY = static_cast<size_t>( 0x560bf751 );
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
