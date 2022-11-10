@@ -20,6 +20,10 @@ Includes
 #include <Chimera/common>
 #include <Chimera/gpio>
 
+#if defined( SIMULATOR )
+#include <filesystem>
+#endif
+
 namespace Chimera::I2C
 {
   /*---------------------------------------------------------------------------
@@ -57,11 +61,11 @@ namespace Chimera::I2C
 
   enum class Interrupt : uint8_t
   {
-    START_TX,       /**< Start event sent */
-    STOP_RX,        /**< Stop event received */
-    TX_COMPLETE,    /**< Byte transfer completed */
-    TX_EMPTY,       /**< Transmit buffer empty */
-    RX_NOT_EMPTY,   /**< Receive buffer not empty */
+    START_TX,     /**< Start event sent */
+    STOP_RX,      /**< Stop event received */
+    TX_COMPLETE,  /**< Byte transfer completed */
+    TX_EMPTY,     /**< Transmit buffer empty */
+    RX_NOT_EMPTY, /**< Receive buffer not empty */
 
     NUM_OPTIONS,
     NOT_SUPPORTED
@@ -72,8 +76,8 @@ namespace Chimera::I2C
   ---------------------------------------------------------------------------*/
   struct HardwareInit
   {
-    Channel channel;                   /**< Hardware channel to configure */
-    Frequency frequency;               /**< Communication frequency */
+    Channel   channel;   /**< Hardware channel to configure */
+    Frequency frequency; /**< Communication frequency */
 
     void clear()
     {
@@ -84,10 +88,15 @@ namespace Chimera::I2C
 
   struct DriverConfig
   {
-    bool validity;                  /**< Defines if the configuration is valid */
-    Chimera::GPIO::PinInit SDAInit; /**< GPIO pin settings for SDA */
-    Chimera::GPIO::PinInit SCLInit; /**< GPIO pin settings for SCL */
-    HardwareInit HWInit;            /**< Hardware driver configuration options */
+    bool                   validity; /**< Defines if the configuration is valid */
+    Chimera::GPIO::PinInit SDAInit;  /**< GPIO pin settings for SDA */
+    Chimera::GPIO::PinInit SCLInit;  /**< GPIO pin settings for SCL */
+    HardwareInit           HWInit;   /**< Hardware driver configuration options */
+
+#if defined( SIMULATOR )
+    std::filesystem::path memFile;  /**< Filesystem backing device */
+    size_t                memSize;  /**< Required size of the file */
+#endif
 
     void clear()
     {
@@ -95,6 +104,10 @@ namespace Chimera::I2C
       SDAInit.clear();
       SCLInit.clear();
       HWInit.clear();
+#if defined( SIMULATOR )
+      memFile = "";
+      memSize = 0;
+#endif
     }
   };
 
@@ -122,7 +135,7 @@ namespace Chimera::I2C
       Driver_rPtr ( *getDriver )( const Channel channel );
     };
 
-  }
+  }  // namespace Backend
 
 }  // namespace Chimera::I2C
 
