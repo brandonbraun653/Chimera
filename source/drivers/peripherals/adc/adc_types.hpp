@@ -352,6 +352,8 @@ namespace Chimera::ADC
     Channel   channel;     /**< Channel the event occurred on (single conversion only) */
     uint16_t *samples;     /**< Data that was sampled */
     uint16_t  num_samples; /**< How many samples are available */
+    float     resolution;  /**< ADC resolution at sample time */
+    float     vref;        /**< Voltage reference used with the sample */
 
     void clear()
     {
@@ -359,6 +361,8 @@ namespace Chimera::ADC
       isr         = Interrupt::NONE;
       samples     = nullptr;
       num_samples = 0;
+      resolution  = 0.0f;
+      vref        = 0.0f;
     }
   };
 
