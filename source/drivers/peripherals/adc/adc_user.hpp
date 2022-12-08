@@ -142,6 +142,17 @@ namespace Chimera::ADC
      */
     float toVoltage( const Sample &sample );
 
+    /**
+     * @brief Sets a channel to be monitored with a dedicated HW watchdog circuit
+     *
+     * For the high and low threshold voltages, this will take into account the current ADC
+     * configuration to ensure conversion resolution and other properties are accurate.
+     *
+     * @param cfg   Watchdog configuration
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t monitorChannel( const WatchdogConfig &cfg );
+
   private:
     friend Chimera::Thread::Lockable<Driver>;
     void *mImpl; /**< Implementation details of the driver */

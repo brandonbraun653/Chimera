@@ -61,6 +61,7 @@ namespace Chimera::ADC
     virtual size_t            multiSeqSample( const Channel *ch_arr, Sample *sample_arr, const size_t size ) = 0;
     virtual void              onInterrupt( const Interrupt signal, ISRCallback cb )                          = 0;
     virtual float             toVoltage( const Sample &sample )                                              = 0;
+    virtual Chimera::Status_t monitorChannel( const WatchdogConfig &cfg )                                    = 0;
   };
 
 

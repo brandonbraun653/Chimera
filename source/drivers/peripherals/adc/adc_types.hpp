@@ -5,28 +5,23 @@
  *  Description:
  *    Chimera ADC types
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
  ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_ADC_TYPES_HPP
 #define CHIMERA_ADC_TYPES_HPP
 
-/* STL Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
+#include <Aurora/utility>
+#include <Chimera/clock>
+#include <Chimera/common>
 #include <cstdint>
 #include <cstring>
-#include <limits>
-#include <memory>
-
-/* ETL Includes */
 #include <etl/delegate.h>
-
-/* Aurora Includes */
-#include <Aurora/utility>
-
-/* Chimera Includes */
-#include <Chimera/common>
-#include <Chimera/clock>
+#include <limits>
 
 namespace Chimera::ADC
 {
@@ -310,6 +305,34 @@ namespace Chimera::ADC
 
 
   /**
+   * @brief Configuration structure for analog watchdog monitoring
+   */
+  struct WatchdogConfig
+  {
+    Channel  adcChannel;    /**< ADC channel to monitor */
+    Watchdog wdgChannel;    /**< Watchdog channel that should do the monitoring */
+    float    highThreshold; /**< High threshold of the monitor */
+    float    lowThreshold;  /**< Low threshold of the monitor */
+
+    /**
+     * @brief Callback to execute on watchdog trip event
+     *
+     * Accepts a single argument identifying which watchdog tripped
+     */
+    etl::delegate<void( Watchdog )> callback;
+
+    void clear()
+    {
+      adcChannel    = Channel::UNKNOWN;
+      wdgChannel    = Watchdog::UNKNOWN;
+      highThreshold = 0.0f;
+      lowThreshold  = 0.0f;
+      callback      = {};
+    }
+  };
+
+
+  /**
    *  Initializes a group sampling sequence
    */
   struct SequenceInit
@@ -370,7 +393,7 @@ namespace Chimera::ADC
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using ISRCallback   = etl::delegate<void( const InterruptDetail &)>;
+  using ISRCallback   = etl::delegate<void( const InterruptDetail   &)>;
   using CallbackArray = std::array<ISRCallback, EnumValue( Interrupt::NUM_OPTIONS )>;
 
   /*-------------------------------------------------------------------------------
