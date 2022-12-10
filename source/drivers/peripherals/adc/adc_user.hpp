@@ -153,6 +153,12 @@ namespace Chimera::ADC
      */
     Chimera::Status_t monitorChannel( const WatchdogConfig &cfg );
 
+    /**
+     * @brief Gets the analog reference voltage used for conversions
+     * @return float  Volts
+     */
+    float analogReference() const;
+
   private:
     friend Chimera::Thread::Lockable<Driver>;
     void *mImpl; /**< Implementation details of the driver */

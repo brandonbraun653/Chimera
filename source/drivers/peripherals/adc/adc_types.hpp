@@ -196,7 +196,7 @@ namespace Chimera::ADC
   /**
    *  Possible oversampling rates
    */
-  enum class Oversampler : uint8_t
+  enum class OverSampler : uint8_t
   {
     OS_NONE,
     OS_2X,
@@ -213,10 +213,27 @@ namespace Chimera::ADC
   };
 
 
+  enum class OverSampleShift : uint8_t
+  {
+    OS_NONE,
+    OS_1_BIT,
+    OS_2_BIT,
+    OS_3_BIT,
+    OS_4_BIT,
+    OS_5_BIT,
+    OS_6_BIT,
+    OS_7_BIT,
+    OS_8_BIT,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
+
   /**
    *  Input clock prescaler options
    */
-  enum class Prescaler : uint8_t
+  enum class PreScaler : uint8_t
   {
     DIV_1,
     DIV_2,
@@ -284,10 +301,11 @@ namespace Chimera::ADC
   {
     Peripheral          periph;              /**< Which peripheral instance is being configured */
     Interrupt           bmISREnable;         /**< Bit mask of interrupts to enable */
-    Oversampler         oversampleRate;      /**< Over sampling rate, if any */
+    OverSampler         overSampleRate;      /**< Over sampling rate, if any */
+    OverSampleShift     overSampleShift;     /**< How much to right shift after oversampling, if any */
     TransferMode        transferMode;        /**< Conversion result memory transfer method */
     Resolution          resolution;          /**< Conversion resolution */
-    Prescaler           clockPrescale;       /**< Requested prescaler to drive ADC from system clock [1, 255] */
+    PreScaler           clockPrescale;       /**< Requested prescaler to drive ADC from system clock [1, 255] */
     Chimera::Clock::Bus clockSource;         /**< Which clock drives the prescaler */
     size_t              defaultSampleCycles; /**< Default number of clock cycles each channel will sample for */
 
@@ -295,9 +313,10 @@ namespace Chimera::ADC
     {
       periph              = Peripheral::UNKNOWN;
       bmISREnable         = Interrupt::NONE;
-      oversampleRate      = Oversampler::OS_NONE;
+      overSampleRate      = OverSampler::OS_NONE;
+      overSampleShift     = OverSampleShift::OS_NONE;
       transferMode        = TransferMode::ONE_SHOT;
-      clockPrescale       = Prescaler::DIV_1;
+      clockPrescale       = PreScaler::DIV_1;
       clockSource         = Chimera::Clock::Bus::UNKNOWN_BUS;
       defaultSampleCycles = 100;
     }

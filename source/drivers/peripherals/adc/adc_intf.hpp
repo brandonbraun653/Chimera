@@ -62,6 +62,7 @@ namespace Chimera::ADC
     virtual void              onInterrupt( const Interrupt signal, ISRCallback cb )                          = 0;
     virtual float             toVoltage( const Sample &sample )                                              = 0;
     virtual Chimera::Status_t monitorChannel( const WatchdogConfig &cfg )                                    = 0;
+    virtual float             analogReference() const                                                        = 0;
   };
 
 
