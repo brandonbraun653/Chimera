@@ -18,6 +18,7 @@ Includes
 #include <Chimera/common>
 #include <Chimera/source/drivers/peripherals/peripheral_types.hpp>
 #include <Chimera/source/drivers/serial/serial_types.hpp>
+#include <Chimera/source/drivers/threading/threading_extensions.hpp>
 
 namespace Chimera::Serial
 {
@@ -25,29 +26,29 @@ namespace Chimera::Serial
   Public Functions
   ---------------------------------------------------------------------------*/
   Chimera::Status_t initialize();
-  Chimera::Status_t attach( const Chimera::Peripheral::Type type, const Channel channel );
-  Driver_rPtr getDriver( const Channel channel );
+  Chimera::Status_t reset();
+  Driver_rPtr       getDriver( const Channel channel );
 
   /*---------------------------------------------------------------------------
   Classes
   ---------------------------------------------------------------------------*/
-  class Driver
+  class Driver : public Chimera::Thread::Lockable<Driver>, public Chimera::Thread::AsyncIO<Driver>, public virtual ISerial
   {
   public:
     Driver();
     ~Driver();
 
-    Chimera::Status_t open( const Config &config );
+    Chimera::Status_t open( const Chimera::Serial::Config &config );
     Chimera::Status_t close();
-    Chimera::Status_t flush( const Chimera::Hardware::SubPeripheral periph );
-    int write( const void *const buffer, const size_t length );
-    int read( void *const buffer, const size_t length );
+    int               write( const void *const buffer, const size_t length );
+    int               read( void *const buffer, const size_t length );
+    size_t            available();
 
   protected:
-    friend Driver_rPtr getDriver( const Channel );
-
-    void * mImpl;
+    friend Chimera::Thread::Lockable<Driver>;
+    friend Chimera::Thread::AsyncIO<Driver>;
+    void *mImpl;
   };
 }  // namespace Chimera::Serial
 
-#endif  /* !CHIMERA_SERIAL_USER_HPP */
+#endif /* !CHIMERA_SERIAL_USER_HPP */

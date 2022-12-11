@@ -61,7 +61,7 @@ namespace Chimera::Buffer
      *  | INVAL_FUNC_PARAM | An invalid parameter was passed in   |
      *  |           LOCKED | The buffers are currently locked     |
      */
-    Chimera::Status_t assign( Chimera::Serial::CircularBuffer &circularBuffer, uint8_t *const linearBuffer,
+    Chimera::Status_t assign( Chimera::Serial::BipBuffer &circularBuffer, uint8_t *const linearBuffer,
                               const size_t linearSize );
 
     /**
@@ -151,7 +151,7 @@ namespace Chimera::Buffer
      *
      *  @return Chimera::Serial::CircularBuffer *
      */
-    Chimera::Serial::CircularBuffer *circularBuffer();
+    Chimera::Serial::BipBuffer *circularBuffer();
 
     /**
      *  Gets the internal pointer to the linear buffer
@@ -172,7 +172,7 @@ namespace Chimera::Buffer
 
     uint8_t *pLinearBuffer;
     size_t linearLength;
-    Chimera::Serial::CircularBuffer *pCircularBuffer;
+    Chimera::Serial::BipBuffer *pCircularBuffer;
   };
 
 }  // namespace Chimera::Buffer

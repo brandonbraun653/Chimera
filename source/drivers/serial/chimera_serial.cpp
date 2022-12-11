@@ -13,227 +13,79 @@ Includes
 -----------------------------------------------------------------------------*/
 #include <Chimera/serial>
 #include <Chimera/common>
-#include <Chimera/usart>
-#include <Chimera/uart>
 
 namespace Chimera::Serial
 {
-  struct Impl
-  {
-    Chimera::UART::Driver_rPtr uartDriver;
-    Chimera::USART::Driver_rPtr usartDriver;
-  };
-
-  static DeviceManager<Impl, Channel, EnumValue( Channel::NUM_OPTIONS )> s_impl_drivers;
-  static DeviceManager<Driver, Channel, EnumValue( Channel::NUM_OPTIONS )> s_raw_drivers;
-
-
-    // sink->lock();
-    // hwResult |= sink->write( message, length );
-    // hwResult |= sink->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
-    // sink->unlock();
+  /*---------------------------------------------------------------------------
+  Static Data
+  ---------------------------------------------------------------------------*/
+  static Backend::DriverConfig s_backend_driver;
 
   /*---------------------------------------------------------------------------
   Public Functions
   ---------------------------------------------------------------------------*/
+  namespace Backend
+  {
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::Serial::Backend::DriverConfig &registry )
+    {
+      registry.isSupported = false;
+      return Chimera::Status::NOT_SUPPORTED;
+    }
+  }  // namespace Backend
+
+
   Chimera::Status_t initialize()
   {
-    return Chimera::Status::OK;
-  }
+    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
 
-
-  Chimera::Status_t attach( const Chimera::Peripheral::Type type, const Channel channel )
-  {
-    auto impl = s_impl_drivers.getOrCreate( channel );
-    RT_DBG_ASSERT( impl );
-
-    if ( type == Peripheral::Type::PERIPH_USART )
+    /*-------------------------------------------------------------------------
+    Register the backend interface with Chimera
+    -------------------------------------------------------------------------*/
+    auto result = Backend::registerDriver( s_backend_driver );
+    if ( result != Chimera::Status::OK )
     {
-      impl->usartDriver = USART::getDriver( channel );
-      RT_DBG_ASSERT( impl->usartDriver );
+      return result;
+    }
+
+    /*-------------------------------------------------------------------------
+    Try and invoke the registered init sequence
+    -------------------------------------------------------------------------*/
+    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    {
+      return s_backend_driver.initialize();
     }
     else
     {
-      impl->uartDriver = UART::getDriver( channel );
-      RT_DBG_ASSERT( impl->uartDriver );
+      return Chimera::Status::NOT_SUPPORTED;
     }
 
-    return Chimera::Status::OK;
+    return result;
+  }
+
+
+  Chimera::Status_t reset()
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    {
+      return s_backend_driver.reset();
+    }
+    else
+    {
+      return Chimera::Status::NOT_SUPPORTED;
+    }
   }
 
 
   Driver_rPtr getDriver( const Channel channel )
   {
-    /*-------------------------------------------------------------------------
-    Driver must be attached first before this will succeed
-    -------------------------------------------------------------------------*/
-    auto impl = s_impl_drivers.get( channel );
-    if ( !impl )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    {
+      return s_backend_driver.getDriver( channel );
+    }
+    else
     {
       return nullptr;
     }
-
-    /*-------------------------------------------------------------------------
-    Return the driver
-    -------------------------------------------------------------------------*/
-    auto raw = s_raw_drivers.getOrCreate( channel );
-    RT_DBG_ASSERT( raw );
-
-    raw->mImpl = reinterpret_cast<void*>( impl );
-
-    return raw;
   }
 
-
-  /*---------------------------------------------------------------------------
-  Classes
-  ---------------------------------------------------------------------------*/
-  Driver::Driver()
-  {
-
-  }
-
-
-  Driver::~Driver()
-  {
-
-  }
-
-
-  Chimera::Status_t Driver::open( const Config &config )
-  {
-    /*-------------------------------------------------------------------------
-    Grab the implementation
-    -------------------------------------------------------------------------*/
-    RT_DBG_ASSERT( mImpl );
-    auto impl = reinterpret_cast<Impl*>( mImpl );
-    auto result = Chimera::Status::OK;
-
-    /*-------------------------------------------------------------------------
-    Invoke the correct driver
-    -------------------------------------------------------------------------*/
-    if( impl->uartDriver )
-    {
-      result |= impl->uartDriver->configure( config );
-    }
-    else
-    {
-      result |= impl->usartDriver->configure( config );
-    }
-
-    return result;
-  }
-
-
-  Chimera::Status_t Driver::close()
-  {
-    /*-------------------------------------------------------------------------
-    Grab the implementation
-    -------------------------------------------------------------------------*/
-    RT_DBG_ASSERT( mImpl );
-    auto impl = reinterpret_cast<Impl*>( mImpl );
-    auto result = Chimera::Status::OK;
-
-    /*-------------------------------------------------------------------------
-    Invoke the correct driver
-    -------------------------------------------------------------------------*/
-    if( impl->uartDriver )
-    {
-      result |= impl->uartDriver->end();
-    }
-    else
-    {
-      result |= impl->usartDriver->end();
-    }
-
-    return result;
-  }
-
-
-  Chimera::Status_t Driver::flush( const Chimera::Hardware::SubPeripheral periph )
-  {
-    /*-------------------------------------------------------------------------
-    Grab the implementation
-    -------------------------------------------------------------------------*/
-    RT_DBG_ASSERT( mImpl );
-    auto impl = reinterpret_cast<Impl*>( mImpl );
-    auto result = Chimera::Status::OK;
-
-    /*-------------------------------------------------------------------------
-    Invoke the correct driver
-    -------------------------------------------------------------------------*/
-    if( impl->uartDriver )
-    {
-      Chimera::Thread::LockGuard _lck( *impl->uartDriver );
-      result |= impl->uartDriver->flush( periph );
-    }
-    else
-    {
-      Chimera::Thread::LockGuard _lck( *impl->usartDriver );
-      result |= impl->usartDriver->flush( periph );
-    }
-
-    return result;
-  }
-
-
-  int Driver::write( const void *const buffer, const size_t length )
-  {
-    /*-------------------------------------------------------------------------
-    Grab the implementation
-    -------------------------------------------------------------------------*/
-    RT_DBG_ASSERT( mImpl );
-    auto impl = reinterpret_cast<Impl*>( mImpl );
-    auto result = Chimera::Status::OK;
-
-    /*-------------------------------------------------------------------------
-    Invoke the correct driver
-    -------------------------------------------------------------------------*/
-    if( impl->uartDriver )
-    {
-      Chimera::Thread::LockGuard _lck( *impl->uartDriver );
-      result |= impl->uartDriver->write( buffer, length );
-      result |= impl->uartDriver->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
-    }
-    else
-    {
-      Chimera::Thread::LockGuard _lck( *impl->usartDriver );
-      result |= impl->usartDriver->write( buffer, length );
-      result |= impl->usartDriver->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
-    }
-
-    // TODO BMB: Need to return number of bytes actually read
-    return 0;
-  }
-
-
-  int Driver::read( void *const buffer, const size_t length )
-  {
-    /*-------------------------------------------------------------------------
-    Grab the implementation
-    -------------------------------------------------------------------------*/
-    RT_DBG_ASSERT( mImpl );
-    auto impl = reinterpret_cast<Impl*>( mImpl );
-    auto result = Chimera::Status::OK;
-
-    /*-------------------------------------------------------------------------
-    Invoke the correct driver
-    -------------------------------------------------------------------------*/
-    if( impl->uartDriver )
-    {
-      Chimera::Thread::LockGuard _lck( *impl->uartDriver );
-      result |= impl->uartDriver->read( buffer, length );
-      result |= impl->uartDriver->await( Chimera::Event::Trigger::TRIGGER_READ_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
-    }
-    else
-    {
-      Chimera::Thread::LockGuard _lck( *impl->usartDriver );
-      result |= impl->usartDriver->read( buffer, length );
-      result |= impl->usartDriver->await( Chimera::Event::Trigger::TRIGGER_READ_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
-    }
-
-    // TODO BMB: Need to return number of bytes actually read
-    return 0;
-  }
-
-}  // namespace
+}  // namespace Chimera::Serial

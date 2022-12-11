@@ -36,7 +36,7 @@ namespace Chimera::Buffer
   }
 
 
-  Chimera::Status_t PeripheralBuffer::assign( Chimera::Serial::CircularBuffer &circularBuffer, uint8_t *const linearBuffer,
+  Chimera::Status_t PeripheralBuffer::assign( Chimera::Serial::BipBuffer &circularBuffer, uint8_t *const linearBuffer,
                                               const size_t linearSize )
   {
     using namespace Chimera::Thread;
@@ -287,7 +287,7 @@ namespace Chimera::Buffer
   }
 
 
-  Chimera::Serial::CircularBuffer *PeripheralBuffer::circularBuffer()
+  Chimera::Serial::BipBuffer *PeripheralBuffer::circularBuffer()
   {
     return pCircularBuffer;
   }

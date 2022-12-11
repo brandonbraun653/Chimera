@@ -20,8 +20,7 @@ Includes
 #include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
 #include <cstddef>
 #include <cstdint>
-#include <etl/circular_buffer.h>
-#include <memory>
+#include <etl/bip_buffer_spsc_atomic.h>
 #include <type_traits>
 
 namespace Chimera::Serial
@@ -35,7 +34,8 @@ namespace Chimera::Serial
   Aliases
   -------------------------------------------------------------------------------*/
   using Driver_rPtr = Driver *;
-  using CircularBuffer = etl::icircular_buffer<uint8_t>;
+  using BipBuffer   = etl::ibip_buffer_spsc_atomic<uint8_t>;
+  using TxfrMode    = Hardware::PeripheralMode;
 
   /*-------------------------------------------------------------------------------
   Constants
@@ -67,13 +67,14 @@ namespace Chimera::Serial
   Enumerations
   -------------------------------------------------------------------------------*/
   /**
-   *  Options for selecting a baud rate. These are intended
-   *  to be converted by the backend driver into the appropriate
-   *  register values for the internal clock generation.
+   * @brief Options for selecting a baud rate.
+   *
+   * These are intended to be converted by the backend driver into the appropriate
+   * register values for the internal clock generation.
    */
   enum class BaudRate : size_t
   {
-    SERIAL_BAUD_110    = 100u,
+    SERIAL_BAUD_110    = 110u,
     SERIAL_BAUD_150    = 150u,
     SERIAL_BAUD_300    = 300u,
     SERIAL_BAUD_1200   = 1200u,
@@ -90,10 +91,7 @@ namespace Chimera::Serial
   };
 
   /**
-   *  Number of bits that can be sent in one transfer cycle
-   *
-   *  @warning  Do not change the numbering of the enumerations.
-   *            They are used to index arrays.
+   * @brief Number of bits that can be sent in one transfer cycle
    */
   enum class CharWid : uint8_t
   {
@@ -104,10 +102,7 @@ namespace Chimera::Serial
   };
 
   /**
-   *  Parity options
-   *
-   *  @warning  Do not change the numbering of the enumerations.
-   *            They are used to index arrays.
+   * @brief Parity options
    */
   enum class Parity : uint8_t
   {
@@ -119,10 +114,7 @@ namespace Chimera::Serial
   };
 
   /**
-   *  Stop bit options
-   *
-   *  @warning  Do not change the numbering of the enumerations.
-   *            They are used to index arrays.
+   * @brief Stop bit options
    */
   enum class StopBits : uint8_t
   {
@@ -134,10 +126,7 @@ namespace Chimera::Serial
   };
 
   /**
-   *  Flow control options
-   *
-   *  @warning  Do not change the numbering of the enumerations.
-   *            They are used to index arrays.
+   * @brief Flow control options
    */
   enum class FlowControl : uint8_t
   {
@@ -175,28 +164,44 @@ namespace Chimera::Serial
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
-  typedef struct
-  {
-    bool overrun;
-    bool error;
-    bool asyncReady;
-  } HardwareStatus;
-
-  struct IOPins
-  {
-    GPIO::PinInit rx;
-    GPIO::PinInit tx;
-  };
-
   struct Config
   {
-    size_t baud;
-    CharWid width;
-    Parity parity;
-    StopBits stopBits;
-    FlowControl flow;
+    Channel       channel;    /**< Serial channel to use */
+    size_t        baud;       /**< Desired baud rate (bps) */
+    CharWid       width;      /**< Transfer width per-word */
+    Parity        parity;     /**< Parity to use */
+    StopBits      stopBits;   /**< Number of stop bits */
+    FlowControl   flow;       /**< Any flow control? */
+    TxfrMode      txfrMode;   /**< Hardware transfer mode in TX/RX */
+    BipBuffer     rxBuffer;   /**< IO ring buffer for reception */
+    BipBuffer     txBuffer;   /**< IO ring buffer for transmission */
   };
 
+
+  namespace Backend
+  {
+    struct DriverConfig
+    {
+      bool isSupported; /**< A simple flag to let Chimera know if the driver is supported */
+
+      /**
+       *  Function pointer that initializes the backend driver's
+       *  memory. Should really only call once for initial set up.
+       */
+      Chimera::Status_t ( *initialize )();
+
+      /**
+       *  Resets the backend driver hardware to default configuration
+       *  settings, but does not wipe out any memory.
+       */
+      Chimera::Status_t ( *reset )();
+
+      /**
+       *  Gets the driver instance associated with the requested channel
+       */
+      Driver_rPtr ( *getDriver )( const Channel channel );
+    };
+  }  // namespace Backend
 }  // namespace Chimera::Serial
 
 #endif /* !CHIMERA_SERIAL_TYPES_HPP */

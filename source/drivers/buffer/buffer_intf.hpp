@@ -135,7 +135,7 @@ namespace Chimera::Buffer
      *  |    NOT_SUPPORTED | This function is not supported by the low level driver |
      */
     virtual Chimera::Status_t bufferAssignExternal( const Chimera::Hardware::SubPeripheral periph,
-                                                    Chimera::Serial::CircularBuffer & buffer ) = 0;
+                                                    Chimera::Serial::BipBuffer & buffer ) = 0;
 
     virtual Chimera::Status_t bufferFlush( const Chimera::Hardware::SubPeripheral periph ) = 0;
   };
