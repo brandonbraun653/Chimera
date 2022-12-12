@@ -4,7 +4,6 @@
 add_subdirectory("algorithm")
 add_subdirectory("allocator")
 add_subdirectory("assert")
-add_subdirectory("buffer")
 add_subdirectory("callback")
 add_subdirectory("common")
 add_subdirectory("config")

@@ -64,6 +64,7 @@ namespace Chimera::Serial
 
     /**
      * @brief Writes data onto the wire
+     * @note May be asynchronous. Use AsyncIO calls to await on transaction completions.
      *
      * @param buffer  Buffer to write
      * @param length  Number of bytes to write from the buffer
@@ -81,17 +82,12 @@ namespace Chimera::Serial
      * @return int    Number of bytes actually read, negative on error
      */
     virtual int read( void *const buffer, const size_t length ) = 0;
-
-    /**
-     * @brief Gets the number of bytes available in the read buffer
-     * @return size_t
-     */
-    virtual size_t available() = 0;
   };
 
   /**
    *  Virtual class to facilitate easy mocking of the driver
    */
+#if defined( CHIMERA_VIRTUAL )
   class ISerial : virtual public Chimera::Serial::HWInterface,
                   virtual public Chimera::Thread::AsyncIOInterface,
                   virtual public Chimera::Thread::LockableInterface
@@ -99,6 +95,11 @@ namespace Chimera::Serial
   public:
     virtual ~ISerial() = default;
   };
+#else
+  class ISerial
+  {
+  };
+#endif /* CHIMERA_VIRTUAL */
 
 }  // namespace Chimera::Serial
 

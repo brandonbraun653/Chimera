@@ -42,7 +42,6 @@ namespace Chimera::Serial
     Chimera::Status_t close();
     int               write( const void *const buffer, const size_t length );
     int               read( void *const buffer, const size_t length );
-    size_t            available();
 
   protected:
     friend Chimera::Thread::Lockable<Driver>;

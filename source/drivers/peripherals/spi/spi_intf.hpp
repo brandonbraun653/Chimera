@@ -15,7 +15,6 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
-#include <Chimera/buffer>
 #include <Chimera/common>
 #include <Chimera/event>
 #include <Chimera/source/drivers/peripherals/spi/spi_types.hpp>

@@ -166,15 +166,15 @@ namespace Chimera::Serial
   -------------------------------------------------------------------------------*/
   struct Config
   {
-    Channel       channel;    /**< Serial channel to use */
-    size_t        baud;       /**< Desired baud rate (bps) */
-    CharWid       width;      /**< Transfer width per-word */
-    Parity        parity;     /**< Parity to use */
-    StopBits      stopBits;   /**< Number of stop bits */
-    FlowControl   flow;       /**< Any flow control? */
-    TxfrMode      txfrMode;   /**< Hardware transfer mode in TX/RX */
-    BipBuffer     rxBuffer;   /**< IO ring buffer for reception */
-    BipBuffer     txBuffer;   /**< IO ring buffer for transmission */
+    Channel     channel;  /**< Serial channel to use */
+    size_t      baud;     /**< Desired baud rate (bps) */
+    CharWid     width;    /**< Transfer width per-word */
+    Parity      parity;   /**< Parity to use */
+    StopBits    stopBits; /**< Number of stop bits */
+    FlowControl flow;     /**< Any flow control? */
+    TxfrMode    txfrMode; /**< Hardware transfer mode in TX/RX */
+    BipBuffer  *rxBuffer; /**< IO ring buffer for reception */
+    BipBuffer  *txBuffer; /**< IO ring buffer for transmission */
   };
 
 

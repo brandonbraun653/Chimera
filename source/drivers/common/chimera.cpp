@@ -30,22 +30,20 @@
 
 void ChimeraInit()
 {
-  /*------------------------------------------------
-  Initialize the back end driver first so that all the necessary
-  resources can be initialized properly
-  ------------------------------------------------*/
+  /*---------------------------------------------------------------------------
+  Boot system drivers first. They support everything.
+  ---------------------------------------------------------------------------*/
   Chimera::System::initialize();
   Chimera::System::systemStartup();
 
-  /*-------------------------------------------------
-  Init interrupts early on so drivers may register
-  handlers with the system.
-  -------------------------------------------------*/
+  /*---------------------------------------------------------------------------
+  Init interrupts early on so drivers may register handlers with the system.
+  ---------------------------------------------------------------------------*/
   Chimera::Interrupt::initialize();
 
-  /*------------------------------------------------
-  Initialize peripheral drivers, which hook into the backend
-  ------------------------------------------------*/
+  /*---------------------------------------------------------------------------
+  Individual driver initialization
+  ---------------------------------------------------------------------------*/
   Chimera::ADC::initialize();
   Chimera::CAN::initialize();
   Chimera::Clock::initialize();
@@ -53,12 +51,16 @@ void ChimeraInit()
   Chimera::EXTI::open();
   Chimera::GPIO::initialize();
   Chimera::I2C::initialize();
-  Chimera::Serial::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();
   Chimera::UART::initialize();
   Chimera::USART::initialize();
   Chimera::Watchdog::initialize();
+
+  /*---------------------------------------------------------------------------
+  Composite driver initialization
+  ---------------------------------------------------------------------------*/
+  Chimera::Serial::initialize();  // Consumes UART and USART
 }
 
 namespace Chimera
