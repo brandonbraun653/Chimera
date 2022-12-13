@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    chimera_event.cpp
  *
@@ -6,7 +6,7 @@
  *    Implements the event functionality for Chimera
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *****************************************************************************/
 
 /* STL Includes */
 
@@ -64,17 +64,17 @@ namespace Chimera::Event
 
   bool processListener_Atomic( const Trigger event, Actionable &listener, uint32_t value )
   {
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Only listen if we actually care about the event
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.trigger != event )
     {
       return false;
     }
 
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Make sure we don't perform a nullptr dereference
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.object.atomic_listener )
     {
       *( listener.object.atomic_listener ) = value;
@@ -88,17 +88,17 @@ namespace Chimera::Event
 
   bool processListener_Semaphore( const Trigger event, Actionable &listener, uint32_t value )
   {
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Only listen if we actually care about the event
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.trigger != event )
     {
       return false;
     }
 
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Make sure we don't perform a nullptr dereference
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.object.semaphore_listener )
     {
       listener.object.semaphore_listener->releaseFromISR();
@@ -112,17 +112,17 @@ namespace Chimera::Event
 
   bool processListener_ISRCallback( const Trigger event, Actionable &listener, uint32_t value )
   {
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Only listen if we actually care about the event
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.trigger != event )
     {
       return false;
     }
 
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Make sure we don't perform a nullptr dereference
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.object.isr_callback_listener )
     {
       listener.object.isr_callback_listener( &value, sizeof( value ) );
@@ -136,17 +136,17 @@ namespace Chimera::Event
 
   bool processListener_UserCallback( const Trigger event, Actionable &listener, uint32_t value )
   {
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Only listen if we actually care about the event
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.trigger != event )
     {
       return false;
     }
 
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Make sure we don't perform a nullptr dereference
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( listener.object.event_callback_listener )
     {
       listener.object.event_callback_listener( static_cast<size_t>( event ), &value, sizeof( value ) );

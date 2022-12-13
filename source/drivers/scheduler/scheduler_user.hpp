@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    scheduler_user.hpp
  *
@@ -7,7 +7,7 @@
  *    some point in the future.
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
- *******************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SCHEDULER_USER_HPP
@@ -21,7 +21,7 @@
 
 namespace Chimera::Scheduler
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Low Resolution Scheduler (Millisecond timing)
 
   This module provides an interface for the user to schedule function calls
@@ -35,7 +35,7 @@ namespace Chimera::Scheduler
 
   Note that depending on how many callbacks registered and their execution time,
   the timing of each callback may not execute exactly as configured.
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   namespace LoRes
   {
     /**
@@ -112,9 +112,9 @@ namespace Chimera::Scheduler
   }  // namespace LoRes
 
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   High Resolution Scheduler ([Nano, Micro, Milli]-Second timing)
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   namespace HiRes
   {
     // TODO: This will use hardware timers to provide exact timing. Much more complicated.

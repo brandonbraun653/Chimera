@@ -29,9 +29,9 @@ constexpr auto to_integral(E e) -> typename std::underlying_type<E>::type
 
 namespace Chimera::Util
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  Given a bit field value, returns the corresponding position
    *  of the first set bit (zero indexed). For example, 0x80 would

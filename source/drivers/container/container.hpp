@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    container.hpp
  *
@@ -6,7 +6,7 @@
  *    Describes various containers used in Chimera system drivers
  *
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_CONTAINER_HPP
@@ -81,12 +81,12 @@ namespace Chimera::Container
      *  @param[in]  key   The key to search for
      *  @return std::pair<T1,T2>
      */
-    value_type &at( const T1 &key ) 
+    value_type &at( const T1 &key )
     {
-      /*------------------------------------------------
+      /*-----------------------------------------------------------------------
       For now use a naive O(n) implementation as this class
       isn't meant to hold a large number of elements.
-      ------------------------------------------------*/
+      -----------------------------------------------------------------------*/
       for ( size_t x = 0; x < map.size(); x++ )
       {
         if ( map[ x ].first == key )
@@ -100,10 +100,10 @@ namespace Chimera::Container
 
     const value_type &at( const T1 &key ) const
     {
-      /*------------------------------------------------
+      /*-----------------------------------------------------------------------
       For now use a naive O(n) implementation as this class
       isn't meant to hold a large number of elements.
-      ------------------------------------------------*/
+      -----------------------------------------------------------------------*/
       for ( size_t x = 0; x < map.size(); x++ )
       {
         if ( map[ x ].first == key )
@@ -135,7 +135,7 @@ namespace Chimera::Container
     }
 
     /**
-     *  Checks to see if the given key exists in the map. If it does, will 
+     *  Checks to see if the given key exists in the map. If it does, will
      *  return true. Optionally can request that the key/value pair be returned
      *  to the caller via an argument.
      *
@@ -201,7 +201,7 @@ namespace Chimera::Container
      *  due to issues with being able to pass derived data types into functions.
      *
      *  For example, 3 chips might have register X and there is a function that operates
-     *  on that register, taking in a map of configuration options. Chip 1 might have 
+     *  on that register, taking in a map of configuration options. Chip 1 might have
      *  eight options, chip 2 four, and chip 3 twelve. There should only be one function
      *  that takes the generic map type, not a function for each option length.
      *

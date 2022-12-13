@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    stl_thread.hpp
  *
@@ -6,7 +6,7 @@
  *    Thread class declaration for the stl variant
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
- *******************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREAD_STL_HPP
@@ -22,9 +22,9 @@
 
 namespace Chimera::Thread
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Classes
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  A mostly C++ STL compatible thread class, but optimized for embedded OS environments
    *  that have more stringent requirements on thread creation due to resource limitations.
@@ -71,20 +71,20 @@ namespace Chimera::Thread
     bool pendTaskMessage( TaskMsg &msg, const size_t timeout );
 
   private:
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Task Message Data: Kept to a simple POD type as the
     signaling mechanism must use the lowest common
     denominator among supported Chimera thread systems,
     which in this case is FreeRTOS.
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     TaskMsg mTaskMsgData;                       /**< Latest task message data */
     std::mutex *mTaskMsgMutex;                  /**< Exclusive lock to prevent multiple threads sending a message */
     std::condition_variable *mTaskMsgCondition; /**< Allows pending on task messages */
     bool mTaskMsgReady;                         /**< Prevent condition variable spurious wakeup */
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Private Helper Functions
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     void lookup_handle();
   };
 }  // namespace Chimera::Thread

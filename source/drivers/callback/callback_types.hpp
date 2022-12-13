@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    callback_types.hpp
  *
@@ -8,7 +8,7 @@
  *    used. Whether or not this is a good idea is up for debate.
  *
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_CALLBACK_TYPES_HPP
@@ -35,7 +35,7 @@ namespace Chimera::Callback
   using ISRFunction = void ( * )( void *const handle, const size_t handleSize );
 
   /**
-   *  
+   *
    */
   using EventFunction = void ( * )( const size_t event, void *const handle, const size_t handleSize );
 

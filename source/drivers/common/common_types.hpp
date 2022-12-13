@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *   File Name:
  *    common_types.hpp
  *
@@ -6,7 +6,7 @@
  *    Common Chimera system types
  *
  *   2019 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_COMMON_TYPES_HPP
@@ -71,9 +71,9 @@ namespace Chimera
     static constexpr Status_t FAILED_CLOSE   = 38; /**< Failed to close some resource */
     static constexpr Status_t CRC_ERROR      = 39; /**< CRC calculation/comparison failed */
 
-    /*------------------------------------------------
+    /*-------------------------------------------------------------------------
     Offsets to identify particular Chimera modules
-    ------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     static constexpr Status_t status_offset_module_memory_flash = 1000;
   };
 

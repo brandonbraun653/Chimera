@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    threading_thread.hpp
  *
@@ -6,7 +6,7 @@
  *    Thread implementation for Chimera that patterns after the C++ STL
  *
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREADING_THREAD_HPP
@@ -38,9 +38,9 @@ namespace Chimera::Thread
     MAXIMUM = Chimera::Thread::detail::THREAD_MAX_PRIORITY
   };
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  Gets a pointer to the thread assigned with the given name
    *
@@ -68,9 +68,9 @@ namespace Chimera::Thread
   bool sendTaskMsg( const TaskId id, const TaskMsg msg, const size_t timeout );
 
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Classes
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  A mostly C++ STL compatible thread class, but optimized for embedded OS environments
    *  that have more stringent requirements on thread creation due to resource limitations.
@@ -217,9 +217,9 @@ namespace Chimera::Thread
     }
 
   protected:
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Shared State Data
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     bool mRunning;                       /**< Is the thread running? */
     TaskId mTaskId;                      /**< Chimera task identifier */
     TaskConfig mTaskConfig;              /**< Stores settings for how the task was initialized */
@@ -227,9 +227,9 @@ namespace Chimera::Thread
   };
 
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Utilities for a thread to use on itself
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   namespace this_thread
   {
     /**

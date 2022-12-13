@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    register_accessor.hpp
  *
@@ -7,7 +7,7 @@
  *    interact with hardware registers.
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
- *******************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_REGISTER_ACCESSOR_HPP
@@ -27,9 +27,9 @@
 
 namespace Chimera::Gen
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Helpers for defining a peripheral memory mapped region
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   template<typename T, const T StartAddr, const T EndAddr>
   class MemRegion
   {
@@ -42,9 +42,9 @@ namespace Chimera::Gen
     static_assert( EndAddr % sizeof( T ) == 0 );
   };
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Helpers for generating register/field access classes
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  Register descriptor. This can apply to either an entire register or
    *  a field inside a register.
@@ -62,9 +62,9 @@ namespace Chimera::Gen
   class RegDecl
   {
   public:
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Assumptions & Checks
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     /* clang-format off */
     static_assert( std::is_trivial<T>::value,               "Register type must be trivial" );
     static_assert( std::is_standard_layout<T>::value,       "Register type must be standard layout" );
@@ -74,9 +74,9 @@ namespace Chimera::Gen
     static_assert( Mask != static_cast<T>( 0 ),             "Mask is zero. This disables all functionality!" );
     /* clang-format on */
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Public Fields
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     static constexpr __IO T *_accessor = static_cast<__IO T *>( Addr ); /**< Memory mapped address */
     static constexpr T _address        = Addr;                          /**< Raw address value */
     static constexpr T _bitOffset      = Offset;                        /**< Starting bit position for this field */

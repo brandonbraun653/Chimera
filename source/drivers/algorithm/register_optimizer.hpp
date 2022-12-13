@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    register_optimizer.hpp
  *
@@ -6,7 +6,7 @@
  *    Various algorithms for commonly used register initialization functionality
  *
  *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
- ********************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_ALGORITHM_REGISTER_OPTIMIZER_HPP

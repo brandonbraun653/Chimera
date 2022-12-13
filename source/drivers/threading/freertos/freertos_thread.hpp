@@ -1,4 +1,4 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
  *    freertos_thread.hpp
  *
@@ -6,7 +6,7 @@
  *    Thread class declaration for the FreeRTOS variant
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
- *******************************************************************************/
+ *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREAD_FREERTOS_HPP
@@ -18,9 +18,9 @@
 
 namespace Chimera::Thread
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Classes
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  A mostly C++ STL compatible thread class, but optimized for embedded OS environments
    *  that have more stringent requirements on thread creation due to resource limitations.
