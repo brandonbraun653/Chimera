@@ -64,13 +64,13 @@ namespace Chimera::Serial
 
     /**
      * @brief Writes data onto the wire
-     * @note May be asynchronous. Use AsyncIO calls to await on transaction completions.
      *
      * @param buffer  Buffer to write
      * @param length  Number of bytes to write from the buffer
+     * @param timeout Total time the transaction may take to occur in milliseconds
      * @return int    Number of bytes actually written, negative on error
      */
-    virtual int write( const void *const buffer, const size_t length ) = 0;
+    virtual int write( const void *const buffer, const size_t length, const size_t timeout ) = 0;
 
     /**
      * @brief Read a number of bytes from the wire
@@ -79,9 +79,10 @@ namespace Chimera::Serial
      *
      * @param buffer  Buffer to read into
      * @param length  Number of bytes to read
+     * @param timeout Total time the transaction may take to occur in milliseconds
      * @return int    Number of bytes actually read, negative on error
      */
-    virtual int read( void *const buffer, const size_t length ) = 0;
+    virtual int read( void *const buffer, const size_t length, const size_t timeout ) = 0;
   };
 
   /**

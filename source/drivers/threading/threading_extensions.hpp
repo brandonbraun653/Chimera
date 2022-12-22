@@ -149,7 +149,8 @@ namespace Chimera::Thread
 #endif
   {
   public:
-    AsyncIO() : mAIOAllowedEvents( 0xFFFFFFFF ), mInitialized( ~DRIVER_INITIALIZED_KEY ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN )
+    AsyncIO() :
+        mAIOAllowedEvents( 0xFFFFFFFF ), mInitialized( ~DRIVER_INITIALIZED_KEY ), mAIOEvent( Chimera::Event::Trigger::UNKNOWN )
     {
     }
 
@@ -170,6 +171,11 @@ namespace Chimera::Thread
       {
         return Chimera::Status::NOT_SUPPORTED;
       }
+
+      /*-----------------------------------------------------------------------
+      Enforce the SPSC idea baked into this AsyncIO topology
+      -----------------------------------------------------------------------*/
+      Chimera::Thread::LockGuard _lck( mAIOMutex );
 
       /*-----------------------------------------------------------------------
       Wait for the event to occur. There are two timeouts at play:
@@ -258,13 +264,24 @@ namespace Chimera::Thread
     {
       mAIOEvent = Chimera::Event::Trigger::UNKNOWN;
       mAIOSignal.try_acquire();
+      mAIOMutex.unlock();
       mInitialized = DRIVER_INITIALIZED_KEY;
+    }
+
+    /**
+     * @brief Resets the AIO signals back to a non-triggered state
+     */
+    void resetAIO()
+    {
+      mAIOEvent = Chimera::Event::Trigger::UNKNOWN;
+      mAIOSignal.try_acquire();
     }
 
   private:
     size_t                           mInitialized; /**< Indicates if the class is initialized */
     Chimera::Event::Trigger          mAIOEvent;    /**< Which event was triggered by the class */
     Chimera::Thread::BinarySemaphore mAIOSignal;   /**< Lightweight semaphore to block on */
+    Chimera::Thread::Mutex           mAIOMutex;    /**< Exclusive lock for waiters */
   };
 }  // namespace Chimera::Thread
 
