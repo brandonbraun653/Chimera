@@ -5,28 +5,33 @@
  *  Description:
  *    Types used in Chimera Threading
  *
- *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREADING_COMMON_TYPES_HPP
 #define CHIMERA_THREADING_COMMON_TYPES_HPP
 
-/* STL Includes */
-#include <cstddef>
-#include <cstdint>
-#include <limits>
-
-/* ETL Includes */
-#include <etl/delegate.h>
-#include <etl/string.h>
-
-/* Aurora Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Aurora/utility>
-
-/* Chimera Includes */
 #include <Chimera/assert>
 #include <Chimera/common>
+#include <cstddef>
+#include <cstdint>
+#include <etl/delegate.h>
+#include <etl/string.h>
+#include <limits>
+#include <integration/Chimera/threading_types_prj.hpp>
+
+
+/*-----------------------------------------------------------------------------
+Literal Constants
+-----------------------------------------------------------------------------*/
+#if !defined( CHIMERA_PRJ_MAX_THREADS )
+#define CHIMERA_PRJ_MAX_THREADS ( 32 )
+#endif
 
 namespace Chimera::Thread
 {
@@ -61,7 +66,6 @@ namespace Chimera::Thread
   ---------------------------------------------------------------------------*/
   class Task;
 
-
   /*---------------------------------------------------------------------------
   Aliases
   ---------------------------------------------------------------------------*/
@@ -73,25 +77,23 @@ namespace Chimera::Thread
   using TaskName     = etl::string<16>;
   using TaskPriority = uint32_t;
 
-
   /*---------------------------------------------------------------------------
   Constants
   ---------------------------------------------------------------------------*/
-  static constexpr size_t TIMEOUT_BLOCK     = std::numeric_limits<size_t>::max();
-  static constexpr size_t TIMEOUT_DONT_WAIT = 0;
-  static constexpr size_t TIMEOUT_1MS       = 1;
-  static constexpr size_t TIMEOUT_5MS       = 5;
-  static constexpr size_t TIMEOUT_10MS      = 10;
-  static constexpr size_t TIMEOUT_25MS      = 25;
-  static constexpr size_t TIMEOUT_50MS      = 50;
-  static constexpr size_t TIMEOUT_100MS     = 100;
-  static constexpr size_t TIMEOUT_500MS     = 500;
-  static constexpr size_t TIMEOUT_1S        = 1000;
-  static constexpr size_t TIMEOUT_1MIN      = 60 * TIMEOUT_1S;
-  static constexpr size_t TIMEOUT_1HR       = 60 * TIMEOUT_1MIN;
-
+  static constexpr size_t TIMEOUT_BLOCK            = std::numeric_limits<size_t>::max();
+  static constexpr size_t TIMEOUT_DONT_WAIT        = 0;
+  static constexpr size_t TIMEOUT_1MS              = 1;
+  static constexpr size_t TIMEOUT_5MS              = 5;
+  static constexpr size_t TIMEOUT_10MS             = 10;
+  static constexpr size_t TIMEOUT_25MS             = 25;
+  static constexpr size_t TIMEOUT_50MS             = 50;
+  static constexpr size_t TIMEOUT_100MS            = 100;
+  static constexpr size_t TIMEOUT_500MS            = 500;
+  static constexpr size_t TIMEOUT_1S               = 1000;
+  static constexpr size_t TIMEOUT_1MIN             = 60 * TIMEOUT_1S;
+  static constexpr size_t TIMEOUT_1HR              = 60 * TIMEOUT_1MIN;
   static constexpr size_t MAX_NAME_LEN             = TaskName::MAX_SIZE;
-  static constexpr size_t MAX_REGISTERABLE_THREADS = 32;
+  static constexpr size_t MAX_REGISTERABLE_THREADS = CHIMERA_PRJ_MAX_THREADS;
   static constexpr TaskId THREAD_ID_INVALID        = 0xCCCCCCCC;
 
 

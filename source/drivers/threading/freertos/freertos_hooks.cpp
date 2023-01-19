@@ -59,7 +59,7 @@ extern "C"
     *ppxIdleTaskStackBuffer = idleStack;
     *pulIdleTaskStackSize   = ARRAY_COUNT( idleStack );
   }
-#endif
+#endif  /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
 #ifdef __cplusplus
 }
