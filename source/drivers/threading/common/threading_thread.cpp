@@ -105,11 +105,7 @@ namespace Chimera::Thread
     /*-------------------------------------------------------------------------
     Input protection
     -------------------------------------------------------------------------*/
-    if ( s_thread_registry.full() )
-    {
-      Chimera::insert_debug_breakpoint();
-      return THREAD_ID_INVALID;
-    }
+    RT_HARD_ASSERT( s_thread_registry.full() == false );
 
     /*-------------------------------------------------------------------------
     Insert the new thread object while protecting from
