@@ -1,24 +1,26 @@
 /******************************************************************************
- *   File Name:
+ *  File Name:
  *    common_types.hpp
  *
- *   Description:
+ *  Description:
  *    Common Chimera system types
  *
- *   2019 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_COMMON_TYPES_HPP
 #define CHIMERA_COMMON_TYPES_HPP
 
-/* STL Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <cstdlib>
 #include <cstdint>
 
-/*------------------------------------------------
-Register Level Access Types
-------------------------------------------------*/
+/*-----------------------------------------------------------------------------
+Aliases
+-----------------------------------------------------------------------------*/
 using Reg64_t = uint64_t;
 using Reg32_t = uint32_t;
 using Reg16_t = uint16_t;
@@ -36,7 +38,7 @@ namespace Chimera
     static constexpr Status_t serialErrorCodeStart   = 400;
     static constexpr Status_t spiErrorCodeStart      = 500;
     static constexpr Status_t watchdogErrorCodeStart = 600;
-  }
+  }  // namespace Internal
 
   class Status
   {
@@ -70,6 +72,8 @@ namespace Chimera
     static constexpr Status_t FAILED_OPEN    = 37; /**< Failed some kind of open operation */
     static constexpr Status_t FAILED_CLOSE   = 38; /**< Failed to close some resource */
     static constexpr Status_t CRC_ERROR      = 39; /**< CRC calculation/comparison failed */
+    static constexpr Status_t ENCODE_ERROR   = 40; /**< Encoding operation failed */
+    static constexpr Status_t DECODE_ERROR   = 41; /**< Decoding operation failed */
 
     /*-------------------------------------------------------------------------
     Offsets to identify particular Chimera modules
@@ -114,7 +118,7 @@ namespace Chimera
 
       NUM_ACCESS_MODES
     };
-  }
+  }  // namespace Hardware
 
 
 }  // namespace Chimera
