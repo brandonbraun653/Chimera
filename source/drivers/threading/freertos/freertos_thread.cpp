@@ -32,7 +32,7 @@ namespace Chimera::Thread
   struct DelegateArgs
   {
     TaskDelegate pDelegate;
-    void *pArguments;
+    void        *pArguments;
   };
 
   /*---------------------------------------------------------------------------
@@ -96,9 +96,8 @@ namespace Chimera::Thread
   -------------------------------------------------*/
   Task::Task()
   {
-    mTaskConfig = {};
-    mTaskId     = Chimera::Thread::THREAD_ID_INVALID;
-    mRunning    = false;
+    mTaskId  = Chimera::Thread::THREAD_ID_INVALID;
+    mRunning = false;
   }
 
   Task::Task( Task &&other )
@@ -254,10 +253,10 @@ namespace Chimera::Thread
     /*-------------------------------------------------------------------------
     Create a StaticTask_t control block on the heap
     -------------------------------------------------------------------------*/
-    size_t allocByteSize  = sizeof( StaticTask_t );
-    void *rawBuffer       = mTaskConfig.specialization.staticTask.stackBuffer;
-    StaticTask_t *taskCB  = new ( rawBuffer ) StaticTask_t();
-    StackType_t *taskBuff = reinterpret_cast<StackType_t*>( reinterpret_cast<uint8_t *>( rawBuffer ) + allocByteSize );
+    size_t        allocByteSize = sizeof( StaticTask_t );
+    void         *rawBuffer     = mTaskConfig.specialization.staticTask.stackBuffer;
+    StaticTask_t *taskCB        = new ( rawBuffer ) StaticTask_t();
+    StackType_t  *taskBuff      = reinterpret_cast<StackType_t *>( reinterpret_cast<uint8_t *>( rawBuffer ) + allocByteSize );
 
     /*-------------------------------------------------------------------------
     Adjust the sizing. Stack depth at this point is the

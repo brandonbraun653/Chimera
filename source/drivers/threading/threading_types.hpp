@@ -269,7 +269,7 @@ namespace Chimera::Thread
       }
     } specialization;
 
-    TaskConfig() : type( TaskInitType::UNKNOWN )
+    TaskConfig() : type( TaskInitType::UNKNOWN ), specialization( {} )
     {
     }
 
