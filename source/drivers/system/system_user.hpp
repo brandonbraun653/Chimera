@@ -100,9 +100,10 @@ namespace Chimera::System
    *  Instructs the processor to issue a reset command. The effect is the
    *  same as if the hardware RESET pin was asserted.
    *
+   *  @param[in]  invokeDebugger   If true, the debugger will be stopped before the reset
    *  @return void
    */
-  void softwareReset();
+  void softwareReset( const bool invokeDebugger = true );
 
   /**
    * @brief Checks if a debugger is attached
