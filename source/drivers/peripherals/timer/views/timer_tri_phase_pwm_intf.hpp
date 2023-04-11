@@ -61,6 +61,20 @@ namespace Chimera::Timer::Inverter
   };
   static_assert( EnumValue( SwitchId::NUM_OPTIONS ) == NUM_SWITCHES );
 
+  enum CommutationState : uint8_t
+  {
+    STATE_0,
+    STATE_1,
+    STATE_2,
+    STATE_3,
+    STATE_4,
+    STATE_5,
+    STATE_OFF,
+
+    NUM_STATES,
+    INVALID_STATE
+  };
+
   /*---------------------------------------------------------------------------
   Structures
   ---------------------------------------------------------------------------*/
@@ -168,10 +182,10 @@ namespace Chimera::Timer::Inverter
      * Can be used by controllers to chop up the output drive. Most likely used to
      * implement motor commutation sequences.
      *
-     * @param states  State of the inverter IO pins
+     * @param state  Desired commutation state
      * @return Chimera::Status_t
      */
-    Chimera::Status_t setForwardCommState( const uint8_t phase );
+    Chimera::Status_t setForwardCommState( const CommutationState state );
 
     /**
      * @brief Quickly sets the output pins into a safe state
