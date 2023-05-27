@@ -61,7 +61,7 @@ namespace Chimera::Timer::Inverter
   };
   static_assert( EnumValue( SwitchId::NUM_OPTIONS ) == NUM_SWITCHES );
 
-  enum CommutationState : uint8_t
+  enum CommutationState : int
   {
     STATE_0,
     STATE_1,
@@ -177,6 +177,18 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t setPhaseDutyCycle( const float a, const float b, const float c );
 
     /**
+     * @brief Set the PWM carrier frequency duty cycle for each phase
+     *
+     * This sets an absolute value for the capture compare register of the timer.
+     *
+     * @param a   Phase A duty cycle from 0 to TIM->ARR
+     * @param b   Phase B duty cycle from 0 to TIM->ARR
+     * @param c   Phase C duty cycle from 0 to TIM->ARR
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t setPhaseDutyCycle( const uint32_t a, const uint32_t b, const uint32_t c );
+
+    /**
      * @brief Assign gating of the switches to enable/disable carrier PWM frequency drive
      *
      * Can be used by controllers to chop up the output drive. Most likely used to
@@ -185,7 +197,7 @@ namespace Chimera::Timer::Inverter
      * @param state  Desired commutation state
      * @return Chimera::Status_t
      */
-    Chimera::Status_t setForwardCommState( const CommutationState state );
+    Chimera::Status_t setForwardCommState( const int state );
 
     /**
      * @brief Quickly sets the output pins into a safe state
@@ -193,6 +205,12 @@ namespace Chimera::Timer::Inverter
      * @return Chimera::Status_t
      */
     Chimera::Status_t emergencyBreak();
+
+    /**
+     * @brief Gets the timer's auto-reload register value
+     * @return uint32_t
+     */
+    uint32_t getAutoReloadValue() const;
 
   private:
     void *mTimerImpl;
