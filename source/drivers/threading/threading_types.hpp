@@ -23,8 +23,10 @@ Includes
 #include <etl/delegate.h>
 #include <etl/string.h>
 #include <limits>
-#include <integration/Chimera/threading_types_prj.hpp>
 
+#if __has_include( <integration/Chimera/threading_types_prj.hpp> )
+#include <integration/Chimera/threading_types_prj.hpp>
+#endif 
 
 /*-----------------------------------------------------------------------------
 Literal Constants
