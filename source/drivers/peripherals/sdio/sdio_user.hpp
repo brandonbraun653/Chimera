@@ -21,14 +21,35 @@ Includes
 
 namespace Chimera::SDIO
 {
-	/*---------------------------------------------------------------------------
-	Public Functions
-	---------------------------------------------------------------------------*/
+  /*---------------------------------------------------------------------------
+  Public Functions
+  ---------------------------------------------------------------------------*/
+  Chimera::Status_t initialize();
+  Chimera::Status_t reset();
+  Driver_rPtr       getDriver( const Chimera::SDIO::Channel channel );
 
 
-	/*---------------------------------------------------------------------------
-	Classes
-	---------------------------------------------------------------------------*/
-}  // namespace 
+  /*---------------------------------------------------------------------------
+  Classes
+  ---------------------------------------------------------------------------*/
+  class Driver : public Chimera::Thread::Lockable<Driver>, public Chimera::Thread::AsyncIO<Driver>, public ISDIO
+  {
+  public:
+    using Chimera::Thread::AsyncIO<Driver>::AsyncIO;
 
-#endif  /* !CHIMERA_SDIO_USER_HPP */
+    Driver();
+    ~Driver();
+
+    Chimera::Status_t open( const Chimera::SDIO::HWConfig &init );
+    void              close();
+    int               write( const size_t address, const void *const buffer, const size_t length );
+    int               read( const size_t address, void *const buffer, const size_t length );
+
+  private:
+    friend Chimera::Thread::Lockable<Driver>;
+    friend Chimera::Thread::AsyncIO<Driver>;
+    void *mImpl;
+  };
+}  // namespace Chimera::SDIO
+
+#endif /* !CHIMERA_SDIO_USER_HPP */

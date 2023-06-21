@@ -41,9 +41,11 @@ namespace Chimera::SDIO
   class HWInterface
   {
   public:
-    virtual ~HWInterface()                                 = default;
-    virtual Chimera::Status_t open( const HWConfig &init ) = 0;
-    virtual void              close()                      = 0;
+    virtual ~HWInterface()                                                                                 = default;
+    virtual Chimera::Status_t open( const HWConfig &init )                                                 = 0;
+    virtual void              close()                                                                      = 0;
+    virtual int               write( const size_t address, const void *const buffer, const size_t length ) = 0;
+    virtual int               read( const size_t address, void *const buffer, const size_t length )        = 0;
   };
 
 #if defined( CHIMERA_VIRTUAL )
