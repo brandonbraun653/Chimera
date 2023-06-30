@@ -41,11 +41,15 @@ namespace Chimera::SDIO
   class HWInterface
   {
   public:
-    virtual ~HWInterface()                                                                                 = default;
-    virtual Chimera::Status_t open( const HWConfig &init )                                                 = 0;
-    virtual void              close()                                                                      = 0;
-    virtual int               write( const size_t address, const void *const buffer, const size_t length ) = 0;
-    virtual int               read( const size_t address, void *const buffer, const size_t length )        = 0;
+    virtual ~HWInterface()                                                                                   = default;
+    virtual Chimera::Status_t open( const HWConfig &init )                                                   = 0;
+    virtual Chimera::Status_t connect()                                                                      = 0;
+    virtual void              close()                                                                        = 0;
+    virtual Chimera::Status_t write( const uint32_t address, const void *const buffer, const size_t length ) = 0;
+    virtual Chimera::Status_t read( const uint32_t address, void *const buffer, const size_t length )        = 0;
+    virtual Chimera::Status_t getCardStatus( CardStatus &status )                                            = 0;
+    virtual Chimera::Status_t getCardIdentity( CardIdentity &identity )                                      = 0;
+    virtual Chimera::Status_t getCardSpecificData( CardSpecificData &data )                                  = 0;
   };
 
 #if defined( CHIMERA_VIRTUAL )

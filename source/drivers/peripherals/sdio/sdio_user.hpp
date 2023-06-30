@@ -18,6 +18,7 @@ Includes
 #include <Chimera/common>
 #include <Chimera/source/drivers/peripherals/sdio/sdio_intf.hpp>
 #include <Chimera/source/drivers/peripherals/sdio/sdio_types.hpp>
+#include <Chimera/source/drivers/callback/callback_intf.hpp>
 
 namespace Chimera::SDIO
 {
@@ -32,7 +33,10 @@ namespace Chimera::SDIO
   /*---------------------------------------------------------------------------
   Classes
   ---------------------------------------------------------------------------*/
-  class Driver : public Chimera::Thread::Lockable<Driver>, public Chimera::Thread::AsyncIO<Driver>, public ISDIO
+  class Driver : public Chimera::Thread::Lockable<Driver>,
+                 public Chimera::Thread::AsyncIO<Driver>,
+                 public Chimera::Callback::DelegateService<Driver, CallbackId>,
+                 public ISDIO
   {
   public:
     using Chimera::Thread::AsyncIO<Driver>::AsyncIO;
@@ -40,14 +44,19 @@ namespace Chimera::SDIO
     Driver();
     ~Driver();
 
-    Chimera::Status_t open( const Chimera::SDIO::HWConfig &init );
+    Chimera::Status_t open( const HWConfig &init );
+    Chimera::Status_t connect();
     void              close();
-    int               write( const size_t address, const void *const buffer, const size_t length );
-    int               read( const size_t address, void *const buffer, const size_t length );
+    Chimera::Status_t write( const uint32_t address, const void *const buffer, const size_t length );
+    Chimera::Status_t read( const uint32_t address, void *const buffer, const size_t length );
+    Chimera::Status_t getCardStatus( CardStatus &status );
+    Chimera::Status_t getCardIdentity( CardIdentity &identity );
+    Chimera::Status_t getCardSpecificData( CardSpecificData &data );
 
   private:
     friend Chimera::Thread::Lockable<Driver>;
     friend Chimera::Thread::AsyncIO<Driver>;
+		friend Chimera::Callback::DelegateService<Driver, CallbackId>;
     void *mImpl;
   };
 }  // namespace Chimera::SDIO
