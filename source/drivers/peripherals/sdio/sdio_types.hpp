@@ -41,7 +41,7 @@ namespace Chimera::SDIO
     UNKNOWN
   };
 
-  enum class CallbackId : uint8_t
+  enum CallbackId : uint8_t
   {
     TX_COMPLETE,
     RX_COMPLETE,
@@ -51,6 +51,7 @@ namespace Chimera::SDIO
     RESET,
 
     NUM_OPTIONS,
+    CB_NUM_OPTIONS = NUM_OPTIONS,
     UNKNOWN
   };
 
@@ -117,6 +118,7 @@ namespace Chimera::SDIO
     uint8_t  FileFormat;          /**< File format */
     uint8_t  ECC;                 /**< ECC code */
   };
+  
   struct HWConfig
   {
   };

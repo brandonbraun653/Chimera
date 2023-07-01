@@ -5,13 +5,13 @@
  *  Description:
  *    Compiler specific implementations of useful functions
  *
- *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
-/* STL Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <signal.h>
-
-/* Chimera Includes */
 #include <Chimera/source/drivers/common/compiler_intf.hpp>
 
 /*-------------------------------------------------------------------------------
