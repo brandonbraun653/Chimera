@@ -81,7 +81,7 @@ namespace Chimera::Util
    *  Checks if the system is little endian
    *  @return bool
    */
-  static inline constexpr bool isLittleEndian()
+  static inline bool isLittleEndian()
   {
     short int number = 0x1;
     char *numPtr     = ( char * )&number;

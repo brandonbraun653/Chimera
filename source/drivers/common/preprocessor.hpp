@@ -5,7 +5,7 @@
  *  Description:
  *    Does some preprocessor magic to figure out various configuration environments
  *
- *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -18,6 +18,15 @@ https://clang.llvm.org/docs/LanguageExtensions.html
 -----------------------------------------------------------------------------*/
 #ifndef __has_include
 #error FATAL ERROR: Please use a compiler that supports __has_include(), such as Clang or MSVC 2015 Update 2 or higher
+#endif
+
+/*-----------------------------------------------------------------------------
+Include Mock Configurations for CppUMockGen. This seems to be the only way to
+get the generator to work with the Thor project structure that configures the
+software using preprocessor definitions.
+-----------------------------------------------------------------------------*/
+#if __has_include( "CppUMockGenConfig.hpp")
+#include "CppUMockGenConfig.hpp"
 #endif
 
 /*-----------------------------------------------------------------------------
