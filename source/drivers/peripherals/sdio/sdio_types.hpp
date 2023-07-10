@@ -16,6 +16,7 @@
 Includes
 -----------------------------------------------------------------------------*/
 #include <Chimera/common>
+#include <Chimera/gpio>
 
 namespace Chimera::SDIO
 {
@@ -52,6 +53,15 @@ namespace Chimera::SDIO
 
     NUM_OPTIONS,
     CB_NUM_OPTIONS = NUM_OPTIONS,
+    UNKNOWN
+  };
+
+  enum class BusWidth : uint8_t
+  {
+    BUS_WIDTH_1BIT,
+    BUS_WIDTH_4BIT,
+
+    NUM_OPTIONS,
     UNKNOWN
   };
 
@@ -118,9 +128,28 @@ namespace Chimera::SDIO
     uint8_t  FileFormat;          /**< File format */
     uint8_t  ECC;                 /**< ECC code */
   };
-  
+
   struct HWConfig
   {
+    uint32_t               clockSpeed; /**< Clock speed of the SDIO bus */
+    BusWidth               width;      /**< Number of data bits */
+    Channel                channel;    /**< Which SDIO channel to use */
+    Chimera::GPIO::PinInit cmdPin;     /**< Pin configuration for the command line */
+    Chimera::GPIO::PinInit clkPin;     /**< Pin configuration for the clock line */
+    Chimera::GPIO::PinInit dxPin[ 4 ]; /**< Pin configuration for the data line 0 */
+
+    void clear()
+    {
+      clockSpeed = 0;
+      width      = BusWidth::UNKNOWN;
+      channel    = Channel::UNKNOWN;
+      cmdPin     = Chimera::GPIO::PinInit();
+      clkPin     = Chimera::GPIO::PinInit();
+      dxPin[ 0 ] = Chimera::GPIO::PinInit();
+      dxPin[ 1 ] = Chimera::GPIO::PinInit();
+      dxPin[ 2 ] = Chimera::GPIO::PinInit();
+      dxPin[ 3 ] = Chimera::GPIO::PinInit();
+    }
   };
 
   namespace Backend
