@@ -11,7 +11,9 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
+#include <Chimera/cfg>
 #include <Chimera/sdio>
+
 
 namespace Chimera::SDIO
 {
@@ -25,22 +27,24 @@ namespace Chimera::SDIO
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
-    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::SDIO::Backend::DriverConfig &registry )
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
-  }  // namespace Backend
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
+  }    // namespace Backend
 
 
   Chimera::Status_t initialize()
   {
-    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-
     /*-------------------------------------------------------------------------
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
+    s_backend_driver.clear();
     auto result = Backend::registerDriver( s_backend_driver );
+
     if ( result != Chimera::Status::OK )
     {
       return result;
@@ -64,7 +68,10 @@ namespace Chimera::SDIO
   {
     if ( s_backend_driver.isSupported && s_backend_driver.reset )
     {
-      return s_backend_driver.reset();
+      auto reset_func_ptr = s_backend_driver.reset;
+      s_backend_driver.clear();
+
+      return reset_func_ptr();
     }
     else
     {

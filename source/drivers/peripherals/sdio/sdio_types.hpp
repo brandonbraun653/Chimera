@@ -175,6 +175,17 @@ namespace Chimera::SDIO
        *  driver, as long as it conforms to the expected interface.
        */
       Driver_rPtr ( *getDriver )( const Channel periph );
+
+      /**
+       * @brief Clears the entire structure to default values
+       */
+      void clear()
+      {
+        isSupported = false;
+        initialize  = nullptr;
+        reset       = nullptr;
+        getDriver   = nullptr;
+      }
     };
   }  // namespace Backend
 }  // namespace Chimera::SDIO
