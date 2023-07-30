@@ -65,6 +65,59 @@ namespace Chimera::SDIO
     UNKNOWN
   };
 
+  enum CardVersion : uint8_t
+  {
+    CARD_V1_X,
+    CARD_V2_X
+  };
+
+  enum CardType : uint32_t
+  {
+    CARD_SDSC      = 0u,
+    CARD_SDHC_SDXC = 1u,
+    CARD_SECURED   = 3u,
+    CARD_UNKNOWN
+  };
+
+  /**
+   * @brief ACMD41 Command Argument/Response Bit Flags
+   * @see Physical Layer Simplified Specification Version 9.00 Section 4.2.3.1
+   */
+  enum ACMD41Bits : uint32_t
+  {
+    ACMD41_HIGH_CAPACITY_CARD  = ( 1u << 30u ), /**< Supports high capacity */
+    ACMD41_2V0_3V6_VOLT_WINDOW = 0x00FF8000u,   /**< Supports 2.0v-3.6v (full range) */
+    ACMD41_SWITCH_1V8          = ( 1u << 24u ), /**< Switch to 1.8v signaling */
+    ACMD41_INIT_COMPLETE       = ( 1u << 31u ), /**< Initialization complete */
+  };
+
+  /**
+   * @brief Masks for the OCR register
+   */
+  enum OCRError : uint32_t
+  {
+    OCR_ADDR_OUT_OF_RANGE     = 0x80000000u,
+    OCR_ADDR_MISALIGNED       = 0x40000000u,
+    OCR_BLOCK_LEN_ERR         = 0x20000000u,
+    OCR_ERASE_SEQ_ERR         = 0x10000000u,
+    OCR_BAD_ERASE_PARAM       = 0x08000000u,
+    OCR_WRITE_PROT_VIOLATION  = 0x04000000u,
+    OCR_LOCK_UNLOCK_FAILED    = 0x01000000u,
+    OCR_COM_CRC_FAILED        = 0x00800000u,
+    OCR_ILLEGAL_CMD           = 0x00400000u,
+    OCR_CARD_ECC_FAILED       = 0x00200000u,
+    OCR_CC_ERROR              = 0x00100000u,
+    OCR_GENERAL_UNKNOWN_ERROR = 0x00080000u,
+    OCR_STREAM_READ_UNDERRUN  = 0x00040000u,
+    OCR_STREAM_WRITE_OVERRUN  = 0x00020000u,
+    OCR_CID_CSD_OVERWRITE     = 0x00010000u,
+    OCR_WP_ERASE_SKIP         = 0x00008000u,
+    OCR_CARD_ECC_DISABLED     = 0x00004000u,
+    OCR_ERASE_RESET           = 0x00002000u,
+    OCR_AKE_SEQ_ERROR         = 0x00000008u,
+    OCR_ERRORBITS             = 0xFDFFE008u,
+  };
+
   /*---------------------------------------------------------------------------
   Structures
   ---------------------------------------------------------------------------*/
@@ -127,6 +180,19 @@ namespace Chimera::SDIO
     uint8_t  TempWrProtect;       /**< Temporary write protection */
     uint8_t  FileFormat;          /**< File format */
     uint8_t  ECC;                 /**< ECC code */
+  };
+
+
+  struct CardInfo
+  {
+    uint32_t    CardType;     /**< Specifies the card Type */
+    CardVersion version;  /**< Specifies the card version */
+    uint32_t    Class;        /**< Specifies the class of the card class */
+    uint32_t    RelCardAdd;   /**< Specifies the Relative Card Address */
+    uint32_t    BlockNbr;     /**< Specifies the Card Capacity in blocks */
+    uint32_t    BlockSize;    /**< Specifies one block size in bytes */
+    uint32_t    LogBlockNbr;  /**< Specifies the Card logical Capacity in blocks */
+    uint32_t    LogBlockSize; /**< Specifies logical block size in bytes */
   };
 
   struct HWConfig

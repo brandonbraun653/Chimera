@@ -52,6 +52,7 @@ namespace Chimera::SDIO
     Chimera::Status_t getCardStatus( CardStatus &status );
     Chimera::Status_t getCardIdentity( CardIdentity &identity );
     Chimera::Status_t getCardSpecificData( CardSpecificData &data );
+    Chimera::Status_t getCardInfo( CardInfo &info );
 
   private:
     friend Chimera::Thread::Lockable<Driver>;
