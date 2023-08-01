@@ -60,6 +60,7 @@ namespace Chimera::SDIO
   {
     BUS_WIDTH_1BIT,
     BUS_WIDTH_4BIT,
+    BUS_WIDTH_8BIT,
 
     NUM_OPTIONS,
     UNKNOWN
@@ -89,6 +90,16 @@ namespace Chimera::SDIO
     ACMD41_2V0_3V6_VOLT_WINDOW = 0x00FF8000u,   /**< Supports 2.0v-3.6v (full range) */
     ACMD41_SWITCH_1V8          = ( 1u << 24u ), /**< Switch to 1.8v signaling */
     ACMD41_INIT_COMPLETE       = ( 1u << 31u ), /**< Initialization complete */
+  };
+
+  /**
+   * @brief ACMD51 Command Argument/Response Bit Flags
+   * @see Physical Layer Simplified Specification Version 9.00 Section 5.6
+   */
+  enum ACMD51Bits : uint32_t
+  {
+    ACMD51_WIDE_BUS_SUPPORT    = 0x00040000U,
+    ACMD51_SINGLE_BUS_SUPPORT  = 0x00010000U,
   };
 
   /**
@@ -198,6 +209,7 @@ namespace Chimera::SDIO
   struct HWConfig
   {
     uint32_t               clockSpeed; /**< Clock speed of the SDIO bus */
+    uint32_t               blockSize;  /**< Memory block size to card (SDSC Card Type only) */
     BusWidth               width;      /**< Number of data bits */
     Channel                channel;    /**< Which SDIO channel to use */
     Chimera::GPIO::PinInit cmdPin;     /**< Pin configuration for the command line */
@@ -207,6 +219,7 @@ namespace Chimera::SDIO
     void clear()
     {
       clockSpeed = 0;
+      blockSize  = 0;
       width      = BusWidth::UNKNOWN;
       channel    = Channel::UNKNOWN;
       cmdPin     = Chimera::GPIO::PinInit();
