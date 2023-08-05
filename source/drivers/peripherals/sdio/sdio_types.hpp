@@ -129,6 +129,16 @@ namespace Chimera::SDIO
     OCR_ERRORBITS             = 0xFDFFE008u,
   };
 
+  /**
+   * @brief Masks for the R6 response
+   */
+  enum R6Error : uint32_t
+  {
+    R6_GENERAL_UNKNOWN_ERROR = 0x00002000U,
+    R6_ILLEGAL_CMD           = 0x00004000U,
+    R6_COM_CRC_FAILED        = 0x00008000U,
+  };
+
   /*---------------------------------------------------------------------------
   Structures
   ---------------------------------------------------------------------------*/
