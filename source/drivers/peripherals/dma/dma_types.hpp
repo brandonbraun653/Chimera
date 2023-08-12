@@ -117,6 +117,17 @@ namespace Chimera::DMA
   };
 
   /**
+   * @brief Selects the FIFO operational mode
+   */
+  enum class FifoMode : uint8_t
+  {
+    DIRECT_ENABLE,
+    DIRECT_DISABLE,
+
+    NUM_OPTIONS
+  };
+
+  /**
    * @brief Selects the threshold which will flush the FIFO
    */
   enum class FifoThreshold : uint8_t
@@ -184,19 +195,20 @@ namespace Chimera::DMA
    */
   struct PipeConfig
   {
-    Alignment srcAlignment;    /**< Source data alignment */
-    Alignment dstAlignment;    /**< Destination data alignment */
-    BurstSize burstSize;       /**< Burst size of the transfer */
-    Direction direction;       /**< What direction is the data flowing? */
-    FifoThreshold threshold;   /**< FIFO threshold, if supported. */
-    Errors errorsToIgnore;     /**< Any errors that should be ignored in the transfer */
-    std::uintptr_t periphAddr; /**< Peripheral src/dst address */
-    Priority priority;         /**< Priority level of the transfer */
-    Mode mode;                 /**< What mode is the transfer using */
-    size_t resourceIndex;      /**< HW specific software resource index for the pipe */
-    size_t channel;            /**< HW specific DMA request signal */
-    bool persistent;           /**< Should the DMA pipe be left enabled after transfer? */
-    bool wakeUserOnComplete;   /**< Wake the user thread to handle results? */
+    Alignment      srcAlignment;       /**< Source data alignment */
+    Alignment      dstAlignment;       /**< Destination data alignment */
+    BurstSize      burstSize;          /**< Burst size of the transfer */
+    Direction      direction;          /**< What direction is the data flowing? */
+    FifoMode       fifoMode;           /**< FIFO mode, if supported. */
+    FifoThreshold  threshold;          /**< FIFO threshold, if supported. */
+    Errors         errorsToIgnore;     /**< Any errors that should be ignored in the transfer */
+    std::uintptr_t periphAddr;         /**< Peripheral src/dst address */
+    Priority       priority;           /**< Priority level of the transfer */
+    Mode           mode;               /**< What mode is the transfer using */
+    size_t         resourceIndex;      /**< HW specific software resource index for the pipe */
+    size_t         channel;            /**< HW specific DMA request signal */
+    bool           persistent;         /**< Should the DMA pipe be left enabled after transfer? */
+    bool           wakeUserOnComplete; /**< Wake the user thread to handle results? */
 
     /**
      * @brief Resets the structure back to defaults
@@ -207,6 +219,7 @@ namespace Chimera::DMA
       dstAlignment       = Alignment::BYTE;
       burstSize          = BurstSize::BURST_SIZE_1;
       direction          = Direction::MEMORY_TO_MEMORY;
+      fifoMode           = FifoMode::DIRECT_ENABLE;
       threshold          = FifoThreshold::HALF_FULL;
       errorsToIgnore     = Errors::NONE;
       periphAddr         = 0;
@@ -227,9 +240,9 @@ namespace Chimera::DMA
    */
   struct PipeTransfer
   {
-    RequestId pipe;                /**< Which pipe this is destined for */
-    std::uintptr_t addr;           /**< Source/destination memory address */
-    size_t size;                   /**< Number of bytes to transfer */
+    RequestId        pipe;         /**< Which pipe this is destined for */
+    std::uintptr_t   addr;         /**< Source/destination memory address */
+    size_t           size;         /**< Number of bytes to transfer */
     TransferCallback userCallback; /**< Callback to invoke from high priority DMA manager thread */
     TransferCallback isrCallback;  /**< Callback to invoke inside ISR handler */
 
@@ -255,13 +268,13 @@ namespace Chimera::DMA
    */
   struct MemTransfer
   {
-    RequestId id;              /**< UUID for the transfer */
-    std::uintptr_t src;        /**< Source address */
-    std::uintptr_t dst;        /**< Destination address */
-    size_t size;               /**< Number of bytes */
-    Priority priority;         /**< Priority level of the transfer */
-    Alignment alignment;       /**< Transfer data alignment */
-    TransferCallback callback; /**< Optional callback to be invoked on completion or error */
+    RequestId        id;        /**< UUID for the transfer */
+    std::uintptr_t   src;       /**< Source address */
+    std::uintptr_t   dst;       /**< Destination address */
+    size_t           size;      /**< Number of bytes */
+    Priority         priority;  /**< Priority level of the transfer */
+    Alignment        alignment; /**< Transfer data alignment */
+    TransferCallback callback;  /**< Optional callback to be invoked on completion or error */
 
     /**
      * @brief Resets the structure back to defaults
@@ -284,9 +297,9 @@ namespace Chimera::DMA
    */
   struct TransferStats
   {
-    bool error;          /**< Error status of the transfer */
+    bool      error;     /**< Error status of the transfer */
     RequestId requestId; /**< Which request this occurred on */
-    size_t size;         /**< Number of bytes transferred */
+    size_t    size;      /**< Number of bytes transferred */
 
     /**
      * @brief Resets the structure back to defaults
