@@ -80,6 +80,19 @@ namespace Chimera::SDIO
     CARD_UNKNOWN
   };
 
+  enum CardState : uint8_t
+  {
+    CARD_READY,          /**< Card state is ready */
+    CARD_IDENTIFICATION, /**< Card is in identification state */
+    CARD_STANDBY,        /**< Card is in standby state */
+    CARD_TRANSFER,       /**< Card is in transfer state */
+    CARD_SENDING,        /**< Card is sending an operation */
+    CARD_RECEIVING,      /**< Card is receiving operation information */
+    CARD_PROGRAMMING,    /**< Card is in programming state */
+    CARD_DISCONNECTED,   /**< Card is disconnected */
+    CARD_ERROR,          /**< Card response Error */
+  };
+
   /**
    * @brief ACMD41 Command Argument/Response Bit Flags
    * @see Physical Layer Simplified Specification Version 9.00 Section 4.2.3.1

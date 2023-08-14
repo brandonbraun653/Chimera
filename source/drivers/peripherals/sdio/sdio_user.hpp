@@ -49,6 +49,7 @@ namespace Chimera::SDIO
     void              close();
     Chimera::Status_t writeBlock( const uint32_t blockAddress, const size_t blockCount, const void *const buffer, const size_t size );
     Chimera::Status_t readBlock( const uint32_t blockAddress, const size_t blockCount, void *const buffer, const size_t size );
+    CardState         getCardState();
     Chimera::Status_t getCardStatus( CardStatus &status );
     Chimera::Status_t getCardIdentity( CardIdentity &identity );
     Chimera::Status_t getCardSpecificData( CardSpecificData &data );
