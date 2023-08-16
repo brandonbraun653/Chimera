@@ -5,7 +5,7 @@
  *   Description:
  *    Models the Chimera Threading interfaces
  *
- *   2019-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *   2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -69,8 +69,17 @@ namespace Chimera::Thread
      * @brief Signal that a particular event has occurred
      *
      * @param trigger   Which event occurred
+     * @return void
      */
     virtual void signalAIO( const Chimera::Event::Trigger trigger ) = 0;
+
+    /**
+     * @brief Signal that a particular event has occurred, but from an ISR safe context
+     *
+     * @param trigger   Which event occurred
+     * @return void
+     */
+    virtual void signalAIOFromISR( const Chimera::Event::Trigger trigger ) = 0;
   };
 
 

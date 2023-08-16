@@ -251,6 +251,15 @@ namespace Chimera::Thread
       mAIOSignal.release();
     }
 
+
+    void signalAIOFromISR( const Chimera::Event::Trigger trigger )
+    {
+      RT_DBG_ASSERT( mInitialized == DRIVER_INITIALIZED_KEY );
+
+      mAIOEvent = trigger;
+      mAIOSignal.releaseFromISR();
+    }
+
   protected:
     uint32_t mAIOAllowedEvents; /**< Bit mask of events supported */
 

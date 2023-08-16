@@ -5,15 +5,15 @@
  *  Description:
  *    Implements Chimera DMA
  *
- *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
-/* STL Includes */
-#include <memory>
-#include <cstring>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/dma>
+#include <cstring>
+#include <memory>
 
 namespace Chimera::DMA
 {
@@ -114,6 +114,15 @@ namespace Chimera::DMA
     else
     {
       return INVALID_REQUEST;
+    }
+  }
+
+
+  void abort( const RequestId id )
+  {
+    if ( s_backend_driver.isSupported && s_backend_driver.abortTransfer )
+    {
+      s_backend_driver.abortTransfer( id );
     }
   }
 

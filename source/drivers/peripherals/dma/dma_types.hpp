@@ -5,27 +5,23 @@
  *  Description:
  *    Chimera DMA types
  *
- *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_DMA_TYPES_HPP
 #define CHIMERA_DMA_TYPES_HPP
 
-/* STL Includes */
-#include <cstdint>
-#include <cstring>
-#include <limits>
-
-/* ETL Includes */
-#include <etl/delegate.h>
-
-/* Aurora Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Aurora/utility>
-
-/* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/peripheral>
+#include <cstdint>
+#include <cstring>
+#include <etl/delegate.h>
+#include <limits>
 
 namespace Chimera::DMA
 {
@@ -329,6 +325,7 @@ namespace Chimera::DMA
       RequestId ( *constructPipe )( const PipeConfig & );
       RequestId ( *memTransfer )( const MemTransfer & );
       RequestId ( *pipeTransfer )( const PipeTransfer & );
+      void ( *abortTransfer )( const RequestId );
     };
   }  // namespace Backend
 
