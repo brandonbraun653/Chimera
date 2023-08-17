@@ -6,30 +6,28 @@
  *    Describes various kinds of callback interfaces that can be inherited from
  *    to build up a class's functionality and guarantee a particular interface.
  *
- *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_CALLBACK_INTERFACE_HPP
 #define CHIMERA_CALLBACK_INTERFACE_HPP
 
-/* STL Includes */
-#include <cstdint>
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
+#include <Chimera/common>
 #include <cstddef>
-
-/* ETL Includes */
+#include <cstdint>
 #include <etl/delegate.h>
 #include <etl/delegate_service.h>
-
-/* Chimera Includes */
-#include <Chimera/common>
 
 namespace Chimera::Callback
 {
   /*---------------------------------------------------------------------------
   Class Definitions
   ---------------------------------------------------------------------------*/
-  template<typename CRTPClass, typename CBType, typename EventDataType = void*>
+  template<typename CRTPClass, typename CBType, typename EventDataType = void *>
   class DelegateService
   {
   public:
@@ -76,7 +74,7 @@ namespace Chimera::Callback
      */
     void setCallbackData( const CBType id, EventDataType &data )
     {
-      if( id < CBType::CB_NUM_OPTIONS )
+      if ( id < CBType::CB_NUM_OPTIONS )
       {
         mCBService_data[ id ] = data;
       }
@@ -88,9 +86,9 @@ namespace Chimera::Callback
      *  @param[in]  id          The callback id to get info on
      *  @return const EventDataType *
      */
-    const EventDataType * whatHappened( const CBType id )
+    const EventDataType *whatHappened( const CBType id )
     {
-      if( id < CBType::CB_NUM_OPTIONS )
+      if ( id < CBType::CB_NUM_OPTIONS )
       {
         return &mCBService_data[ id ];
       }
@@ -102,7 +100,7 @@ namespace Chimera::Callback
 
   protected:
     etl::array<EventDataType, CBType::CB_NUM_OPTIONS> mCBService_data;
-    etl::delegate_service<CBType::CB_NUM_OPTIONS> mCBService_registry;
+    etl::delegate_service<CBType::CB_NUM_OPTIONS>     mCBService_registry;
   };
 }  // namespace Chimera::Callback
 

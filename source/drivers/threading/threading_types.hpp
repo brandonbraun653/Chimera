@@ -15,7 +15,6 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
-#include <Aurora/utility>
 #include <Chimera/assert>
 #include <Chimera/common>
 #include <cstddef>
@@ -23,8 +22,10 @@ Includes
 #include <etl/delegate.h>
 #include <etl/string.h>
 #include <limits>
-#include <integration/Chimera/threading_types_prj.hpp>
 
+#if __has_include( <integration/Chimera/threading_types_prj.hpp> )
+#include <integration/Chimera/threading_types_prj.hpp>
+#endif 
 
 /*-----------------------------------------------------------------------------
 Literal Constants
@@ -141,9 +142,6 @@ namespace Chimera::Thread
     TSK_MSG_ISR_DATA_READY = ( 1u << 3 ), /**< Execute ISR handler that consumes data */
     TSK_MSG_ISR_ERROR      = ( 1u << 4 ), /**< Execute ISR handler that manages errors */
   };
-
-  ENUM_CLS_BITWISE_OPERATOR( ITCMsg, | );
-  ENUM_CLS_BITWISE_OPERATOR( ITCMsg, & );
 
 
   /*---------------------------------------------------------------------------

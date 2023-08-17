@@ -28,6 +28,7 @@ set(all_libraries
   chimera_peripheral_i2c
   chimera_peripheral_interrupt
   chimera_peripheral_power
+  chimera_peripheral_sdio
   chimera_peripheral_spi
   chimera_peripheral_timer
   chimera_peripheral_uart

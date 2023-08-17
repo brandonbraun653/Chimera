@@ -1,21 +1,21 @@
 /******************************************************************************
  *  File Name:
- *    chimera_dma.cpp
+ *    chimera_sdio.cpp
  *
  *  Description:
- *    Implements Chimera DMA
+ *    Chimera SDIO driver implementation
  *
- *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
+ *  2023 | Brandon Braun | brandonbraun653@protonmail.com
  *****************************************************************************/
 
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
-#include <Chimera/dma>
-#include <cstring>
-#include <memory>
+#include <Chimera/cfg>
+#include <Chimera/sdio>
 
-namespace Chimera::DMA
+
+namespace Chimera::SDIO
 {
   /*---------------------------------------------------------------------------
   Static Data
@@ -27,26 +27,24 @@ namespace Chimera::DMA
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
-    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::DMA::Backend::DriverConfig &registry )
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
+    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
-  }  // namespace Backend
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
+  }    // namespace Backend
 
 
   Chimera::Status_t initialize()
   {
     /*-------------------------------------------------------------------------
-    Initialize Chimera
-    -------------------------------------------------------------------------*/
-    memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
-    Util::initializeQueues();
-
-    /*-------------------------------------------------------------------------
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
+    s_backend_driver.clear();
     auto result = Backend::registerDriver( s_backend_driver );
+
     if ( result != Chimera::Status::OK )
     {
       return result;
@@ -70,7 +68,10 @@ namespace Chimera::DMA
   {
     if ( s_backend_driver.isSupported && s_backend_driver.reset )
     {
-      return s_backend_driver.reset();
+      auto reset_func_ptr = s_backend_driver.reset;
+      s_backend_driver.clear();
+
+      return reset_func_ptr();
     }
     else
     {
@@ -79,51 +80,15 @@ namespace Chimera::DMA
   }
 
 
-  RequestId constructPipe( const PipeConfig &config )
+  Driver_rPtr getDriver( const Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.constructPipe )
+    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
-      return s_backend_driver.constructPipe( config );
+      return s_backend_driver.getDriver( channel );
     }
     else
     {
-      return INVALID_REQUEST;
+      return nullptr;
     }
   }
-
-
-  RequestId transfer( const MemTransfer &transfer )
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.memTransfer )
-    {
-      return s_backend_driver.memTransfer( transfer );
-    }
-    else
-    {
-      return INVALID_REQUEST;
-    }
-  }
-
-
-  RequestId transfer( const PipeTransfer &transfer )
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.pipeTransfer )
-    {
-      return s_backend_driver.pipeTransfer( transfer );
-    }
-    else
-    {
-      return INVALID_REQUEST;
-    }
-  }
-
-
-  void abort( const RequestId id )
-  {
-    if ( s_backend_driver.isSupported && s_backend_driver.abortTransfer )
-    {
-      s_backend_driver.abortTransfer( id );
-    }
-  }
-
-}  // namespace Chimera::DMA
+}  // namespace Chimera::SDIO

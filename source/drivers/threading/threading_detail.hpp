@@ -5,14 +5,16 @@
 *  Description:
 *    Includes OS specific types for threading primitives
 *
-*  2020 | Brandon Braun | brandonbraun653@gmail.com
+*  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
 ********************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_THREADING_OS_TYPING_DETAIL_HPP
 #define CHIMERA_THREADING_OS_TYPING_DETAIL_HPP
 
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/source/drivers/common/preprocessor.hpp>
 
 #if defined( USING_NATIVE_THREADS )

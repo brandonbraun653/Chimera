@@ -97,7 +97,7 @@ namespace Chimera::System
       Chimera::Status_t ( *reset )( void );
       Chimera::Status_t ( *systemStartup )( void );
       Chimera::System::InterruptMask ( *disableInterrupts )( void );
-      void ( *enableInterrupts )( Chimera::System::InterruptMask &interruptMask );
+      void ( *enableInterrupts )( const Chimera::System::InterruptMask &interruptMask );
       int ( *maxConcurrentThreads )( void );
       ResetEvent ( *getResetReason )( void );
       bool ( *inISR )( void );

@@ -5,10 +5,12 @@
  *  Description:
  *      Implements common Chimera functions
  *
- *  2019-2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/adc>
 #include <Chimera/can>
 #include <Chimera/clock>
@@ -19,6 +21,7 @@
 #include <Chimera/i2c>
 #include <Chimera/interrupt>
 #include <Chimera/serial>
+#include <Chimera/sdio>
 #include <Chimera/spi>
 #include <Chimera/system>
 #include <Chimera/thread>
@@ -51,6 +54,7 @@ void ChimeraInit()
   Chimera::EXTI::open();
   Chimera::GPIO::initialize();
   Chimera::I2C::initialize();
+  Chimera::SDIO::initialize();
   Chimera::SPI::initialize();
   Chimera::Timer::initialize();
   Chimera::UART::initialize();
