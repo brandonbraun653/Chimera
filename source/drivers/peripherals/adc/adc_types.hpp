@@ -267,6 +267,19 @@ namespace Chimera::ADC
     UNKNOWN
   };
 
+
+  /**
+   * @brief Channel grouping selections
+   */
+  enum class SequenceGroup : uint8_t
+  {
+    REGULAR,    /**< Regular channel grouping */
+    INJECTED,   /**< Injected channel sequence group */
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
   /*---------------------------------------------------------------------------
   Aliases
   ---------------------------------------------------------------------------*/
@@ -329,13 +342,14 @@ namespace Chimera::ADC
   struct SequenceInit
   {
     SamplingMode seqMode;     /**< How should the user expect sampling to occur? */
+    SequenceGroup seqGroup;    /**< Which channel grouping to map the sequence to */
     TriggerMode  trigMode;    /**< Hardware trigger mode, if SamplingMode == TRIGGER */
     size_t       trigChannel; /**< Which trigger channel to use. HW target specific. */
     ChannelList *channels;    /**< List of channels (in order) to be sampled */
     size_t       numChannels; /**< How many channels are in the sequence */
 
     SequenceInit() :
-        seqMode( SamplingMode::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ), trigChannel( 0 ), channels( nullptr ),
+        seqMode( SamplingMode::UNKNOWN ), seqGroup( SequenceGroup::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ), trigChannel( 0 ), channels( nullptr ),
         numChannels( 0 )
 
     {
@@ -344,6 +358,7 @@ namespace Chimera::ADC
     void clear()
     {
       seqMode     = SamplingMode::UNKNOWN;
+      seqGroup    = SequenceGroup::UNKNOWN;
       trigMode    = TriggerMode::UNKNOWN;
       numChannels = 0;
       trigChannel = 0;
