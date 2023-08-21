@@ -85,19 +85,15 @@ namespace Chimera::Timer::Inverter
   {
     Chimera::Timer::CoreConfig      coreCfg;                      /**< Core timer configuration */
     Chimera::Timer::Output          pinMap[ NUM_SWITCHES ];       /**< Which channel each pin maps to */
-    Chimera::Timer::Trigger::Signal adcTriggerSignal;             /**< Which signal the ADC is listening for a trigger on */
     Chimera::ADC::Peripheral        adcPeripheral;                /**< Which ADC to trigger for sampling */
     Chimera::GPIO::State            breakIOLevel;                 /**< Safe level for all IO on break */
     float                           pwmFrequency;                 /**< Desired frequency of the PWM output */
     float                           deadTimeNs;                   /**< Dead time between hi/lo complementary PWM */
-    float                           adcTriggerOffsetNs;           /**< Offset from center of PWM ramp (center-aligned mode) */
 
     void clear()
     {
       coreCfg.clear();
-      adcTriggerSignal   = Chimera::Timer::Trigger::Signal::TRIG_SIG_INVALID;
       adcPeripheral      = Chimera::ADC::Peripheral::UNKNOWN;
-      adcTriggerOffsetNs = 0.0f;
       deadTimeNs         = 1.0f;
       pwmFrequency       = 1.0f;
 

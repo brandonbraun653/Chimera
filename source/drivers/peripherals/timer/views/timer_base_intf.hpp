@@ -5,7 +5,7 @@
  *  Description:
  *    Interface classes for base time unit classes
  *
- *  2022 | Brandon Braun | brandonbraun653@protonmail.com
+ *  2022-2023 | Brandon Braun | brandonbraun653@protonmail.com
  *****************************************************************************/
 
 #pragma once
@@ -28,7 +28,7 @@ namespace Chimera::Timer
   {
     Instance            instance;    /**< Peripheral instance being configured */
     Chimera::Clock::Bus clockSource; /**< Clock source driving the timer */
-    float               baseFreq;    /**< Base frequency of the timer in Hz */
+    float               baseFreq;    /**< Base clocking frequency of the timer in Hz */
     float               tolerance;   /**< Percent error allowed in base frequency: 0.0f-100.0f */
 
     void clear()
