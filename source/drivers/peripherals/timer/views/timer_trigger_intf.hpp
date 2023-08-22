@@ -87,7 +87,6 @@ namespace Chimera::Timer::Trigger
     float                      frequency;        /**< Core frequency of the timer before overrun */
     SyncAction                 trigSyncAction;   /**< Action to take on the trigger input */
     Signal                     trigSyncSignal;   /**< Trigger signal to use as an input */
-    Signal                     trigOutputSignal; /**< Trigger signal to use as an output */
 
 
     void clear()
@@ -97,7 +96,6 @@ namespace Chimera::Timer::Trigger
       frequency        = -1.0f;
       trigSyncAction   = SyncAction::SYNC_INVALID;
       trigSyncSignal   = Signal::TRIG_SIG_INVALID;
-      trigOutputSignal = Signal::TRIG_SIG_INVALID;
     }
   };
 
@@ -205,7 +203,7 @@ namespace Chimera::Timer::Trigger
      * @brief Gets reload value of the counter, which determines overall period.
      * @return uint32_t
      */
-    uint32_t getTickPeriod();
+    uint32_t getTickPeriod() const;
 
     /**
      * @brief Configures the timer to generate an event at a specific offset within its period.
