@@ -321,6 +321,7 @@ namespace Chimera::ADC
     PreScaler           clockPrescale;       /**< Requested prescaler to drive ADC from system clock [1, 255] */
     Chimera::Clock::Bus clockSource;         /**< Which clock drives the prescaler */
     size_t              defaultSampleCycles; /**< Default number of clock cycles each channel will sample for */
+    float               analogVRef;          /**< Reference voltage used for the ADC. Leave zero if internally generated. */
 
     void clear()
     {
@@ -332,6 +333,7 @@ namespace Chimera::ADC
       clockPrescale       = PreScaler::DIV_1;
       clockSource         = Chimera::Clock::Bus::UNKNOWN_BUS;
       defaultSampleCycles = 100;
+      analogVRef          = 0.0f;
     }
   };
 
