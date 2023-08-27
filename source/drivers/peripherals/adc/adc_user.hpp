@@ -5,7 +5,7 @@
  *  Description:
  *    Implements an interface to create a Chimera ADC peripheral
  *
- *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -67,6 +67,22 @@ namespace Chimera::ADC
      *  @param[in]  cycles        Number of cycles
      */
     Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles );
+
+    /**
+     * @brief Gets the sample time cycles assigned to a channel
+     *
+     * @param ch  Which channel to query
+     * @return size_t
+     */
+    size_t getSampleCycle( const Channel ch );
+
+    /**
+     * @brief Computes the total sample time + conversion, in nanoseconds.
+     *
+     * @param cycles  Number of cycles used for sampling
+     * @return size_t
+     */
+    size_t totalMeasureTime( const size_t cycles );
 
     /**
      *  Samples a single hardware channel in one-shot mode

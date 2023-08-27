@@ -12,7 +12,7 @@
  *    shot mode, or by waiting for a callback event to signal that a group sample
  *    has completed.
  *
- *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -53,6 +53,8 @@ namespace Chimera::ADC
     virtual Chimera::Status_t open( const DriverConfig &init )                                               = 0;
     virtual void              close()                                                                        = 0;
     virtual Chimera::Status_t setSampleTime( const Channel ch, const size_t cycles )                         = 0;
+    virtual size_t            getSampleCycle( const Channel ch ) const                                        = 0;
+    virtual size_t            totalMeasureTime( const size_t cycles )                                        = 0;
     virtual Sample            sampleChannel( const Channel ch )                                              = 0;
     virtual Chimera::Status_t configSequence( const SequenceInit &cfg )                                      = 0;
     virtual void              startSequence()                                                                = 0;

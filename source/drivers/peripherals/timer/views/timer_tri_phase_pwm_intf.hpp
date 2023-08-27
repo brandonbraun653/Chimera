@@ -208,6 +208,21 @@ namespace Chimera::Timer::Inverter
      */
     uint32_t getAutoReloadValue() const;
 
+    /**
+     * @brief Recomputes optimal trigger timing and minimum PWM period for safe operation.
+     *
+     * The goal of trigger timing is to align the ADC trigger with the PWM output so that
+     * the ADC samples the current/voltage at the correct time. This function will compute
+     * when to trigger the ADC so that the sample occurs at the center of the PWM output.
+     * Additionally, it will compute the minimum PWM period that can be used to ensure the
+     * ADC has enough time to sample the current/voltage.
+     *
+     * @param adc_sample_time_ns  How long the ADC needs to perform all sample operations
+     * @param trigger_offset_ns   Dead time between PWM output active and start of trigger output
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t updateTriggerTiming( const uint32_t adc_sample_time_ns, const uint32_t trigger_offset_ns );
+
   private:
     void *mTimerImpl;
   };
