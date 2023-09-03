@@ -112,13 +112,7 @@ namespace Chimera::Timer::Inverter
    * @warning Control functions likely called inside an ISR
    *
    * Timer controller implementation that generates complementary 3-phase PWM
-   * output for the purpose of driving an Inverter. It's expected the controller
-   * will be used in conjunction with some kind of external control loop to
-   * modulate the 3-phase output to produce a desired waveform.
-   *
-   * Suggested External Resources:
-   *  ADC - Used to sample phase current for feedback. Triggered by this Timer.
-   *  ISR - Executes on DMA sample complete. Sets new phase duty cycles.
+   * output for the purpose of driving an BLDC motor using space vector modulation.
    */
   class Driver
   {
@@ -156,44 +150,13 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t setCarrierFrequency( const float freq );
 
     /**
-     * @brief Sets the PWM carrier frequency duty cycle for each phase
+     * @brief Updates drive outputs using space vector modulation
      *
-     * This generates an average voltage on the phase corresponding to the inverter
-     * input DC voltage multiplied by the duty cycle. This is achieved by setting the
-     * high side switch on-time percentage equal to the set duty cycle.
-     *
-     * For example:
-     *  Duty Cycle: 20% => High Side On-Time: 20%, Low Side On-Time: 80%
-     *
-     * @param a   Phase A duty cycle from 0.0% to 100.0%
-     * @param b   Phase B duty cycle from 0.0% to 100.0%
-     * @param c   Phase C duty cycle from 0.0% to 100.0%
+     * @param drive   Drive magnitude on the range of [0.0, 0.866]
+     * @param theta   Electrical angle of the resulting drive vector in radians
      * @return Chimera::Status_t
      */
-    Chimera::Status_t setPhaseDutyCycle( const float a, const float b, const float c );
-
-    /**
-     * @brief Set the PWM carrier frequency duty cycle for each phase
-     *
-     * This sets an absolute value for the capture compare register of the timer.
-     *
-     * @param a   Phase A duty cycle from 0 to TIM->ARR
-     * @param b   Phase B duty cycle from 0 to TIM->ARR
-     * @param c   Phase C duty cycle from 0 to TIM->ARR
-     * @return Chimera::Status_t
-     */
-    Chimera::Status_t setPhaseDutyCycle( const uint32_t a, const uint32_t b, const uint32_t c );
-
-    /**
-     * @brief Assign gating of the switches to enable/disable carrier PWM frequency drive
-     *
-     * Can be used by controllers to chop up the output drive. Most likely used to
-     * implement motor commutation sequences.
-     *
-     * @param state  Desired commutation state
-     * @return Chimera::Status_t
-     */
-    Chimera::Status_t setForwardCommState( const int state );
+    Chimera::Status_t svmUpdate( const float drive, const float theta);
 
     /**
      * @brief Quickly sets the output pins into a safe state
@@ -203,19 +166,11 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t emergencyBreak();
 
     /**
-     * @brief Gets the timer's auto-reload register value
-     * @return uint32_t
-     */
-    uint32_t getAutoReloadValue() const;
-
-    /**
      * @brief Recomputes optimal trigger timing and minimum PWM period for safe operation.
      *
      * The goal of trigger timing is to align the ADC trigger with the PWM output so that
      * the ADC samples the current/voltage at the correct time. This function will compute
      * when to trigger the ADC so that the sample occurs at the center of the PWM output.
-     * Additionally, it will compute the minimum PWM period that can be used to ensure the
-     * ADC has enough time to sample the current/voltage.
      *
      * @param adc_sample_time_ns  How long the ADC needs to perform all sample operations
      * @param trigger_offset_ns   Dead time between PWM output active and start of trigger output
