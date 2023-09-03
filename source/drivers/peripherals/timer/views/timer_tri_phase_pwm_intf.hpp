@@ -28,56 +28,17 @@ namespace Chimera::Timer::Inverter
   /*---------------------------------------------------------------------------
   Constants
   ---------------------------------------------------------------------------*/
+
   /**
    * @brief Total number of switches in the inverter
    */
   static constexpr size_t NUM_SWITCHES = 6;
 
-  /*---------------------------------------------------------------------------
-  Aliases
-  ---------------------------------------------------------------------------*/
-  /**
-   * @brief Drive state of all switches in the inverter
-   */
-  using SwitchStates = std::array<Chimera::GPIO::State, NUM_SWITCHES>;
-
-  /*---------------------------------------------------------------------------
-  Enumerations
-  ---------------------------------------------------------------------------*/
-  /**
-   * @brief Available switches in the 3-phase inverter
-   */
-  enum class SwitchId : uint8_t
-  {
-    HIGH_SIDE_PHASE_A,
-    HIGH_SIDE_PHASE_B,
-    HIGH_SIDE_PHASE_C,
-    LOW_SIDE_PHASE_A,
-    LOW_SIDE_PHASE_B,
-    LOW_SIDE_PHASE_C,
-
-    NUM_OPTIONS,
-    INVALID
-  };
-  static_assert( EnumValue( SwitchId::NUM_OPTIONS ) == NUM_SWITCHES );
-
-  enum CommutationState : int
-  {
-    STATE_0,
-    STATE_1,
-    STATE_2,
-    STATE_3,
-    STATE_4,
-    STATE_5,
-    STATE_OFF,
-
-    NUM_STATES,
-    INVALID_STATE
-  };
 
   /*---------------------------------------------------------------------------
   Structures
   ---------------------------------------------------------------------------*/
+
   /**
    * @brief Info to set up the timer with the appropriate configuration
    */
@@ -107,6 +68,7 @@ namespace Chimera::Timer::Inverter
   /*---------------------------------------------------------------------------
   Classes
   ---------------------------------------------------------------------------*/
+
   /**
    * @brief 3-Phase Inverter PWM Controller
    * @warning Control functions likely called inside an ISR
@@ -152,11 +114,25 @@ namespace Chimera::Timer::Inverter
     /**
      * @brief Updates drive outputs using space vector modulation
      *
-     * @param drive   Drive magnitude on the range of [0.0, 0.866]
-     * @param theta   Electrical angle of the resulting drive vector in radians
+     * @param alpha   Output of inverse park transform
+     * @param beta    Output of inverse park transform
+     * @param theta   Desired electrical angle of the resulting drive vector in radians
      * @return Chimera::Status_t
      */
-    Chimera::Status_t svmUpdate( const float drive, const float theta);
+    Chimera::Status_t svmUpdate( const float alpha, const float beta, const float theta );
+
+    /**
+     * @brief Retrieves the number of timer ticks each high side switch is on for.
+     *
+     * These values can be used to determine which phases have the most time
+     * available for ADC sampling.
+     *
+     * @param tOnA  Phase A high side on time in timer ticks
+     * @param tOnB  Phase B high side on time in timer ticks
+     * @param tOnC  Phase C high side on time in timer ticks
+     * @return void
+     */
+    void getSVMOnTicks( uint32_t &tOnA, uint32_t &tOnB, uint32_t &tOnC );
 
     /**
      * @brief Quickly sets the output pins into a safe state
