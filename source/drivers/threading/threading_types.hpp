@@ -25,7 +25,7 @@ Includes
 
 #if __has_include( <integration/Chimera/threading_types_prj.hpp> )
 #include <integration/Chimera/threading_types_prj.hpp>
-#endif 
+#endif
 
 /*-----------------------------------------------------------------------------
 Literal Constants
@@ -71,7 +71,7 @@ namespace Chimera::Thread
   Aliases
   ---------------------------------------------------------------------------*/
   using TaskArg      = void *;
-  using TaskFuncPtr  = void ( * )( TaskArg );
+  using TaskFuncPtr  = void (  *)( TaskArg );
   using TaskId       = size_t;
   using TaskMsg      = uint32_t;
   using TaskDelegate = etl::delegate<void( void * )>;
@@ -135,12 +135,20 @@ namespace Chimera::Thread
    */
   enum ITCMsg : TaskMsg
   {
-    TSK_MSG_NOP            = 0,           /**< Base message that means do nothing */
-    TSK_MSG_WAKEUP         = ( 1u << 0 ), /**< Wake up the thread to do some processing */
-    TSK_MSG_EXIT           = ( 1u << 1 ), /**< Instructs the task to exit */
-    TSK_MSG_ISR_HANDLER    = ( 1u << 2 ), /**< Execute the general ISR handler */
-    TSK_MSG_ISR_DATA_READY = ( 1u << 3 ), /**< Execute ISR handler that consumes data */
-    TSK_MSG_ISR_ERROR      = ( 1u << 4 ), /**< Execute ISR handler that manages errors */
+    /*-------------------------------------------------------------------------
+    Reserved Messages
+    -------------------------------------------------------------------------*/
+    TSK_MSG_NOP,            /**< Base message that means do nothing */
+    TSK_MSG_WAKEUP,         /**< Wake up the thread to do some processing */
+    TSK_MSG_EXIT,           /**< Instructs the task to exit */
+    TSK_MSG_ISR_HANDLER,    /**< Execute the general ISR handler */
+    TSK_MSG_ISR_DATA_READY, /**< Execute ISR handler that consumes data */
+    TSK_MSG_ISR_ERROR,      /**< Execute ISR handler that manages errors */
+
+    /*-------------------------------------------------------------------------
+    Project Specific Messages
+    -------------------------------------------------------------------------*/
+    TSK_MSG_PRJ_FIRST_MSG, /**< First message that can be used by the project */
   };
 
 
@@ -155,7 +163,7 @@ namespace Chimera::Thread
   {
     union _callable
     {
-      TaskFuncPtr pointer;
+      TaskFuncPtr  pointer;
       TaskDelegate delegate;
 
       /*-------------------------------------------------
@@ -191,11 +199,11 @@ namespace Chimera::Thread
    */
   struct CommonTaskCfg
   {
-    UserFunction function;                   /**< Function pointer defining what the thread executes */
-    TaskArg arg;                             /**< Any arguments to pass to the function */
-    TaskPriority priority;                   /**< Tells the scheduler where this thread fits in the priority hierarchy */
-    size_t stackWords;                       /**< How many bytes to allocate from the heap for this thread's stack */
-    etl::string<MAX_NAME_LEN> name;          /**< User friendly name for identification */
+    UserFunction              function;   /**< Function pointer defining what the thread executes */
+    TaskArg                   arg;        /**< Any arguments to pass to the function */
+    TaskPriority              priority;   /**< Tells the scheduler where this thread fits in the priority hierarchy */
+    size_t                    stackWords; /**< How many bytes to allocate from the heap for this thread's stack */
+    etl::string<MAX_NAME_LEN> name;       /**< User friendly name for identification */
 
     CommonTaskCfg() : function( {} ), arg( nullptr ), priority( 0 ), stackWords( 0 )
     {
@@ -216,8 +224,8 @@ namespace Chimera::Thread
    */
   struct _StaticTaskParams
   {
-    void *stackBuffer;    /**< Buffer to use as the real stack */
-    size_t stackSize;     /**< Size of the stack buffer */
+    void  *stackBuffer; /**< Buffer to use as the real stack */
+    size_t stackSize;   /**< Size of the stack buffer */
 
     _StaticTaskParams() : stackBuffer( nullptr ), stackSize( 0 )
     {
@@ -259,7 +267,7 @@ namespace Chimera::Thread
 
     union _xTaskConfig
     {
-      _StaticTaskParams staticTask;         /**< Statically allocated task */
+      _StaticTaskParams     staticTask;     /**< Statically allocated task */
       _RestrictedTaskParams restrictedTask; /**< MPU protected task */
 
       _xTaskConfig()
@@ -279,7 +287,7 @@ namespace Chimera::Thread
       stackWords = cfg.stackWords;
       name       = cfg.name;
 
-      type = TaskInitType::DYNAMIC;
+      type           = TaskInitType::DYNAMIC;
       specialization = {};
     }
 
@@ -305,7 +313,7 @@ namespace Chimera::Thread
       name       = cfg.name;
 
       type = TaskInitType::RESTRICTED;
-      RT_HARD_ASSERT( false ); // Need to copy over data for restricted type
+      RT_HARD_ASSERT( false );  // Need to copy over data for restricted type
     }
   };
 
