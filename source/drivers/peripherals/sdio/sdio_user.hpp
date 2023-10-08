@@ -47,8 +47,8 @@ namespace Chimera::SDIO
     Chimera::Status_t open( const HWConfig &init );
     Chimera::Status_t connect();
     void              close();
-    Chimera::Status_t writeBlock( const uint32_t blockAddress, const size_t blockCount, const void *const buffer, const size_t size );
-    Chimera::Status_t readBlock( const uint32_t blockAddress, const size_t blockCount, void *const buffer, const size_t size );
+    Chimera::Status_t writeBlock( const uint32_t blockAddress, const size_t blockCount, const void *const buffer );
+    Chimera::Status_t readBlock( const uint32_t blockAddress, const size_t blockCount, void *const buffer );
     Chimera::Status_t eraseBlock( const uint32_t blockAddress, const size_t blockCount );
     CardState         getCardState();
     Chimera::Status_t getCardStatus( CardStatus &status );

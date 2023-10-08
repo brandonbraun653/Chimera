@@ -80,6 +80,10 @@ namespace Chimera::SDIO
     CARD_UNKNOWN
   };
 
+  /**
+   * @brief Bits 12:9 of the 32-bit response to CMD13
+   * @see Physical Layer Simplified Specification Version 9.00 Section 4.10.1
+   */
   enum CardState : uint8_t
   {
     CARD_READY,          /**< Card state is ready */
@@ -90,7 +94,16 @@ namespace Chimera::SDIO
     CARD_RECEIVING,      /**< Card is receiving operation information */
     CARD_PROGRAMMING,    /**< Card is in programming state */
     CARD_DISCONNECTED,   /**< Card is disconnected */
-    CARD_ERROR,          /**< Card response Error */
+    CARD_ERROR           /**< Card response Error */
+  };
+
+  /**
+   * @brief Response bit fields for CMD13
+   * @see Physical Layer Simplified Specification Version 9.00 Section 4.10.1
+   */
+  enum CMD13Response : uint32_t
+  {
+    CMD13_READY_FOR_DATA = ( 1u << 8u ), /**< Card is ready for data */
   };
 
   /**
