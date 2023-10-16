@@ -5,22 +5,23 @@
  *  Description:
  *    Chimera CAN types
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_CAN_TYPES_HPP
 #define CHIMERA_CAN_TYPES_HPP
 
-/* STL Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <cstdint>
 #include <cstring>
 #include <memory>
-
-/* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/source/drivers/peripherals/peripheral_types.hpp>
+#include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
 
 namespace Chimera::CAN
 {
@@ -33,11 +34,9 @@ namespace Chimera::CAN
   /*---------------------------------------------------------------------------
   Aliases
   ---------------------------------------------------------------------------*/
-  using Driver_rPtr = Driver *;
-
-  using Identifier_t = uint32_t;
-  using DataLength_t = uint8_t;
-
+  using Driver_rPtr     = Driver *;
+  using Identifier_t    = uint32_t;
+  using DataLength_t    = uint8_t;
   using FrameCallback_t = void ( * )( const BasicFrame *const frame );
 
   /*---------------------------------------------------------------------------
@@ -154,12 +153,12 @@ namespace Chimera::CAN
   ---------------------------------------------------------------------------*/
   struct BasicFrame
   {
-    Identifier_t id;                    /**< Message identifier, sized according to idMode */
-    IdType idMode;                      /**< Specifies either standard or extended ID */
-    FrameType frameType;                /**< Is this a data or remote frame */
-    DataLength_t dataLength;            /**< How many bytes are in the data field */
-    uint8_t filterIndex;                /**< RX only: Which filter this frame matched against */
-    uint8_t data[ MAX_PAYLOAD_LENGTH ]; /**< Data payload */
+    Identifier_t id;                         /**< Message identifier, sized according to idMode */
+    IdType       idMode;                     /**< Specifies either standard or extended ID */
+    FrameType    frameType;                  /**< Is this a data or remote frame */
+    DataLength_t dataLength;                 /**< How many bytes are in the data field */
+    uint8_t      filterIndex;                /**< RX only: Which filter this frame matched against */
+    uint8_t      data[ MAX_PAYLOAD_LENGTH ]; /**< Data payload */
 
     void clear()
     {
@@ -200,9 +199,9 @@ namespace Chimera::CAN
 
   struct Filter
   {
-    uint32_t id;   /**< ID being filtered on */
-    uint32_t mask; /**< Mask bits for the ID. 0 is don't care, 1 is must match */
-    bool extended; /**< Is the CAN ID an extended format? Else standard.*/
+    uint32_t id;       /**< ID being filtered on */
+    uint32_t mask;     /**< Mask bits for the ID. 0 is don't care, 1 is must match */
+    bool     extended; /**< Is the CAN ID an extended format? Else standard.*/
 
     void clear()
     {
@@ -215,16 +214,16 @@ namespace Chimera::CAN
 
   struct HardwareInit
   {
-    Channel channel;          /**< Channel the config settings are for */
-    BasicFrame *txBuffer;     /**< Buffer for queueing TX frames */
-    size_t txElements;        /**< Number of frames the TX buffer can hold */
-    BasicFrame *rxBuffer;     /**< Buffer for queuing RX frames */
-    size_t rxElements;        /**< Number of frame the RX buffer can hold */
-    float samplePointPercent; /**< How far into the bit period to sample (CANOpen: 87.5%, ARINC825: 75%)*/
-    size_t baudRate;          /**< Bus communication rate in Hz*/
-    uint8_t timeQuanta;       /**< Number of intervals each bit is divided into (Recommend 16 or 8) */
-    uint8_t resyncJumpWidth;  /**< Number of time quanta allowed to shift for syncing (Recommend 1) */
-    float maxBaudError;       /**< Max allowable baud rate error abs(%) */
+    Channel     channel;            /**< Channel the config settings are for */
+    BasicFrame *txBuffer;           /**< Buffer for queueing TX frames */
+    size_t      txElements;         /**< Number of frames the TX buffer can hold */
+    BasicFrame *rxBuffer;           /**< Buffer for queuing RX frames */
+    size_t      rxElements;         /**< Number of frame the RX buffer can hold */
+    float       samplePointPercent; /**< How far into the bit period to sample (CANOpen: 87.5%, ARINC825: 75%)*/
+    size_t      baudRate;           /**< Bus communication rate in Hz*/
+    uint8_t     timeQuanta;         /**< Number of intervals each bit is divided into (Recommend 16 or 8) */
+    uint8_t     resyncJumpWidth;    /**< Number of time quanta allowed to shift for syncing (Recommend 1) */
+    float       maxBaudError;       /**< Max allowable baud rate error abs(%) */
 
     void clear()
     {
@@ -243,17 +242,19 @@ namespace Chimera::CAN
 
   struct DriverConfig
   {
-    Chimera::GPIO::PinInit TXInit; /**< The GPIO pin settings used for TX */
-    Chimera::GPIO::PinInit RXInit; /**< The GPIO pin settings used for RX */
-    HardwareInit HWInit;           /**< Hardware configuration options */
-    bool validity;                 /**< Defines if the configuration is valid */
+    Chimera::GPIO::PinInit       TXInit;    /**< The GPIO pin settings used for TX */
+    Chimera::GPIO::PinInit       RXInit;    /**< The GPIO pin settings used for RX */
+    HardwareInit                 HWInit;    /**< Hardware configuration options */
+    ::Chimera::Interrupt::ISRCfg isrConfig; /**< Interrupt configuration */
+    bool                         validity;  /**< Defines if the configuration is valid */
 
     void clear()
     {
       TXInit.clear();
       RXInit.clear();
       HWInit.clear();
-      validity = false;
+      isrConfig = {};
+      validity  = false;
     }
   };
 

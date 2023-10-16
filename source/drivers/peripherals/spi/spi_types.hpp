@@ -9,21 +9,22 @@
  *    Don't change the order or numbering of the various enum classes as they
  *    are allowed to be used as array indexes. Only append to the end.
  *
- *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
 #ifndef CHIMERA_SPI_TYPES_HPP
 #define CHIMERA_SPI_TYPES_HPP
 
-/* STL Includes */
-#include <cstring>
-#include <cstdint>
-#include <memory>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/common>
 #include <Chimera/gpio>
+#include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
+#include <cstdint>
+#include <cstring>
+#include <memory>
 
 namespace Chimera::SPI
 {
@@ -155,15 +156,16 @@ namespace Chimera::SPI
    */
   struct HardwareInit
   {
-    BitOrder     bitOrder;    /**< Sets LSB or MSB ordering of the transfers */
-    ControlMode  controlMode; /**< The primary arbitration method for the peripheral */
-    ClockFreq    clockFreq;   /**< The desired approximate clock frequency */
-    ClockMode    clockMode;   /**< Sets the clock phase and polarity options */
-    CSMode       csMode;      /**< Chip select control mode */
-    DataSize     dataSize;    /**< How wide each transfer should minimally be */
-    Channel      hwChannel;   /**< Hardware channel to be configured */
-    TransferMode txfrMode;    /**< Transfer controller mode */
-    bool         validity;    /**< Structure validity */
+    BitOrder                     bitOrder;    /**< Sets LSB or MSB ordering of the transfers */
+    ControlMode                  controlMode; /**< The primary arbitration method for the peripheral */
+    ClockFreq                    clockFreq;   /**< The desired approximate clock frequency */
+    ClockMode                    clockMode;   /**< Sets the clock phase and polarity options */
+    CSMode                       csMode;      /**< Chip select control mode */
+    DataSize                     dataSize;    /**< How wide each transfer should minimally be */
+    Channel                      hwChannel;   /**< Hardware channel to be configured */
+    TransferMode                 txfrMode;    /**< Transfer controller mode */
+    ::Chimera::Interrupt::ISRCfg isrConfig;   /**< Interrupt configuration */
+    bool                         validity;    /**< Structure validity */
 
     void clear()
     {
@@ -175,6 +177,7 @@ namespace Chimera::SPI
       dataSize    = DataSize::SZ_8BIT;
       hwChannel   = Channel::SPI1;
       txfrMode    = TransferMode::BLOCKING;
+      isrConfig   = {};
       validity    = false;
     }
   };

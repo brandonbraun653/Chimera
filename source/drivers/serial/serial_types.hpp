@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera Serial types
  *
- *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -166,15 +166,16 @@ namespace Chimera::Serial
   ---------------------------------------------------------------------------*/
   struct Config
   {
-    Channel     channel;  /**< Serial channel to use */
-    size_t      baud;     /**< Desired baud rate (bps) */
-    CharWid     width;    /**< Transfer width per-word */
-    Parity      parity;   /**< Parity to use */
-    StopBits    stopBits; /**< Number of stop bits */
-    FlowControl flow;     /**< Any flow control? */
-    TxfrMode    txfrMode; /**< Hardware transfer mode in TX/RX */
-    BipBuffer  *rxBuffer; /**< IO ring buffer for reception */
-    BipBuffer  *txBuffer; /**< IO ring buffer for transmission */
+    Channel                      channel;   /**< Serial channel to use */
+    size_t                       baud;      /**< Desired baud rate (bps) */
+    CharWid                      width;     /**< Transfer width per-word */
+    Parity                       parity;    /**< Parity to use */
+    StopBits                     stopBits;  /**< Number of stop bits */
+    FlowControl                  flow;      /**< Any flow control? */
+    TxfrMode                     txfrMode;  /**< Hardware transfer mode in TX/RX */
+    ::Chimera::Interrupt::ISRCfg isrConfig; /**< Interrupt configuration */
+    BipBuffer                   *rxBuffer;  /**< IO ring buffer for reception */
+    BipBuffer                   *txBuffer;  /**< IO ring buffer for transmission */
   };
 
 

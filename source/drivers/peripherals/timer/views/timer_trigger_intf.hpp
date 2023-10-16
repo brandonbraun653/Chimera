@@ -6,7 +6,7 @@
  *    Timer view for acting as a trigger to other peripherals or reacting to
  *    triggers from other peripherals.
  *
- *  2022 | Brandon Braun | brandonbraun653@protonmail.com
+ *  2022-2023 | Brandon Braun | brandonbraun653@protonmail.com
  *****************************************************************************/
 
 #pragma once
@@ -16,11 +16,12 @@
 /*-----------------------------------------------------------------------------
 Includes
 -----------------------------------------------------------------------------*/
-#include <memory>
 #include <Chimera/source/drivers/function/function_types.hpp>
+#include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_common_types.hpp>
 #include <Chimera/source/drivers/peripherals/timer/timer_intf.hpp>
 #include <Chimera/source/drivers/peripherals/timer/views/timer_base_intf.hpp>
+#include <memory>
 
 
 namespace Chimera::Timer::Trigger
@@ -67,14 +68,16 @@ namespace Chimera::Timer::Trigger
   ---------------------------------------------------------------------------*/
   struct MasterConfig
   {
-    Chimera::Timer::CoreConfig coreConfig;  /**< Core timer configuration */
-    Chimera::Function::Opaque  isrCallback; /**< Optional callback to call when the trigger fires */
-    float                      trigFreq;    /**< Output trigger frequency in Hz */
+    Chimera::Timer::CoreConfig   coreConfig;  /**< Core timer configuration */
+    Chimera::Function::Opaque    isrCallback; /**< Optional callback to call when the trigger fires */
+    ::Chimera::Interrupt::ISRCfg isrConfig;   /**< Interrupt configuration */
+    float                        trigFreq;    /**< Output trigger frequency in Hz */
 
     void clear()
     {
       coreConfig.clear();
       isrCallback = {};
+      isrConfig   = {};
       trigFreq    = -1.0f;
     }
   };
@@ -82,20 +85,22 @@ namespace Chimera::Timer::Trigger
 
   struct SlaveConfig
   {
-    Chimera::Timer::CoreConfig coreConfig;       /**< Core timer configuration */
-    Chimera::Function::Opaque  isrCallback;      /**< Optional callback to call when the trigger fires */
-    float                      frequency;        /**< Core frequency of the timer before overrun */
-    SyncAction                 trigSyncAction;   /**< Action to take on the trigger input */
-    Signal                     trigSyncSignal;   /**< Trigger signal to use as an input */
+    Chimera::Timer::CoreConfig   coreConfig;     /**< Core timer configuration */
+    Chimera::Function::Opaque    isrCallback;    /**< Optional callback to call when the trigger fires */
+    ::Chimera::Interrupt::ISRCfg isrConfig;      /**< Interrupt configuration */
+    float                        frequency;      /**< Core frequency of the timer before overrun */
+    SyncAction                   trigSyncAction; /**< Action to take on the trigger input */
+    Signal                       trigSyncSignal; /**< Trigger signal to use as an input */
 
 
     void clear()
     {
       coreConfig.clear();
-      isrCallback      = {};
-      frequency        = -1.0f;
-      trigSyncAction   = SyncAction::SYNC_INVALID;
-      trigSyncSignal   = Signal::TRIG_SIG_INVALID;
+      isrCallback    = {};
+      isrConfig      = {};
+      frequency      = -1.0f;
+      trigSyncAction = SyncAction::SYNC_INVALID;
+      trigSyncSignal = Signal::TRIG_SIG_INVALID;
     }
   };
 

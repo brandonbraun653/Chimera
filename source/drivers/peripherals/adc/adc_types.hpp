@@ -5,7 +5,7 @@
  *  Description:
  *    Chimera ADC types
  *
- *  2020-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2023 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -18,6 +18,7 @@ Includes
 #include <Aurora/utility>
 #include <Chimera/clock>
 #include <Chimera/common>
+#include <Chimera/source/drivers/peripherals/interrupt/interrupt_types.hpp>
 #include <cstdint>
 #include <cstring>
 #include <etl/delegate.h>
@@ -273,8 +274,8 @@ namespace Chimera::ADC
    */
   enum class SequenceGroup : uint8_t
   {
-    REGULAR,    /**< Regular channel grouping */
-    INJECTED,   /**< Injected channel sequence group */
+    REGULAR,  /**< Regular channel grouping */
+    INJECTED, /**< Injected channel sequence group */
 
     NUM_OPTIONS,
     UNKNOWN
@@ -312,16 +313,17 @@ namespace Chimera::ADC
    */
   struct DriverConfig
   {
-    Peripheral          periph;              /**< Which peripheral instance is being configured */
-    Interrupt           bmISREnable;         /**< Bit mask of interrupts to enable */
-    OverSampler         overSampleRate;      /**< Over sampling rate, if any */
-    OverSampleShift     overSampleShift;     /**< How much to right shift after oversampling, if any */
-    TransferMode        transferMode;        /**< Conversion result memory transfer method */
-    Resolution          resolution;          /**< Conversion resolution */
-    PreScaler           clockPrescale;       /**< Requested prescaler to drive ADC from system clock [1, 255] */
-    Chimera::Clock::Bus clockSource;         /**< Which clock drives the prescaler */
-    size_t              defaultSampleCycles; /**< Default number of clock cycles each channel will sample for */
-    float               analogVRef;          /**< Reference voltage used for the ADC. Leave zero if internally generated. */
+    Peripheral                   periph;              /**< Which peripheral instance is being configured */
+    Interrupt                    bmISREnable;         /**< Bit mask of interrupts to enable */
+    OverSampler                  overSampleRate;      /**< Over sampling rate, if any */
+    OverSampleShift              overSampleShift;     /**< How much to right shift after oversampling, if any */
+    TransferMode                 transferMode;        /**< Conversion result memory transfer method */
+    Resolution                   resolution;          /**< Conversion resolution */
+    PreScaler                    clockPrescale;       /**< Requested prescaler to drive ADC from system clock [1, 255] */
+    Chimera::Clock::Bus          clockSource;         /**< Which clock drives the prescaler */
+    size_t                       defaultSampleCycles; /**< Default number of clock cycles each channel will sample for */
+    float                        analogVRef; /**< Reference voltage used for the ADC. Leave zero if internally generated. */
+    ::Chimera::Interrupt::ISRCfg isrConfig;  /**< Interrupt configuration */
 
     void clear()
     {
@@ -334,6 +336,7 @@ namespace Chimera::ADC
       clockSource         = Chimera::Clock::Bus::UNKNOWN_BUS;
       defaultSampleCycles = 100;
       analogVRef          = 0.0f;
+      isrConfig           = {};
     }
   };
 
@@ -343,16 +346,16 @@ namespace Chimera::ADC
    */
   struct SequenceInit
   {
-    SamplingMode seqMode;     /**< How should the user expect sampling to occur? */
+    SamplingMode  seqMode;     /**< How should the user expect sampling to occur? */
     SequenceGroup seqGroup;    /**< Which channel grouping to map the sequence to */
-    TriggerMode  trigMode;    /**< Hardware trigger mode, if SamplingMode == TRIGGER */
-    size_t       trigChannel; /**< Which trigger channel to use. HW target specific. */
-    ChannelList *channels;    /**< List of channels (in order) to be sampled */
-    size_t       numChannels; /**< How many channels are in the sequence */
+    TriggerMode   trigMode;    /**< Hardware trigger mode, if SamplingMode == TRIGGER */
+    size_t        trigChannel; /**< Which trigger channel to use. HW target specific. */
+    ChannelList  *channels;    /**< List of channels (in order) to be sampled */
+    size_t        numChannels; /**< How many channels are in the sequence */
 
     SequenceInit() :
-        seqMode( SamplingMode::UNKNOWN ), seqGroup( SequenceGroup::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ), trigChannel( 0 ), channels( nullptr ),
-        numChannels( 0 )
+        seqMode( SamplingMode::UNKNOWN ), seqGroup( SequenceGroup::UNKNOWN ), trigMode( TriggerMode::UNKNOWN ),
+        trigChannel( 0 ), channels( nullptr ), numChannels( 0 )
 
     {
     }
@@ -365,7 +368,7 @@ namespace Chimera::ADC
       numChannels = 0;
       trigChannel = 0;
 
-      if ( channels )
+      if( channels )
       {
         channels->fill( Channel::UNKNOWN );
       }
