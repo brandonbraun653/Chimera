@@ -38,10 +38,10 @@ namespace Chimera::Serial
     Driver();
     ~Driver();
 
-    Chimera::Status_t open( const Chimera::Serial::Config &config );
-    Chimera::Status_t close();
-    int               write( const void *const buffer, const size_t length, const size_t timeout = Chimera::Thread::TIMEOUT_DONT_WAIT );
-    int               read( void *const buffer, const size_t length, const size_t timeout = Chimera::Thread::TIMEOUT_DONT_WAIT );
+    virtual Chimera::Status_t open( const Chimera::Serial::Config &config );
+    virtual Chimera::Status_t close();
+    virtual int               write( const void *const buffer, const size_t length, const size_t timeout = Chimera::Thread::TIMEOUT_DONT_WAIT );
+    virtual int               read( void *const buffer, const size_t length, const size_t timeout = Chimera::Thread::TIMEOUT_DONT_WAIT );
 
   protected:
     friend Chimera::Thread::Lockable<Driver>;
