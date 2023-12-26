@@ -26,14 +26,24 @@ Includes
 namespace Chimera::Timer::Inverter
 {
   /*---------------------------------------------------------------------------
-  Constants
+  Enumerations
   ---------------------------------------------------------------------------*/
 
   /**
-   * @brief Total number of switches in the inverter
+   * @brief Enumerate possible IO switches that can be controlled
    */
-  static constexpr size_t NUM_SWITCHES = 6;
+  enum SwitchIO : size_t
+  {
+    SWITCH_A_HI,
+    SWITCH_A_LO,
+    SWITCH_B_HI,
+    SWITCH_B_LO,
+    SWITCH_C_HI,
+    SWITCH_C_LO,
 
+    NUM_SWITCHES,
+    SWITCH_INVALID
+  };
 
   /*---------------------------------------------------------------------------
   Structures
@@ -110,6 +120,20 @@ namespace Chimera::Timer::Inverter
      * @return Chimera::Status_t
      */
     Chimera::Status_t setCarrierFrequency( const float freq );
+
+    /**
+     * @brief Energizes the winding configured by the given switch IOs.
+     *
+     * This will drive the IO pins using a duty cycle of the given value. Internal
+     * protections are in place to ensure a valid combination of IOs are used. Once
+     * enabled, the PWM output will remain active until disableOutput() is called.
+     *
+     * @param hiSide Switch to connect to Vbus
+     * @param loSide Switch to connect to ground
+     * @param dutyCycle PWM duty cycle to use
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t energizeWinding( const SwitchIO hiSide, const SwitchIO loSide, const float dutyCycle );
 
     /**
      * @brief Updates drive outputs using space vector modulation
