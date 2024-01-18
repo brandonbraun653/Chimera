@@ -114,6 +114,17 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t disableOutput();
 
     /**
+     * @brief Drives the low side switches to GND, shorting the windings.
+     *
+     * This is useful for braking the motor quickly or for holding the motor
+     * in place without using any power. All energy in the windings will be
+     * dissipated as heat.
+     *
+     * @return Chimera::Status_t
+     */
+    Chimera::Status_t shortLowSideWindings();
+
+    /**
      * @brief Sets the core PWM frequency driving each output phase
      *
      * @param freq  Frequency to set in Hz
@@ -180,6 +191,8 @@ namespace Chimera::Timer::Inverter
 
   private:
     void *mTimerImpl;
+
+    Chimera::Status_t reset_to_idle();
   };
 
 }  // namespace Chimera::Timer
