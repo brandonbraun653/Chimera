@@ -54,21 +54,19 @@ namespace Chimera::Timer::Inverter
    */
   struct DriverConfig
   {
-    Chimera::Timer::CoreConfig      coreCfg;                      /**< Core timer configuration */
-    Chimera::Timer::Output          pinMap[ NUM_SWITCHES ];       /**< Which channel each pin maps to */
-    Chimera::ADC::Peripheral        adcPeripheral;                /**< Which ADC to trigger for sampling */
-    Chimera::GPIO::State            breakIOLevel;                 /**< Safe level for all IO on break */
-    float                           pwmFrequency;                 /**< Desired frequency of the PWM output */
-    float                           deadTimeNs;                   /**< Dead time between hi/lo complementary PWM */
+    Chimera::Timer::CoreConfig coreCfg;                /**< Core timer configuration */
+    Chimera::Timer::Output     pinMap[ NUM_SWITCHES ]; /**< Which channel each pin maps to */
+    Chimera::GPIO::State       breakIOLevel;           /**< Safe level for all IO on break */
+    float                      pwmFrequency;           /**< Desired frequency of the PWM output */
+    float                      deadTimeNs;             /**< Dead time between hi/lo complementary PWM */
 
     void clear()
     {
       coreCfg.clear();
-      adcPeripheral      = Chimera::ADC::Peripheral::UNKNOWN;
-      deadTimeNs         = 1.0f;
-      pwmFrequency       = 1.0f;
+      deadTimeNs   = 1.0f;
+      pwmFrequency = 1.0f;
 
-      for ( size_t idx = 0; idx < NUM_SWITCHES; idx++ )
+      for( size_t idx = 0; idx < NUM_SWITCHES; idx++ )
       {
         pinMap[ idx ] = Chimera::Timer::Output::INVALID;
       }
@@ -195,6 +193,6 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t reset_to_idle();
   };
 
-}  // namespace Chimera::Timer
+}  // namespace Chimera::Timer::Inverter
 
-#endif  /* !CHIMERA_TIMER_TRI_PHASE_PWM_HPP */
+#endif /* !CHIMERA_TIMER_TRI_PHASE_PWM_HPP */
