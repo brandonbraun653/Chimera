@@ -34,12 +34,12 @@ namespace Chimera::Timer::Inverter
    */
   enum SwitchIO : size_t
   {
-    SWITCH_A_HI,
-    SWITCH_A_LO,
-    SWITCH_B_HI,
-    SWITCH_B_LO,
-    SWITCH_C_HI,
-    SWITCH_C_LO,
+    SWITCH_1_HI,
+    SWITCH_1_LO,
+    SWITCH_2_HI,
+    SWITCH_2_LO,
+    SWITCH_3_HI,
+    SWITCH_3_LO,
 
     NUM_SWITCHES,
     SWITCH_INVALID
