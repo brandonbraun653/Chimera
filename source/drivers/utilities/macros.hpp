@@ -5,7 +5,7 @@
  *  Description:
  *    Helpful macros for Chimera
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2024 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -53,10 +53,11 @@ Calculates the number of bytes contained in the array
 Macros for Memory Initialization
 -------------------------------------------------------------------------------*/
 #define CLEAR_ARRAY( arr ) ( memset( arr, 0, ARRAY_BYTES( arr ) ) )
+#define CLEAR_STRUCT( s ) ( memset( &s, 0, sizeof( s ) ) )
 
 /*-----------------------------------------------------------------------------
 Check for double pointer validity
 -----------------------------------------------------------------------------*/
 #define DPTR_EXISTS( double_ptr ) ( static_cast<bool>( double_ptr && *double_ptr ) )
 
-#endif  /* !CHIMERA_MACROS_HPP */
+#endif /* !CHIMERA_MACROS_HPP */

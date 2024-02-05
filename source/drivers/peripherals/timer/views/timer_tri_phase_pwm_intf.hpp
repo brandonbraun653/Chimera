@@ -100,6 +100,12 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t init( const DriverConfig &cfg );
 
     /**
+     * @brief Resets the timer to a known idle state
+     * @return void
+     */
+    void reset();
+
+    /**
      * @brief Enables the PWM output signals on the configured GPIO pins
      * @return Chimera::Status_t
      */
