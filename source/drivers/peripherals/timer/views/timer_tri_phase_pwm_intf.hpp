@@ -5,7 +5,7 @@
  *  Description:
  *     3-Phase PWM Controller for Motor Control Applications
  *
- *  2022 | Brandon Braun | brandonbraun653@protonmail.com
+ *  2022-2024 | Brandon Braun | brandonbraun653@protonmail.com
  *****************************************************************************/
 
 #pragma once
@@ -59,18 +59,35 @@ namespace Chimera::Timer::Inverter
     Chimera::GPIO::State       breakIOLevel;           /**< Safe level for all IO on break */
     float                      pwmFrequency;           /**< Desired frequency of the PWM output */
     float                      deadTimeNs;             /**< Dead time between hi/lo complementary PWM */
+    float                      settleTimeNs;           /**< Time to wait for phase currents to settle after a switch event */
+    float                      adcSampleTimeNs;        /**< Window needed for ADC to complete all samples */
 
     void clear()
     {
       coreCfg.clear();
       deadTimeNs   = 1.0f;
       pwmFrequency = 1.0f;
+      settleTimeNs = 1.0f;
 
       for( size_t idx = 0; idx < NUM_SWITCHES; idx++ )
       {
         pinMap[ idx ] = Chimera::Timer::Output::INVALID;
       }
     }
+  };
+
+  /**
+   * @brief Computed outputs of the SVM algorithm
+   */
+  struct SVMState
+  {
+    bool                    adc_polarity; /**< Polarity to trigger ADC on. True => Rising, False => Falling*/
+    Chimera::Timer::Channel phase1;       /**< Timer channel for best phase 1 current */
+    Chimera::Timer::Channel phase2;       /**< Timer channel for best phase 2 current */
+    uint32_t                t1_cc;        /**< Timer compare value for channel 1 */
+    uint32_t                t2_cc;        /**< Timer compare value for channel 2 */
+    uint32_t                t3_cc;        /**< Timer compare value for channel 3 */
+    uint32_t                t4_cc;        /**< Timer compare value for channel 4 */
   };
 
   /*---------------------------------------------------------------------------
@@ -118,17 +135,6 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t disableOutput();
 
     /**
-     * @brief Drives the low side switches to GND, shorting the windings.
-     *
-     * This is useful for braking the motor quickly or for holding the motor
-     * in place without using any power. All energy in the windings will be
-     * dissipated as heat.
-     *
-     * @return Chimera::Status_t
-     */
-    Chimera::Status_t shortLowSideWindings();
-
-    /**
      * @brief Sets the core PWM frequency driving each output phase
      *
      * @param freq  Frequency to set in Hz
@@ -161,17 +167,10 @@ namespace Chimera::Timer::Inverter
     Chimera::Status_t svmUpdate( const float alpha, const float beta, const float theta );
 
     /**
-     * @brief Retrieves the number of timer ticks each high side switch is on for.
-     *
-     * These values can be used to determine which phases have the most time
-     * available for ADC sampling.
-     *
-     * @param tOnA  Phase A high side on time in timer ticks
-     * @param tOnB  Phase B high side on time in timer ticks
-     * @param tOnC  Phase C high side on time in timer ticks
+     * @brief Gets the current decision outputs of the svm update algorithm
      * @return void
      */
-    void getSVMOnTicks( uint32_t &tOnA, uint32_t &tOnB, uint32_t &tOnC );
+    SVMState svmState();
 
     /**
      * @brief Quickly sets the output pins into a safe state
@@ -180,22 +179,8 @@ namespace Chimera::Timer::Inverter
      */
     Chimera::Status_t emergencyBreak();
 
-    /**
-     * @brief Recomputes optimal trigger timing and minimum PWM period for safe operation.
-     *
-     * The goal of trigger timing is to align the ADC trigger with the PWM output so that
-     * the ADC samples the current/voltage at the correct time. This function will compute
-     * when to trigger the ADC so that the sample occurs at the center of the PWM output.
-     *
-     * @param adc_sample_time_ns  How long the ADC needs to perform all sample operations
-     * @param trigger_offset_ns   Dead time between PWM output active and start of trigger output
-     * @return Chimera::Status_t
-     */
-    Chimera::Status_t updateTriggerTiming( const uint32_t adc_sample_time_ns, const uint32_t trigger_offset_ns );
-
   private:
     void *mTimerImpl;
-
     Chimera::Status_t reset_to_idle();
   };
 
