@@ -162,9 +162,10 @@ namespace Chimera::Timer::Inverter
      * @param alpha   Output of inverse park transform
      * @param beta    Output of inverse park transform
      * @param theta   Desired electrical angle of the resulting drive vector in radians
+     * @param drive   Modulation index of the drive vector, ranged [0, pi/3]
      * @return Chimera::Status_t
      */
-    Chimera::Status_t svmUpdate( const float alpha, const float beta, const float theta );
+    Chimera::Status_t svmUpdate( const float alpha, const float beta, const float theta, const float drive );
 
     /**
      * @brief Gets the current decision outputs of the svm update algorithm
