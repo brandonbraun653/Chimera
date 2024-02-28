@@ -41,18 +41,17 @@ namespace Chimera::SDIO
   class HWInterface
   {
   public:
-    virtual ~HWInterface()                                                                       = default;
-    virtual Chimera::Status_t open( const HWConfig &init )                                       = 0;
-    virtual Chimera::Status_t connect()                                                          = 0;
-    virtual void              close()                                                            = 0;
-    virtual Chimera::Status_t writeBlock( const uint32_t blockAddress, const size_t blockCount, const void *const buffer,
-                                          const size_t size )                                    = 0;
-    virtual Chimera::Status_t readBlock( const uint32_t blockAddress, const size_t blockCount, void *const buffer,
-                                         const size_t size )                                     = 0;
-    virtual Chimera::Status_t eraseBlock( const uint32_t blockAddress, const size_t blockCount ) = 0;
-    virtual Chimera::Status_t getCardStatus( CardStatus &status )                                = 0;
-    virtual Chimera::Status_t getCardIdentity( CardIdentity &identity )                          = 0;
-    virtual Chimera::Status_t getCardSpecificData( CardSpecificData &data )                      = 0;
+    virtual ~HWInterface()                                 = default;
+    virtual Chimera::Status_t open( const HWConfig &init ) = 0;
+    virtual Chimera::Status_t connect()                    = 0;
+    virtual void              close()                      = 0;
+    virtual Chimera::Status_t writeBlock( const uint32_t blockAddress, const size_t blockCount, const void *const buffer ) = 0;
+    virtual Chimera::Status_t readBlock( const uint32_t blockAddress, const size_t blockCount, void *const buffer )        = 0;
+    virtual Chimera::Status_t eraseBlock( const uint32_t blockAddress, const size_t blockCount )                           = 0;
+    virtual Chimera::Status_t getCardStatus( CardStatus &status )                                                          = 0;
+    virtual Chimera::Status_t getCardIdentity( CardIdentity &identity )                                                    = 0;
+    virtual Chimera::Status_t getCardSpecificData( CardSpecificData &data )                                                = 0;
+    virtual Chimera::Status_t getCardInfo( CardInfo &info )                                                                = 0;
   };
 
 #if defined( CHIMERA_VIRTUAL )
