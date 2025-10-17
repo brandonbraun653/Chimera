@@ -21,6 +21,7 @@ Includes
 #include <limits>
 #include <mutex>
 #include <queue>
+#include <semaphore>
 #include <thread>
 
 /*-----------------------------------------------------------------------------
