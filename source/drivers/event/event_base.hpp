@@ -30,11 +30,16 @@ namespace Chimera::Event
 
     Chimera::Status_t registerListener( Actionable &listener, const size_t timeout, size_t &registrationID ) final override
     {
+      (void)listener;
+      (void)timeout;
+      (void)registrationID;
       return Chimera::Status::NOT_SUPPORTED;
     }
 
     Chimera::Status_t removeListener( const size_t registrationID, const size_t timeout ) final override
     {
+      (void)registrationID;
+      (void)timeout;
       return Chimera::Status::NOT_SUPPORTED;
     }
   };

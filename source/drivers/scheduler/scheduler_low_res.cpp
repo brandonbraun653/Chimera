@@ -281,6 +281,7 @@ namespace Chimera::Scheduler::LoRes
   ---------------------------------------------------------------------------*/
   static void TimerThreadFunction( void *arg )
   {
+    (void)arg;
     using namespace Chimera::Thread;
 
     while ( 1 )

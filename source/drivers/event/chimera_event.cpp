@@ -88,6 +88,8 @@ namespace Chimera::Event
 
   bool processListener_Semaphore( const Trigger event, Actionable &listener, uint32_t value )
   {
+    (void)value;
+
     /*-------------------------------------------------------------------------
     Only listen if we actually care about the event
     -------------------------------------------------------------------------*/

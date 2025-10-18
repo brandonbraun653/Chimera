@@ -64,7 +64,7 @@ namespace Chimera
 #if defined( USING_FREERTOS_THREADS )
     return pvPortMalloc( size );
 #else
-    return malloc( size );
+    return std::malloc( size );
 #endif /* USING_FREERTOS_THREADS */
   }
 
@@ -74,7 +74,7 @@ namespace Chimera
 #if defined( USING_FREERTOS_THREADS )
     vPortFree( ptr );
 #else
-    free( ptr );
+    std::free( ptr );
 #endif /* USING_FREERTOS_THREADS */
   }
 }  // namespace Chimera

@@ -56,21 +56,25 @@ Macros
 Create the __SHORT_FILE__ macro, which returns just the file name instead of the
 whole path from __FILE__ https://blog.galowicz.de/2016/02/20/short_file_macro/
 -------------------------------------------------------------------------------*/
-using ccstr = const char *const;
-static constexpr ccstr chimera_past_last_slash( ccstr str, ccstr last_slash )
+namespace Chimera::Assert::Detail
 {
-  return *str == '\0' ? last_slash : *str == '/' ? chimera_past_last_slash( str + 1, str + 1 ) : chimera_past_last_slash( str + 1, last_slash );
-}
+  consteval const char *shortFile( const char *path )
+  {
+    auto last{ path };
 
-static constexpr ccstr chimera_past_last_slash( ccstr str )
-{
-  return chimera_past_last_slash( str, str );
-}
-#define __SHORTFILE__                                            \
-  ( {                                                            \
-    constexpr ccstr sf__{ chimera_past_last_slash( __FILE__ ) }; \
-    sf__;                                                        \
-  } )
+    for ( auto current{ path }; *current != '\0'; ++current )
+    {
+      if ( ( *current == '/' ) || ( *current == '\\' ) )
+      {
+        last = current + 1;
+      }
+    }
+
+    return last;
+  }
+}  // namespace Chimera::Assert::Detail
+
+#define __SHORTFILE__ ::Chimera::Assert::Detail::shortFile( __FILE__ )
 
 
 /**

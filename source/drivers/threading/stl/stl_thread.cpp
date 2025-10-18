@@ -152,6 +152,8 @@ namespace Chimera::Thread
 
   bool Task::acceptTaskMessage( const TaskMsg msg, const size_t timeout )
   {
+    (void)timeout;
+
     /*-------------------------------------------------------------------------
     Update the data and signal waiting threads
     -------------------------------------------------------------------------*/

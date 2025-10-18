@@ -35,6 +35,7 @@ namespace Chimera::Thread
 
   void CountingSemaphore::release( const size_t update )
   {
+    (void)update;
     RT_HARD_ASSERT( false );
   }
 
@@ -51,12 +52,14 @@ namespace Chimera::Thread
 
   bool CountingSemaphore::try_acquire_for( const size_t timeout )
   {
+    (void)timeout;
     RT_HARD_ASSERT( false );
     return false;
   }
 
   bool CountingSemaphore::try_acquire_until( const size_t abs_time )
   {
+    (void)abs_time;
     RT_HARD_ASSERT( false );
     return false;
   }
