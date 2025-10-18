@@ -115,12 +115,6 @@ namespace Chimera::Scheduler::LoRes
   }
 
 
-  size_t resolution()
-  {
-    return Chimera::Thread::schedulerResolution();
-  }
-
-
   Chimera::Status_t oneShot( Chimera::Function::Opaque method, const size_t when, const TimingType relation )
   {
     auto result = Chimera::Status::OK;

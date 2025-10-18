@@ -21,7 +21,6 @@ Includes
 #include <cstddef>
 #include <cstdint>
 #include <etl/bip_buffer_spsc_atomic.h>
-#include <type_traits>
 
 namespace Chimera::Serial
 {

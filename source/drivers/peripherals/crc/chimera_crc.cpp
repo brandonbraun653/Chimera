@@ -5,16 +5,15 @@
  *  Description:
  *    Implements the software CRC algorithm
  *
- *  2019-2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2025 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
-/* STL Includes */
-#include <memory>
-#include <cstring>
-
-/* Chimera Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Chimera/common>
 #include <Chimera/crc>
+#include <cstring>
 
 namespace Chimera::CRC
 {

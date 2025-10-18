@@ -53,14 +53,6 @@ namespace Chimera::Scheduler
     Chimera::Status_t close();
 
     /**
-     *  Gets the resolution of the scheduler in milliseconds. This is
-     *  set by the system and not the user.
-     *
-     *  @return size_t
-     */
-    size_t resolution();
-
-    /**
      *  Schedules a function to execute once at some point in the future
      *
      *  @param[in]  method      The function to be executed

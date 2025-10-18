@@ -5,7 +5,7 @@
  *  Description:
  *    Models the Chimera Serial interface for UART/USARTs
  *
- *  2019-2022 | Brandon Braun | brandonbraun653@gmail.com
+ *  2019-2025 | Brandon Braun | brandonbraun653@gmail.com
  *****************************************************************************/
 
 #pragma once
@@ -19,7 +19,6 @@ Includes
 #include <Chimera/common>
 #include <Chimera/event>
 #include <Chimera/source/drivers/serial/serial_types.hpp>
-#include <cstdint>
 
 namespace Chimera::Serial
 {
