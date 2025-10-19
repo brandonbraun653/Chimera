@@ -1,4 +1,4 @@
-include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+include(CTEmbedded)
 
 # ====================================================
 # Import sub-projects
@@ -15,7 +15,7 @@ function(build_library variant)
   add_library(chimera_threading${variant} INTERFACE)
   target_link_libraries(chimera_threading${variant} INTERFACE chimera_threading_common${variant})
 
-  if(Toolchain::REQUIRES_FREERTOS_THREADS)
+  if(TOOLCHAIN_REQUIRES_FREERTOS_THREADS)
     target_link_libraries(chimera_threading${variant} INTERFACE chimera_threading_freertos${variant})
   else()
     target_link_libraries(chimera_threading${variant} INTERFACE chimera_threading_stl${variant})

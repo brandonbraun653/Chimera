@@ -1,4 +1,4 @@
-include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+include(CTEmbedded)
 
 gen_static_lib_variants(
   TARGET

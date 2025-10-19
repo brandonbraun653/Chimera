@@ -1,4 +1,4 @@
-include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+include(CTEmbedded)
 
 gen_static_lib_variants(
   TARGET
@@ -7,6 +7,8 @@ gen_static_lib_variants(
     stl_mutex.cpp
     stl_semaphore.cpp
     stl_thread.cpp
+  PUB_LIBRARIES
+    pthread
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc
