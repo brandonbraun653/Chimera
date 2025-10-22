@@ -27,11 +27,13 @@ namespace Chimera::DMA
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::DMA::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
   }  // namespace Backend
 
 
@@ -47,7 +49,7 @@ namespace Chimera::DMA
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -55,7 +57,7 @@ namespace Chimera::DMA
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -68,7 +70,7 @@ namespace Chimera::DMA
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -81,7 +83,7 @@ namespace Chimera::DMA
 
   RequestId constructPipe( const PipeConfig &config )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.constructPipe )
+    if( s_backend_driver.isSupported && s_backend_driver.constructPipe )
     {
       return s_backend_driver.constructPipe( config );
     }
@@ -94,7 +96,7 @@ namespace Chimera::DMA
 
   RequestId transfer( const MemTransfer &transfer )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.memTransfer )
+    if( s_backend_driver.isSupported && s_backend_driver.memTransfer )
     {
       return s_backend_driver.memTransfer( transfer );
     }
@@ -107,7 +109,7 @@ namespace Chimera::DMA
 
   RequestId transfer( const PipeTransfer &transfer )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.pipeTransfer )
+    if( s_backend_driver.isSupported && s_backend_driver.pipeTransfer )
     {
       return s_backend_driver.pipeTransfer( transfer );
     }
@@ -120,7 +122,7 @@ namespace Chimera::DMA
 
   void abort( const RequestId id )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.abortTransfer )
+    if( s_backend_driver.isSupported && s_backend_driver.abortTransfer )
     {
       s_backend_driver.abortTransfer( id );
     }

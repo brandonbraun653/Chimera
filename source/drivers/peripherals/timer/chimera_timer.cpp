@@ -30,11 +30,13 @@ namespace Chimera::Timer
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::Timer::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
   }  // namespace Backend
 
 
@@ -46,7 +48,7 @@ namespace Chimera::Timer
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -54,7 +56,7 @@ namespace Chimera::Timer
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -69,7 +71,7 @@ namespace Chimera::Timer
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -82,7 +84,7 @@ namespace Chimera::Timer
 
   size_t millis()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.millis )
+    if( s_backend_driver.isSupported && s_backend_driver.millis )
     {
       return s_backend_driver.millis();
     }
@@ -96,7 +98,7 @@ namespace Chimera::Timer
 
   size_t micros()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.micros )
+    if( s_backend_driver.isSupported && s_backend_driver.micros )
     {
       return s_backend_driver.micros();
     }
@@ -110,7 +112,7 @@ namespace Chimera::Timer
 
   void delayMilliseconds( const size_t val )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.delayMilliseconds )
+    if( s_backend_driver.isSupported && s_backend_driver.delayMilliseconds )
     {
       s_backend_driver.delayMilliseconds( val );
     }
@@ -119,7 +121,7 @@ namespace Chimera::Timer
 
   void delayMicroseconds( const size_t val )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.delayMicroseconds )
+    if( s_backend_driver.isSupported && s_backend_driver.delayMicroseconds )
     {
       s_backend_driver.delayMicroseconds( val );
     }
@@ -128,7 +130,7 @@ namespace Chimera::Timer
 
   void blockDelayMilliseconds( const size_t val )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.blockDelayMilliseconds )
+    if( s_backend_driver.isSupported && s_backend_driver.blockDelayMilliseconds )
     {
       s_backend_driver.blockDelayMilliseconds( val );
     }
@@ -137,7 +139,7 @@ namespace Chimera::Timer
 
   void blockDelayMicroseconds( const size_t val )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.blockDelayMicroseconds )
+    if( s_backend_driver.isSupported && s_backend_driver.blockDelayMicroseconds )
     {
       s_backend_driver.blockDelayMicroseconds( val );
     }

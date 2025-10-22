@@ -26,11 +26,13 @@ namespace Chimera::EXTI
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::EXTI::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
   }  // namespace Backend
 
   Chimera::Status_t open()
@@ -41,7 +43,7 @@ namespace Chimera::EXTI
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -49,7 +51,7 @@ namespace Chimera::EXTI
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.open )
+    if( s_backend_driver.isSupported && s_backend_driver.open )
     {
       return s_backend_driver.open();
     }
@@ -64,7 +66,7 @@ namespace Chimera::EXTI
 
   Chimera::Status_t close()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.close )
+    if( s_backend_driver.isSupported && s_backend_driver.close )
     {
       return s_backend_driver.close();
     }
@@ -77,7 +79,7 @@ namespace Chimera::EXTI
 
   Chimera::Status_t attach( const EventLine_t listener, const EdgeTrigger edge, Chimera::Function::vGeneric callback )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.attach )
+    if( s_backend_driver.isSupported && s_backend_driver.attach )
     {
       return s_backend_driver.attach( listener, edge, callback );
     }
@@ -90,7 +92,7 @@ namespace Chimera::EXTI
 
   Chimera::Status_t detach( const EventLine_t listener )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.detach )
+    if( s_backend_driver.isSupported && s_backend_driver.detach )
     {
       return s_backend_driver.detach( listener );
     }
@@ -103,7 +105,7 @@ namespace Chimera::EXTI
 
   Chimera::Status_t trigger( const EventLine_t listener )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.trigger )
+    if( s_backend_driver.isSupported && s_backend_driver.trigger )
     {
       return s_backend_driver.trigger( listener );
     }
@@ -116,7 +118,7 @@ namespace Chimera::EXTI
 
   Chimera::Status_t disable( const EventLine_t listener )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.disable )
+    if( s_backend_driver.isSupported && s_backend_driver.disable )
     {
       return s_backend_driver.disable( listener );
     }
@@ -129,7 +131,7 @@ namespace Chimera::EXTI
 
   Chimera::Status_t enable( const EventLine_t listener )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.enable )
+    if( s_backend_driver.isSupported && s_backend_driver.enable )
     {
       return s_backend_driver.enable( listener );
     }
@@ -142,7 +144,7 @@ namespace Chimera::EXTI
 
   EventLine_t numInterruptLines()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.numInterruptLines )
+    if( s_backend_driver.isSupported && s_backend_driver.numInterruptLines )
     {
       return s_backend_driver.numInterruptLines();
     }

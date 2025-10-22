@@ -34,7 +34,7 @@ namespace Chimera::SDIO
       return Chimera::Status::NOT_SUPPORTED;
     }
 #endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
-  }    // namespace Backend
+  }  // namespace Backend
 
 
   Chimera::Status_t initialize()
@@ -45,7 +45,7 @@ namespace Chimera::SDIO
     s_backend_driver.clear();
     auto result = Backend::registerDriver( s_backend_driver );
 
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -53,7 +53,7 @@ namespace Chimera::SDIO
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -66,7 +66,7 @@ namespace Chimera::SDIO
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       auto reset_func_ptr = s_backend_driver.reset;
       s_backend_driver.clear();
@@ -82,7 +82,7 @@ namespace Chimera::SDIO
 
   Driver_rPtr getDriver( const Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    if( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
       return s_backend_driver.getDriver( channel );
     }

@@ -25,16 +25,6 @@ namespace Chimera::GPIO
   /*---------------------------------------------------------------------------
   Public Functions
   ---------------------------------------------------------------------------*/
-  namespace Backend
-  {
-    Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::GPIO::Backend::DriverConfig &registry )
-    {
-      registry.isSupported = false;
-      return Chimera::Status::OK;
-    }
-  }  // namespace Backend
-
-
   Chimera::Status_t initialize()
   {
     memset( &s_backend_driver, 0, sizeof( s_backend_driver ) );
@@ -43,7 +33,7 @@ namespace Chimera::GPIO
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -51,7 +41,7 @@ namespace Chimera::GPIO
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -66,7 +56,7 @@ namespace Chimera::GPIO
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -79,7 +69,7 @@ namespace Chimera::GPIO
 
   Driver_rPtr getDriver( const Port port, const Pin pin )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    if( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
       return s_backend_driver.getDriver( port, pin );
     }

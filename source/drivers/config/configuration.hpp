@@ -12,7 +12,7 @@
 #ifndef CHIMERA_CONFIGURATION_HPP
 #define CHIMERA_CONFIGURATION_HPP
 
-#if __has_include("chimera_cfg_prj.hpp")
+#if __has_include( "chimera_cfg_prj.hpp" )
 #include "chimera_cfg_prj.hpp"
 #endif /* __has_include("chimera_cfg_prj.hpp") */
 
@@ -26,7 +26,7 @@ for compiling purposes when a driver is not yet implemented and may
 be overriden later by the Chimera interface implementer.
 -------------------------------------------------------------------*/
 #ifndef CHIMERA_DEFAULT_DRIVER_REGISTRATION
-#define CHIMERA_DEFAULT_DRIVER_REGISTRATION  1
+#define CHIMERA_DEFAULT_DRIVER_REGISTRATION 0
 #endif
 
 #endif /* !CHIMERA_CONFIGURATION_HPP */

@@ -24,11 +24,13 @@ namespace Chimera::Interrupt
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::Interrupt::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
   }  // namespace Backend
 
   Chimera::Status_t initialize()
@@ -39,7 +41,7 @@ namespace Chimera::Interrupt
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -47,7 +49,7 @@ namespace Chimera::Interrupt
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -62,7 +64,7 @@ namespace Chimera::Interrupt
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -75,7 +77,7 @@ namespace Chimera::Interrupt
 
   Chimera::Status_t registerISRHandler( const Peripheral::Type type, const Signal_t signal, const SignalCallback &callback )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.registerISRHandler )
+    if( s_backend_driver.isSupported && s_backend_driver.registerISRHandler )
     {
       return s_backend_driver.registerISRHandler( type, signal, callback );
     }
@@ -88,7 +90,7 @@ namespace Chimera::Interrupt
 
   Chimera::Status_t disableISR( const Signal_t signal )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.disableISR )
+    if( s_backend_driver.isSupported && s_backend_driver.disableISR )
     {
       return s_backend_driver.disableISR( signal );
     }
@@ -101,7 +103,7 @@ namespace Chimera::Interrupt
 
   Chimera::Status_t enableISR( const Signal_t signal )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.enableISR )
+    if( s_backend_driver.isSupported && s_backend_driver.enableISR )
     {
       return s_backend_driver.enableISR( signal );
     }

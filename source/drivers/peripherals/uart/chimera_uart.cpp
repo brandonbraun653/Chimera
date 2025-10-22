@@ -27,11 +27,13 @@ namespace Chimera::UART
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( struct Chimera::UART::Backend::DriverConfig &cfg )
     {
       cfg.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
   }  // namespace Backend
 
 
@@ -43,7 +45,7 @@ namespace Chimera::UART
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -51,7 +53,7 @@ namespace Chimera::UART
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -65,7 +67,7 @@ namespace Chimera::UART
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -77,7 +79,7 @@ namespace Chimera::UART
 
   bool isChannelUART( const Chimera::Serial::Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.isChannelUART )
+    if( s_backend_driver.isSupported && s_backend_driver.isChannelUART )
     {
       return s_backend_driver.isChannelUART( channel );
     }
@@ -89,7 +91,7 @@ namespace Chimera::UART
 
   Driver_rPtr getDriver( const Chimera::Serial::Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    if( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
       return s_backend_driver.getDriver( channel );
     }

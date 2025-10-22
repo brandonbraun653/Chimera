@@ -28,11 +28,13 @@ namespace Chimera::CAN
 
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::CAN::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
   }  // namespace Backend
 
 
@@ -44,7 +46,7 @@ namespace Chimera::CAN
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -52,7 +54,7 @@ namespace Chimera::CAN
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -67,7 +69,7 @@ namespace Chimera::CAN
 
   Chimera::Status_t reset()
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.reset )
+    if( s_backend_driver.isSupported && s_backend_driver.reset )
     {
       return s_backend_driver.reset();
     }
@@ -80,7 +82,7 @@ namespace Chimera::CAN
 
   Driver_rPtr getDriver( const Channel channel )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getDriver )
+    if( s_backend_driver.isSupported && s_backend_driver.getDriver )
     {
       return s_backend_driver.getDriver( channel );
     }

@@ -24,11 +24,13 @@ namespace Chimera::Clock
   ---------------------------------------------------------------------------*/
   namespace Backend
   {
+#if CHIMERA_DEFAULT_DRIVER_REGISTRATION == 1
     Chimera::Status_t __attribute__( ( weak ) ) registerDriver( Chimera::Clock::Backend::DriverConfig &registry )
     {
       registry.isSupported = false;
       return Chimera::Status::NOT_SUPPORTED;
     }
+#endif /* CHIMERA_DEFAULT_DRIVER_REGISTRATION */
 
   }  // namespace Backend
 
@@ -39,7 +41,7 @@ namespace Chimera::Clock
     Register the backend interface with Chimera
     -------------------------------------------------------------------------*/
     auto result = Backend::registerDriver( s_backend_driver );
-    if ( result != Chimera::Status::OK )
+    if( result != Chimera::Status::OK )
     {
       return result;
     }
@@ -47,7 +49,7 @@ namespace Chimera::Clock
     /*-------------------------------------------------------------------------
     Try and invoke the registered init sequence
     -------------------------------------------------------------------------*/
-    if ( s_backend_driver.isSupported && s_backend_driver.initialize )
+    if( s_backend_driver.isSupported && s_backend_driver.initialize )
     {
       return s_backend_driver.initialize();
     }
@@ -63,7 +65,7 @@ namespace Chimera::Clock
 
   Chimera::Status_t periphEnable( const Chimera::Peripheral::Type periph )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.periphEnable )
+    if( s_backend_driver.isSupported && s_backend_driver.periphEnable )
     {
       return s_backend_driver.periphEnable( periph );
     }
@@ -76,7 +78,7 @@ namespace Chimera::Clock
 
   Chimera::Status_t periphDisable( const Chimera::Peripheral::Type periph )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.periphDisable )
+    if( s_backend_driver.isSupported && s_backend_driver.periphDisable )
     {
       return s_backend_driver.periphDisable( periph );
     }
@@ -89,7 +91,7 @@ namespace Chimera::Clock
 
   Chimera::Status_t enableClock( const Chimera::Clock::Bus bus )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.enableClock )
+    if( s_backend_driver.isSupported && s_backend_driver.enableClock )
     {
       return s_backend_driver.enableClock( bus );
     }
@@ -102,7 +104,7 @@ namespace Chimera::Clock
 
   Chimera::Status_t disableClock( const Chimera::Clock::Bus bus )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.disableClock )
+    if( s_backend_driver.isSupported && s_backend_driver.disableClock )
     {
       return s_backend_driver.disableClock( bus );
     }
@@ -115,7 +117,7 @@ namespace Chimera::Clock
 
   bool isEnabled( const Chimera::Clock::Bus bus )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.isEnabled )
+    if( s_backend_driver.isSupported && s_backend_driver.isEnabled )
     {
       return s_backend_driver.isEnabled( bus );
     }
@@ -128,7 +130,7 @@ namespace Chimera::Clock
 
   size_t getFrequency( const Chimera::Clock::Bus bus )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.getFrequency )
+    if( s_backend_driver.isSupported && s_backend_driver.getFrequency )
     {
       return s_backend_driver.getFrequency( bus );
     }
@@ -141,7 +143,7 @@ namespace Chimera::Clock
 
   Chimera::Status_t setFrequency( const Chimera::Clock::Bus bus, const size_t freq )
   {
-    if ( s_backend_driver.isSupported && s_backend_driver.setFrequency )
+    if( s_backend_driver.isSupported && s_backend_driver.setFrequency )
     {
       return s_backend_driver.setFrequency( bus, freq );
     }
